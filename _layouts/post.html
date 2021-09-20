@@ -8,8 +8,75 @@
   <title>{{ page.title }}</title>
 </head>
 
+<style>
+  
+  body {
+    background-color: #ecf0f3;
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .content-section {
+    min-width: 320px;
+
+
+  }
+
+  main {
+    min-width: 320px;
+    max-width: 368px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    padding: 12px;
+  }
+
+  .footer-section {
+    position: relative;
+    top: 32px;
+    left: 16px;
+    text-align: justify;
+  }
+
+  
+  @media screen and (max-width : 538px) {
+    .main-container{
+      flex-direction: column;
+    }
+    
+  }
+
+  
+</style>
+
 <body>
-  {{ content }}
+
+  <div class="main-container">
+
+    {% include nav.html %}
+
+
+    <div class="content-section">
+      <main>
+        {{page.title}}
+        <br>
+        {{ content }}
+      </main>
+      <div class="footer-section">
+        {% include footer.html %}
+      </div>
+
+    </div>
+
+  </div>
+
+
+
 </body>
 
 </html>

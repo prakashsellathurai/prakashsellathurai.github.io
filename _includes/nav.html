@@ -27,6 +27,7 @@
         opacity: 0;
         overflow-y: hidden;
         transition: opacity 0.4s, max-height 0.4s, visibility 0.4s;
+
     }
 
     .sidebar-content.active {
@@ -34,6 +35,7 @@
         opacity: 1;
         overflow-y: unset;
         visibility: visible;
+        
     }
 
     .nav-list {
@@ -52,33 +54,114 @@
 
     }
 
+    .toggle-button {
+        border-radius: 7px;
+        background: linear-gradient(315deg, #f0f0f0, #cacaca);
+        box-shadow: -6px -6px 13px #5e5e5e,
+            6px 6px 13px #ffffff;
+    }
+
+
+    .toggle-button:active {
+        border-radius: 7px;
+        background: #e0e0e0;
+        box-shadow: inset -6px 6px 12px #bebebe,
+            inset 6px -6px 12px #ffffff;
+    }
+
+
+    ul.nav-list {
+        cursor: pointer;
+        display: inline-block;
+        text-align: justify;
+    }
+
+    ul.nav-list li {
+
+
+        border-radius: 12px;
+        background: linear-gradient(45deg, #cacaca, #f0f0f0);
+        box-shadow: 6px -6px 12px #bebebe,
+            -6px 6px 12px #ffffff;
+        margin: 10px;
+        cursor: pointer;
+
+    }
+
+    ul.nav-list li:active {
+        border-radius: 12px;
+        background: #e0e0e0;
+        box-shadow: inset -6px 6px 12px #bebebe,
+            inset 6px -6px 12px #ffffff;
+    }
+
+
+
+    ul.nav-list li a {
+        min-width: 100px;
+
+        padding: 15px;
+        height: 100%;
+        display: inline-block;
+        text-align: center;
+
+    }
+
+
+
 
 
 
     @media only screen and (min-width: 538px) {
+
+        nav {
+            position: relative;
+            top: 2em;
+            left: 1em;
+            width: 9em
+        }
+
         .sidebar.active {
             overflow: scroll;
         }
 
-        nav li {
-            border-radius: 20px;
-            background: linear-gradient(45deg, #cacaca, #f0f0f0);
-            box-shadow: 6px -6px 12px #bebebe,
-                -6px 6px 12px #ffffff;
-             padding: 10px;
-            margin: 10px; 
-             cursor: pointer;
-            
+        ul.nav-list {
+            cursor: pointer;
+            display: inline-block;
             text-align: center;
         }
 
+        ul.nav-list li {
 
-        /* nav li :active {
 
-            box-shadow: inset 6px -6px 12px #bebebe,
-                inset -6px 6px 12px #ffffff;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #cacaca, #f0f0f0);
+            box-shadow: 6px -6px 12px #bebebe,
+                -6px 6px 12px #ffffff;
+            margin: 10px;
+            cursor: pointer;
 
-        } */
+        }
+
+        ul.nav-list li:active {
+            border-radius: 12px;
+            background: #e0e0e0;
+            box-shadow: inset -6px 6px 12px #bebebe,
+                inset 6px -6px 12px #ffffff;
+        }
+
+
+
+        ul.nav-list li a {
+            min-width: 100px;
+
+            padding: 15px;
+            height: 100%;
+            display: inline-block;
+            text-align: center;
+
+        }
+
 
         .sidebar-content {
             max-height: fit-content;
@@ -130,6 +213,7 @@
                 <li><a href="{{'./essays' | relative_url }}"> Essays</a></li>
                 <li><a href="{{'./projects' | relative_url }}">Projects</a></li>
                 <li><a href="{{'./' | relative_url }}">CV</a></li>
+
 
             </ul>
 

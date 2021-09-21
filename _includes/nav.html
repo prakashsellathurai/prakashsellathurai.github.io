@@ -1,13 +1,20 @@
 <style>
     nav {
         position: relative;
-         top: 2em;
+        /* top: 2em;
         left: 1em;
-        width: 9em 
-        
+        width: 9em */
     }
 
-
+    .sidebar {
+        border-radius: 12px;
+        background: #e0e0e0;
+        box-shadow: -35px -35px 70px #bebebe,
+            35px 35px 70px #ffffff;
+            background: linear-gradient(45deg, #cacaca, #f0f0f0);
+            box-shadow: 6px -6px 12px #bebebe,
+                -6px 6px 12px #ffffff;
+    }
 
     .sidebar-header {
         display: flex;
@@ -15,13 +22,7 @@
         align-items: center;
     }
 
-    .toggle-button {
-        display: flex;
-        background-color: transparent;
-        border: 0;
-        padding: 0.75em;
-        cursor: pointer;
-    }
+ 
 
     .sidebar-content {
         max-height: 0;
@@ -36,12 +37,14 @@
         opacity: 1;
         overflow-y: unset;
         visibility: visible;
-        
+      
+
     }
 
     .nav-list {
         list-style: none;
-        padding-left: 0;
+
+        padding-left: 26vw;
     }
 
     .nav-list li a {
@@ -56,6 +59,17 @@
     }
 
     .toggle-button {
+
+        display: flex;
+        background-color: transparent;
+        border: 0;
+        padding: 0.75em;
+        cursor: pointer;
+        margin-top: 4px;
+        margin-left: 4px;
+
+
+
         border-radius: 7px;
         background: linear-gradient(315deg, #f0f0f0, #cacaca);
         box-shadow: -6px -6px 13px #5e5e5e,
@@ -68,6 +82,9 @@
         background: #e0e0e0;
         box-shadow: inset -6px 6px 12px #bebebe,
             inset 6px -6px 12px #ffffff;
+
+            transition:ease-in;
+
     }
 
 
@@ -82,7 +99,7 @@
 
         border-radius: 12px;
         box-shadow: -14px -14px 20px #bebebe,
-      14px 14px 20px #ffffff;
+            14px 14px 20px #ffffff;
         margin: 10px;
         cursor: pointer;
 
@@ -120,6 +137,12 @@
             left: 1em;
             width: 9em
         }
+
+        .nav-list {
+        list-style: none;
+
+        padding-left: 0vw;
+    }
 
         .sidebar.active {
             overflow: scroll;
@@ -206,19 +229,19 @@
             </svg>
         </button>
     </div>
-    <div id="sidebar-content" class="sidebar-content">
-        <nav>
-            <ul class="nav-list">
-                <li><a href="{{'./' | relative_url }}">Home</a></li>
-                <li><a href="{{'./essays' | relative_url }}"> Essays</a></li>
-                <li><a href="{{'./projects' | relative_url }}">Projects</a></li>
-                <li><a href="{{'./' | relative_url }}">CV</a></li>
+    <nav id="sidebar-content" class="sidebar-content">
+
+        <ul class="nav-list">
+            <li><a href="{{'./' | relative_url }}">Home</a></li>
+            <li><a href="{{'./essays' | relative_url }}"> Essays</a></li>
+            <li><a href="{{'./projects' | relative_url }}">Projects</a></li>
+            <li><a href="{{'./' | relative_url }}">CV</a></li>
 
 
-            </ul>
+        </ul>
 
-        </nav>
-    </div>
+    </nav>
+
 </div>
 
 <script>

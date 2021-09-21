@@ -9,7 +9,6 @@
 </head>
 
 <style>
-  
   body {
     background-color: #ecf0f3;
   }
@@ -18,14 +17,40 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    min-height: 100vh;
+
+    min-height: 80vh;
   }
 
   .content-section {
     min-width: 320px;
+    border-radius: 12px;
+    background: #e0e0e0;
+    box-shadow: -14px -14px 20px #bebebe,
+      14px 14px 20px #ffffff;
+    margin-top: 40px;
+    margin-left: 10px;
+  }
+
+  @media only screen and (min-width: 538px) {
+    .content-section {
+
+      border-radius: 12px;
+      background: linear-gradient(45deg, #cacaca, #f0f0f0);
+      box-shadow: 6px -6px 12px #bebebe,
+        -6px 6px 12px #ffffff;
+      margin-top: 40px;
+      margin-left: 40px;
+    }
 
 
   }
+
+
+
+
+
+
+
 
   main {
     min-width: 320px;
@@ -43,15 +68,13 @@
     text-align: justify;
   }
 
-  
+
   @media screen and (max-width : 538px) {
-    .main-container{
+    .main-container {
       flex-direction: column;
     }
-    
-  }
 
-  
+  }
 </style>
 
 <body>

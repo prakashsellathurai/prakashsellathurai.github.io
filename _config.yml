@@ -16,10 +16,25 @@ collections:
     permalink: essay/:title
 
 
+
+projects:
+  sort_by: pushed
+  # sort_by options:
+  #   - pushed
+  #   - stars
+  # limit: 9
+  exclude:
+    archived: false
+    forks: true
+    projects:
+    # - repo-name
 # Build settings
 
 plugins:
   - jekyll-feed
+  - jekyll-octicons
+  - jekyll-github-metadata
+  - jemoji
 
 
 feed:

@@ -114,11 +114,13 @@
     <div class="content-section">
 
       <main>
+        {{  page.date | | date: "%B %Y"}}
+        <br>
         <br>
         <div class="title-section">
           {{page.title}}
         </div>
-
+   
         <br>
         {{ content }}
       </main>

@@ -1,5 +1,5 @@
 
-title: Prakash S
+title: Prakash Sellathurai
 email: prakashsellathurai@gmail.com
 description: 
 baseurl: "" # the subpath of your site, e.g. /blog
@@ -7,6 +7,9 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: prakash1729brt
 github_username:  prakashsellathurai
 
+author:
+  twitter: prakash1729brt
+  
 repository: prakashsellathurai/prakashsellathurai.github.io
 
 collections:
@@ -15,7 +18,7 @@ collections:
     output: true
     permalink: essay/:title
 
-
+timezone: Asia/Kolkata
 
 projects:
   sort_by: pushed

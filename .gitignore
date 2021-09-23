@@ -35,6 +35,7 @@ _book
 *.epub
 *.mobi
 *.pdf
+!Resume.pdf
 
 ### Jekyll ###
 _site/

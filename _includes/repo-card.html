@@ -4,7 +4,7 @@
         <h3 class="f4 lh-condensed mb-1">
           <a href="{{ repository.html_url }}">
             {% octicon repo height:20 class:"mr-1 v-align-middle" fill:"#586069" aria-label:repo %}
-            {{ repository.name }}
+            {{ repository.name  | replace: '-', ' '| replace: '_', ' '}}
           </a>
         </h3>
       </div>

@@ -44,6 +44,8 @@
 
   @media only screen and (min-width: 538px) {
     .content-section {
+      max-width: 340px;
+
       min-width: 320px;
       border-radius: 12px;
       background: linear-gradient(45deg, #cacaca, #f0f0f0);
@@ -63,6 +65,7 @@
 
 .title-section{
   display: table-row;
+  font-weight: bold;
 
 }
 
@@ -104,11 +107,13 @@
     
       <main>
         <!-- <br> -->
-        <!-- <div class="title-section">
+        {% if page.showTitle %}
+        <div class="title-section">
           {{page.title}}
-        </div> -->
-      
-        <!-- <br> -->
+        </div>
+
+        <br>
+        {% endif %}
         {{ content }}
       </main>
 

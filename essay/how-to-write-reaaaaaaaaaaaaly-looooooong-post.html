@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How To Write Reaaaaaaaaaaaaly Looooooong Post</title>
+
+  <!--LORA FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+</head>
+
+<style>
+  body {
+    /* background-color: #ecf0f3; */
+    font-family: 'Lora', serif, Verdana, sans-serif;
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 90vh;
+  }
+
+
+  .content-section {
+    border-radius: 12px;
+    /* background: #e0e0e0; */
+    /* box-shadow: -14px -14px 20px #bebebe,
+      14px 14px 20px #ffffff; */
+    margin-top: 40px;
+    margin-left: 10px;
+    padding: 10px;
+    display: table;
+  }
+
+  @media only screen and (min-width: 538px) {
+    .content-section {
+      max-width: 340px;
+      min-width: 320px;
+      border-radius: 12px;
+      /* background: linear-gradient(45deg, #cacaca, #f0f0f0); */
+      /* box-shadow: 6px -6px 12px #bebebe,
+        -6px 6px 12px #ffffff; */
+      margin-top: 4px;
+      margin-left: 40px;
+      padding: 28px;
+      display: table;
+    }
+
+
+  }
+
+
+
+
+  .title-section {
+    display: table-row;
+    font-weight: bold;
+
+
+  }
+
+
+
+  main {
+
+    max-width: 368px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    padding: 12px;
+    display: table-row;
+    height: 100%
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid black;
+  }
+
+
+  .footer-section {
+
+    display: table-row;
+  }
+
+
+  @media screen and (max-width : 538px) {
+    .main-container {
+      flex-direction: column;
+    }
+
+  }
+</style>
+
+<body>
+
+  <div class="main-container">
+
+    <style>
+    nav {
+        position: relative;
+
+    }
+
+    .sidebar {
+        border-radius: 12px;
+        background: #e0e0e0;
+        box-shadow: -35px -35px 70px #bebebe,
+            35px 35px 70px #ffffff;
+            background: linear-gradient(45deg, #cacaca, #f0f0f0);
+            box-shadow: 6px -6px 12px #bebebe,
+                -6px 6px 12px #ffffff;
+    }
+
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+ 
+
+    .sidebar-content {
+        max-height: 0;
+        opacity: 0;
+        overflow-y: hidden;
+        transition: opacity 0.4s, max-height 0.4s, visibility 0.4s;
+
+    }
+
+    .sidebar-content.active {
+        max-height: 100%;
+        opacity: 1;
+        overflow-y: unset;
+        visibility: visible;
+      
+
+    }
+
+    .nav-list {
+        list-style: none;
+
+        padding-left: 26vw;
+    }
+
+    .nav-list li a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .nav-link {
+        display: block;
+        color: inherit;
+
+    }
+
+    .toggle-button {
+
+        display: flex;
+        background-color: transparent;
+        border: 0;
+        padding: 0.75em;
+        cursor: pointer;
+        margin-top: 4px;
+        margin-left: 4px;
+
+
+
+        border-radius: 7px;
+        background: linear-gradient(315deg, #f0f0f0, #cacaca);
+        box-shadow: -6px -6px 13px #5e5e5e,
+            6px 6px 13px #ffffff;
+    }
+
+
+    .toggle-button:active {
+        border-radius: 7px;
+        background: #e0e0e0;
+        box-shadow: inset -6px 6px 12px #bebebe,
+            inset 6px -6px 12px #ffffff;
+
+            transition:ease-in;
+
+    }
+
+
+    ul.nav-list {
+        cursor: pointer;
+        display: inline-block;
+        text-align: justify;
+    }
+
+    ul.nav-list li {
+
+
+        border-radius: 12px;
+        box-shadow: -14px -14px 20px #bebebe,
+            14px 14px 20px #ffffff;
+        margin: 10px;
+        cursor: pointer;
+
+    }
+
+    ul.nav-list li:active {
+        border-radius: 12px;
+        background: #e0e0e0;
+        box-shadow: inset -6px 6px 12px #bebebe,
+            inset 6px -6px 12px #ffffff;
+    }
+
+
+
+    ul.nav-list li a {
+        min-width: 100px;
+
+        padding: 15px;
+        height: 100%;
+        display: inline-block;
+        text-align: center;
+
+    }
+
+
+
+
+
+
+    @media only screen and (min-width: 538px) {
+
+        nav {
+            position: relative;
+            /* top: 2em;
+            left: 1em;
+            width: 9em */
+        }
+
+        .nav-list {
+        list-style: none;
+
+        padding-left: 0vw;
+    }
+
+        .sidebar.active {
+            overflow: scroll;
+        }
+
+        ul.nav-list {
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
+
+        ul.nav-list li {
+
+
+            border-radius: 12px;
+            background: linear-gradient(45deg, #cacaca, #f0f0f0);
+            box-shadow: 6px -6px 12px #bebebe,
+                -6px 6px 12px #ffffff;
+            margin: 10px;
+            cursor: pointer;
+
+        }
+
+        ul.nav-list li:active {
+            border-radius: 12px;
+            background: #e0e0e0;
+            box-shadow: inset -6px 6px 12px #bebebe,
+                inset 6px -6px 12px #ffffff;
+        }
+
+
+
+        ul.nav-list li a {
+            min-width: 100px;
+
+            padding: 15px;
+            height: 100%;
+            display: inline-block;
+            text-align: center;
+
+        }
+
+
+        .sidebar-content {
+            max-height: fit-content;
+            visibility: visible;
+            overflow-y: unset;
+            overflow-x: inherit;
+            opacity: 1;
+        }
+
+        .toggle-button {
+            display: none;
+        }
+
+
+        .sidebar {
+            display: grid;
+            grid-template-rows: auto 1fr;
+
+        }
+
+        .sidebar::before {
+
+            position: absolute;
+            top: 0;
+            right: 0;
+
+        }
+    }
+</style>
+
+
+
+
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <button id="toggle-button" aria-label="toggle-button" class="toggle-button">
+            <svg viewbox="0 0 20 20" width="1em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 5 L20 5" stroke="currentColor" fill="none" stroke-width="1.5"></path>
+                <path d="M0 10 L20 10" stroke="currentColor" fill="none" stroke-width="1.5"></path>
+                <path d="M0 15 L20 15" stroke="currentColor" fill="none" stroke-width="1.5"></path>
+            </svg>
+        </button>
+    </div>
+    <nav id="sidebar-content" class="sidebar-content">
+
+        <ul class="nav-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/essays"> Essays</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/">CV</a></li>
+
+
+        </ul>
+
+    </nav>
+
+</div>
+
+<script>
+    const toggleButton = document.getElementById('toggle-button');
+    const toggleContent = document.getElementById('sidebar-content');
+
+    toggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('active');
+        toggleContent.classList.toggle('active');
+    });
+</script>
+
+
+    <div class="content-section">
+
+      <main>
+        <br>
+        <div class="title-section">
+          How To Write Reaaaaaaaaaaaaly Looooooong Post
+        </div>
+
+        <br>
+        <h1 id="h1-heading-8-">h1 Heading 8-)</h1>
+<h2 id="h2-heading">h2 Heading</h2>
+<h3 id="h3-heading">h3 Heading</h3>
+<h4 id="h4-heading">h4 Heading</h4>
+<h5 id="h5-heading">h5 Heading</h5>
+<h6 id="h6-heading">h6 Heading</h6>
+
+<h2 id="horizontal-rules">Horizontal Rules</h2>
+
+<h2 id="typographic-replacements">Typographic replacements</h2>
+
+<p>Enable typographer option to see result.</p>
+
+<p>(c) (C) (r) (R) (tm) (TM) (p) (P) +-</p>
+
+<p>test.. test… test….. test?….. test!….</p>
+
+<p>!!!!!! ???? ,,  – —</p>
+
+<p>“Smartypants, double quotes” and ‘single quotes’</p>
+
+<h2 id="emphasis">Emphasis</h2>
+
+<p><strong>This is bold text</strong></p>
+
+<p><strong>This is bold text</strong></p>
+
+<p><em>This is italic text</em></p>
+
+<p><em>This is italic text</em></p>
+
+<p><del>Strikethrough</del></p>
+
+<h2 id="blockquotes">Blockquotes</h2>
+
+<blockquote>
+  <p>Blockquotes can also be nested…</p>
+  <blockquote>
+    <p>…by using additional greater-than signs right next to each other…</p>
+    <blockquote>
+      <p>…or with spaces between arrows.</p>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h2 id="lists">Lists</h2>
+
+<p>Unordered</p>
+
+<ul>
+  <li>Create a list by starting a line with <code class="language-plaintext highlighter-rouge">+</code>, <code class="language-plaintext highlighter-rouge">-</code>, or <code class="language-plaintext highlighter-rouge">*</code>
+</li>
+  <li>Sub-lists are made by indenting 2 spaces:
+    <ul>
+      <li>Marker character change forces new list start:
+        <ul>
+          <li>Ac tristique libero volutpat at</li>
+          <li>Facilisis in pretium nisl aliquet</li>
+          <li>Nulla volutpat aliquam velit</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Very easy!</li>
+</ul>
+
+<p>Ordered</p>
+
+<ol>
+  <li>Lorem ipsum dolor sit amet</li>
+  <li>Consectetur adipiscing elit</li>
+  <li>
+    <p>Integer molestie lorem at massa</p>
+  </li>
+  <li>You can use sequential numbers…</li>
+  <li>…or keep all the numbers as <code class="language-plaintext highlighter-rouge">1.</code>
+</li>
+</ol>
+
+<p>Start numbering with offset:</p>
+
+<ol>
+  <li>foo</li>
+  <li>bar</li>
+</ol>
+
+<h2 id="code">Code</h2>
+
+<p>Inline <code class="language-plaintext highlighter-rouge">code</code></p>
+
+<p>Indented code</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Some comments
+line 1 of code
+line 2 of code
+line 3 of code
+</code></pre></div></div>
+
+<p>Block code “fences”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sample text here...
+</code></pre></div></div>
+
+<p>Syntax highlighting</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">bar</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">bar</span><span class="o">++</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">foo</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h2 id="tables">Tables</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>data</td>
+      <td>path to data files to supply the data that will be passed into templates.</td>
+    </tr>
+    <tr>
+      <td>engine</td>
+      <td>engine to be used for processing templates. Handlebars is the default.</td>
+    </tr>
+    <tr>
+      <td>ext</td>
+      <td>extension to be used for dest files.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Right aligned columns</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">Option</th>
+      <th style="text-align: right">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">data</td>
+      <td style="text-align: right">path to data files to supply the data that will be passed into templates.</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">engine</td>
+      <td style="text-align: right">engine to be used for processing templates. Handlebars is the default.</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">ext</td>
+      <td style="text-align: right">extension to be used for dest files.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="links">Links</h2>
+
+<p><a href="http://dev.nodeca.com">link text</a></p>
+
+<p><a href="http://nodeca.github.io/pica/demo/" title="title text!">link with title</a></p>
+
+<p>Autoconverted link https://github.com/nodeca/pica (enable linkify to see)</p>
+
+<h2 id="plugins">Plugins</h2>
+
+<p>The killer feature of <code class="language-plaintext highlighter-rouge">markdown-it</code> is very effective support of
+<a href="https://www.npmjs.org/browse/keyword/markdown-it-plugin">syntax plugins</a>.</p>
+
+<h3 id="emojies"><a href="https://github.com/markdown-it/markdown-it-emoji">Emojies</a></h3>
+
+<blockquote>
+  <p>Classic markup: <img class="emoji" title=":wink:" alt=":wink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f609.png" height="20" width="20"> :crush: <img class="emoji" title=":cry:" alt=":cry:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png" height="20" width="20"> :tear: <img class="emoji" title=":laughing:" alt=":laughing:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f606.png" height="20" width="20"> <img class="emoji" title=":yum:" alt=":yum:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f60b.png" height="20" width="20"></p>
+
+  <p>Shortcuts (emoticons): :-) :-( 8-) ;)</p>
+</blockquote>
+
+<p>see <a href="https://github.com/markdown-it/markdown-it-emoji#change-output">how to change output</a> with twemoji.</p>
+
+<h3 id="subscript--superscript">
+<a href="https://github.com/markdown-it/markdown-it-sub">Subscript</a> / <a href="https://github.com/markdown-it/markdown-it-sup">Superscript</a>
+</h3>
+
+<ul>
+  <li>19^th^</li>
+  <li>H~2~O</li>
+</ul>
+
+<h3 id="ins"><a href="https://github.com/markdown-it/markdown-it-ins">&lt;ins&gt;</a></h3>
+
+<p>++Inserted text++</p>
+
+<h3 id="mark"><a href="https://github.com/markdown-it/markdown-it-mark">&lt;mark&gt;</a></h3>
+
+<p>==Marked text==</p>
+
+<h3 id="footnotes"><a href="https://github.com/markdown-it/markdown-it-footnote">Footnotes</a></h3>
+
+<p>Footnote 1 link<sup id="fnref:first" role="doc-noteref"><a href="#fn:first" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<p>Footnote 2 link<sup id="fnref:second" role="doc-noteref"><a href="#fn:second" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<p>Inline footnote^[Text of inline footnote] definition.</p>
+
+<p>Duplicated footnote reference<sup id="fnref:second:1" role="doc-noteref"><a href="#fn:second" class="footnote" rel="footnote">2</a></sup>.</p>
+
+<h3 id="definition-lists"><a href="https://github.com/markdown-it/markdown-it-deflist">Definition lists</a></h3>
+
+<dl>
+  <dt>Term 1</dt>
+  <dd>
+    <p>Definition 1
+with lazy continuation.</p>
+  </dd>
+  <dt>Term 2 with <em>inline markup</em>
+</dt>
+  <dd>
+    <p>Definition 2</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>{ some code, part of Definition 2 }
+</code></pre></div>    </div>
+
+    <p>Third paragraph of definition 2.</p>
+  </dd>
+</dl>
+
+<p><em>Compact style:</em></p>
+
+<p>Term 1
+  ~ Definition 1</p>
+
+<p>Term 2
+  ~ Definition 2a
+  ~ Definition 2b</p>
+
+<h3 id="abbreviations"><a href="https://github.com/markdown-it/markdown-it-abbr">Abbreviations</a></h3>
+
+<p>This is <abbr title="Hyper Text Markup Language">HTML</abbr> abbreviation example.</p>
+
+<p>It converts “<abbr title="Hyper Text Markup Language">HTML</abbr>”, but keep intact partial entries like “xxxHTMLyyy” and so on.</p>
+
+<h3 id="custom-containers"><a href="https://github.com/markdown-it/markdown-it-container">Custom containers</a></h3>
+
+<p>::: warning
+<em>here be dragons</em>
+:::</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:first" role="doc-endnote">
+      <p>Footnote <strong>can have markup</strong></p>
+
+      <p>and multiple paragraphs. <a href="#fnref:first" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:second" role="doc-endnote">
+      <p>Footnote text. <a href="#fnref:second" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:second:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a></p>
+    </li>
+  </ol>
+</div>
+
+      </main>
+
+      <div class="footer-section">
+        <footer style="align-items: center;
+margin-top: 16px;
+margin-bottom: 64px;
+" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <small style="font-size: xx-small;">
+        </small><p id="copyright" property="dc:rights">©
+            <span property="dc:publisher">Prakash S</span>
+            2020 - 
+            <span property="dc:dateCopyrighted">
+                <script>document.write(new Date().getFullYear())</script>
+            </span>
+            
+        </p>
+    
+   
+</footer>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+
+  <!--LORA FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+</head>
+
+<style>
+  body {
+    /* background-color: #ecf0f3; */
+    font-family: 'Lora', serif, Verdana, sans-serif;
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 90vh;
+  }
+
+
+  .content-section {
+    border-radius: 12px;
+    /* background: #e0e0e0; */
+    /* box-shadow: -14px -14px 20px #bebebe,
+      14px 14px 20px #ffffff; */
+    margin-top: 40px;
+    margin-left: 10px;
+    padding: 10px;
+    display: table;
+  }
+
+  @media only screen and (min-width: 538px) {
+    .content-section {
+      max-width: 340px;
+      min-width: 320px;
+      border-radius: 12px;
+      /* background: linear-gradient(45deg, #cacaca, #f0f0f0); */
+      /* box-shadow: 6px -6px 12px #bebebe,
+        -6px 6px 12px #ffffff; */
+      margin-top: 4px;
+      margin-left: 40px;
+      padding: 28px;
+      display: table;
+    }
+
+
+  }
+
+
+
+
+  .title-section {
+    display: table-row;
+    font-weight: bold;
+
+
+  }
+
+
+
+  main {
+
+    max-width: 368px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    padding: 12px;
+    display: table-row;
+    height: 100%
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid black;
+  }
+
+
+  .footer-section {
+
+    display: table-row;
+  }
+
+
+  @media screen and (max-width : 538px) {
+    .main-container {
+      flex-direction: column;
+    }
+
+  }
+</style>
+
+<body>
+
+  <div class="main-container">
+
+    <style>
+    nav {
+        position: relative;
+
+    }
+
+    .sidebar {
+        border-radius: 12px;
+        background: #e0e0e0;
+        box-shadow: -35px -35px 70px #bebebe,
+            35px 35px 70px #ffffff;
+            background: linear-gradient(45deg, #cacaca, #f0f0f0);
+            box-shadow: 6px -6px 12px #bebebe,
+                -6px 6px 12px #ffffff;
+    }
+
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+ 
+
+    .sidebar-content {
+        max-height: 0;
+        opacity: 0;
+        overflow-y: hidden;
+        transition: opacity 0.4s, max-height 0.4s, visibility 0.4s;
+
+    }
+
+    .sidebar-content.active {
+        max-height: 100%;
+        opacity: 1;
+        overflow-y: unset;
+        visibility: visible;
+      
+
+    }
+
+    .nav-list {
+        list-style: none;
+
+        padding-left: 26vw;
+    }
+
+    .nav-list li a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .nav-link {
+        display: block;
+        color: inherit;
+
+    }
+
+    .toggle-button {
+
+        display: flex;
+        background-color: transparent;
+        border: 0;
+        padding: 0.75em;
+        cursor: pointer;
+        margin-top: 4px;
+        margin-left: 4px;
+
+
+
+        border-radius: 7px;
+        background: linear-gradient(315deg, #f0f0f0, #cacaca);
+        box-shadow: -6px -6px 13px #5e5e5e,
+            6px 6px 13px #ffffff;
+    }
+
+
+    .toggle-button:active {
+        border-radius: 7px;
+        background: #e0e0e0;
+        box-shadow: inset -6px 6px 12px #bebebe,
+            inset 6px -6px 12px #ffffff;
+
+            transition:ease-in;
+
+    }
+
+
+    ul.nav-list {
+        cursor: pointer;
+        display: inline-block;
+        text-align: justify;
+    }
+
+    ul.nav-list li {
+
+
+        border-radius: 12px;
+        box-shadow: -14px -14px 20px #bebebe,
+            14px 14px 20px #ffffff;
+        margin: 10px;
+        cursor: pointer;
+
+    }
+
+    ul.nav-list li:active {
+        border-radius: 12px;
+        background: #e0e0e0;
+        box-shadow: inset -6px 6px 12px #bebebe,
+            inset 6px -6px 12px #ffffff;
+    }
+
+
+
+    ul.nav-list li a {
+        min-width: 100px;
+
+        padding: 15px;
+        height: 100%;
+        display: inline-block;
+        text-align: center;
+
+    }
+
+
+
+
+
+
+    @media only screen and (min-width: 538px) {
+
+        nav {
+            position: relative;
+            /* top: 2em;
+            left: 1em;
+            width: 9em */
+        }
+
+        .nav-list {
+        list-style: none;
+
+        padding-left: 0vw;
+    }
+
+        .sidebar.active {
+            overflow: scroll;
+        }
+
+        ul.nav-list {
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
+
+        ul.nav-list li {
+
+
+            border-radius: 12px;
+            background: linear-gradient(45deg, #cacaca, #f0f0f0);
+            box-shadow: 6px -6px 12px #bebebe,
+                -6px 6px 12px #ffffff;
+            margin: 10px;
+            cursor: pointer;
+
+        }
+
+        ul.nav-list li:active {
+            border-radius: 12px;
+            background: #e0e0e0;
+            box-shadow: inset -6px 6px 12px #bebebe,
+                inset 6px -6px 12px #ffffff;
+        }
+
+
+
+        ul.nav-list li a {
+            min-width: 100px;
+
+            padding: 15px;
+            height: 100%;
+            display: inline-block;
+            text-align: center;
+
+        }
+
+
+        .sidebar-content {
+            max-height: fit-content;
+            visibility: visible;
+            overflow-y: unset;
+            overflow-x: inherit;
+            opacity: 1;
+        }
+
+        .toggle-button {
+            display: none;
+        }
+
+
+        .sidebar {
+            display: grid;
+            grid-template-rows: auto 1fr;
+
+        }
+
+        .sidebar::before {
+
+            position: absolute;
+            top: 0;
+            right: 0;
+
+        }
+    }
+</style>
+
+
+
+
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <button id="toggle-button" aria-label="toggle-button" class="toggle-button">
+            <svg viewbox="0 0 20 20" width="1em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 5 L20 5" stroke="currentColor" fill="none" stroke-width="1.5"></path>
+                <path d="M0 10 L20 10" stroke="currentColor" fill="none" stroke-width="1.5"></path>
+                <path d="M0 15 L20 15" stroke="currentColor" fill="none" stroke-width="1.5"></path>
+            </svg>
+        </button>
+    </div>
+    <nav id="sidebar-content" class="sidebar-content">
+
+        <ul class="nav-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/essays"> Essays</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/">CV</a></li>
+
+
+        </ul>
+
+    </nav>
+
+</div>
+
+<script>
+    const toggleButton = document.getElementById('toggle-button');
+    const toggleContent = document.getElementById('sidebar-content');
+
+    toggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('active');
+        toggleContent.classList.toggle('active');
+    });
+</script>
+
+
+    <div class="content-section">
+
+      <main>
+
+        <h2>My Projects</h2>
+<p class="f4 mb-4 text-gray">GitHub repositories that I've built.</p>
+<div class="d-sm-flex flex-wrap gutter-condensed mb-4">
+  
+
+  
+
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/prakashsellathurai">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            prakashsellathurai
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">My Github ReadMe Profile </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/prakashsellathurai.github.io">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            prakashsellathurai.github.io
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">personal website</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">HTML</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/Heimdall">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            Heimdall
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">HN content  Curator available as a browser extension</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/ginit-tool">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            ginit-tool
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Git protocol implemented in nodejs</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/LOLWUT">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            LOLWUT
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Generative Art Experiment using Chaos </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Go</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/a-grim-loth">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            a-grim-loth
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Algorithms / Data structures implemented in c++ and python </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">C++</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/Lorentz-Attractor">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            Lorentz-Attractor
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Lorentz Attractor simulation </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/type-without-typo">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            type-without-typo
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Write Essays or notes without hassle over common spelling mistakes.</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/DoctorPrescriptionClientApp">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            DoctorPrescriptionClientApp
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Remote consulting Healthcare Application - A SMART INDIA HACKATHON project  (https://www.sih.gov.in/)</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">TypeScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/bookmarks">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            bookmarks
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Informational links on various topics</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/sentiment-analyzer-Web-App">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            sentiment-analyzer-Web-App
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Web App to do Sentiment Analysis on the given text</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">HTML</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/The-Mandelbrot-Set">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            The-Mandelbrot-Set
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">The Mandelbrot Set implemented in p5 js</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/fashion-Image-Recommender">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            fashion-Image-Recommender
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Fashion Image Recommendation engine via similarity retrieval through deep learning </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/quotes">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            quotes
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Fun little Hack on Good Reads Random Quotes widget</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">HTML</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/SRGAN">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            SRGAN
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">fast Super-Resolution Generative Adversarial Neural networks  (SR-GAN) implementation in python with inverted residual blocks</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/github-metrics">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            github-metrics
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Github contributions as infographic</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">SCSS</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/realtime-image-annotator">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            realtime-image-annotator
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">This project demonstrates the Udacity self-driving car dataset and YOLO object detection into an interactive Streamlit app.</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/AlgorithmicProblemSolving-and-MachineLearning-FlashCards">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            AlgorithmicProblemSolving-and-MachineLearning-FlashCards
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">AlgorithmicProblemSolving and MachineLearning FlashCards</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/spell-checker">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            spell-checker
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">a toy spelling corrector that achieves 80 or 90% accuracy at a processing speed of at least 10 words per second in about half a page of code.</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/finance-analysis-data-app">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            finance-analysis-data-app
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">The Data app that compose the S&amp;P 500 Index Data  and display a visual chart on it</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/ML-ASSIGNMENT-IDfy">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            ML-ASSIGNMENT-IDfy
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">OCR Recognition via custom trained Tesseract </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/newsapp">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            newsapp
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">News app curates data from Google news api</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">TypeScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/cassava-leaf-disease-classification">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            cassava-leaf-disease-classification
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Research Code to Identify the type of disease present on the cassava Leaf Images </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/Awesome-Product-Management">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            Awesome-Product-Management
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">A curated list of Product Management Resources <img class="emoji" title=":seedling:" alt=":seedling:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f331.png" height="20" width="20"></span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/GPT-2-Blogger">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            GPT-2-Blogger
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Blogging AI built on top of GPT-2 <img class="emoji" title=":pencil:" alt=":pencil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png" height="20" width="20"> <img class="emoji" title=":thought_balloon:" alt=":thought_balloon:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4ad.png" height="20" width="20"></span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/hackerrank-solutions">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            hackerrank-solutions
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">My solutions for HackerRank  problems</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/Auto-Content-Generation">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            Auto-Content-Generation
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Text Generation using LSTM Architecture</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">CSS</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/covid-19-analysis">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            covid-19-analysis
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Analysis of Covid 19 data</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/Neural_gpu_algorithm_learner">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            Neural_gpu_algorithm_learner
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Experimental Neural network that learns algorithms     (Heavily Inspired from  this Research work https://arxiv.org/abs/1511.08228)</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/-A-promise-implementation-">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            -A-promise-implementation-
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">promise implemented in js and Go</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/amp-cache-url-translator">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            amp-cache-url-translator
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">You can use this URL calculator to convert an URL into an AMP cache version</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/Ros-Line-Follower-Robot">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            Ros-Line-Follower-Robot
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Line Follower Robot program for RoS simulation</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/useless-testing-module">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            useless-testing-module
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal"><img class="emoji" title=":stuck_out_tongue_closed_eyes:" alt=":stuck_out_tongue_closed_eyes:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f61d.png" height="20" width="20"> <img class="emoji" title=":stuck_out_tongue_closed_eyes:" alt=":stuck_out_tongue_closed_eyes:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f61d.png" height="20" width="20"> <img class="emoji" title=":stuck_out_tongue_closed_eyes:" alt=":stuck_out_tongue_closed_eyes:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f61d.png" height="20" width="20">  self explanatory </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/time-series-analysis">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            time-series-analysis
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">forecasting techniques for continuous data</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/automatic-robot">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            automatic-robot
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Open-AI bot for automation </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/idiota">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            idiota
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">idiota is a minimal version control system built on python</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/maze-solver--classic">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            maze-solver--classic
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">path finder via recursive division algorithm <img class="emoji" title=":octocat:" alt=":octocat:" src="https://github.githubassets.com/images/icons/emoji/octocat.png" height="20" width="20"></span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/anaconda-opencv-cuda">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            anaconda-opencv-cuda
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">OpenCV environment built on anaconda gpu</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Dockerfile</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/optimal-question-paper-generation">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            optimal-question-paper-generation
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Combinatorial optimization algorithm  for Question paper generation task</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/conway-s-game-of-life">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            conway-s-game-of-life
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Conway's game of life simulation with genetic algorithm</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/Automatic_furnace_handler">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            Automatic_furnace_handler
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Embedded C++ code for furnace monitoring and control system</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">C++</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/ICRAET_conference_paper">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            ICRAET_conference_paper
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Thesis on Automative Packing system for Hydrphonic substitute packaging at mass scale</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/solidwork_models">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            solidwork_models
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Asset management Repo of solid work model files</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/prime-factorization">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            prime-factorization
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">Prime Factorization algorithm implemented in JS</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/compiler">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            compiler
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">light weight compiler </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">JavaScript</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/EXPERIMENTS-WITH-BLOCKCHAIN">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            EXPERIMENTS-WITH-BLOCKCHAIN
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">bare minimum blockchain core experiments</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Go</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/pythonQrCodeReader">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            pythonQrCodeReader
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">QrCode scanner from a webcam</span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Jupyter Notebook</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+    
+      <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
+        <div class="github-component d-flex flex-column flex-justify-between height-full text-left border border-gray-light bg-white rounded-1 p-3">
+    <div>
+      <div class="d-flex flex-justify-between flex-items-start mb-1">
+        <h3 class="f4 lh-condensed mb-1">
+          <a href="https://github.com/prakashsellathurai/OPTICAL_CHARACTER_RECOGNITION">
+            <svg height="20" class="octicon octicon-repo mr-1 v-align-middle" fill="#586069" aria-label="repo" viewbox="0 0 16 16" version="1.1" width="20" role="img"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            OPTICAL_CHARACTER_RECOGNITION
+          </a>
+        </h3>
+      </div>
+      
+      Description:
+      <span class="text-gray mb-2 ws-normal">This is the sample OCR implemented using KNN algorithm </span>
+      
+    </div>
+    <div class="d-flex f6">
+        
+      
+      Language:
+          <span class="repo-language-color ml-0 mr-1" style="background-color:"></span>
+          <span class="mr-3" itemprop="programmingLanguage">Python</span>
+      
+    </div>
+  </div>
+  <hr>
+  <br>
+      </div>
+    
+  
+</div>
+
+      </main>
+
+      <div class="footer-section">
+        <footer style="align-items: center;
+margin-top: 16px;
+margin-bottom: 64px;
+" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <small style="font-size: xx-small;">
+        </small><p id="copyright" property="dc:rights">©
+            <span property="dc:publisher">Prakash S</span>
+            2020 - 
+            <span property="dc:dateCopyrighted">
+                <script>document.write(new Date().getFullYear())</script>
+            </span>
+            
+        </p>
+    
+   
+</footer>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+</body>
+
+</html>

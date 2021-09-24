@@ -9,9 +9,9 @@
         background: #e0e0e0;
         box-shadow: -35px -35px 70px #bebebe,
             35px 35px 70px #ffffff;
-            background: linear-gradient(45deg, #cacaca, #f0f0f0);
-            box-shadow: 6px -6px 12px #bebebe,
-                -6px 6px 12px #ffffff;
+        background: linear-gradient(45deg, #cacaca, #f0f0f0);
+        box-shadow: 6px -6px 12px #bebebe,
+            -6px 6px 12px #ffffff;
     }
 
     .sidebar-header {
@@ -20,7 +20,7 @@
         align-items: center;
     }
 
- 
+
 
     .sidebar-content {
         max-height: 0;
@@ -35,12 +35,16 @@
         opacity: 1;
         overflow-y: unset;
         visibility: visible;
-      
+
 
     }
 
     .nav-list {
         list-style: none;
+
+        /* position: -webkit-sticky;
+        position: sticky;
+        top: 20px; */
 
         padding-left: 26vw;
     }
@@ -81,7 +85,7 @@
         box-shadow: inset -6px 6px 12px #bebebe,
             inset 6px -6px 12px #ffffff;
 
-            transition:ease-in;
+        transition: ease-in;
 
     }
 
@@ -137,10 +141,10 @@
         }
 
         .nav-list {
-        list-style: none;
+            list-style: none;
 
-        padding-left: 0vw;
-    }
+            padding-left: 0vw;
+        }
 
         .sidebar.active {
             overflow: scroll;
@@ -233,7 +237,7 @@
             <li><a href="{{'./' | relative_url }}">Home</a></li>
             <li><a href="{{'./essays' | relative_url }}"> Essays</a></li>
             <li><a href="{{'./projects' | relative_url }}">Projects</a></li>
-            <li><a href="{{'./' | relative_url }}">CV</a></li>
+            <li><a href="{{'./Resume.pdf' | relative_url }}">Resume</a></li>
 
 
         </ul>

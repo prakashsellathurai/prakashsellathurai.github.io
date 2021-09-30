@@ -30,7 +30,8 @@ projects:
     archived: false
     forks: true
     projects:
-    # - repo-name
+      - prakashsellathurai.github.io
+      - prakashsellathurai
 # Build settings
 
 plugins:

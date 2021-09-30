@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{{ page.title }}</title>
+
 
   <!--LORA FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,123 +15,119 @@
 
 <style>
   body {
-    /* background-color: #ecf0f3; */
     font-family: 'Lora', serif, Verdana, sans-serif;
-  }
-
-  .main-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+    min-width: 90vw;
     min-height: 90vh;
-    justify-content:center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
   }
 
 
-  .content-section {
-    border-radius: 12px;
-    /* background: #e0e0e0; */
-    /* box-shadow: -14px -14px 20px #bebebe,
-      14px 14px 20px #ffffff; */
-    margin-top: 40px;
-    margin-left: 10px;
-    padding: 10px;
-    display: table;
+  .nav-section {
+    display: table-row;
+    align-items: center
   }
-
-  @media only screen and (min-width: 538px) {
-    .content-section {
-      max-width: 340px;
-      min-width: 320px;
-      border-radius: 12px;
-      /* background: linear-gradient(45deg, #cacaca, #f0f0f0); */
-      /* box-shadow: 6px -6px 12px #bebebe,
-        -6px 6px 12px #ffffff; */
-      margin-top: 4px;
-      margin-left: 40px;
-      padding: 28px;
-      display: table;
-    }
-
-
-  }
-
-
-
 
   .title-section {
     display: table-row;
     font-weight: bold;
-
-
+    align-items: center
   }
 
 
-
-  main {
-
-    max-width: 368px;
-    /* overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto; */
-    padding: 12px;
-    display: table-row;
-    height: 100%
+  .content-section {
+    height: 100%;
+    padding: 10px;
+    display: table;
+    align-items: center
   }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  table,
-  th,
-  td {
-    border: 1px solid black;
-  }
-
 
   .footer-section {
-
     display: table-row;
+    align-items: center
   }
 
 
-  @media screen and (max-width : 538px) {
-    .main-container {
-      flex-direction: column;
-      justify-content: flex-start;
+  /* Media Queries */
+  /* mobile */
+  /* tablet */
+  @media only screen and (min-width: 700px) {
+    body {
+      font-size: medium;
+    }
+
+    .content-section {
+      max-width: 35vw;
+
+      min-width: 30vw;
+      align-items: center;
+      padding: 20px;
+      display: table;
+    }
+  }
+
+  @media only screen and (min-width: 1050px) {
+    body {
+      font-size: large;
+    }
+
+  }
+
+  /* laptop */
+  @media only screen and (min-width: 1500px) {
+    body {
+      font-size: larger;
+    }
+  }
+
+  @media only screen and (min-width: 2000px) {
+    body {
+      font-size: x-large;
+    }
+  }
+
+  /* 4k */
+
+  @media only screen and (min-width: 2500px) {
+    body {
+      font-size: xx-large;
     }
 
   }
 </style>
 
+
 <body>
 
-  <div class="main-container">
-
-    {% include nav.html %}
 
 
-    <div class="content-section">
+  <!-- main -->
+  <main class="content-section">
 
-      <main>
-        {{  page.date | | date: "%B %Y"}}
-        <br>
-        <br>
-        <div class="title-section">
-          {{page.title}}
-        </div>
-   
-        <br>
-        {{ content }}
-      </main>
-
-      <div class="footer-section">
-        {% include footer.html %}
-      </div>
+    <!-- nav -->
+    <div class="nav-section">
+      {% include nav.html %}
+    </div>
+    <hr>
+    {{ page.date | date: "%B %Y"}}
+    <br>
+    <br>
+    <div class="title-section">
+      {{page.title}}
     </div>
 
+    <br>
+    {{ content }}
+  </main>
+
+
+
+  <!-- footer -->
+  <div class="footer-section">
+    {% include footer.html %}
+  </div>
 
   </div>
 

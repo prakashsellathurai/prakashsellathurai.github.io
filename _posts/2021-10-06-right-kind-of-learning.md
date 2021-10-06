@@ -29,7 +29,6 @@ I think the right kind of learning starts with curiosity followed by involving b
 
 It's not something you do it once and then forget it. It's a continuous process acted upon a vast variety of different settings, along with a less errored feedback mechanism to correct it along the way. 
 
-#### Footnotes:
 [^1]: "[Formal learning ](https://en.wikipedia.org/wiki/Learning#Formal_learning)is learning that takes place within a teacher-student relationship, such as in a school system" 
 [^2]:  "shot put is a sport of throwing a heavy ball as long as possible"
 [^3]:  Although I don't have enough evidence/data to prove this, intuitively I know it's most likely the fact

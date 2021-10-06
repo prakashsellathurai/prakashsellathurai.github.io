@@ -33,7 +33,7 @@ projects:
       - prakashsellathurai.github.io
       - prakashsellathurai
 # Build settings
-
+markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-octicons

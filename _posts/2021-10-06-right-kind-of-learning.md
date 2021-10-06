@@ -1,0 +1,43 @@
+---
+layout: post
+title: Right Kind of learning
+author: Prakash Sellathurai
+date: '2021-10-06T07:43:49.804Z'
+published: true
+tags:
+    - learning
+keywords:
+    - learning
+description: the right kind of learning starts with curiosity followed by involving  both theoretical understanding and practical work through at right proportion
+---
+
+During my teenage years, I am so fond of reading books,I believed the most effective way of learning is to read only through books by your own . By learning through books I don't meant the Formal Education[^1]	but, a learning method similar to Homeschooling with a difference is I choose what I want to read.
+
+It made sense when I learned  how long I can through a shot put[^2] ball with [fundamental laws of motion](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/newtons-laws-of-motion/) and Newtons' gravitational law. At that time,It felt like a superpower. I could see the change in gravitation pull as you moved towrds/away from the ground. 
+
+With thorough and rigorous thought, I can simplify the complex problem into much simpler one.  In schools they didn't taught me these interesting topics, instead they taught me the other topics which I find less amusing. I used to self fulfilled with my own thoughts([confirmation bias](https://en.wikipedia.org/wiki/Confirmation_bias)).
+
+well that worked as a teenage boy with pure intention of general curiosity on how stuff works until I joined college where everyone trying to figure out what to do for rest of their life with guarantee provided by another set of people who don't have much clue yet, confidently tells others what works and what won't.
+
+During my early college days, whenever I started a project I get bogged down to details, I failed to complete it. I found it less productive so, I made a tweak on my approach by jumping straight into solving the problems first, quickly via shortcuts/hacks without any prior preparation to conform to peers and try to learn it later.
+
+At first, This seems to be an effective method (at least with peers), but it isn't. Unless you are looking at the urgent immediate problems or solving the least explored problem. With this method Most of the times I ended up replicating sub optimal solutions to my  problem or mindlessly  trying everything without the sense of what or how it is working until something comes up.
+
+Most people succeeds in their academics not by learning the entire curriculum,but by learning the top (at most) 20 topics told by their academic personnel[^3].
+
+I think the right kind of learning starts with curiosity followed by involving  both theoretical understanding and practical work through at right proportion. If you are just learning without doing it then, you learned less or you are lazy . If you just focused on just showing off without intellectual understanding then, you learned wrong or you doing it for others.
+
+It's not something you do it once and then forget it. It's an continuous process acted upon vast variety of different settings, along with less errored feedback mechanism  to correct it along the way. 
+
+
+
+
+
+
+
+
+
+
+[^1]:  "[Formal learning ](https://en.wikipedia.org/wiki/Learning#Formal_learning)is learning that takes place within a teacher-student relationship,such as in a school system"
+[^2]:  "shot put is a sport of throwing a heavy ball as long as possible"
+[^3]:  Although I don't have enough evidence/data to prove this , intuitively I know it's  most likely the fact

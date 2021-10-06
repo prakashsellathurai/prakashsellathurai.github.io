@@ -3,7 +3,7 @@ title: Prakash Sellathurai
 email: prakashsellathurai@gmail.com
 description: 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://prakashsellathurai.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://prakashsellathurai.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: prakash1729brt
 github_username:  prakashsellathurai
 
@@ -43,7 +43,7 @@ plugins:
 
 feed:
   excerpt_only: true
-  url: https://prakashsellathurai.github.io/
+  url: https://prakashsellathurai.github.io
 
 # Exclude from processing.
 # The following items will not be processed, by default.

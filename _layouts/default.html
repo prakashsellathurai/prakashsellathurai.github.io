@@ -6,8 +6,8 @@
 
 
 <body>
-    <!-- main -->
-    <main class="content-section">
+  <!-- main -->
+  <main class="content-section">
 
     <!-- nav -->
     <div class="nav-section">
@@ -15,20 +15,20 @@
     </div>
     <hr>
 
-      {% if page.showTitle %}
-      <div class="title-section">
-        {{page.title}}
-      </div>
-      <br>
-      {% endif %}
-
-      {{ content }}
-    </main>
-
-    <!-- footer -->
-    <div class="footer-section">
-      {% include footer.html %}
+    {% if page.showTitle %}
+    <div class="title-section">
+      {{page.title}}
     </div>
+    <br>
+    {% endif %}
+
+    {{ content }}
+  </main>
+
+  <!-- footer -->
+  <div class="footer-section">
+    {% include footer.html %}
+  </div>
 
 </body>
 

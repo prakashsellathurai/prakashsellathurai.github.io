@@ -29,12 +29,13 @@
     --code-bg: rgb(55, 56, 62);
     --border: rgb(51, 51, 51)
   }
+
   .list {
-      background: var(--code-bg)
+    background: var(--code-bg)
   }
 
   .dark.list {
-      background: var(--theme)
+    background: var(--theme)
   }
 
   a,
@@ -63,13 +64,14 @@
     word-break: break-word;
     background: var(--code-bg);
   }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-      line-height: 1.2
+    line-height: 1.2
   }
 
 
@@ -78,66 +80,70 @@
   body,
   figure,
   ul {
-      margin: 0
+    margin: 0
   }
-  
-  
+
+
   button,
   input,
   textarea {
-      padding: 0;
-      font: inherit;
-      background: 0 0;
-      border: 0
+    padding: 0;
+    font: inherit;
+    background: 0 0;
+    border: 0
   }
 
   input,
   textarea {
-      outline: 0
+    outline: 0
   }
 
   button,
   input[type=button],
   input[type=submit] {
-      cursor: pointer
+    cursor: pointer
   }
+
   input:-webkit-autofill,
   textarea:-webkit-autofill {
-      box-shadow: 0 0 0 50px var(--theme)inset
+    box-shadow: 0 0 0 50px var(--theme)inset
   }
 
 
   ::-webkit-scrollbar-track {
-      background: 0 0
+    background: 0 0
   }
+
   .list:not(.dark)::-webkit-scrollbar-track {
-      background: var(--code-bg)
+    background: var(--code-bg)
   }
 
   ::-webkit-scrollbar-thumb {
-      background: var(--tertiary);
-      border: 5px solid var(--code-bg);
-      border-radius: var(--radius)
+    background: var(--tertiary);
+    border: 5px solid var(--code-bg);
+    border-radius: var(--radius)
   }
+
   .list:not(.dark)::-webkit-scrollbar-thumb {
-      border: 5px solid var(--code-bg)
+    border: 5px solid var(--code-bg)
   }
 
   ::-webkit-scrollbar-thumb:hover {
-      background: var(--secondary)
+    background: var(--secondary)
   }
 
   .not-found {
-      position: absolute;
-      left: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 80%;
-      font-size: 160px;
-      font-weight: 700
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    font-size: 160px;
+    font-weight: 700
   }
+
   .nav-section {
     display: table-row;
     align-items: center
@@ -152,37 +158,32 @@
 
   .content-section {
     height: 100%;
-    padding: 10px;
+    padding: 4% 4% 0% 4%;
     display: table;
     align-items: center
   }
 
 
+  #repo-card {
+    background: var(--entry);
+    padding: 4%;
+    margin-bottom: var(--gap);
+    border-radius: var(--radius);
+    transition: transform .1s;
+    border: 1px solid var(--border);
 
-
-
-
-  .post-content :not(table) ::-webkit-scrollbar-thumb {
-      border: 2px solid var(--hljs-bg);
-      background: #717175
   }
 
-  .post-content :not(table) ::-webkit-scrollbar-thumb:hover {
-      background: #a3a3a5
+
+  #repo-card:hover {
+      transform: scale(1.1);
+      background: var(--code-bg);
+box-shadow:  -7px -7px 14px #bebebe,
+             7px 7px 14px #ffffff;
   }
 
-  .gist table::-webkit-scrollbar-thumb {
-      border: 2px solid #fff;
-      background: #adadad
-  }
 
-  .gist table::-webkit-scrollbar-thumb:hover {
-      background: #707070
-  }
 
-  .post-content table::-webkit-scrollbar-thumb {
-      border-width: 2px
-  }
 
 
   .footer {
@@ -192,26 +193,30 @@
     text-align: center;
     line-height: 24px;
     font-size: small;
-}
-  .footer span {
-      margin-inline-start: 1px;
-      margin-inline-end: 1px
+    padding-bottom: 0px;
   }
+
+  .footer span {
+    margin-inline-start: 1px;
+    margin-inline-end: 1px
+  }
+
   .footer span a {
     text-decoration: none;
   }
+
   .footer span:last-child {
-      white-space: nowrap
+    white-space: nowrap
   }
 
 
   .footer a:hover {
-      border-bottom: 1px solid var(--primary)
+    border-bottom: 1px solid var(--primary)
   }
 
   .footer a:hover,
   .top-link:hover {
-      color: var(--primary)
+    color: var(--primary)
   }
 
 
@@ -220,10 +225,10 @@
   /* tablet */
   @media only screen and (min-width: 700px) and (orientation:landscape) {
     ::-webkit-scrollbar {
-          width: 19px;
-          height: 11px
-      }
-    
+      width: 19px;
+      height: 11px
+    }
+
     body {
       font-size: medium;
     }

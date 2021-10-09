@@ -2,7 +2,7 @@
 
 {% include head.html %}
 
-<body>
+<body style="background-color: white;">
 
   <!-- main -->
   <main class="content-section" style="color: var(--content);">
@@ -20,7 +20,7 @@
     </div>
 
     <br>
-    {{ content }}
+    {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
   </main>
 
   <!-- footer -->
@@ -29,10 +29,16 @@
   
 
   <style>
+    .footnotes{
+      margin: 10px 0;
+    }
+    .footnotes ol li br {
+      display: none;
+    }
     .footnotes::before {
-      content: " \a Footnotes:";
+      content: " \A Footnotes:";
       font-weight: bold;
-
+     
     }
   </style>
 

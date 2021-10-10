@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html lang="en">
 {% include head.html %}
 
 <body style="background-color: white;">
@@ -8,10 +8,9 @@
   <main class="content-section" style="color: var(--content);">
 
     <!-- nav -->
-    <div class="nav-section">
+    
       {% include nav.html %}
-    </div>
-    <hr>
+
     {{ page.date | date: "%B %Y"}}
     <br>
     <br>
@@ -20,7 +19,9 @@
     </div>
 
     <br>
+    <article>
     {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
+    </article>
   </main>
 
   <!-- footer -->

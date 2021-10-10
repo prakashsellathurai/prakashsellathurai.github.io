@@ -18,6 +18,16 @@ collections:
     output: true
     permalink: essay/:title
 
+navigation:
+  - text: Home
+    url: "/"
+  - text: Essays
+    url: "/essays.html"
+  - text: Projects
+    url: "/projects.html"
+  - text: Resume
+    url: "/Resume.pdf"
+
 timezone: Asia/Kolkata
 
 projects:

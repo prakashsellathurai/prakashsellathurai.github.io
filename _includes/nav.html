@@ -1,35 +1,36 @@
-
 <style>
     nav {
-        display:inline; 
-        align-items:center;
-        text-align: center
+        width: 100%;
     }
-    nav > ul { 
-    padding: 0px;
-    align-items:center;
-    }
-    nav > ul > li {
-        display:inline; 
-        padding: 10px;
-    }
-    nav > ul > li > a {
+
+
+    nav>a {
+        float: left;
+        width: 25%;
         text-decoration: none;
+        text-align: center;
+        white-space: nowrap;
+        
+        background-color: var(--tertiary);
+        color: var(--primary);
     }
+
+    nav>a.active {
+        background-color: var(--secondary);
+        color: var(--theme);
+    }
+
 </style>
 
 <nav>
 
-    <ul>
-        <li><a href="{{'./' | relative_url }}" title="Home">Home</a></li>
-        |
-        <li><a href="{{'./essays' | relative_url }}" title="Essays"> Essays</a></li>
-        |
-        <li><a href="{{'./projects' | relative_url }}" title="Projects">Projects</a></li>
-        |
-        <li><a href="{{'./Resume.pdf' | relative_url }}" title="Resume">Resume</a></li>
+    {% for link in site.navigation %}
+
+    <a {% if page.url==link.url %}class="active" {% endif %} href="{{link.url | relative_url }}"
+        title="{{ link.text }}">{{ link.text }}</a>
 
 
-    </ul>
+    {% endfor %}
+
 
 </nav>

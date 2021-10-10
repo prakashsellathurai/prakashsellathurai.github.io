@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Essays
-showTitle: true
 ---
 
 

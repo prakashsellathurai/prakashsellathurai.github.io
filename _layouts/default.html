@@ -10,17 +10,18 @@
   <main class="content-section">
 
     <!-- nav -->
-    <div class="nav-section">
+    
       {% include nav.html %}
-    </div>
-    <hr>
+    
+   
 
     {% if page.showTitle %}
     <div class="title-section">
       {{page.title}}
     </div>
-    <br>
     {% endif %}
+    <br>
+    <br>
 
     {{ content }}
   </main>

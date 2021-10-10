@@ -58,8 +58,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-
-    font-size: 18px;
     line-height: 1.6;
     word-break: break-word;
     background: var(--code-bg);
@@ -144,10 +142,7 @@
     font-weight: 700
   }
 
-  .nav-section {
-    display: table-row;
-    align-items: center
-  }
+
 
   .title-section {
     display: table-row;
@@ -160,7 +155,8 @@
     height: 100%;
     padding: 4% 4% 0% 4%;
     display: table;
-    align-items: center
+    align-items: center;
+    width: 80%;
   }
 
 
@@ -176,8 +172,7 @@
 
 
   #repo-card:hover {
-    transform: scale(1.1);
-    background: var(--code-bg);
+    transform: scale(1.05);
     box-shadow: -7px -7px 14px #bebebe,
       7px 7px 14px #ffffff;
   }
@@ -226,7 +221,23 @@
 
   /* Media Queries */
   /* mobile */
+  @media only screen and (max-width: 320px) {
+    body {
+      font-size:x-small;
+    }
+  }
+  @media only screen and (max-width: 554) {
+    body {
+      font-size: small;
+    }
+  }
   /* tablet */
+  @media only screen and (min-width: 700px){
+    body {
+      font-size: medium;
+    }
+  }
+
   @media only screen and (min-width: 700px) and (orientation:landscape) {
     ::-webkit-scrollbar {
       width: 19px;

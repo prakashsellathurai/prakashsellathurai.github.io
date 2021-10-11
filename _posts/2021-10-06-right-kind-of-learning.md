@@ -8,7 +8,7 @@ tags:
     - learning
 keywords:
     - learning
-description: the right kind of learning starts with curiosity followed by involving  both theoretical understanding and practical work through at right proportion
+description: Prakash Sellathurai's essay on right kind of learning
 ---
 
 During my teenage years, I am so fond of reading books, I believed the most effective way of learning is to read through books on your own. By learning through books I don't mean the Formal Education[^1]	but, a learning method similar to Homeschooling with a difference is I choose what I want to read.

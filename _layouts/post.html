@@ -5,11 +5,12 @@
 <body style="background-color: white;">
 
   <!-- main -->
-  <main class="content-section" style="color: var(--content);">
+  <main class="content-section">
 
     <!-- nav -->
-    
-      {% include nav.html %}
+
+    {% include nav.html %}
+    <br>
 
     {{ page.date | date: "%B %Y"}}
     <br>
@@ -17,29 +18,30 @@
     <div class="title-section">
       {{page.title}}
     </div>
-
-    <br>
+ 
     <article>
-    {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
+      {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
     </article>
   </main>
 
   <!-- footer -->
-  
+
   {% include footer.html %}
-  
+
 
   <style>
-    .footnotes{
+    .footnotes {
       margin: 10px 0;
     }
+
     .footnotes ol li br {
       display: none;
     }
+
     .footnotes::before {
       content: " \A Footnotes:";
       font-weight: bold;
-     
+
     }
   </style>
 

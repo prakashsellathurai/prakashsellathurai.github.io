@@ -3,15 +3,17 @@
         float:left;
         margin-right: 10px;
 
+        width: 25%;
 
         border-radius: 12px;
-        background: #e0e0e0;
-        box-shadow: -5px -5px 10px #b5b5b5,
-            5px 5px 10px #ffffff;
+        border: 1px solid var(--tertiary);
+            filter: drop-shadow(
+      1px 2px 8px var(--tertiary)
+    );
     }
 
 </style>
 
 
 
-<img class="avatar"  height="80px" width="80px" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
+<img class="avatar"  src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />

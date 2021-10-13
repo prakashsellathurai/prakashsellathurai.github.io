@@ -5,7 +5,25 @@ description:  Home page for Prakash Sellathurai's website
 ---
 
 
-{% include avatar.html %}
+<style>
+    img.avatar {
+        float:left;
+        margin-right: 10px;
+
+        width: 23.609%;
+
+        border-radius: 12px;
+        border: 1px solid var(--tertiary);
+            filter: drop-shadow(
+      1px 2px 8px var(--tertiary)
+    );
+    }
+
+</style>
+
+
+
+<img class="avatar"  src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
 
 ### Prakash Sellathurai
 

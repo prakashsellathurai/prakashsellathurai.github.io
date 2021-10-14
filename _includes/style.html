@@ -147,8 +147,7 @@
     display: table-row;
     border: 2px solid var(--tertiary);
     border-radius: 12px;
-    filter: drop-shadow(
-      1px 2px 8px var(--tertiary));
+background-clip: padding-box; 
   }
 
 
@@ -178,7 +177,7 @@
   }
 
 
-  .content-section {
+  .content-section,.footer-section {
     height: 100%;
     padding: 4% 4% 0% 4%;
     display: table;
@@ -186,6 +185,7 @@
     width: 80%;
     color: rgb(0, 0, 0);
   }
+  
 
 
   #repo-card {
@@ -267,6 +267,7 @@
     body {
       font-size: medium;
     }
+
   }
 
   @media only screen and (min-width: 700px) and (orientation:landscape) {
@@ -279,13 +280,14 @@
       font-size: small;
     }
 
-    .content-section {
+    .content-section,.footer-section {
       max-width: 40.6vw;
 
       min-width: 30vw;
       align-items: center;
       padding: 20px;
       display: table;
+      padding-bottom: 0;
     }
 
 

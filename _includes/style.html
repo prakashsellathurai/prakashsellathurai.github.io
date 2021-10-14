@@ -50,7 +50,7 @@
   }
 
   body {
-    font-family: 'Lora', serif, Verdana, sans-serif;
+    font-family: 'Lora', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: rgb(0, 0, 0);
     min-width: 90vw;
     min-height: 98vh;
@@ -147,8 +147,7 @@
     display: table-row;
     border: 2px solid var(--tertiary);
     border-radius: 12px;
-    filter: drop-shadow(
-      1px 2px 8px var(--tertiary));
+background-clip: padding-box; 
   }
 
 
@@ -178,7 +177,7 @@
   }
 
 
-  .content-section {
+  .content-section,.footer-section {
     height: 100%;
     padding: 4% 4% 0% 4%;
     display: table;
@@ -186,6 +185,7 @@
     width: 80%;
     color: rgb(0, 0, 0);
   }
+  
 
 
   #repo-card {
@@ -267,6 +267,7 @@
     body {
       font-size: medium;
     }
+
   }
 
   @media only screen and (min-width: 700px) and (orientation:landscape) {
@@ -276,22 +277,25 @@
     }
 
     body {
-      font-size: medium;
+      font-size: small;
     }
 
-    .content-section {
-      max-width: 40vw;
+    .content-section,.footer-section {
+      max-width: 40.6vw;
 
       min-width: 30vw;
       align-items: center;
       padding: 20px;
       display: table;
+      padding-bottom: 0;
     }
+
+
   }
 
   @media only screen and (min-width: 1050px) {
     body {
-      font-size: large;
+      font-size: medium;
     }
 
   }
@@ -299,13 +303,13 @@
   /* laptop */
   @media only screen and (min-width: 1500px) {
     body {
-      font-size: larger;
+      font-size: large;
     }
   }
 
   @media only screen and (min-width: 2000px) {
     body {
-      font-size: x-large;
+      font-size:larger;
     }
   }
 

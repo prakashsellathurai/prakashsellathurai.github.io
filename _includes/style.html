@@ -38,7 +38,7 @@
     background: var(--theme)
   }
 
-  a,
+
   button,
   h1,
   h2,
@@ -48,7 +48,10 @@
   h6 {
     color: var(--primary)
   }
-
+  a {
+  color: #4d4ae8;
+  text-decoration: none;
+}
   body {
     font-family: 'Lora', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: rgb(0, 0, 0);
@@ -147,8 +150,17 @@
     display: table-row;
     border: 2px solid var(--tertiary);
     border-radius: 12px;
-background-clip: padding-box; 
+    background-clip: padding-box;
+
+    /* background-color: var(--tertiary);*/
+    color: var(--primary); 
+    backdrop-filter: blur(19px) saturate(200%);
+    -webkit-backdrop-filter: blur(19px) saturate(200%);
+    background-color: rgba(214, 214, 214, 0.48);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
   }
+
 
 
   nav>a {
@@ -157,8 +169,6 @@ background-clip: padding-box;
     text-decoration: none;
     text-align: center;
     white-space: nowrap;
-
-    background-color: var(--tertiary);
     color: var(--primary);
   }
 
@@ -177,7 +187,8 @@ background-clip: padding-box;
   }
 
 
-  .content-section,.footer-section {
+  .content-section,
+  .footer-section {
     height: 100%;
     padding: 4% 4% 0% 4%;
     display: table;
@@ -185,7 +196,7 @@ background-clip: padding-box;
     width: 80%;
     color: rgb(0, 0, 0);
   }
-  
+
 
 
   #repo-card {
@@ -280,7 +291,8 @@ background-clip: padding-box;
       font-size: small;
     }
 
-    .content-section,.footer-section {
+    .content-section,
+    .footer-section {
       max-width: 40.6vw;
 
       min-width: 30vw;
@@ -309,7 +321,7 @@ background-clip: padding-box;
 
   @media only screen and (min-width: 2000px) {
     body {
-      font-size:larger;
+      font-size: larger;
     }
   }
 

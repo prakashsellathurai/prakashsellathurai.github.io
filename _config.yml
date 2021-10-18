@@ -26,7 +26,7 @@ navigation:
   - text: Projects
     url: "/projects.html"
   - text: Resume
-    url: "/Resume.pdf"
+    url: "/Resume.html"
 
 timezone: Asia/Kolkata
 

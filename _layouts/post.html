@@ -1,138 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+{% include head.html %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }}</title>
+<body style="background-color: white;">
 
-  <!--LORA FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
-</head>
+  <!-- main -->
+  <main class="content-section">
 
-<style>
-  body {
-    /* background-color: #ecf0f3; */
-    font-family: 'Lora', serif, Verdana, sans-serif;
-  }
-
-  .main-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    min-height: 90vh;
-  }
-
-
-  .content-section {
-    border-radius: 12px;
-    /* background: #e0e0e0; */
-    /* box-shadow: -14px -14px 20px #bebebe,
-      14px 14px 20px #ffffff; */
-    margin-top: 40px;
-    margin-left: 10px;
-    padding: 10px;
-    display: table;
-  }
-
-  @media only screen and (min-width: 538px) {
-    .content-section {
-      max-width: 340px;
-      min-width: 320px;
-      border-radius: 12px;
-      /* background: linear-gradient(45deg, #cacaca, #f0f0f0); */
-      /* box-shadow: 6px -6px 12px #bebebe,
-        -6px 6px 12px #ffffff; */
-      margin-top: 4px;
-      margin-left: 40px;
-      padding: 28px;
-      display: table;
-    }
-
-
-  }
-
-
-
-
-  .title-section {
-    display: table-row;
-    font-weight: bold;
-
-
-  }
-
-
-
-  main {
-
-    max-width: 368px;
-    /* overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto; */
-    padding: 12px;
-    display: table-row;
-    height: 100%
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  table,
-  th,
-  td {
-    border: 1px solid black;
-  }
-
-
-  .footer-section {
-
-    display: table-row;
-  }
-
-
-  @media screen and (max-width : 538px) {
-    .main-container {
-      flex-direction: column;
-    }
-
-  }
-</style>
-
-<body>
-
-  <div class="main-container">
+    <!-- nav -->
 
     {% include nav.html %}
+    <br>
 
-
-    <div class="content-section">
-
-      <main>
-        {{  page.date | | date: "%B %Y"}}
-        <br>
-        <br>
-        <div class="title-section">
-          {{page.title}}
-        </div>
-   
-        <br>
-        {{ content }}
-      </main>
-
-      <div class="footer-section">
-        {% include footer.html %}
-      </div>
+    {{ page.date | date: "%B %Y"}}
+    <br>
+    <br>
+    <div class="title-section">
+      {{page.title}}
     </div>
+ 
+    <article>
+      {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
+    </article>
+  </main>
+
+  <!-- footer -->
+
+  {% include footer.html %}
 
 
-  </div>
+  <style>
+    .footnotes {
+      margin: 10px 0;
+    }
 
+    .footnotes ol li br {
+      display: none;
+    }
+
+    .footnotes::before {
+      content: " \A Footnotes:";
+      font-weight: bold;
+
+    }
+  </style>
 
 
 </body>

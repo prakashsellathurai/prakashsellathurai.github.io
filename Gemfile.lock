@@ -68,6 +68,8 @@ GEM
     jekyll-octicons (15.2.0)
       jekyll (>= 3.6, < 5.0)
       octicons (= 15.2.0)
+    jekyll-redirect-from (0.16.0)
+      jekyll (>= 3.3, < 5.0)
     jekyll-sass-converter (2.1.0)
       sassc (> 2.0.1, < 3.0)
     jekyll-seo-tag (2.7.1)
@@ -139,6 +141,7 @@ DEPENDENCIES
   jekyll-feed (~> 0.12)
   jekyll-github-metadata
   jekyll-octicons
+  jekyll-redirect-from
   jemoji
   minima (~> 2.5)
   tzinfo (~> 1.2)

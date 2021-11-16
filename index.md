@@ -14,8 +14,8 @@ description:  Home page for Prakash Sellathurai's website
 
         border-radius: 12px;
         border: 1px solid var(--tertiary);
-            filter: drop-shadow(
-      1px 2px 8px var(--tertiary)
+        box-shadow: -7px -7px 14px #bebebe,
+      7px 7px 14px #ffffff;
     );
     }
 
@@ -36,7 +36,7 @@ description:  Home page for Prakash Sellathurai's website
 Prakash Sellathurai is an Software Engineer, experienced in working with technologies focused on Computer Vision and Deep Learning.He finished his Mechatronics engineering undergraduate degree on 2019.He is proficient in Python, C++,and  have strong foundation in  Algorithms/ Data Structures.
 {: class="bio"}
 
-**Contact:**     &nbsp;   `MyFirstName    MyLastName (at) gmail (dot) com`
+**Contact:**     &nbsp;   `myfullname (at) gmail (dot) com`
 
 **Digital profiles:**
 

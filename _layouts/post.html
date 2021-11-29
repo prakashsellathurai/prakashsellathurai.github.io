@@ -2,32 +2,22 @@
 <html lang="en">
 {% include head.html %}
 
-<body style="background-color: white;">
+<body>
+  
+  {% include nav.html %}
+  <main>
+  <br>
 
-  <!-- main -->
-  <main class="content-section">
+  {{ page.date | date: "%B %Y"}}
+  <br>
+  <br>
+  <div class="title-section">
+    {{page.title}}
+  </div>
 
-    <!-- nav -->
-
-    {% include nav.html %}
-    <br>
-
-    {{ page.date | date: "%B %Y"}}
-    <br>
-    <br>
-    <div class="title-section">
-      {{page.title}}
-    </div>
- 
-    <article>
-      {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
-    </article>
-  </main>
-
-  <!-- footer -->
-
-  {% include footer.html %}
-
+  <div class="post-content">
+    {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
+  </div>
 
   <style>
     .footnotes {
@@ -45,7 +35,9 @@
     }
   </style>
 
-
+</main>
+  
+{% include footer.html %}
 </body>
 
 </html>

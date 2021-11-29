@@ -30,6 +30,44 @@
     --border: rgb(51, 51, 51)
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  main {
+    min-height: 85vh;
+  }
+
+  html,
+  body {
+    background-color: #fff;
+    color: rgb(0, 0, 0);
+    font-family: 'Lora', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: 'Lora', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    max-width: 640px;
+    margin: 1em auto 0em;
+    font-size: 12pt;
+    line-height: 1.6;
+    padding: 0 1em;
+    -webkit-font-smoothing: antialiased;
+  }
+
   .list {
     background: var(--code-bg)
   }
@@ -48,22 +86,10 @@
   h6 {
     color: var(--primary)
   }
+
   a {
-  color: #4d4ae8;
-  text-decoration: none;
-}
-  body {
-    font-family: 'Lora', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: rgb(0, 0, 0);
-    min-width: 90vw;
-    min-height: 98vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    line-height: 1.6;
-    word-break: break-word;
-    background: var(--theme);
+    color: #4d4ae8;
+    text-decoration: none;
   }
 
   h1,
@@ -75,14 +101,6 @@
     line-height: 1.2
   }
 
-
-
-
-  body,
-  figure,
-  ul {
-    margin: 0
-  }
 
 
   button,
@@ -113,6 +131,11 @@
 
   ::-webkit-scrollbar-track {
     background: 0 0
+  }
+
+  ::-webkit-scrollbar {
+    width: 19px;
+    height: 11px
   }
 
   .list:not(.dark)::-webkit-scrollbar-track {
@@ -147,20 +170,12 @@
 
   nav {
     width: 100%;
-    display: table-row;
+    overflow: auto;
     border: 2px solid var(--tertiary);
     border-radius: calc(var(--radius)/3.14);
-    /* background-clip: padding-box; */
-
-    color: var(--primary); 
-    /* background-color: var(--entry);  */
-    /* rgba(214, 214, 214  / 25%); */
-
-    box-shadow: -7px -7px 14px #bebebe,
-      7px 7px 14px #ffffff;
-    
+    color: var(--primary);
+    margin-bottom: 1em;
   }
-
 
 
   nav>a {
@@ -171,21 +186,22 @@
     white-space: nowrap;
     color: var(--primary);
     border-radius: inherit;
-    
+
   }
 
   nav>a:hover {
-    transition: .3s;
-    /* background: #c6e1f3; */
+    transition: .4s;
+    background: #c6e1f3;
     box-shadow: 0 0 0 0.05rem var(--secondary);
+    text-shadow: 0px 0px 0.5em #00000022;
   }
 
 
-
+  
   nav>a.active {
     background-color: var(--secondary);
     color: var(--theme);
-  }
+  } 
 
   .title-section {
     display: table-row;
@@ -193,7 +209,7 @@
     align-items: center
   }
 
-  article {
+  .post-content {
     text-align: justify;
   }
 
@@ -207,7 +223,7 @@
     width: 80%;
     color: rgb(0, 0, 0);
   }
-  
+
 
 
 
@@ -238,13 +254,9 @@
 
 
   .footer {
-    max-width: calc(var(--main-width) + var(--gap) * 2);
     margin: auto;
-    padding: calc((var(--footer-height) - var(--gap))/2)var(--gap);
-    text-align: center;
     line-height: 24px;
     font-size: xx-small;
-    padding-bottom: 0px;
   }
 
   .footer span {
@@ -268,84 +280,5 @@
   .footer a:hover,
   .top-link:hover {
     color: var(--primary)
-  }
-
-
-  /* Media Queries */
-  /* mobile */
-  @media only screen and (max-width: 320px) {
-    body {
-      font-size: x-small;
-    }
-  }
-
-  @media only screen and (max-width: 554) {
-    body {
-      font-size: small;
-    }
-  }
-
-  /* tablet */
-  @media only screen and (min-width: 700px) {
-    body {
-      font-size: medium;
-    }
-
-  }
-
-  @media only screen and (min-width: 700px) and (orientation:landscape) {
-    ::-webkit-scrollbar {
-      width: 19px;
-      height: 11px
-    }
-
-    body {
-      font-size: small;
-    }
-
-
-    .content-section,
-    .footer-section {
-
-      max-width: 40.6vw;
-
-      min-width: 30vw;
-      align-items: center;
-      padding: 20px;
-      display: table;
-      padding-bottom: 0;
-    }
-
-
-  }
-
-  @media only screen and (min-width: 1050px) {
-    body {
-      font-size: medium;
-    }
-
-  }
-
-  /* laptop */
-  @media only screen and (min-width: 1500px) {
-    body {
-      font-size: large;
-    }
-  }
-
-  @media only screen and (min-width: 2000px) {
-    body {
-      font-size: larger;
-
-    }
-  }
-
-  /* 4k */
-
-  @media only screen and (min-width: 2500px) {
-    body {
-      font-size: xx-large;
-    }
-
   }
 </style>

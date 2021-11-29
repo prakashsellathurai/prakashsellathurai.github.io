@@ -2,35 +2,12 @@
 <html lang="en">
 
 {% include head.html %}
-
-
-
 <body>
-  <!-- main -->
-  <main class="content-section">
-
-    <!-- nav -->
-    
-      {% include nav.html %}
-    
-   
-
-    {% if page.showTitle %}
-    <div class="title-section">
-      {{page.title}}
-    </div>
-    {% endif %}
-    <br>
-
-
+  {% include nav.html %}
+  <main>
     {{ content }}
   </main>
-
-  <!-- footer -->
-  <div class="footer-section">
-    {% include footer.html %}
-  </div>
-
+  {% include footer.html %}
 </body>
 
 </html>

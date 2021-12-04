@@ -7,13 +7,13 @@
   {% include nav.html %}
   <main>
   <br>
-
-  {{ page.date | date: "%B %Y"}}
-  <br>
-  <br>
   <div class="title-section">
     {{page.title}}
   </div>
+  <br>
+  {{ page.date | date: "%B %Y"}}
+  <br>
+
 
   <div class="post-content">
     {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}

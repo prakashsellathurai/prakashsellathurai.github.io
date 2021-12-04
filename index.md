@@ -17,24 +17,25 @@ description:  Home page for Prakash Sellathurai's website
     );
     }
 
-    .bio {
-        text-align: justify;
-    }
+    /* .bio {
+    } */
 
 </style>
 
 
 
-<img class="avatar" alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
+<img class="avatar"  alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
 
 
 
 **Bio:**
 
-Prakash Sellathurai is a Software-Engineer. He is experienced in technologies focused on Computer Vision and Web Applications. He finished his UG degree in Mechatronics engineering in 2019. He is proficient in Python,C++, and have a strong foundation in Algorithms/ Data Structures.
+Prakash Sellathurai is a Software-Engineer, experienced in Computer Vision and Web Applications. He finished his UG degree on Mechatronics engineering in 2019. 
+
+He is proficient in Python,C++, and have a strong foundation in Algorithms/ Data Structures.
 {: class="bio"}
 
-**Contact:**     &nbsp;   `myfullname (at) gmail (dot) com`
+**Contact:**     &nbsp;   <span title='prakashsellathurai'>my fullname</span> (at) gmail (dot) com
 
 **Digital profiles:**
 

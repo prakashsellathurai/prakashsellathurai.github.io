@@ -24,7 +24,9 @@ description:  Home page for Prakash Sellathurai's website
 
 
 
+
 <img class="avatar"  alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
+
 
 
 

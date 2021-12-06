@@ -43,7 +43,7 @@ Brief description (if needed).
 • A personal change/achievement
 • A team/organization achievement
  -->
- - Software Development Engineer Intern — Clothx        <span id="date"> 08/2018 - 01/2019  </span>
+ - Software Engineer/Cofounder (part-time) — Clothx        <span id="date"> 04/2018 - 03/2019  </span>
 <!--
 Brief description (if needed).
 • Your "wow".

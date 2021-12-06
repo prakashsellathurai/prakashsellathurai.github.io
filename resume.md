@@ -29,7 +29,7 @@ layout: default
 ### EXPERIENCE
 ---
 
-- Software Engineer -- Gkfitness        <span id="date"> 02/2020 - 04/2021  </span> 
+- Software Engineer -- Gkfitness        <span id="date"> 02/2020 - 08/2020  </span> 
 <!--
 • Your "wow". The most interesting/coolest/impressive thing   you did there.
         [action verb] [Job duty lifted from ad] by [how you did it]

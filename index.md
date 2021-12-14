@@ -37,7 +37,7 @@ Prakash Sellathurai is a Software-Engineer, experienced in Computer Vision and W
 He is proficient in Python,C++, and have a strong foundation in Algorithms/ Data Structures.
 {: class="bio"}
 
-**Contact:**     &nbsp;   <span title='prakashsellathurai'>my fullname</span> (at) gmail (dot) com
+**Contact:**     &nbsp;  prakashsellathurai@gmail.com
 
 **Digital profiles:**
 

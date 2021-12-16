@@ -1,24 +1,23 @@
-<footer style="align-items: center;
-margin-top: 16px;
-margin-bottom: 64px;
-" xmlns:dc="http://purl.org/dc/elements/1.1/">
-    <small style="font-size: xx-small;">
-      
-        <a href="{{ './feed.xml' | relative_url}}" style="text-decoration: none;">
-            {% octicon rss height:16 aria-label:feed  %}
-        </a>
+<footer class=footer xmlns:dc="http://purl.org/dc/elements/1.1/">
 
-        &nbsp;
-        <span id="copyright" property="dc:rights">&copy;
-            <span property="dc:publisher">Prakash S</span>
-            2020 - 
-            <span property="dc:dateCopyrighted">
-                <script>document.write(new Date().getFullYear())</script>
-            </span>
-            
+
+    <span  id="copyright" property="dc:rights">&copy;
+        <span property="dc:publisher">Prakash Sellathurai</span>
+        2020 -
+        <span property="dc:dateCopyrighted">
+            <script>document.write(new Date().getFullYear())</script>
         </span>
+    </span>
 
-    </small>
+    <span>
+        <a href="{{ './feed.xml' | relative_url}}" title="feed">
+            {% octicon rss height:16 aria-label:feed %}
+        </a>
+    </span>
 
-   
+
+
+
+
+
 </footer>

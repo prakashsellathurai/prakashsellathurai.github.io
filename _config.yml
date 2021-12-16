@@ -3,7 +3,7 @@ title: Prakash Sellathurai
 email: prakashsellathurai@gmail.com
 description: 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://prakashsellathurai.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: prakash1729brt
 github_username:  prakashsellathurai
 
@@ -18,6 +18,17 @@ collections:
     output: true
     permalink: essay/:title
 
+navigation:
+  - text: Home
+    url: "/"
+  - text: Essays
+    url: "/essays.html"
+  - text: Projects
+    url: "/projects.html"
+  - text: Resume
+    url: "/resume.html"
+
+
 timezone: Asia/Kolkata
 
 projects:
@@ -30,18 +41,22 @@ projects:
     archived: false
     forks: true
     projects:
-    # - repo-name
+      - prakashsellathurai.github.io
+      - prakashsellathurai
 # Build settings
-
+markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-octicons
   - jekyll-github-metadata
   - jemoji
+  - jekyll-redirect-from
 
 
 feed:
   excerpt_only: true
+  url: https://prakashsellathurai.github.io
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

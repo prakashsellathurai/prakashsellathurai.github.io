@@ -2,6 +2,7 @@
 layout: default
 title: Essays
 description:  list of essays written by prakash sellathurai
+permalink: /essays/
 ---
 
 

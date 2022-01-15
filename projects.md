@@ -2,6 +2,7 @@
 layout: default
 title: Projects
 description:   list of Projects by Prakash Sellathurai
+permalink: /projects/
 ---
 
 

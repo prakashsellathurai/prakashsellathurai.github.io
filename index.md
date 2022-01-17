@@ -32,9 +32,8 @@ description:  Home page for Prakash Sellathurai's website
 
 **Bio:**
 
-Prakash Sellathurai is a Software-Engineer, experienced in Computer Vision and Web Applications. He finished his UG degree on Mechatronics engineering in 2019. 
+Prakash Sellathurai is a Software-Engineer, experienced in Computer Vision and Web Applications. He finished his UG degree in Mechatronics engineering in 2019. 
 
-He is proficient in Python,C++, and have a strong foundation in Algorithms/ Data Structures.
 {: class="bio"}
 
 **Contact:**     &nbsp;  prakashsellathurai@gmail.com

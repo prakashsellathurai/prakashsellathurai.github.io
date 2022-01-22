@@ -4,9 +4,9 @@ title: Invisible Obvious
 slug: invisible-obvious
 date: '2022-01-10T13:17:28.090Z'
 keywords:
-    - Invisible Obvious
+    - invisible-obvious
 tags:
-    - learning
+    - invisible-obvious
 ---
 
 Most People used to presume the Earth as the centre of the Universe. It sounded bizarre to others when Nicolaus Copernicus came up with 
@@ -34,7 +34,7 @@ It doesn't mean one must hopelessly search, far beyond the bounds of possibility
 
 Invisible obvious are not just the list of interesting facts. It's the fundamental truths where no one else cared/dared to look, that unravels the much deeper meaning. one such truth is there is still a lot of invisible-obvious to invent, discover, hack and explore.
 
-If one wants to excel, one must start looking for the hidden obvious.
+If one wants to excel, one must start looking for the Invisible Obvious.
 
 
 

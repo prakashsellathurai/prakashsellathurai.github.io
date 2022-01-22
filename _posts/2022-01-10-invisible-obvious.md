@@ -9,39 +9,32 @@ tags:
     - learning
 ---
 
+Most People used to presume the Earth as the centre of the Universe. It sounded bizarre to others when Nicolaus Copernicus came up with 
+[Copernican heliocentrism](https://dbpedia.org/page/Copernican_heliocentrism). His model positioned the sun as the centre of the Universe. Later, the development of the Cosmological principle[^1] went one step further.
 
-when Nicolaus Copernicus proposed his [Copernican heliocentrism](https://dbpedia.org/page/Copernican_heliocentrism), The Notion that the Sun is the center of the universe may sounded  bizarre to the people who believed earth as the centre.Later that was further superseded with the development of the Cosmological principle[^1].
+Technological advancements helped us discover many galaxies than our milky-way, where Copernicus couldn't. The Experimental Evidence proved the theory that Universe is expanding. The isotropic and homogenous nature of Universe Expansion led us to conclude, Universe has no centre.
 
-when the Modern Astronomers discovered new galaxies than our Milky way and experimental  proof of  Evidence for the Universe Expansion, resulted in the understanding that, the concept of centre of the universe is  meaningless in ever expanding universe, independant of any fixed point. 
+Once Planck's professor told him that the field of physics is approaching the degree of perfection, as geometry has been for centuries. All that is left is follow-up works[^2]. He was wrong.
 
-During the mid of 19th century, Planck was told by his professor, the field of theoretical physics is almost approaching the degree of perfection as if geometry has been for centuries, all that left is  followup works[^2].
+The Quantum theory, Electromagnetism, and General Relativity shifted our understanding of the Universe. These contributions led to the dawn of the new age of Physics. The number of Great works happened from 1925 to 1927. those years are known as the golden age of Physics[^4].
 
-Development of Quantum theory fundamentally shifted our  understanding of the  physics,which solved well known problems known physicist for years.These contributions led to the dawn of new age of physics hence, the period between 1925 and 1927, is considered as The golden age of Physics[^4].
+Social Norm dictates us, all of our existing problems were solved already. To ensure career progress in the conventional world,  It's enough for one to make minor improvements to existing solutions. Anyone willing to take big bets on Important problems is considered silly. 
 
-In Educational Instituitions, Everyone is led to believe, as if Important problems ever existed has been already  figured out and solved.To succeed in one's career,one just need to do minor improvements from existing  solutions. For them it's silly to  take big bets on Important problems. 
+If the Importance of an Idea and its Risk (i.e. possibility) is plotted on a 2d graph. People chose to stay in the lower left quadrant of the graph. What most people overlook is, there are always sweet spots with less risk and more importance.
 
-if importance vs risk (i.e possibilty that the work will  be done) is plotted on a 2d graph.people chose to stay in lower left quadrant of the graph.what they miss, there is always certain sweetspots where  risk is less and the problem have more importance.
+People fail to recognize these sweet spots because of their conformed thinking. It takes courage and curiosity to access an idea from the most opposite point of view.
 
-In most cases, people miss these because of their custom of processing the information from the generally accepted standards.It takes courage to solve a problem in unconventional way.
+Discovering the Right interpretation of an Idea is as rare and important as predicting the future risks of an Impending danger. The danger could be anything, from the systematic risk of financial instability to the outbreak of a deadly virus. 
 
-Discovering the right way of how universe works is as rare and, important as predicting the future risks of an impending danger.The danger could be anything from the systematic risk of financial instability to the outbreak of deadly virus. 
+Most Doomsayers were wrong some of them made the Right predictions long before it happen. Not everyone sees the risk until it happens to them, some of them made bluff. Richard A.Clarke proposed "The Cassandra Coefficient" in his book "Warnings" to separate accurate predictions of danger from inaccurate ones[^3].
 
-Most Doomsayers were wrong and some of them made right predictions long before it  happens.Not everyone sees the risk until it happens to them,some of them made bluff. Richard A.Clarke proposed a method named "The Cassandra Coefficient" in his book "Warnings", to separate accurate predictions of danger from the inaccurate doomsayers.
+"Invisible Obvious" is one of the key characteristics for estimating risk in the Cassandra Coefficient. Sometimes, what people take for granted is where the worst risk is at. Doomsayers (aka Cassandras) foresee those risks before they happen. one must be open to unorthodox interpretations to come up with such non-intuitive insights.
 
-It's a pretty neat framwork considers The warning, the threat or risk in question, the decision makers or audience who must react,The predictor or possible Cassandra, and The critics who disparage or reject the warning[^3].
+It doesn't mean one must hopelessly search, far beyond the bounds of possibility. Remember,  there is always a thin line that separates the impossible from the invisible obvious. It's not easy to take a path that has never been explored. Be sure to know when to exploit and when to explore.
 
-He outlined "Invisible Obvious"  as one of the factors under key characteristics for identifying the Cassandra events,sometimes what people takes for granted is where the worst risk is at.Doomsayers aka Cassandras  forsees those risk before it happens.one must have be open to unorthodox intrepretations  to come up with pretty non intuitive insights.
+Invisible obvious are not just the list of interesting facts. It's the fundamental truths where no one else cared/dared to look, that unravels the much deeper meaning. one such truth is there is still a lot of invisible-obvious to invent, discover, hack and explore.
 
-It doesn't mean one must hopelessly search, far beyond the bounds of possibility.as always there is a thin line that separates the impossible  from invisible obvious.It's no easy task, to take a path that has been never explored.
-
-Invisible obvious are not just the list of interesting facts,it's more of the invisble fundamental truths where no one else cared to look, that unravels much more deeper meaning of an Idea.one such  truth is there is still a lot of invisible-obvious to invent,discover,hack and explore.
-
-If one want to excel , one must start looking for the hidden obvious.
-
-
-
-
-
+If one wants to excel, one must start looking for the hidden obvious.
 
 
 

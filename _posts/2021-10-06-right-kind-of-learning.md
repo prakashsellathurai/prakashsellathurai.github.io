@@ -15,7 +15,7 @@ During my teenage years, I am so fond of reading books, I believed the most effe
 
 It made sense when I learned how long I can through a shot put[^2] ball with [fundamental laws of motion](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/newtons-laws-of-motion/) and Newtons' gravitational law. At that time, It felt like a superpower. I could see the change in gravitation pull as you moved towards/away from the ground. 
 
-With thorough and rigorous thought, I can simplify the complex problem into a much simpler one. In schools they didn't teach me these interesting topics, instead, they taught me the other topics which I find less amusing. I used to be self-fulfilled with my thoughts([confirmation bias](https://en.wikipedia.org/wiki/Confirmation_bias)).
+With thorough and rigorous thought, I can simplify the complex problem into a much simpler one. In schools they didn't teach me these interesting topics, instead, they taught me the other topics which I find less amusing. I used to be self-fulfilled with my thoughts ([confirmation bias](https://en.wikipedia.org/wiki/Confirmation_bias)).
 
 well, that worked as a teenage boy with the pure intention of general curiosity on how stuff works until I joined college where everyone trying to figure out what to do for the rest of their life with the guarantee provided by another set of people who don't have much clue yet, confidently tells others what works and what won't.
 

@@ -3,41 +3,42 @@
 {% include head.html %}
 
 <body>
-  
+
   {% include nav.html %}
   <main>
-  <br>
-  <div class="title-section">
-    {{page.title}}
-  </div>
-  <br>
-  {{ page.date | date: "%B %Y"}}
-  <br>
+    <br>
+    <div class="title-section">
+      {{page.title}}
+    </div>
+    <br>
+    {{ page.date | date: "%B %Y"}}
+    <br>
 
+    <article>
 
-  <div class="post-content">
-    {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
-  </div>
+      <div class="post-content">
+        {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
+      </div>
 
-  <style>
-    .footnotes {
-      margin: 10px 0;
-    }
+      <style>
+        .footnotes {
+          margin: 10px 0;
+        }
 
-    .footnotes ol li br {
-      display: none;
-    }
+        .footnotes ol li br {
+          display: none;
+        }
 
-    .footnotes::before {
-      content: " \A Footnotes:";
-      font-weight: bold;
+        .footnotes::before {
+          content: " \A Footnotes:";
+          font-weight: bold;
 
-    }
-  </style>
+        }
+      </style>
+    </article>
+  </main>
 
-</main>
-  
-{% include footer.html %}
+  {% include footer.html %}
 </body>
 
 </html>

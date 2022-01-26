@@ -7,7 +7,7 @@ published: true
 tags:
     - learning
 keywords:
-    - learning
+    - right kind of learning
 description: Prakash Sellathurai's essay on right kind of learning
 ---
 

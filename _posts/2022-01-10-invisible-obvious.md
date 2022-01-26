@@ -4,9 +4,10 @@ title: Invisible Obvious
 slug: invisible-obvious
 date: '2022-01-10T13:17:28.090Z'
 keywords:
-    - invisible-obvious
+    - Invisible Obvious
 tags:
     - invisible-obvious
+description: Prakash Sellathurai's essay on  Invisible Obvious
 ---
 
 Most People used to presume the Earth as the centre of the Universe. It sounded bizarre to others when Nicolaus Copernicus came up with 

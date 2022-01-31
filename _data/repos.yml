@@ -1,0 +1,110 @@
+- desc: 'Python Library to Encode/Decode the images in “Quite OK Image” (qoi) format'
+  name: pyqoi
+  url: https://github.com/prakashsellathurai/pyqoi
+
+
+- desc: 'Fashion Image Recommendation via similarity retrieval through deep learning '
+  name: fashion-Image-Recommender
+  url: https://github.com/prakashsellathurai/fashion-Image-Recommender
+
+- desc: Backend for the clothX platform
+  name: CLothXMicroServices
+  url: https://github.com/prakashsellathurai/CLothXMicroServices
+
+- desc: Deep learning model to identify the type of disease present on the cassava
+    Leaf Images
+  name: cassava-leaf-disease-classification
+  url: https://github.com/prakashsellathurai/cassava-leaf-disease-classification
+
+- desc: Minimal version control system implemented in python
+  name: idiota
+  url: https://github.com/prakashsellathurai/idiota
+
+- desc: "A docker build file for CMU openpose with Python 3 API GPU support"
+  name: openpose-docker
+  url: https://github.com/prakashsellathurai/openpose-docker
+
+- desc: My solutions to Leetcode problems
+  name: leetcode-solutions
+  url: https://github.com/prakashsellathurai/leetcode-solutions
+- desc: 'Essential Algorithms / Data structures implemented in c++ and python '
+  name: a-grim-loth
+  url: https://github.com/prakashsellathurai/a-grim-loth
+- desc: 'A curated list of Product Management Resources :seedling:'
+  name: Awesome-Product-Management
+  url: https://github.com/prakashsellathurai/Awesome-Product-Management
+
+- desc: OpenCV environment built on anaconda gpu
+  name: anaconda-opencv-cuda
+  url: https://github.com/prakashsellathurai/anaconda-opencv-cuda
+
+- desc: The Data app that compose the S&P 500 Index Data  and display a visual chart
+    on it
+  name: finance-analysis-data-app
+  url: https://github.com/prakashsellathurai/finance-analysis-data-app
+- desc: Informational links on various topics
+  name: bookmarks
+  url: https://github.com/prakashsellathurai/bookmarks
+
+- desc: ' Show a random quote from your Goodreads Account on your GitHub readme'
+  name: Goodreads-Random-Quotes-Badge
+  url: https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge
+- desc: Thesis on Automatic Packing system for Hydrphonic substitute packaging at
+    mass scale
+  name: ICRAET_conference_paper
+  url: https://github.com/prakashsellathurai/ICRAET_conference_paper
+- desc: Remote consulting Healthcare Application - A SMART INDIA HACKATHON project  (https://www.sih.gov.in/)
+  name: DoctorPrescriptionClientApp
+  url: https://github.com/prakashsellathurai/DoctorPrescriptionClientApp
+- desc: HN content  Curator available as a browser extension
+  name: Heimdall
+  url: https://github.com/prakashsellathurai/Heimdall
+- desc: Generative Art Experiment using Chaos theory
+  name: LOLWUT
+  url: https://github.com/prakashsellathurai/LOLWUT
+- desc: 'Lorentz Attractor simulation '
+  name: Lorentz-Attractor
+  url: https://github.com/prakashsellathurai/Lorentz-Attractor
+- desc: Github contributions as infographic
+  name: github-metrics
+  url: https://github.com/prakashsellathurai/github-metrics
+- desc: AlgorithmicProblemSolving and MachineLearning FlashCards
+  name: AlgorithmicProblemSolving-and-MachineLearning-FlashCards
+  url: https://github.com/prakashsellathurai/AlgorithmicProblemSolving-and-MachineLearning-FlashCards
+- desc: 'Blogging AI built on top of GPT-2 :pencil: :thought_balloon:'
+  name: GPT-2-Blogger
+  url: https://github.com/prakashsellathurai/GPT-2-Blogger
+- desc: Text Generation using LSTM Architecture
+  name: Auto-Content-Generation
+  url: https://github.com/prakashsellathurai/Auto-Content-Generation
+- desc: Analysis of Covid 19 data
+  name: covid-19-analysis
+  url: https://github.com/prakashsellathurai/covid-19-analysis
+- desc: Community-curated topic and collection pages on GitHub
+  name: explore
+  url: https://github.com/prakashsellathurai/explore
+- desc: promise implemented in js and Go
+  name: -A-promise-implementation-
+  url: https://github.com/prakashsellathurai/-A-promise-implementation-
+- desc: You can use this URL calculator to convert an URL into an AMP cache version
+  name: amp-cache-url-translator
+  url: https://github.com/prakashsellathurai/amp-cache-url-translator
+- desc: Motion Retargeting Video Subjects
+  name: EverybodyDanceNow
+  url: https://github.com/prakashsellathurai/EverybodyDanceNow
+- desc: 'Open-AI bot for automation '
+  name: automatic-robot
+  url: https://github.com/prakashsellathurai/automatic-robot
+
+- desc: Conway's game of life simulation with genetic algorithm
+  name: conway-s-game-of-life
+  url: https://github.com/prakashsellathurai/conway-s-game-of-life
+- desc: Embedded C++ code for furnace monitoring and control system
+  name: Automatic_furnace_handler
+  url: https://github.com/prakashsellathurai/Automatic_furnace_handler
+- desc: 'light weight compiler '
+  name: compiler
+  url: https://github.com/prakashsellathurai/compiler
+- desc: bare minimum blockchain core experiments
+  name: EXPERIMENTS-WITH-BLOCKCHAIN
+  url: https://github.com/prakashsellathurai/EXPERIMENTS-WITH-BLOCKCHAIN

@@ -49,7 +49,6 @@ markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-octicons
-  - jekyll-github-metadata
   - jemoji
   - jekyll-redirect-from
 

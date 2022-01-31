@@ -1,5 +1,5 @@
 <div id="repo-card" class="col-sm-6 col-md-12 col-lg-6 col-xl-4 mb-3">
-  <a href="{{ repository.html_url }}" style="text-decoration: none;">
+  <a href="{{ repository.url }}" style="text-decoration: none;">
   <div
     class="github-component d-flex flex-column flex-justify-between height-full text-left {% if site.style == 'dark' %}box-shadow{% else %}border border-gray-light{% endif %} bg-white rounded-1 p-3">
     <div>
@@ -11,9 +11,9 @@
           
         </div>
       </div>
-      {% if repository.description %}
+      {% if repository.desc %}
 
-      <span class="text-gray mb-2 ws-normal">{{ repository.description }}</span>
+      <span class="text-gray mb-2 ws-normal">{{ repository.desc }}</span>
       {% endif %}
     </div>
 

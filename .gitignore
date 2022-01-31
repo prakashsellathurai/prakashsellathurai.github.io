@@ -51,3 +51,4 @@ _site/
 .vscode/settings.json
 frontmatter.json
 .env
+scripts/repos.json

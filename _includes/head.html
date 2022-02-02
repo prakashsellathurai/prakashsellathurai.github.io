@@ -7,10 +7,9 @@
     {% if page.keywords %}<meta name="keywords" content="{{ page.keywords | join: ', ' | escape }}">{% endif %}
     {% if page.title %}<title>{{ page.title }}</title>{% endif %}
     <meta name="author" content={{ site.author_name }}>
+    
+    {% include font.html %}
 
-    <!--LORA FONT -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+
     {% include style.html %}
 </head>

@@ -31,5 +31,4 @@ gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]
 gem "jekyll-octicons"
 gem "jemoji"
 gem 'jekyll-redirect-from'
-
-
+gem 'jekyll-sitemap'

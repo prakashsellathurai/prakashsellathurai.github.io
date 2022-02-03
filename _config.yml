@@ -46,11 +46,14 @@ projects:
       - prakashsellathurai
 # Build settings
 markdown: kramdown
+
+
 plugins:
   - jekyll-feed
   - jekyll-octicons
   - jemoji
   - jekyll-redirect-from
+  - jekyll-sitemap
 
 
 feed:

@@ -5,27 +5,16 @@ description:  Home page for Prakash Sellathurai's website
 ---
 
 
-<style>
-    img.avatar {
-        float:left;
+
+
+
+
+<img class="avatar" style="        float:left;
         margin-right: 10px;
         width: 23.609%; 
         border-radius: 12px;
-        border: 1px solid var(--tertiary);
-        /* box-shadow: -7px -7px 14px #bebebe,
-      7px 7px 14px #ffffff; */
-    );
-    }
-
-    /* .bio {
-    } */
-
-</style>
-
-
-
-
-<img class="avatar"  alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
+         border: 1px solid var(--tertiary);
+    " alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
 
 
 
@@ -36,7 +25,8 @@ Prakash Sellathurai is a Software-Engineer, experienced in Computer Vision and W
 
 {: class="bio"}
 
-**Contact:**     &nbsp;  prakashsellathurai@gmail.com
+**Contact:**     &nbsp;  prakashsellathurai [at] gmail [dot] com
+
 
 **Digital profiles:**
 

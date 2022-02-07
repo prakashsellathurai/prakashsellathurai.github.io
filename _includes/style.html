@@ -7,7 +7,13 @@
     --header-height: 60px;
     --footer-height: 60px;
     --radius: 8px;
-    --theme: rgb(255, 255, 255);
+    
+    --main-color: #F8F8FF;
+    --base-color: #B8B8FF;
+    --baseii-color: #ABABFF;
+    --accent-color: #7878FF;
+
+    --theme: var(--main-color);
     --entry: rgb(255, 255, 255);
     --primary: rgb(30, 30, 30);
     --secondary: rgb(108, 108, 108);
@@ -50,17 +56,15 @@
 
   html,
   body {
-    background-color: #fff;
-
-    font-family: 'Lora', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--theme);
+    font-family: 'Lora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--content);
     font-size: 12px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    font-family: 'Lora', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        /* color: rgba(41,37,36,1); */
     max-width: 640px;
     margin: 1em auto 0em;
     font-size: 12pt;
@@ -103,9 +107,10 @@
   }
 
   ul {
-    list-style:square;
+    list-style: square;
     color: var(--primary);
   }
+
   li {
     line-height: 1.6;
 
@@ -187,7 +192,7 @@
     transition: -webkit-box-shadow .4s;
     -o-transition: box-shadow .4s;
     transition: box-shadow .4s;
-    transition: box-shadow .4s,-webkit-box-shadow .4s;
+    transition: box-shadow .4s, -webkit-box-shadow .4s;
   }
 
 
@@ -199,21 +204,21 @@
     white-space: nowrap;
     color: var(--primary);
     border-radius: inherit;
-    padding: calc(var(--radius) /3.14)
+    border: calc(var(--radius)/3.14) solid transparent;
   }
 
   nav>a:hover {
     transition: .4s;
-    background: var(--tertiary);
+    border: calc(var(--radius)/3.14) solid var(--tertiary);
     text-shadow: 0px 0px 0.5em #00000022;
   }
 
 
-  
+
   nav>a.active {
     background-color: var(--secondary);
     color: var(--theme);
-  } 
+  }
 
   .title-section {
     display: table-row;

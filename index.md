@@ -10,34 +10,51 @@ description:  Home page for Prakash Sellathurai's website
 
 
 <img class="avatar" style="        float:left;
-        margin-right: 10px;
+        margin-right: 16px;
         width: 23.609%; 
         border-radius: 12px;
          border: 1px solid var(--tertiary);
     " alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
 
+Hi! I am
+<h1> Prakash Sellathurai </h1>
+I am a **Software Engineer** and a Mechatronics hobbyist. At present, I am unemployed and looking for a job. In the past, between 2019 and 2020, I worked as a software engineer at GKFIT and a computer vision engineer at Bigthinx. 
+
+In 2018, I co-founded an e-commerce platform ClothX (now archived). As of 2019, I have earned my undergraduate degree in Mechatronics engineering from Anna University.
+
+Software engineering, Information Theory, Digital control and Electromechanical control systems interest me. As a hobby, I often build automation projects and software tools.
 
 
 
-**Bio:**
+## Essays:
+My latest Essays are
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a  href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
 
-I am a professional software engineer with work experience in computer vision and full-stack development. Previously, I worked as a software engineer at GKFIT and as a computer vision engineer at Bigthinx. 
-
-In 2019, I completed my undergraduate degree in Mechatronics engineering from Anna University. In 2018, I co-founded an e-commerce platform ClothX (now archived).
-
-Software engineering, Information Theory, Digital control and Electromechanical control systems interest me. Often I build automation projects and software tools as a hobby.
 
 
-{% capture tagscommas %}
-{% for post in site.posts limit:5 %}<a href="{{ post.url }}" style="margin-left: 4px">{{ post.title }}</a>{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
 
-**Writings:**  &nbsp; My latest Essays are{{ tagscommas }}.
 
-**Scholarly paper:** &nbsp; Automatic Packing system for Hydrphonic substitutes [pdf](https://github.com/prakashsellathurai/ICRAET_conference_paper/blob/master/ICEARCAT_PAPER.pdf), [code](https://github.com/prakashsellathurai/OLE_MACHINE)
 
-**Contact:**&nbsp; Email is the best way to reach me. <br>
-My email address is "prakash&nbsp;sellathurai [at] gmail [dot] com"&nbsp;(no spaces).
+## Projects:
+{% assign repolimit = 6 %}
+{% include repos.html  %}
 
-**Social:** &nbsp;Find me on   [LinkedIN](https://www.linkedin.com/in/prakashsellathurai/) , [Github](https://github.com/prakashsellathurai)  , [Goodreads](https://www.goodreads.com/user/show/105903487-prakash-sellathurai) , [Twitter]( https://twitter.com/prakash1729brt) , [Stackoverflow](https://stackoverflow.com/users/8336491/prakash-sellathurai) , [Codechef](https://www.codechef.com/users/prakash1729brt) and [Leetcode](https://leetcode.com/prakashsellathurai/) 
+For more Projects, check out  my  **[Github](https://github.com/prakashsellathurai)**  profile.
+
+## Academic paper:
+Automatic Packing system for Hydrphonic substitutes [pdf](https://github.com/prakashsellathurai/ICRAET_conference_paper/blob/master/ICEARCAT_PAPER.pdf), [code](https://github.com/prakashsellathurai/OLE_MACHINE)
+
+## Contact:
+Email is the best way to reach me. <br> My email address is  &emsp;"**prakash&nbsp;sellathurai [at] gmail [dot] com**"&emsp;(no dots ,no hyphens).
+
+
+## Social:
+Find me on   [LinkedIN](https://www.linkedin.com/in/prakashsellathurai/) , [Github](https://github.com/prakashsellathurai)  , [Goodreads](https://www.goodreads.com/user/show/105903487-prakash-sellathurai) , [Twitter]( https://twitter.com/prakash1729brt) , [Stackoverflow](https://stackoverflow.com/users/8336491/prakash-sellathurai) , [Codechef](https://www.codechef.com/users/prakash1729brt) and [Leetcode](https://leetcode.com/prakashsellathurai/) 
 
 

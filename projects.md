@@ -5,9 +5,5 @@ description:   list of Projects by Prakash Sellathurai
 permalink: /projects/
 ---
 
-
-<div class="d-sm-flex flex-wrap gutter-condensed mb-4">
-  {% for repository in site.data.repos %}
-        {% include repo-card.html %}
-  {% endfor %}
-</div>
+{% assign repolimit = 100 %}
+{% include repos.html  repolimit= repolimit %}

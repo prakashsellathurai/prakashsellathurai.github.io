@@ -16,11 +16,11 @@ description:  Home page for Prakash Sellathurai's website
          border: 1px solid var(--tertiary);
     " alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
 
-Hi! I am
+Hello! I am
 <h1 style="overflow: hidden;"> Prakash Sellathurai </h1>
 
 <p style="text-align: justify">
-a <strong>Software Engineer</strong> and  Mechatronics hobbyist. At present, I am unemployed and actively looking for the job opportunities. In the past, between 2019 and 2020, I worked as a software engineer at GKFIT and a computer vision engineer at Bigthinx. 
+I am a <strong>Software Engineer</strong> and a  Mechatronics hobbyist. At present, I am unemployed and actively looking for the job opportunities. In the past, I worked as a software engineer at GKFIT and a computer vision engineer at Bigthinx. 
 </p>
 <p style="text-align: justify">
 In 2018, I co-founded an e-commerce platform ClothX (now archived). As of 2019, I have earned my undergraduate degree in Mechatronics engineering from Anna University.

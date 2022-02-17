@@ -3,7 +3,7 @@
     {% for repository in site.data.repos limit:repolimit %}
     <div id="repo-card">
         <a href="{{ repository.url }}" style="text-decoration: none;">
-            <div style="font-weight: bold; color: var(--primary);">
+            <div style="font-weight: bold; color: var(--primary);margin-bottom: 0.5em;">
                 {{ repository.name | replace: '-', ' '| replace: '_', ' '}}
             </div>
             {% if repository.desc %}

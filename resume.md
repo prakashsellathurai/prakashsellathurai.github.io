@@ -8,8 +8,8 @@ permalink: /resume/
          cursor: pointer;
         background-color: var(--code-bg);
         float:right;
-        border-radius: 8px;
-        padding: 4px;
+    border-radius: 0.5em;
+    padding: 0.5em;
 
     } 
     #downloadResume a {

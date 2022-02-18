@@ -40,7 +40,7 @@ If one wants to excel, one must start looking for the Invisible Obvious hiding i
 
 
 
-[^1]: https://en.wikipedia.org/wiki/Nicolaus_Copernicus#Heliocentrism
+[^1]: [wiki](https://en.wikipedia.org/wiki/ Nicolaus_Copernicus#Heliocentrism) on Heliocentrism
 [^2]:  Max Planck: Ways to physical knowledge. Speeches and Lectures, Volume 1. Leipzig 1943. [wiki](https://de.wikipedia.org/wiki/Philipp_von_Jolly#cite_ref-5)
 [^3]: Prigogine, Ilya; Stengers, Isabelle (1984). Order out of chaos: man's new dialogue with nature
 [^4]: Warnings: Finding Cassandras to Stop Catastrophes Hardcover – May 23, 2017 by Richard A. Clarke [affiliated-link](https://amzn.to/3tJKspu)

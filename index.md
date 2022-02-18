@@ -16,9 +16,11 @@ Hello!  I'm
 <h2 style="overflow: hidden;"> Prakash Sellathurai </h2>
 
 <p>
-I am a <strong>Software Engineer</strong> and a  Mechatronics hobbyist. My current job status is unemployed; I am actively looking for job opportunities. In the past, I worked as a software engineer at GKFIT and a computer vision engineer at Bigthinx. 
+I am a <strong>Software Engineer</strong> with background in computer vision and fullstack engineering. My current job status is unemployed; I am actively looking for job opportunities.
 </p>
+
 <p>
+ In the past, I worked as a software engineer at GKFIT and a computer vision engineer at Bigthinx. 
 In 2018, I co-founded an e-commerce platform ClothX (now archived). As of 2019, I have earned my undergraduate degree in Mechatronics engineering from Anna University.
 </p>
 <p>

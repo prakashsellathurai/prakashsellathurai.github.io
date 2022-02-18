@@ -139,11 +139,15 @@
   input[type=submit] {
     cursor: pointer
   }
-
-  img.avatar {
+  .avatar-container{
     float: left;
     margin-right: 16px;
+    margin-bottom: 8px;
     width: 23.609%;
+  }
+  img.avatar {
+    width: 100%;
+    height: auto;
     border-radius: 12px;
     border: 1px solid var(--tertiary);
     --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
@@ -239,7 +243,7 @@
 
 
   .post-content {
-    text-align: justify;
+    text-align: left;
   }
 
   .content-section,
@@ -255,6 +259,7 @@
 
 
   #repos {
+    list-style: none;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -264,6 +269,7 @@
   }
 
   #repo-card {
+    list-style-type:none;
     background: var(--entry);
     padding: calc(var(--radius)*2);
     border-radius: var(--radius);
@@ -318,6 +324,7 @@
 
   .footer span a {
     text-decoration: none;
+    border: 0!important;
   }
 
   .footer span:last-child {

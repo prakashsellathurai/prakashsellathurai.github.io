@@ -8,19 +8,20 @@ description:  Home page for Prakash Sellathurai's website
 
 
 
+<div class="avatar-container">
+<img class="avatar"   width="360" height="360" alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
+</div>
 
-<img class="avatar"  alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
+Hello!  I'm
+<h2 style="overflow: hidden;"> Prakash Sellathurai </h2>
 
-Hello! I'm
-<h1 style="overflow: hidden;"> Prakash Sellathurai </h1>
-
-<p style="text-align: justify">
+<p>
 I am a <strong>Software Engineer</strong> and a  Mechatronics hobbyist. My current job status is unemployed; I am actively looking for job opportunities. In the past, I worked as a software engineer at GKFIT and a computer vision engineer at Bigthinx. 
 </p>
-<p style="text-align: justify">
+<p>
 In 2018, I co-founded an e-commerce platform ClothX (now archived). As of 2019, I have earned my undergraduate degree in Mechatronics engineering from Anna University.
 </p>
-<p style="text-align: justify">
+<p>
 Software engineering, Information Theory, Digital control and Electromechanical control systems interest me. As a hobby, I often build automation projects and software tools.
 </p>
 
@@ -30,7 +31,7 @@ My latest Essays are
 <ul>
   {% for post in site.posts %}
     <li>
-      <a  href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+      <a  href="{{ post.url }}"  title="{{ post.title }}">{{ post.title }}</a>
     </li>
   {% endfor %}
 </ul>

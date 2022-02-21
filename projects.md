@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Projects
-description:   list of Projects by Prakash Sellathurai
+description:   archive  of Projects by Prakash Sellathurai
 permalink: /projects/
 ---
 <div style="   width: 99.5vw;

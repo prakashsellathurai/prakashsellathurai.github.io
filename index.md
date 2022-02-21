@@ -28,15 +28,6 @@ Software engineering, Information Theory, Digital control and Electromechanical 
 </p>
 
 
-## Essays:
-My latest Essays are
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <a  href="{{ post.url }}"  title="{{ post.title }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
 
 
 
@@ -49,12 +40,20 @@ My latest Essays are
 
 For more Projects, check out  my  **[Github](https://github.com/prakashsellathurai)**  profile.
 
+## Essays:
+My latest Essays are
+{% for post in site.posts %}
+  - [{{ post.title }}]({{  post.url }})
+{% endfor %}
+
+
+
 {% include bookshelf.html %}
 ## Academic paper:
 Automatic Packing system for Hydrphonic substitutes [pdf](https://github.com/prakashsellathurai/ICRAET_conference_paper/blob/master/ICEARCAT_PAPER.pdf), [code](https://github.com/prakashsellathurai/OLE_MACHINE)
 
 ## Contact:
-Email is the best way to reach me. <br> My email address is  &emsp;"**prakash&nbsp;sellathurai [at] gmail [dot] com**"&emsp;(no dots ,no hyphens).
+Email is the best way to reach me. <br> My email address is  &emsp;"**prakash&nbsp;sellathurai [at] gmail [dot] com**&emsp;(no dots ,no hyphens)".
 
 
 ## Elsewhere:

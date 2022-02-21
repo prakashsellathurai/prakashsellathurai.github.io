@@ -1,0 +1,12 @@
+
+{% if site.data.goodreads.currently-reading %}
+## Bookshelf:
+{% for book in site.data.goodreads.currently-reading limit:5 %}
+- [{{ book.title }}]({{ book.link }}) by {{ book.author }}
+{% endfor %}
+{% if site.data.goodreads.read %}
+{% for book in site.data.goodreads.read limit:5 %}
+- [{{ book.title }}]({{ book.link }}) by {{ book.author }}
+{% endfor %}
+{% endif %}
+{% endif %}

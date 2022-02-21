@@ -5,11 +5,11 @@ import yaml
 # with urllib.request.urlopen("https://api.github.com/users/prakashsellathurai/repos") as url:
 #     data = json.loads(url.read().decode())
 
-#     with open('./scripts/repos.json', 'w', encoding='utf-8') as f:
+#     with open('./repos.json', 'w', encoding='utf-8') as f:
 #         json.dump(data, f, ensure_ascii=False, indent=4)
 
 
-with open('./scripts/repos.json', 'r') as f:
+with open('./repos.json', 'r') as f:
     data: list = json.load(f)
 data.sort(key= lambda datum: datum['pushed_at'],reverse=True)
 if data:
@@ -21,5 +21,5 @@ if data:
             'desc': datum['description']
         })
 
-    with open('_data/repos.yml', 'w') as yaml_file:
+    with open('../_data/repos.yml', 'w') as yaml_file:
         yaml.dump(yamldata, yaml_file, default_flow_style=False)

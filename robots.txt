@@ -35,5 +35,4 @@
 # Frodo Defies Shelob with the Phial of Galadriel
 ##########################################################
 User-Agent: *
-Allow: /
 Disallow: /prakash_s_resume.pdf

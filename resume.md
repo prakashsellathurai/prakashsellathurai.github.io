@@ -10,6 +10,8 @@ permalink: /resume/
         background-color: var(--code-bg);
         float:right;
     border-radius: 0.5em;
+    border-style: solid;
+    border-color: var(--accent-color);
     padding: 0.5em;
 
     } 
@@ -17,7 +19,7 @@ permalink: /resume/
          text-decoration:none;
     }
     #downloadResume:hover {
-        background-color: lightblue;
+        background-color: var(--baseii-color);
     }
     #date {
         float:right
@@ -26,7 +28,7 @@ permalink: /resume/
 <div id="downloadResume" aria-label="download the resume in pdf"><a href="{{'./Resume.pdf' | relative_url }}" title="download the resume in pdf">Download</a></div>
 
 ## Prakash Sellathurai
-<sub> Software Engineer • [https://www.linkedin.com/in/prakashsellathurai/](https://www.linkedin.com/in/prakashsellathurai/) </sub>
+<sub> TamilNadu,India | +919361325845 | prakashsellathurai@gmail.com | linkedin.com/in/prakashsellathurai | github.com/prakashsellathurai | codechef.com/users/prakash1729brt </sub>
 
 ### EXPERIENCE
 ---

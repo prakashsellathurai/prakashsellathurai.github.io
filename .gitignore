@@ -34,8 +34,7 @@ _book
 # eBook build output
 *.epub
 *.mobi
-*.pdf
-!Resume.pdf
+
 
 ### Jekyll ###
 _site/

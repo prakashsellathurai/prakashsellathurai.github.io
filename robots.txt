@@ -36,3 +36,4 @@
 ##########################################################
 User-Agent: *
 Allow: /
+Disallow: /prakash_s_resume.pdf

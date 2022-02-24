@@ -270,7 +270,7 @@
   .repo-card {
     list-style-type:none;
     background: var(--entry);
-    padding: calc(var(--radius)*2);
+    
     border-radius: var(--radius);
     transition: transform .1s;
     border: 1px solid var(--border);
@@ -281,7 +281,12 @@
     --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
-
+  .repo-card > a{
+    text-decoration: none;
+    display: block;
+    padding: calc(var(--radius)*2);
+    height: inherit;
+  }
 
   .repo-card:hover {
     --transform-translate-x: 0;
@@ -293,6 +298,7 @@
     --transform-scale-y: 1.025;
     transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
     transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+   
   }
 
   code,

@@ -2,7 +2,7 @@
 
     {% for repository in site.data.repos limit:repolimit %}
     <li class="repo-card">
-        <a href="{{ repository.url }}" style="text-decoration: none;">
+        <a href="{{ repository.url }}" >
             <div style="font-weight: bold; color: var(--primary);margin-bottom: 0.5em;">
                 {{ repository.name | replace: '-', ' '| replace: '_', ' '}}
             </div>

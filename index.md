@@ -13,7 +13,7 @@ description:  Home page for Prakash Sellathurai's website
 </div>
 
 Hello!  I'm
-<h2 style="overflow: hidden;"> Prakash Sellathurai </h2>
+<h1 style="overflow: hidden;"> Prakash Sellathurai </h1>
 
 <p>
 I am a <strong>Software Engineer</strong> with background in computer vision and fullstack engineering. My current job status is unemployed; I am actively looking for job opportunities.

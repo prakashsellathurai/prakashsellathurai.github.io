@@ -53,7 +53,7 @@ My latest Essays are
 Automatic Packing system for Hydrphonic substitutes [pdf](https://github.com/prakashsellathurai/ICRAET_conference_paper/blob/master/ICEARCAT_PAPER.pdf), [code](https://github.com/prakashsellathurai/OLE_MACHINE)
 
 ## Contact:
-Email is the best way to reach me. <br> My email address is  &emsp;"**prakash&nbsp;sellathurai [at] gmail [dot] com**&emsp;(no dots ,no hyphens)".
+Email is the best way to reach me. <br> My email address is  &emsp;"**prakash&nbsp;sellathurai [at] gmail [dot] com**&emsp;(no dots )".
 
 
 ## Elsewhere:

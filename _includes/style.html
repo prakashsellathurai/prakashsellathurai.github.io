@@ -192,8 +192,6 @@
     border-radius: .25rem;
     color: var(--primary);
     margin-bottom: 2em;
-
-    border: 1px solid #cfcfd8;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -208,6 +206,7 @@
         transition: box-shadow .4s;
         transition: box-shadow .4s, -webkit-box-shadow .4s; */
     box-shadow: 0px 1px 6px rgb(43 42 51 / 10%);
+    border: solid 0.1px #b8b8ff80;
   }
 
 
@@ -220,15 +219,15 @@
     border-radius: inherit;
     border: calc(var(--radius)/3.14) solid transparent;
     margin: .59%;
+    
   }
 
 
   nav>a:hover {
     transition: .4s;
     text-shadow: 0px 0px 0.5em #00000022;
-    background: var(--tertiary);
-
-    outline: 2px solid transparent;
+    background: rgb(184 184 255 / 36%);
+    outline: 2px solid #ababff00;
     outline-offset: 2px;
     transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
@@ -239,10 +238,10 @@
 
 
 
-  nav>a.active {
-    background-color: var(--secondary);
-    color: var(--theme);
-  }
+  /* nav>a.active {
+    background-color: var(--baseii-color);
+    /* color: var(--theme); 
+  } */
 
   .title-section {
     display: table-row;
@@ -281,11 +280,13 @@
     list-style-type: none;
 
     border-radius: var(--radius);
-    transition: transform .1s;
     border: 1px solid #cfcfd8;
     width: 100%;
     height: 100%;
     align-items: stretch;
+   
+
+    
   }
 
   .repo-card>a {
@@ -293,17 +294,30 @@
     display: block;
     padding: calc(var(--radius)*2);
     height: inherit;
+
   }
 
   .repo-card:hover {
-    box-shadow: 0px 1px 6px rgb(43 42 51 / 10%);
-  }
+    transition: all 0.2s ease-out;
+    top: -4px;
+    background: rgb(222 222 243 / 19%);
+    box-shadow: 0px 0px 999px 999px rgb(255 255 255 / 50%);
+    border: solid 1px var(--base-color);
+    z-index: 500;
+ }
 
   code,
   .highlight {
     background-color: #eee;
     border-radius: 3px;
     padding: 0 3px;
+  }
+  
+  .openInNewWindowlist{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
   }
   .openInNewWindow{
     text-decoration: none;

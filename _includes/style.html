@@ -45,22 +45,20 @@
     box-sizing: border-box;
   }
 
-  html,
-  body {
+  html {
     min-height: 100%;
+    background-color: var(--theme);
+    color: var(--content);
   }
 
   main {
     min-height: 85vh;
   }
 
-  html,
-  body {
-    background-color: var(--theme);
-    color: var(--content);
-  }
+
 
   body {
+    background-color: transparent;
     font-family: "Lora", serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
@@ -148,7 +146,7 @@
     float: left;
     margin-right: 16px;
     width: 23.609%;
-    
+
   }
 
   img.avatar {
@@ -158,12 +156,12 @@
     border: 1px solid var(--tertiary);
     --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
     --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 
   input:-webkit-autofill,
   textarea:-webkit-autofill {
-    box-shadow: 0 0 0 50px var(--theme)inset
+    box-shadow: 0 0 0 50px var(--theme) inset;
   }
 
 
@@ -213,6 +211,8 @@
         transition: box-shadow .4s, -webkit-box-shadow .4s; */
     box-shadow: 0px 1px 6px rgb(43 42 51 / 10%);
     border: solid 0.1px #b8b8ff80;
+    backdrop-filter: blur(4px) saturate(180%);
+    -webkit-backdrop-filter: blur(4px) saturate(180%);
   }
 
 
@@ -225,7 +225,7 @@
     border-radius: inherit;
     border: calc(var(--radius)/3.14) solid transparent;
     margin: .59%;
-    
+
   }
 
 
@@ -291,8 +291,9 @@
     height: 100%;
     align-items: stretch;
     background: #eeeeee94;
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
 
-    
   }
 
   .repo-card>a {
@@ -306,13 +307,12 @@
   .repo-card:hover {
     transition: all 0.2s ease-out;
     top: -4px;
-    background: rgb(222 222 243 / 19%);
     border: solid 1px var(--base-color);
     box-shadow: 0 20px 40px rgb(0 0 0 / 7%), 0 10px 20px rgb(0 0 0 / 4%);
     border-color: #3578e5;
     transform: translateY(-1px);
     transition: .15s ease-out;
- }
+  }
 
   code,
   .highlight {
@@ -320,20 +320,22 @@
     border-radius: 3px;
     padding: 0 3px;
   }
-  
-  .openInNewWindowlist{
+
+  .openInNewWindowlist {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
-  .openInNewWindow{
+
+  .openInNewWindow {
     text-decoration: none;
     color: inherit;
   }
+
   .openInNewWindow::after {
     content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
-  margin: 0px 3px 0px 5px;
+    margin: 0px 3px 0px 5px;
   }
 
 

@@ -4,10 +4,10 @@ permalink: '/humans.txt'
 ---
 /* TEAM */
     Author: Prakash Sellathurai
-    Email: [Author's Full Name] [at] [GMAIL] [dot] [com]
+    Email: prakashsellathurai@gmail.com
     Web: {{ site.url }}
     Twitter: @prakash1729brt
-    From: Tamil Nadu, India
+    From: India
 
 /* THANKS */
     Jekyll: https://jekyllrb.com

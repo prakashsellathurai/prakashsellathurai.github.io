@@ -1,12 +1,12 @@
 
 import urllib.request, json 
-from rich import print
-import yaml
-# with urllib.request.urlopen("https://api.github.com/users/prakashsellathurai/repos") as url:
-#     data = json.loads(url.read().decode())
 
-#     with open('./repos.json', 'w', encoding='utf-8') as f:
-#         json.dump(data, f, ensure_ascii=False, indent=4)
+import yaml
+with urllib.request.urlopen("https://api.github.com/users/prakashsellathurai/repos") as url:
+    data = json.loads(url.read().decode())
+
+    with open('./repos.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 
 with open('./repos.json', 'r') as f:

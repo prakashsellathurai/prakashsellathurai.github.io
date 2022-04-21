@@ -36,3 +36,5 @@
 ##########################################################
 User-Agent: *
 Disallow: /prakash_s_resume.pdf
+## Disallows machines from accessing humans info
+Disallow: /humans.txt

@@ -12,9 +12,8 @@ description:  Home page for Prakash Sellathurai's website
 <img class="avatar"   width="360" height="360" alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
 </div>
 
-Hello!  I'm
-<h1 style="overflow: hidden;"> Prakash Sellathurai </h1>
-
+<p style=" display: inline;">Hello!  I'm <h1 style="font-style: inherit;font-size: inherit;display: inline"><mark>Prakash</mark></h1>
+</p>
 <p>
 I am a <strong>Software Engineer</strong> with background in computer vision and fullstack engineering.
 </p>

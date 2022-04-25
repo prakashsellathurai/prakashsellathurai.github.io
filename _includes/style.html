@@ -47,11 +47,11 @@
 
   html {
     min-height: 100%;
-    background-color: var(--theme);
     color: var(--content);
-    background-color: #d5fefd;
-    background-image: linear-gradient(315deg, #d5fefd 0%, #fffcff 74%);
+    background: linear-gradient( var(--main-color), var(--main-color) ),url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAAAAACoWZBhAAAAEElEQVR4AWP8zwADtGceAABUVgrBZLVk3wAAAABJRU5ErkJggg==);;
     background-attachment: fixed;
+    background-repeat: repeat;
+    background-blend-mode: multiply;
   }
 
   main {
@@ -61,21 +61,22 @@
 
 
   body {
-    background-color: transparent;
+    background-color: var(--main-color);
     font-family: "Lora", serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     max-width: var(--main-width);
-    margin: 1em auto 0em;
+    margin: 0em auto 0em;
     line-height: 145%;
     letter-spacing: 0.05em;
     font-size: 17px;
     font-weight: 400;
-    padding: 0 1em;
+    padding: 1em 1em;
     -webkit-font-smoothing: antialiased;
     font-feature-settings: "kern";
     font-kerning: normal;
     text-rendering: optimizeLegibility;
+    border-radius: .25rem;
   }
 
   .list {
@@ -354,7 +355,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: flex-end;
   }
 
   .footer span {
@@ -370,7 +371,18 @@
   .footer span:last-child {
     white-space: nowrap
   }
-
+  .footer span:last-child a {
+  display: inline-block;
+  }
+  .footer span:last-child a svg {
+    position: relative;
+  display: inline-block; 
+  color: var(--content);
+  }
+  .footer span:last-child a svg:hover{
+  background-color: var(--base-color);
+    border-radius: 0.5em;
+}
 
   .footer a:hover {
     border-bottom: 1px solid var(--primary)

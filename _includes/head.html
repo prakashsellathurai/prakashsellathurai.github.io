@@ -2,10 +2,10 @@
     <meta charset="utf-8" />
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    {% include font.html %}
     {% if page.description%}<meta name="description" content="{{ page.description }}">{% endif %}
     {% if page.keywords %}<meta name="keywords" content="{{ page.keywords | join: ', ' | escape }}">{% endif %}
     {% if page.title %}<title>{{ page.title }}</title>{% endif %}
     <link rel='author' href='/humans.txt' type='text/plain'>
-    {% include font.html %}
     {% include style.html %}
 </head>

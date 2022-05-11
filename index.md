@@ -12,8 +12,8 @@ description:  Home page
 <img class="avatar"   width="360" height="360" alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
 </div>
 
-<p style=" display: inline;">Hello!  I'm <h1 style="font-style: inherit;font-size: inherit;display: inline">Prakash</h1>
-</p>
+<p style=" display: inline;">Hello!  I'm <h1 style="font-style: inherit;font-size: inherit;display: inline">Prakash</h1></p>
+
 <p>
 I am a <strong>Software Engineer</strong> with background in computer vision and fullstack engineering.
 </p>

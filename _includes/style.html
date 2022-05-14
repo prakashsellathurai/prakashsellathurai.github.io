@@ -3,7 +3,7 @@
       --gap: 24px;
       --content-gap: 20px;
       --nav-width: 1024px;
-      --main-width: 720px;
+      --main-width: 1024px;
       --header-height: 60px;
       --footer-height: 60px;
       --radius: 8px;
@@ -54,10 +54,84 @@
       background-blend-mode: multiply;
     }
 
-    main {
-      min-height: 85vh;
+
+    
+    nav {
+      width: 100%;
+      /* border-radius: 0.25rem; */
+      color: var(--primary);
+      display: flex;
+      align-content: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      /* box-shadow: 0px 1px 6px rgb(43 42 51 / 10%); */
+      /* border: solid 0.1px #b8b8ff80; */
+      /* backdrop-filter: blur(4px) saturate(180%); */
+      -webkit-backdrop-filter: blur(4px) saturate(180%);
+      flex-basis: 10em;
+      flex-grow: 1;
+      align-items: center;
+      padding: 1em;
+      margin-top: 1em;
+      border-right: solid 0.1px #00000066;
     }
 
+
+
+    nav>a {
+      width: 100%;
+      text-decoration: none;
+      text-align: center;
+      white-space: nowrap;
+      color: var(--primary);
+      border-radius: inherit;
+      border: calc(var(--radius)/3.14) solid transparent;
+      margin: .59%;
+      border-radius: 0.25rem;
+    }
+
+
+    nav>a:hover {
+      transition: .4s;
+      text-shadow: 0px 0px 0.5em #00000022;
+      background: rgb(184 184 255 / 36%);
+      outline: 2px solid #ababff00;
+      outline-offset: 2px;
+      transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+      transition-duration: .2s;
+      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+    }
+
+
+
+    /* nav>a.active {
+      background-color: var(--baseii-color);
+      /* color: var(--theme); 
+    } */
+
+    main {
+      min-height: 85vh;
+      flex-basis: 0;
+      flex-grow: 999;
+      padding: 1em;
+    }
+
+    @media only screen and (max-width: 631px) {
+      nav{
+        align-items: flex-end;
+        border: none;
+        backdrop-filter: none;
+        box-shadow: none;
+        border-bottom: solid 0.1px #0000004f;
+      }
+      nav>a {
+        width: 33vw;
+        min-width: max-content;
+      }
+    }
 
 
     body {
@@ -77,6 +151,10 @@
       font-kerning: normal;
       text-rendering: optimizeLegibility;
       border-radius: .25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      align-items: flex-start;
     }
 
     .list {
@@ -149,7 +227,7 @@
     .avatar-container {
       float: left;
       margin-right: 16px;
-      width: 23.609%;
+      width: 128px;
 
     }
 
@@ -194,64 +272,6 @@
 
 
 
-    nav {
-      width: 100%;
-      overflow: auto;
-      border-radius: .25rem;
-      color: var(--primary);
-      margin-bottom: 2em;
-      display: flex;
-      align-content: center;
-      justify-content: center;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: center;
-      /* -webkit-box-shadow: 0 5px 15px 0 rgb(0 0 0 / 8%);
-          box-shadow: 0 5px 15px 0 rgb(0 0 0 / 8%);
-          -webkit-transition: -webkit-box-shadow .4s;
-          transition: -webkit-box-shadow .4s;
-          -o-transition: box-shadow .4s;
-          transition: box-shadow .4s;
-          transition: box-shadow .4s, -webkit-box-shadow .4s; */
-      box-shadow: 0px 1px 6px rgb(43 42 51 / 10%);
-      border: solid 0.1px #b8b8ff80;
-      backdrop-filter: blur(4px) saturate(180%);
-      -webkit-backdrop-filter: blur(4px) saturate(180%);
-    }
-
-
-    nav>a {
-      width: 23.525%;
-      text-decoration: none;
-      text-align: center;
-      white-space: nowrap;
-      color: var(--primary);
-      border-radius: inherit;
-      border: calc(var(--radius)/3.14) solid transparent;
-      margin: .59%;
-
-    }
-
-
-    nav>a:hover {
-      transition: .4s;
-      text-shadow: 0px 0px 0.5em #00000022;
-      background: rgb(184 184 255 / 36%);
-      outline: 2px solid #ababff00;
-      outline-offset: 2px;
-      transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
-      transition-duration: .2s;
-      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-    }
-
-
-
-    /* nav>a.active {
-      background-color: var(--baseii-color);
-      /* color: var(--theme); 
-    } */
 
     .title-section {
       display: table-row;
@@ -288,17 +308,16 @@
 
     .repo-card {
       list-style-type: none;
-
       border: 1px solid #cfcfd8;
       width: 100%;
       height: 100%;
       align-items: stretch;
-      background: rgba(255, 255, 255, 0.2);
+      /* background: rgba(255, 255, 255, 0.2); */
       border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(5px);
+      /* box-shadow: 0 4px 30px rgb(0 0 0 / 10%); */
+      /* backdrop-filter: blur(5px); */
       -webkit-backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgb(39 40 39 / 24%);
 
     }
     .repo-card  span {

@@ -7,9 +7,13 @@ description:  Home page
 
 
 
-
 <div class="avatar-container">
-<img class="avatar"   width="360" height="360" alt="icon" src="{{'./assets/images/avatar.jpg' | relative_url}}" aria-label="avatar" />
+  <picture>
+    <source srcset="{{'./assets/images/avatar.webp' | relative_url}}"  type="image/webp">
+    <source srcset="{{'./assets/images/avatar.jpg' | relative_url}}" type="image/jpeg"> 
+    <img class="avatar"   width="360" height="360" alt="icon" aria-label="avatar" src="{{'./assets/images/avatar.jpg' | relative_url}}"  />
+</picture>
+
 </div>
 
 <div style=" display: inline;">Hello!  I'm <h1 style="font-style: inherit;font-size: inherit;display: inline">Prakash</h1></div>

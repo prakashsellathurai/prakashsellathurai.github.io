@@ -13,8 +13,7 @@ description:  Home page
 
 <div class="avatar-container">
   <picture>
-    <source srcset="{{'./assets/images/avatar.webp' | relative_url}}"  type="image/webp">
-    <source srcset="{{'./assets/images/avatar.jpg' | relative_url}}" type="image/jpeg"> 
+    <source media="(max-width:600px)" srcset="{{'./assets/images/avatar526.jpg' | relative_url}}">
     <img class="avatar"   width="128" height="128" alt="icon" aria-label="avatar" src="{{'./assets/images/avatar.jpg' | relative_url}}"  />
 </picture>
 

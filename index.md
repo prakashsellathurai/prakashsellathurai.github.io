@@ -9,6 +9,11 @@ description:  Home page
   main{
         padding-top: 2em;
   }
+  @media only screen and (max-width: 631px) {
+    main {
+      padding-top: 1em;
+    }
+  }
 </style>
 
 <div class="avatar-container">

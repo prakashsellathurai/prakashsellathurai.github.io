@@ -54,7 +54,28 @@
       background-blend-mode: multiply;
     }
 
-
+    body {
+      background-color: var(--main-color);
+      font-family: "Lora", serif;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+      max-width: var(--main-width);
+      margin: 0em auto 0em;
+      line-height: 145%;
+      letter-spacing: 0.05em;
+      font-size: 17px;
+      font-weight: 400;
+      padding: 1em 1em;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "kern";
+      font-kerning: normal;
+      text-rendering: optimizeLegibility;
+      border-radius: .25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      align-items: flex-start;
+    }
     
     nav {
       width: 100%;
@@ -84,7 +105,7 @@
       text-decoration: none;
       text-align: center;
       white-space: nowrap;
-      color: var(--primary);
+      color: var(--secondary);
       border-radius: inherit;
       border: calc(var(--radius)/3.14) solid transparent;
       margin: .59%;
@@ -107,10 +128,9 @@
 
 
 
-    /* nav>a.active {
-      background-color: var(--baseii-color);
-      /* color: var(--theme); 
-    } */
+    nav > a.active {
+      color: var(--primary);
+    }
 
     main {
       min-height: 85vh;
@@ -127,6 +147,7 @@
         backdrop-filter: none;
         box-shadow: none;
         border-bottom: solid 0.1px #0000004f;
+        flex-direction: row;
       }
       nav>a {
         width: 33vw;
@@ -134,29 +155,6 @@
       }
     }
 
-
-    body {
-      background-color: var(--main-color);
-      font-family: "Lora", serif;
-      -ms-text-size-adjust: 100%;
-      -webkit-text-size-adjust: 100%;
-      max-width: var(--main-width);
-      margin: 0em auto 0em;
-      line-height: 145%;
-      letter-spacing: 0.05em;
-      font-size: 17px;
-      font-weight: 400;
-      padding: 1em 1em;
-      -webkit-font-smoothing: antialiased;
-      font-feature-settings: "kern";
-      font-kerning: normal;
-      text-rendering: optimizeLegibility;
-      border-radius: .25rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1em;
-      align-items: flex-start;
-    }
 
     .list {
       background: var(--code-bg)

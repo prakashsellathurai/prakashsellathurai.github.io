@@ -4,6 +4,7 @@
       --content-gap: 20px;
       --nav-width: 1024px;
       --main-width: 1024px;
+      --min-width: 360px;
       --header-height: 60px;
       --footer-height: 60px;
       --radius: 8px;
@@ -137,7 +138,6 @@
       flex-basis: 0;
       flex-grow: 999;
       padding: 1em;
-      min-width: 360px;
     }
 
     @media only screen and (max-width: 631px) {
@@ -150,7 +150,6 @@
         flex-direction: row;
       }
       nav>a {
-        width: 33vw;
         min-width: max-content;
       }
     }

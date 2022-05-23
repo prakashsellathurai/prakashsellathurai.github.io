@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include head.html %}
+
+<body>
+  <div class="resp-container">
+  {% include nav.html %}
+  <main>
+    <h2 class="title-section">
+      {{page.title}}
+    </h2>
+    <br>
+    {{ page.date | date: "%B %Y"}}
+    <br>
+
+    <article>
+
+      <div class="post-content">
+        {{ content | replace: "<p>", "<br>" | replace: '</p>', '<br>' }}
+      </div>
+
+      <style>
+        .footnotes {
+          margin: 10px 0;
+        }
+
+        .footnotes ol li br {
+          display: none;
+        }
+
+        .footnotes::before {
+          content: " \A Footnotes:";
+          font-weight: bold;
+
+        }
+      </style>
+    </article>
+
+  </main>
+  </div>
+  {% include footer.html %}
+
+</body>
+
+</html>

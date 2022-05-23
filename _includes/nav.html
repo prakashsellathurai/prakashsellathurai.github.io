@@ -1,0 +1,6 @@
+
+<nav>
+    {% for link in site.navigation %}
+    <a {% if page.url==link.url %}class="active" {% endif %} href="{{link.url | relative_url }}" title="{{ link.text }}">{{ link.text }}</a>
+    {% endfor %}
+</nav>

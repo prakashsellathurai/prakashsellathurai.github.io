@@ -1,0 +1,15 @@
+<ul class="repos">
+
+    {% for repository in site.data.repos limit:repolimit %}
+    <li class="repo-card">
+        <a href="{{ repository.url }}" style="text-decoration: none;color: inherit;" >
+            <div style="font-weight: bold; color: var(--primary);margin-bottom: 0.5em;">
+                {{ repository.name | replace: '-', ' '| replace: '_', ' ' | capitalize }}
+            </div>
+            {% if repository.desc %}
+            <span >{{ repository.desc }}</span>
+            {% endif %}
+        </a>
+    </li>
+    {% endfor %}
+</ul>

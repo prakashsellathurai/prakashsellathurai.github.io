@@ -14,15 +14,15 @@ description:  Home page
 
 </div>
 
-<div style=" display: inline;">Hello!  I'm <h1 style="font-style: inherit;font-size: inherit;display: inline">Prakash</h1></div>
+<div style="margin-top: 1.5em;">Hello!  I'm <h1 style="font-style: inherit;font-size: inherit;display: inline">Prakash</h1></div>
 
 <p>
-I am a <strong>Software Engineer</strong> from an interdisciplinary(Mechatronics) background primarily focused on Computer Vision, and Python, with a solid foundation in coding, testing, code reviews and other software engineering practices.
+I am a Software Engineer from an interdisciplinary (Mechatronics) background primarily focused on Computer Vision, and Python, with a solid foundation in coding, testing, code reviews and other software engineering practices.
 </p>
 
 <p>
- In the past, I worked as a software engineer at GKFIT and a computer vision engineer at Bigthinx. 
-In 2018, I co-founded an e-commerce platform ClothX (now archived). As of 2019, I have earned my undergraduate degree in Mechatronics engineering from Anna University.
+ In the past, I worked as a <strong>Software engineer</strong> at Gkfit and a Computer Vision Engineer at Bigthinx. 
+In 2018, I co-founded an e-commerce platform ClothX (now archived). As of 2019, I have earned my undergraduate degree in Mechatronics Engineering from Anna University.
 </p>
 <p>
 My interests lie in the fields of software engineering, information theory, digital control, and electromechanical control systems. I enjoy building automation projects and developing software.
@@ -50,11 +50,10 @@ My latest Essays are
 
 
 {% include bookshelf.html %}
-## Academic paper:
-Automatic Packing system for Hydrphonic substitutes [pdf](https://github.com/prakashsellathurai/ICRAET_conference_paper/blob/master/ICEARCAT_PAPER.pdf), [code](https://github.com/prakashsellathurai/OLE_MACHINE)
+
 
 ## Contact:
-Email is the best way to reach me.  My email address is  <br>&emsp;"**prakash&nbsp;sellathurai [at] gmail [dot] com**".
+Email is the best way to reach me.  My email address is "**prakash&nbsp;sellathurai [at] gmail [dot] com**".
 
 
 ## Elsewhere:

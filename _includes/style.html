@@ -138,17 +138,6 @@
       min-height: 85vh;
     }
 
-    @media only screen and (max-width: 800px) {
-      body > div.resp-container {
-        grid-template-columns: 1fr;
-      }
-      nav {
-        display: flex;
-        border-bottom: solid 0.1px #00000066;
-        padding: 0.5em 0.5em 0.5em 0em;
-      }
-    }
-
 
     .list {
       background: var(--code-bg)
@@ -404,4 +393,23 @@
     .top-link:hover {
       color: var(--primary)
     }
+
+
+    @media only screen and (max-width: 800px) {
+      body > div.resp-container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        display: flex;
+        border-bottom: solid 0.1px #00000066;
+        padding: 0.5em 0.5em 0.5em 0em;
+      }
+    }
+
+    @media only screen and (max-width: 425px) {
+      .avatar-container{
+        float: none;
+      }
+    }
+
 </style>

@@ -32,3 +32,5 @@ gem "jekyll-octicons"
 gem "jemoji"
 gem 'jekyll-redirect-from'
 gem 'jekyll-sitemap'
+
+gem "webrick", "~> 1.7"

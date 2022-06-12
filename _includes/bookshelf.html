@@ -1,6 +1,6 @@
 
 {% if site.data.goodreads.currently-reading %}
-## Bookshelf:
+<h2 class="h2links"><a href="#bookshelf">Bookshelf</a></h2>
 <ul>
 {% for book in site.data.goodreads.currently-reading limit:5 %}
     <li class="openInNewWindowlist"><a class="openInNewWindow" href="{{ book.link }}">{{ book.title }} by {{ book.author }} </a></li> 

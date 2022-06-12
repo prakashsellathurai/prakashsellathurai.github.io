@@ -3,7 +3,7 @@
       --gap: 24px;
       --content-gap: 20px;
       --nav-width: 1024px;
-      --main-width: 1024px;
+      --main-width:  800px;
       --min-width: 360px;
       --header-height: 60px;
       --footer-height: 60px;
@@ -49,10 +49,6 @@
     html {
       min-height: 100%;
       color: var(--content);
-      background: linear-gradient( var(--main-color), var(--main-color) ),url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAAAAACoWZBhAAAAEElEQVR4AWP8zwADtGceAABUVgrBZLVk3wAAAABJRU5ErkJggg==);;
-      background-attachment: fixed;
-      background-repeat: repeat;
-      background-blend-mode: multiply;
     }
 
     body {
@@ -64,7 +60,7 @@
       margin: 0em auto 0em;
       line-height: 145%;
       letter-spacing: 0.05em;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 400;
       padding: 1em 1em;
       -webkit-font-smoothing: antialiased;
@@ -80,6 +76,7 @@
       grid-column-gap: 1em;
       grid-row-gap: 1em;
       justify-items: stretch;
+      align-items: start;
 
     }
 
@@ -98,6 +95,9 @@
       align-content: flex-start;
       justify-content: start;
 /*       justify-items: center; */
+  border: solid 1px var(--border);
+    border-radius: 0.5em;
+    padding: 1em;
     }
 
 
@@ -136,8 +136,10 @@
 
     main {
       min-height: 85vh;
+      border: solid 1px var(--border);
+      border-radius: 0.5em;
+      padding: 1em 1em 0em;
     }
-
 
     .list {
       background: var(--code-bg)
@@ -296,7 +298,7 @@
       height: 100%;
       align-items: stretch;
       /* background: rgba(255, 255, 255, 0.2); */
-      border-radius: 16px;
+      border-radius: 0.5em;
       /* box-shadow: 0 4px 30px rgb(0 0 0 / 10%); */
       /* backdrop-filter: blur(5px); */
       -webkit-backdrop-filter: blur(5px);
@@ -356,6 +358,7 @@
       grid-template-columns: 1fr 1fr;
       justify-items: stretch;
       grid-column-gap: 1em;
+      align-items: end;
     }
 
     .footer span {
@@ -401,8 +404,7 @@
       }
       nav {
         display: flex;
-        border-bottom: solid 0.1px #00000066;
-        padding: 0.5em 0.5em 0.5em 0em;
+        padding: 0.5em;
       }
     }
 

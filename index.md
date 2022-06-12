@@ -4,7 +4,23 @@ title: Prakash Sellathurai
 description:  Home page
 ---
 
+<style>
+.h2links {
+  display: flex;
+  align-items: center;
+}
+.h2links > a{
+  color: var(--content);  
+}
+.h2links:after {
+  content: '';
+  flex: 1;
+  margin-left: 1rem;
+  height: 1px;
+  background-color: #bfbfbf;
+}
 
+</style>
 
 <div class="avatar-container">
   <picture>
@@ -35,13 +51,13 @@ My interests lie in the fields of software engineering, information theory, digi
 
 
 
-## Projects:
+<h2 class="h2links"><a href="#projects">Projects</a></h2>
 {% assign repolimit = 6 %}
 {% include repos.html  %}
 
 For more Projects, check out  my  **[Github](https://github.com/prakashsellathurai)**  profile.
 
-## Essays:
+<h2 class="h2links"><a href="#essays">Essays</a></h2>
 My latest Essays are
 {% for post in site.posts %}
   - [{{ post.title }}]({{  post.url }})
@@ -51,12 +67,10 @@ My latest Essays are
 
 {% include bookshelf.html %}
 
-
-## Contact:
+<h2 class="h2links"><a href="#contact">Contact</a></h2>
 Email is the best way to reach me.  My email address is "**prakash&nbsp;sellathurai [at] gmail [dot] com**".
 
-
-## Elsewhere:
+<h2 class="h2links"><a href="#elsewhere">Elsewhere</a></h2>
 Find me on   [LinkedIN](https://www.linkedin.com/in/prakashsellathurai/), [Github](https://github.com/prakashsellathurai), [Goodreads](https://www.goodreads.com/user/show/105903487-prakash-sellathurai), [Twitter]( https://twitter.com/prakash1729brt), [Stackoverflow](https://stackoverflow.com/users/8336491/prakash-sellathurai), [Codechef](https://www.codechef.com/users/prakash1729brt) and [Leetcode](https://leetcode.com/prakashsellathurai/) 
 
 

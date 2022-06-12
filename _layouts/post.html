@@ -9,9 +9,9 @@
     <h2 class="title-section">
       {{page.title}}
     </h2>
-    <br>
-    {{ page.date | date: "%B %Y"}}
-    <br>
+    <div style="margin-top: 0.5em;">
+    {{ page.date | date: "%b %Y"}}
+    </div>
 
     <article>
 
@@ -35,10 +35,10 @@
         }
       </style>
     </article>
-
+    {% include footer.html %}
   </main>
   </div>
-  {% include footer.html %}
+  
 
 </body>
 

@@ -37,7 +37,7 @@ I am a Software Engineer from an interdisciplinary (Mechatronics) background pri
 </p>
 
 <p>
- In the past, I worked as a <strong>Software engineer</strong> at Gkfit and a Computer Vision Engineer at Bigthinx. 
+Currently, I am a software development Engineer at Amazon. In the past, I worked as a <strong>Software engineer</strong> at Gkfit and a Computer Vision Engineer at Bigthinx. 
 In 2018, I co-founded an e-commerce platform ClothX (now archived). As of 2019, I have earned my undergraduate degree in Mechatronics Engineering from Anna University.
 </p>
 <p>

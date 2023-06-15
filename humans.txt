@@ -1,0 +1,15 @@
+/* TEAM */
+    Author: Prakash Sellathurai
+    Email: prakashsellathurai@gmail.com
+    Web: https://prakashsellathurai.github.io
+    Twitter: @prakash1729brt
+    From: India
+
+/* THANKS */
+    Jekyll: https://jekyllrb.com
+
+/* SITE */
+    Last update: 2023-06-15 10:12:35 +0530
+    Language: English
+    Doctype: HTML5,css3
+    Software: Github Pages, Jekyll, VSCode

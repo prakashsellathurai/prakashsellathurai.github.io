@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+        <link rel="preload" href="/assets/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2" as="font" type="font/woff2" crossorigin> 
+        
+    <style>
+      /* lora-regular - vietnamese_latin-ext_latin_cyrillic-ext_cyrillic */
+      @font-face {
+        font-family: 'Lora';
+        font-style: normal;
+        font-weight: 400;
+        src: url('/assets/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.eot'); /* IE9 Compat Modes */
+        src: local(''),
+            url('/assets/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('/assets/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2') format('woff2'), /* Super Modern Browsers */
+            url('/assets/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff') format('woff'), /* Modern Browsers */
+            url('/assets/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+            url('/assets/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.svg#Lora') format('svg'); /* Legacy iOS */
+        font-display: swap;
+
+      }
+    </style>
+    <meta name="description" content="archive of essays written by prakash sellathurai">
+    
+    <title>Essays</title>
+    <link rel='author' href='/humans.txt' type='text/plain'>
+    <style>
+    :root {
+      --gap: 24px;
+      --content-gap: 20px;
+      --nav-width: 1024px;
+      --main-width:  900px;
+      --min-width: 360px;
+      --header-height: 60px;
+      --footer-height: 60px;
+      --radius: 8px;
+
+      --main-color: #F8F8FF;
+      --base-color: #B8B8FF;
+      --baseii-color: #ABABFF;
+      --accent-color: #7878FF;
+      /* https://encycolorpedia.com/272827 */
+      --theme: var(--main-color);
+      --entry: rgb(255, 255, 255);
+      --primary: rgb(30, 30, 30);
+      --secondary: rgb(108, 108, 108);
+      --tertiary: rgb(214, 214, 214);
+      --content: rgba(39, 40, 39, 1.0);
+      --hljs-bg: rgb(28, 29, 33);
+      --code-bg: rgb(245, 245, 245);
+      --border: rgb(238, 238, 238)
+    }
+
+    .dark {
+      --theme: rgb(29, 30, 32);
+      --entry: rgb(46, 46, 51);
+      --primary: rgb(218, 218, 219);
+      --secondary: rgb(155, 156, 157);
+      --tertiary: rgb(65, 66, 68);
+      --content: rgb(196, 196, 197);
+      --hljs-bg: rgb(46, 46, 51);
+      --code-bg: rgb(55, 56, 62);
+      --border: rgb(51, 51, 51)
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    *:before,
+    *:after {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      color: var(--content);
+    }
+
+    body {
+      background-color: var(--main-color);
+      font-family: "Lora", serif;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+      max-width: var(--main-width);
+      margin: 0em auto 0em;
+      line-height: 145%;
+      letter-spacing: 0.05em;
+      font-size: 16px;
+      font-weight: 400;
+      padding: 1em 1em;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "kern";
+      font-kerning: normal;
+      text-rendering: optimizeLegibility;
+      border-radius: .25rem;
+    }
+
+    body > div.resp-container{
+      display: grid;
+      grid-template-columns: 1fr 9fr;
+      grid-column-gap: 1em;
+      grid-row-gap: 1em;
+      justify-items: stretch;
+      align-items: start;
+
+    }
+
+    nav {
+      /* border-radius: 0.25rem; */
+      color: var(--primary);
+      /* box-shadow: 0px 1px 6px rgb(43 42 51 / 10%); */
+      /* border: solid 0.1px #b8b8ff80; */
+      /* backdrop-filter: blur(4px) saturate(180%); */
+      -webkit-backdrop-filter: blur(4px) saturate(180%);
+      /* border-right: solid 0.1px #00000066; */
+
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: stretch;
+      align-content: flex-start;
+      justify-content: start;
+/*       justify-items: center; */
+  border: solid 1px var(--border);
+    border-radius: 0.5em;
+    padding: 1em;
+    }
+
+
+
+    nav>a {
+      width: max-content;
+      text-decoration: none;
+      text-align: center;
+      white-space: nowrap;
+      color: var(--secondary);
+      border-radius: inherit;
+      border: calc(var(--radius)/3.14) solid transparent;
+      margin: .59%;
+      border-radius: 0.25rem;
+    }
+
+
+    nav>a:hover {
+      transition: .4s;
+      text-shadow: 0px 0px 0.5em #00000022;
+      background: rgb(184 184 255 / 36%);
+      outline: 2px solid #ababff00;
+      outline-offset: 2px;
+      transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+      transition-duration: .2s;
+      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+    }
+
+
+
+    nav > a.active {
+      color: var(--primary);
+    }
+
+    main {
+      min-height: 85vh;
+      border: solid 1px var(--border);
+      border-radius: 0.5em;
+      padding: 1em 1em 0em;
+    }
+
+    .list {
+      background: var(--code-bg)
+    }
+
+    .dark.list {
+      background: var(--theme)
+    }
+
+
+    button,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--primary)
+    }
+
+    a {
+      color: #4d4ae8;
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.2
+    }
+
+    ul {
+      list-style: square;
+      color: var(--primary);
+    }
+
+    li {
+      line-height: 1.6;
+
+    }
+
+    .inline-title {
+      display: inline;
+    }
+
+    button,
+    input,
+    textarea {
+      padding: 0;
+      font: inherit;
+      background: 0 0;
+      border: 0
+    }
+
+    input,
+    textarea {
+      outline: 0
+    }
+
+    button,
+    input[type=button],
+    input[type=submit] {
+      cursor: pointer
+    }
+
+    .avatar-container {
+      float: left;
+      margin-right: 16px;
+      width: 128px;
+
+    }
+
+    img.avatar {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid var(--tertiary);
+      --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
+      --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    }
+
+    input:-webkit-autofill,
+    textarea:-webkit-autofill {
+      box-shadow: 0 0 0 50px var(--theme) inset;
+    }
+
+
+    ::-webkit-scrollbar-track {
+      background: var(--tertiary)
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 1px;
+    }
+
+    .list:not(.dark)::-webkit-scrollbar-track {
+      background: var(--primary)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--secondary);
+      /* border: 5px solid var(--theme); */
+      border-radius: var(--radius)
+    }
+
+    .list:not(.dark)::-webkit-scrollbar-thumb {
+      border: 5px solid var(--code-bg)
+    }
+
+
+
+
+    .title-section {
+      display: table-row;
+      font-weight: bold;
+      align-items: center
+    }
+
+
+    .post-content {
+      text-align: left;
+    }
+
+    .content-section,
+    .footer-section {
+
+      height: 100%;
+      padding: 4% 4% 0% 4%;
+      display: table;
+      align-items: center;
+      width: 80%;
+      color: rgb(0, 0, 0);
+    }
+
+
+    .repos {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-gap: 1rem;
+      align-items: flex-start;
+      grid-auto-columns: minmax(300px, 1fr);
+      margin-top: 0px;
+    }
+
+    .repo-card {
+      list-style-type: none;
+      border: 1px solid #cfcfd8;
+      width: 100%;
+      height: 100%;
+      align-items: stretch;
+      /* background: rgba(255, 255, 255, 0.2); */
+      border-radius: 0.5em;
+      /* box-shadow: 0 4px 30px rgb(0 0 0 / 10%); */
+      /* backdrop-filter: blur(5px); */
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgb(39 40 39 / 24%);
+      border-bottom: 10px solid #40a9ff;
+
+    }
+    .repo-card  span {
+      font-size: 15px;
+    }
+
+    .repo-card>a {
+      text-decoration: none;
+      display: block;
+      padding: calc(var(--radius)*2);
+      height: inherit;
+
+    }
+
+
+    .repo-card:hover {
+      transition: all 0.2s ease-out;
+      transform: translateY(-2%);
+    }
+
+    code,
+    .highlight {
+      background-color: #eee;
+      border-radius: 3px;
+      padding: 0 3px;
+    }
+
+    .openInNewWindowlist {
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+
+    .openInNewWindow {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .openInNewWindow::after {
+      content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+      margin: 0px 3px 0px 5px;
+    }
+
+
+
+    .footer {
+      margin: auto;
+      line-height: 24px;
+      font-size: x-small;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: stretch;
+      grid-column-gap: 1em;
+      align-items: end;
+    }
+
+    .footer span {
+      margin-inline-start: 1px;
+      margin-inline-end: 1px;
+      white-space: nowrap;
+    }
+
+    .footer span a {
+      text-decoration: none;
+      border: 0 !important;
+    }
+
+    .footer span:last-child {
+      text-align: end;
+    }
+    .footer span:last-child a {
+    display: inline-block;
+    }
+    .footer span:last-child a svg {
+      position: relative;
+    display: inline-block; 
+    color: var(--content);
+    }
+    .footer span:last-child a svg:hover{
+    background-color: var(--base-color);
+      border-radius: 0.5em;
+  }
+
+    .footer a:hover {
+      border-bottom: 1px solid var(--primary)
+    }
+
+    .footer a:hover,
+    .top-link:hover {
+      color: var(--primary)
+    }
+
+
+    @media only screen and (max-width: 800px) {
+      body > div.resp-container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        display: flex;
+        padding: 0.5em;
+      }
+    }
+
+    @media only screen and (max-width: 425px) {
+      .avatar-container{
+        float: none;
+      }
+    }
+
+</style>
+
+</head>
+
+<body>
+  <div class="resp-container">
+    
+<nav>
+    
+    <a  href="/" title="Home">Home</a>
+    
+    <a class="active"  href="/essays/" title="Essays">Essays</a>
+    
+    <a  href="/projects/" title="Projects">Projects</a>
+    
+    <a  href="/prakash_s_resume.pdf" title="Resume">Resume</a>
+    
+</nav>
+
+    <main>
+      
+<ul>
+  <li>
+    <p><a href="/essay/invisible-obvious/">Invisible Obvious</a></p>
+  </li>
+  <li>
+    <p><a href="/essay/right-kind-of-learning/">Right Kind of learning</a></p>
+  </li>
+</ul>
+
+
+      <footer class=footer >
+
+
+    <span  id="copyright">&copy;
+        <span>Prakash Sellathurai</span>
+        2020 -
+        <span>
+            2023
+        </span>
+    </span>
+
+    <span>
+        <a href="/feed.xml" title="feed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <circle cx="5" cy="19" r="1"></circle>
+                <path d="M4 4a16 16 0 0 1 16 16"></path>
+                <path d="M4 11a9 9 0 0 1 9 9"></path>
+             </svg>
+        </a>
+    </span>
+
+
+
+
+
+
+</footer>
+    </main>
+  </div>
+  
+</body>
+
+</html>

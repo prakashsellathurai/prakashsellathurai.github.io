@@ -93,9 +93,9 @@ function createSearchIndex(allBlogs) {
   }
 }
 
-export const Blog = defineDocumentType(() => ({
-  name: 'Blog',
-  filePathPattern: 'blog/**/*.mdx',
+export const Essay = defineDocumentType(() => ({
+  name: 'Essay',
+  filePathPattern: 'essays/**/*.mdx',
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -149,7 +149,7 @@ export const Authors = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Essay, Authors],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
@@ -180,8 +180,8 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
-    createTagCount(allBlogs)
-    createSearchIndex(allBlogs)
+    const { allEssays } = await importData()
+    createTagCount(allEssays)
+    createSearchIndex(allEssays)
   },
 })

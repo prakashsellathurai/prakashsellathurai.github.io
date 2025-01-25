@@ -9,7 +9,7 @@ const siteMetadata = {
   siteUrl: 'https://prakashsellathurai.github.io/',
   siteRepo: 'https://github.com/prakashsellathurai/prakashsellathurai.github.io',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
-  socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
+  socialBanner: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   email: 'prakashsellathurai@gmail.com',
   github: 'https://github.com/prakashsellathurai',
   linkedin: 'https://www.linkedin.com/in/prakashsellathurai/',

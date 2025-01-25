@@ -58,3 +58,8 @@ input:-webkit-autofill:focus {
   display: inline-block;
   vertical-align: middle;
 }
+
+.body-custom {
+  letter-spacing: 0.05em;
+  line-height: 145%;
+}

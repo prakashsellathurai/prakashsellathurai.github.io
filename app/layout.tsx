@@ -104,7 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="body-custom bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
+      <body className="body-custom absolute inset-0 -z-10 h-full w-full bg-white bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] pl-[calc(100vw-100%)] text-black antialiased [background-size:16px_16px] dark:bg-gray-950 dark:text-white">
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>

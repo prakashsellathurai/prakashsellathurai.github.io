@@ -62,4 +62,8 @@ input:-webkit-autofill:focus {
 .body-custom {
   letter-spacing: 0.05em;
   line-height: 145%;
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
 }

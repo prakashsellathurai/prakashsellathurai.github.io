@@ -7,6 +7,7 @@ import { allAuthors, Authors } from 'contentlayer/generated'
 import { coreContent } from 'pliny/utils/contentlayer'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
+import Bookshelf from '@/components/books'
 
 const MAX_DISPLAY = 5
 
@@ -89,6 +90,7 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
+      <Bookshelf />
     </>
   )
 }

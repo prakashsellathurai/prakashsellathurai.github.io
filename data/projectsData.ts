@@ -1,3 +1,4 @@
+import repos from './repos.json'
 interface Project {
   title: string
   description: string
@@ -5,23 +6,7 @@ interface Project {
   imgSrc?: string
 }
 
-const projectsData: Project[] = [
-  {
-    title: 'A Search Engine',
-    description: `What if you could look up any information in the world? Webpages, images, videos
-    and more. Google has many features to help you find exactly what you're looking
-    for.`,
-    imgSrc: '/static/images/google.png',
-    href: 'https://www.google.com',
-  },
-  {
-    title: 'The Time Machine',
-    description: `Imagine being able to travel back in time or to the future. Simple turn the knob
-    to the desired date and press "Go". No more worrying about lost keys or
-    forgotten headphones with this simple yet affordable solution.`,
-    imgSrc: '/static/images/time-machine.jpg',
-    href: '/blog/the-time-machine',
-  },
-]
+const projectsData: Project[] = repos as Project[]
+const sampleProjects: Project[] = repos.slice(0, 6) as Project[]
 
-export default projectsData
+export { projectsData, sampleProjects }

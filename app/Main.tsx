@@ -8,6 +8,7 @@ import { coreContent } from 'pliny/utils/contentlayer'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import Bookshelf from '@/components/books'
+import SampleProjects from '@/components/SampleProjects'
 
 const MAX_DISPLAY = 5
 
@@ -91,6 +92,7 @@ export default function Home({ posts }) {
         </div>
       )}
       <Bookshelf />
+      <SampleProjects />
     </>
   )
 }

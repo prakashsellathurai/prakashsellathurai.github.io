@@ -8,7 +8,8 @@ async function fetchRepos() {
     const response = await fetch(GITHUB_API_URL)
     const data = await response.json()
 
-    data.sort((a) => a.stargazers_count)
+    // Sort data by 'pushed_at' in descending order
+    data.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
 
     // Prepare YAML data
     const yamldata = data.map((datum) => ({

@@ -1,88 +1,8 @@
 [
   {
-    "title": "finance-analysis-data-app",
-    "href": "https://github.com/prakashsellathurai/finance-analysis-data-app",
-    "description": "The Data app that compose the S&P 500 Index Data  and display a visual chart on it"
-  },
-  {
-    "title": "Goodreads-Random-Quotes-Badge",
-    "href": "https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge",
-    "description": " Show a random quote from your Goodreads Account on your GitHub readme"
-  },
-  {
-    "title": "LOLWUT",
-    "href": "https://github.com/prakashsellathurai/LOLWUT",
-    "description": "Generative Art Experiment using Chaos theory"
-  },
-  {
-    "title": "CLothXMicroServices",
-    "href": "https://github.com/prakashsellathurai/CLothXMicroServices",
-    "description": "Backend code written in nodejs for clothX ( an e-commerce platform ) and deployable via Gcloud Function"
-  },
-  {
-    "title": "fashion-Image-Recommender",
-    "href": "https://github.com/prakashsellathurai/fashion-Image-Recommender",
-    "description": "Image Recommendation via similarity retrieval through deep learning "
-  },
-  {
-    "title": "bookmarks",
-    "href": "https://github.com/prakashsellathurai/bookmarks",
-    "description": "List of websites related to a variety of topics I am curious about."
-  },
-  {
     "title": "a-grim-loth",
     "href": "https://github.com/prakashsellathurai/a-grim-loth",
     "description": "Essential Algorithms / Data structures implemented in c++ and python "
-  },
-  {
-    "title": "DeFIR",
-    "href": "https://github.com/prakashsellathurai/DeFIR",
-    "description": "Image Retrieval System to find similar images based on their content using the Nearest Neighbor Search Algorithm and Deep Learning. "
-  },
-  {
-    "title": "keras",
-    "href": "https://github.com/prakashsellathurai/keras",
-    "description": "Deep Learning for humans"
-  },
-  {
-    "title": "GPU-with-webGL",
-    "href": "https://github.com/prakashsellathurai/GPU-with-webGL",
-    "description": "WebGL Renderer Demo with local GPU resource access"
-  },
-  {
-    "title": "ICRAET_conference_paper",
-    "href": "https://github.com/prakashsellathurai/ICRAET_conference_paper",
-    "description": "Thesis on Automatic Packing system for Hydrphonic substitute packaging at mass scale"
-  },
-  {
-    "title": "Awesome-Product-Management",
-    "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
-    "description": "A curated list of Product Management Resources :seedling:"
-  },
-  {
-    "title": "idiota",
-    "href": "https://github.com/prakashsellathurai/idiota",
-    "description": "Minimal version control system implemented in python"
-  },
-  {
-    "title": "cassava-leaf-disease-classification",
-    "href": "https://github.com/prakashsellathurai/cassava-leaf-disease-classification",
-    "description": "Deep learning Solution to identify the type of disease present on the cassava Leaf Images"
-  },
-  {
-    "title": "DoctorPrescriptionClientApp",
-    "href": "https://github.com/prakashsellathurai/DoctorPrescriptionClientApp",
-    "description": "Remote consulting Healthcare Application - A SMART INDIA HACKATHON project  (https://www.sih.gov.in/)"
-  },
-  {
-    "title": "Heimdall",
-    "href": "https://github.com/prakashsellathurai/Heimdall",
-    "description": "HN content  Curator available as a browser extension"
-  },
-  {
-    "title": "github-metrics",
-    "href": "https://github.com/prakashsellathurai/github-metrics",
-    "description": "Github contributions as infographic"
   },
   {
     "title": "AlgorithmicProblemSolving-and-MachineLearning-FlashCards",
@@ -90,39 +10,9 @@
     "description": "AlgorithmicProblemSolving and MachineLearning FlashCards"
   },
   {
-    "title": "GPT-2-Blogger",
-    "href": "https://github.com/prakashsellathurai/GPT-2-Blogger",
-    "description": "Blogging AI built on top of GPT-2 :pencil: :thought_balloon:"
-  },
-  {
-    "title": "Auto-Content-Generation",
-    "href": "https://github.com/prakashsellathurai/Auto-Content-Generation",
-    "description": "Text Generation using LSTM Architecture"
-  },
-  {
-    "title": "covid-19-analysis",
-    "href": "https://github.com/prakashsellathurai/covid-19-analysis",
-    "description": "Analysis of Covid 19 data"
-  },
-  {
-    "title": "explore",
-    "href": "https://github.com/prakashsellathurai/explore",
-    "description": "Community-curated topic and collection pages on GitHub"
-  },
-  {
     "title": "amp-cache-url-translator",
     "href": "https://github.com/prakashsellathurai/amp-cache-url-translator",
     "description": "Tool to convert an website into it's AMP cache version"
-  },
-  {
-    "title": "EverybodyDanceNow",
-    "href": "https://github.com/prakashsellathurai/EverybodyDanceNow",
-    "description": "Motion Retargeting Video Subjects"
-  },
-  {
-    "title": "automatic-robot",
-    "href": "https://github.com/prakashsellathurai/automatic-robot",
-    "description": "Open-AI bot for automation "
   },
   {
     "title": "anaconda-opencv-cuda",
@@ -130,9 +20,14 @@
     "description": "OpenCV environment built on anaconda gpu"
   },
   {
-    "title": "conway-s-game-of-life",
-    "href": "https://github.com/prakashsellathurai/conway-s-game-of-life",
-    "description": "Conway's game of life simulation with genetic algorithm"
+    "title": "Auto-Content-Generation",
+    "href": "https://github.com/prakashsellathurai/Auto-Content-Generation",
+    "description": "Text Generation using LSTM Architecture"
+  },
+  {
+    "title": "automatic-robot",
+    "href": "https://github.com/prakashsellathurai/automatic-robot",
+    "description": "Open-AI bot for automation "
   },
   {
     "title": "Automatic_furnace_handler",
@@ -140,13 +35,118 @@
     "description": "Embedded C++ code for furnace monitoring and control system"
   },
   {
+    "title": "Awesome-Product-Management",
+    "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
+    "description": "A curated list of Product Management Resources :seedling:"
+  },
+  {
+    "title": "bookmarks",
+    "href": "https://github.com/prakashsellathurai/bookmarks",
+    "description": "List of websites related to a variety of topics I am curious about."
+  },
+  {
+    "title": "cassava-leaf-disease-classification",
+    "href": "https://github.com/prakashsellathurai/cassava-leaf-disease-classification",
+    "description": "Deep learning Solution to identify the type of disease present on the cassava Leaf Images"
+  },
+  {
+    "title": "CLothXMicroServices",
+    "href": "https://github.com/prakashsellathurai/CLothXMicroServices",
+    "description": "Backend code written in nodejs for clothX ( an e-commerce platform ) and deployable via Gcloud Function"
+  },
+  {
     "title": "compiler",
     "href": "https://github.com/prakashsellathurai/compiler",
     "description": "light weight compiler "
   },
   {
+    "title": "conway-s-game-of-life",
+    "href": "https://github.com/prakashsellathurai/conway-s-game-of-life",
+    "description": "Conway's game of life simulation with genetic algorithm"
+  },
+  {
+    "title": "covid-19-analysis",
+    "href": "https://github.com/prakashsellathurai/covid-19-analysis",
+    "description": "Analysis of Covid 19 data"
+  },
+  {
+    "title": "DeFIR",
+    "href": "https://github.com/prakashsellathurai/DeFIR",
+    "description": "Image Retrieval System to find similar images based on their content using the Nearest Neighbor Search Algorithm and Deep Learning. "
+  },
+  {
+    "title": "DoctorPrescriptionClientApp",
+    "href": "https://github.com/prakashsellathurai/DoctorPrescriptionClientApp",
+    "description": "Remote consulting Healthcare Application - A SMART INDIA HACKATHON project  (https://www.sih.gov.in/)"
+  },
+  {
+    "title": "EverybodyDanceNow",
+    "href": "https://github.com/prakashsellathurai/EverybodyDanceNow",
+    "description": "Motion Retargeting Video Subjects"
+  },
+  {
     "title": "EXPERIMENTS-WITH-BLOCKCHAIN",
     "href": "https://github.com/prakashsellathurai/EXPERIMENTS-WITH-BLOCKCHAIN",
     "description": "bare minimum blockchain core experiments"
+  },
+  {
+    "title": "explore",
+    "href": "https://github.com/prakashsellathurai/explore",
+    "description": "Community-curated topic and collection pages on GitHub"
+  },
+  {
+    "title": "fashion-Image-Recommender",
+    "href": "https://github.com/prakashsellathurai/fashion-Image-Recommender",
+    "description": "Image Recommendation via similarity retrieval through deep learning "
+  },
+  {
+    "title": "finance-analysis-data-app",
+    "href": "https://github.com/prakashsellathurai/finance-analysis-data-app",
+    "description": "The Data app that compose the S&P 500 Index Data  and display a visual chart on it"
+  },
+  {
+    "title": "github-metrics",
+    "href": "https://github.com/prakashsellathurai/github-metrics",
+    "description": "Github contributions as infographic"
+  },
+  {
+    "title": "Goodreads-Random-Quotes-Badge",
+    "href": "https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge",
+    "description": " Show a random quote from your Goodreads Account on your GitHub readme"
+  },
+  {
+    "title": "GPT-2-Blogger",
+    "href": "https://github.com/prakashsellathurai/GPT-2-Blogger",
+    "description": "Blogging AI built on top of GPT-2 :pencil: :thought_balloon:"
+  },
+  {
+    "title": "GPU-with-webGL",
+    "href": "https://github.com/prakashsellathurai/GPU-with-webGL",
+    "description": "WebGL Renderer Demo with local GPU resource access"
+  },
+  {
+    "title": "Heimdall",
+    "href": "https://github.com/prakashsellathurai/Heimdall",
+    "description": "HN content  Curator available as a browser extension"
+  },
+  {
+    "title": "ICRAET_conference_paper",
+    "href": "https://github.com/prakashsellathurai/ICRAET_conference_paper",
+    "description": "Thesis on Automatic Packing system for Hydrphonic substitute packaging at mass scale"
+  },
+  {
+    "title": "idiota",
+    "href": "https://github.com/prakashsellathurai/idiota",
+    "description": "Minimal version control system implemented in python"
+  },
+  {
+    "title": "keras",
+    "href": "https://github.com/prakashsellathurai/keras",
+    "description": "Deep Learning for humans"
+  },
+  {
+    "title": "leetcode-solutions",
+    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+    "description": "My solutions to Leetcode problems"
   }
 ]

@@ -1,5 +1,10 @@
 [
   {
+    "title": "prakashsellathurai.github.io",
+    "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+    "description": "personal website"
+  },
+  {
     "title": "leetcode-solutions",
     "href": "https://github.com/prakashsellathurai/leetcode-solutions",
     "description": "My solutions to Leetcode problems"
@@ -13,6 +18,16 @@
     "title": "Goodreads-Random-Quotes-Badge",
     "href": "https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge",
     "description": " Show a random quote from your Goodreads Account on your GitHub readme"
+  },
+  {
+    "title": "LOLWUT",
+    "href": "https://github.com/prakashsellathurai/LOLWUT",
+    "description": "Generative Art Experiment using Chaos theory"
+  },
+  {
+    "title": "type-without-typo",
+    "href": "https://github.com/prakashsellathurai/type-without-typo",
+    "description": "Write Essays or notes without hassle over common spelling mistakes."
   },
   {
     "title": "CLothXMicroServices",
@@ -30,9 +45,34 @@
     "description": "List of websites related to a variety of topics I am curious about."
   },
   {
+    "title": "pyqoi",
+    "href": "https://github.com/prakashsellathurai/pyqoi",
+    "description": "Python Library to Encode/Decode the images in “Quite OK Image” (qoi) format "
+  },
+  {
+    "title": "realtime-image-annotator",
+    "href": "https://github.com/prakashsellathurai/realtime-image-annotator",
+    "description": "This project demonstrates the Udacity self-driving car dataset and YOLO object detection into an interactive Streamlit app."
+  },
+  {
+    "title": "power-of-gman",
+    "href": "https://github.com/prakashsellathurai/power-of-gman",
+    "description": null
+  },
+  {
+    "title": "open_clip",
+    "href": "https://github.com/prakashsellathurai/open_clip",
+    "description": "An open source implementation of CLIP."
+  },
+  {
     "title": "a-grim-loth",
     "href": "https://github.com/prakashsellathurai/a-grim-loth",
     "description": "Essential Algorithms / Data structures implemented in c++ and python "
+  },
+  {
+    "title": "OLE_MACHINE",
+    "href": "https://github.com/prakashsellathurai/OLE_MACHINE",
+    "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project"
   },
   {
     "title": "DeFIR",
@@ -43,6 +83,11 @@
     "title": "keras",
     "href": "https://github.com/prakashsellathurai/keras",
     "description": "Fork for PR: add split_dataset utility #16398"
+  },
+  {
+    "title": "Soar",
+    "href": "https://github.com/prakashsellathurai/Soar",
+    "description": "Soar, a general cognitive architecture for systems that exhibit intelligent behavior."
   },
   {
     "title": "GPU-with-webGL",
@@ -80,6 +125,21 @@
     "description": "HN content  Curator available as a browser extension"
   },
   {
+    "title": "Lorentz-Attractor",
+    "href": "https://github.com/prakashsellathurai/Lorentz-Attractor",
+    "description": "Lorentz Attractor simulation "
+  },
+  {
+    "title": "sentiment-analyzer-Web-App",
+    "href": "https://github.com/prakashsellathurai/sentiment-analyzer-Web-App",
+    "description": "Web App to do Sentiment Analysis on the given text"
+  },
+  {
+    "title": "The-Mandelbrot-Set",
+    "href": "https://github.com/prakashsellathurai/The-Mandelbrot-Set",
+    "description": "The Mandelbrot Set implemented in p5 js"
+  },
+  {
     "title": "github-metrics",
     "href": "https://github.com/prakashsellathurai/github-metrics",
     "description": "Github contributions as infographic"
@@ -88,6 +148,21 @@
     "title": "AlgorithmicProblemSolving-and-MachineLearning-FlashCards",
     "href": "https://github.com/prakashsellathurai/AlgorithmicProblemSolving-and-MachineLearning-FlashCards",
     "description": "AlgorithmicProblemSolving and MachineLearning FlashCards"
+  },
+  {
+    "title": "spell-checker",
+    "href": "https://github.com/prakashsellathurai/spell-checker",
+    "description": "a toy spelling corrector that achieves 80 or 90% accuracy at a processing speed of at least 10 words per second in about half a page of code."
+  },
+  {
+    "title": "ML-ASSIGNMENT-IDfy",
+    "href": "https://github.com/prakashsellathurai/ML-ASSIGNMENT-IDfy",
+    "description": "OCR Recognition via custom trained Tesseract "
+  },
+  {
+    "title": "newsapp",
+    "href": "https://github.com/prakashsellathurai/newsapp",
+    "description": "News app curates data from Google news api"
   },
   {
     "title": "GPT-2-Blogger",
@@ -105,6 +180,11 @@
     "description": "Analysis of Covid 19 data"
   },
   {
+    "title": "openpose-docker",
+    "href": "https://github.com/prakashsellathurai/openpose-docker",
+    "description": "A docker build for CMU openpose with Python 3 API GPU support"
+  },
+  {
     "title": "explore",
     "href": "https://github.com/prakashsellathurai/explore",
     "description": "Community-curated topic and collection pages on GitHub"
@@ -120,14 +200,34 @@
     "description": "Motion Retargeting Video Subjects"
   },
   {
+    "title": "Ros-Line-Follower-Robot",
+    "href": "https://github.com/prakashsellathurai/Ros-Line-Follower-Robot",
+    "description": "Line Follower Robot program for RoS simulation"
+  },
+  {
+    "title": "time-series-analysis",
+    "href": "https://github.com/prakashsellathurai/time-series-analysis",
+    "description": "forecasting techniques for continuous data"
+  },
+  {
     "title": "automatic-robot",
     "href": "https://github.com/prakashsellathurai/automatic-robot",
     "description": "Open-AI bot for automation "
   },
   {
+    "title": "maze-solver--classic",
+    "href": "https://github.com/prakashsellathurai/maze-solver--classic",
+    "description": "path finder via recursive division algorithm :octocat:"
+  },
+  {
     "title": "anaconda-opencv-cuda",
     "href": "https://github.com/prakashsellathurai/anaconda-opencv-cuda",
     "description": "OpenCV environment built on anaconda gpu"
+  },
+  {
+    "title": "optimal-question-paper-generation",
+    "href": "https://github.com/prakashsellathurai/optimal-question-paper-generation",
+    "description": "Combinatorial optimization algorithm  for Question paper generation task"
   },
   {
     "title": "conway-s-game-of-life",
@@ -140,6 +240,16 @@
     "description": "Embedded C++ code for furnace monitoring and control system"
   },
   {
+    "title": "solidwork_models",
+    "href": "https://github.com/prakashsellathurai/solidwork_models",
+    "description": "Asset management Repo of solid work model files"
+  },
+  {
+    "title": "prime-factorization",
+    "href": "https://github.com/prakashsellathurai/prime-factorization",
+    "description": "Prime Factorization algorithm implemented in JS"
+  },
+  {
     "title": "compiler",
     "href": "https://github.com/prakashsellathurai/compiler",
     "description": "light weight compiler "
@@ -148,5 +258,15 @@
     "title": "EXPERIMENTS-WITH-BLOCKCHAIN",
     "href": "https://github.com/prakashsellathurai/EXPERIMENTS-WITH-BLOCKCHAIN",
     "description": "bare minimum blockchain core experiments"
+  },
+  {
+    "title": "pythonQrCodeReader",
+    "href": "https://github.com/prakashsellathurai/pythonQrCodeReader",
+    "description": "QrCode scanner from a webcam"
+  },
+  {
+    "title": "OPTICAL_CHARACTER_RECOGNITION",
+    "href": "https://github.com/prakashsellathurai/OPTICAL_CHARACTER_RECOGNITION",
+    "description": "OCR implemented using the KNN algorithm "
   }
 ]

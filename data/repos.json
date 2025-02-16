@@ -1,5 +1,10 @@
 [
   {
+    "title": "leetcode-solutions",
+    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+    "description": "My solutions to Leetcode problems"
+  },
+  {
     "title": "finance-analysis-data-app",
     "href": "https://github.com/prakashsellathurai/finance-analysis-data-app",
     "description": "The Data app that compose the S&P 500 Index Data  and display a visual chart on it"
@@ -8,11 +13,6 @@
     "title": "Goodreads-Random-Quotes-Badge",
     "href": "https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge",
     "description": " Show a random quote from your Goodreads Account on your GitHub readme"
-  },
-  {
-    "title": "LOLWUT",
-    "href": "https://github.com/prakashsellathurai/LOLWUT",
-    "description": "Generative Art Experiment using Chaos theory"
   },
   {
     "title": "CLothXMicroServices",
@@ -42,7 +42,7 @@
   {
     "title": "keras",
     "href": "https://github.com/prakashsellathurai/keras",
-    "description": "Deep Learning for humans"
+    "description": "Fork for PR: add split_dataset utility #16398"
   },
   {
     "title": "GPU-with-webGL",

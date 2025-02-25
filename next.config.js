@@ -1,19 +1,19 @@
-const { withContentlayer } = require('next-contentlayer2')
+import { withContentlayer } from 'next-contentlayer2'
+import withBundleAnalyzer from '@next/bundle-analyzer'
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
-
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
-  style-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is www.googletagmanager.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com;
   img-src * blob: data:;
   media-src *.s3.amazonaws.com;
   connect-src *;
-  font-src 'self';
-  frame-src giscus.app
+  font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com prakashsellathurai.github.io;
+  frame-src giscus.app;
 `
 
 const securityHeaders = [
@@ -59,10 +59,10 @@ const basePath = process.env.BASE_PATH || undefined
 const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 
 /**
- * @type {import('next/dist/next-server/server/config').NextConfig}
+ * @type {import('next').NextConfig}
  **/
-module.exports = () => {
-  const plugins = [withContentlayer, withBundleAnalyzer]
+const nextConfig = () => {
+  const plugins = [withContentlayer, bundleAnalyzer]
   return plugins.reduce((acc, next) => next(acc), {
     output,
     basePath,
@@ -76,6 +76,10 @@ module.exports = () => {
         {
           protocol: 'https',
           hostname: 'picsum.photos',
+        },
+        {
+          protocol: 'https',
+          hostname: 'i.gr-assets.com',
         },
       ],
       unoptimized,
@@ -98,3 +102,5 @@ module.exports = () => {
     },
   })
 }
+
+export default nextConfig

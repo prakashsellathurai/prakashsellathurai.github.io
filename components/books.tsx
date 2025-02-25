@@ -70,9 +70,11 @@ const Bookshelf: React.FC = () => {
           {books.map((book, index) => (
             <a key={book.title} href={book.link} target="_blank" rel="noopener noreferrer">
               <div key={index} className="flex h-96 flex-col rounded-lg bg-white p-4 shadow-md">
-                <img
+                <Image
                   src={book.cover}
                   alt={book.title}
+                  width={200}
+                  height={200}
                   className="mb-4 h-64 w-full rounded-md object-contain"
                 />
                 <p className="text-l font-semibold">{book.title}</p>

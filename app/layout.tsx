@@ -1,7 +1,7 @@
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
-
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { Lora } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
@@ -116,6 +116,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </SectionContainer>
         </ThemeProviders>
       </body>
+      <GoogleAnalytics gaId="G-1BMPC95JP7" />
     </html>
   )
 }

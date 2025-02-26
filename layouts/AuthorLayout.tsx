@@ -27,7 +27,7 @@ export default function AuthorLayout({ children, content }: Props) {
         'Prakash is a Software Engineer with a multidisciplinary background in Mechatronics, specializing in Computer Vision and Python. He has worked at Amazon and Bigthinx, and co-founded ClothX. His interests include software engineering, information theory, and automation projects.',
       image: avatar,
       url: siteUrl,
-      sameAs: [github, linkedin, twitter, bluesky].filter(Boolean), // Filter out any undefined or empty values
+      sameAs: [github, linkedin, twitter, bluesky].filter((url): url is string => !!url), // Filter out any undefined or empty values
     },
   }
 

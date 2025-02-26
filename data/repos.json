@@ -2,271 +2,325 @@
   {
     "title": "prakashsellathurai.github.io",
     "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-    "description": "personal website"
-  },
-  {
-    "title": "leetcode-solutions",
-    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
-    "description": "My solutions to Leetcode problems"
-  },
-  {
-    "title": "finance-analysis-data-app",
-    "href": "https://github.com/prakashsellathurai/finance-analysis-data-app",
-    "description": "The Data app that compose the S&P 500 Index Data  and display a visual chart on it"
-  },
-  {
-    "title": "Goodreads-Random-Quotes-Badge",
-    "href": "https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge",
-    "description": " Show a random quote from your Goodreads Account on your GitHub readme"
-  },
-  {
-    "title": "LOLWUT",
-    "href": "https://github.com/prakashsellathurai/LOLWUT",
-    "description": "Generative Art Experiment using Chaos theory"
-  },
-  {
-    "title": "type-without-typo",
-    "href": "https://github.com/prakashsellathurai/type-without-typo",
-    "description": "Write Essays or notes without hassle over common spelling mistakes."
-  },
-  {
-    "title": "CLothXMicroServices",
-    "href": "https://github.com/prakashsellathurai/CLothXMicroServices",
-    "description": "Backend code written in nodejs for clothX ( an e-commerce platform ) and deployable via Gcloud Function"
-  },
-  {
-    "title": "fashion-Image-Recommender",
-    "href": "https://github.com/prakashsellathurai/fashion-Image-Recommender",
-    "description": "Image Recommendation via similarity retrieval through deep learning "
-  },
-  {
-    "title": "bookmarks",
-    "href": "https://github.com/prakashsellathurai/bookmarks",
-    "description": "List of websites related to a variety of topics I am curious about."
+    "description": "personal website",
+    "stars": 0
   },
   {
     "title": "pyqoi",
     "href": "https://github.com/prakashsellathurai/pyqoi",
-    "description": "Python Library to Encode/Decode the images in “Quite OK Image” (qoi) format "
+    "description": "Python Library to Encode/Decode the images in “Quite OK Image” (qoi) format ",
+    "stars": 1
+  },
+  {
+    "title": "leetcode-solutions",
+    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+    "description": "My solutions to Leetcode problems",
+    "stars": 0
+  },
+  {
+    "title": "finance-analysis-data-app",
+    "href": "https://github.com/prakashsellathurai/finance-analysis-data-app",
+    "description": "The Data app that compose the S&P 500 Index Data  and display a visual chart on it",
+    "stars": 0
+  },
+  {
+    "title": "Goodreads-Random-Quotes-Badge",
+    "href": "https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge",
+    "description": " Show a random quote from your Goodreads Account on your GitHub readme",
+    "stars": 2
+  },
+  {
+    "title": "LOLWUT",
+    "href": "https://github.com/prakashsellathurai/LOLWUT",
+    "description": "Generative Art Experiment using Chaos theory",
+    "stars": 0
+  },
+  {
+    "title": "type-without-typo",
+    "href": "https://github.com/prakashsellathurai/type-without-typo",
+    "description": "Write Essays or notes without hassle over common spelling mistakes.",
+    "stars": 1
+  },
+  {
+    "title": "CLothXMicroServices",
+    "href": "https://github.com/prakashsellathurai/CLothXMicroServices",
+    "description": "Backend code written in nodejs for clothX ( an e-commerce platform ) and deployable via Gcloud Function",
+    "stars": 0
+  },
+  {
+    "title": "fashion-Image-Recommender",
+    "href": "https://github.com/prakashsellathurai/fashion-Image-Recommender",
+    "description": "Image Recommendation via similarity retrieval through deep learning ",
+    "stars": 3
+  },
+  {
+    "title": "bookmarks",
+    "href": "https://github.com/prakashsellathurai/bookmarks",
+    "description": "List of websites related to a variety of topics I am curious about.",
+    "stars": 5
   },
   {
     "title": "realtime-image-annotator",
     "href": "https://github.com/prakashsellathurai/realtime-image-annotator",
-    "description": "This project demonstrates the Udacity self-driving car dataset and YOLO object detection into an interactive Streamlit app."
+    "description": "This project demonstrates the Udacity self-driving car dataset and YOLO object detection into an interactive Streamlit app.",
+    "stars": 0
   },
   {
     "title": "power-of-gman",
     "href": "https://github.com/prakashsellathurai/power-of-gman",
-    "description": null
+    "description": null,
+    "stars": 0
   },
   {
     "title": "open_clip",
     "href": "https://github.com/prakashsellathurai/open_clip",
-    "description": "An open source implementation of CLIP."
+    "description": "An open source implementation of CLIP.",
+    "stars": 0
   },
   {
     "title": "a-grim-loth",
     "href": "https://github.com/prakashsellathurai/a-grim-loth",
-    "description": "Essential Algorithms / Data structures implemented in c++ and python "
+    "description": "Essential Algorithms / Data structures implemented in c++ and python ",
+    "stars": 6
   },
   {
     "title": "OLE_MACHINE",
     "href": "https://github.com/prakashsellathurai/OLE_MACHINE",
-    "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project"
+    "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project",
+    "stars": 0
   },
   {
     "title": "DeFIR",
     "href": "https://github.com/prakashsellathurai/DeFIR",
-    "description": "Image Retrieval System to find similar images based on their content using the Nearest Neighbor Search Algorithm and Deep Learning. "
+    "description": "Image Retrieval System to find similar images based on their content using the Nearest Neighbor Search Algorithm and Deep Learning. ",
+    "stars": 0
   },
   {
     "title": "keras",
     "href": "https://github.com/prakashsellathurai/keras",
-    "description": "Fork for PR: add split_dataset utility #16398"
+    "description": "Fork for PR: add split_dataset utility #16398",
+    "stars": 0
   },
   {
     "title": "Soar",
     "href": "https://github.com/prakashsellathurai/Soar",
-    "description": "Soar, a general cognitive architecture for systems that exhibit intelligent behavior."
+    "description": "Soar, a general cognitive architecture for systems that exhibit intelligent behavior.",
+    "stars": 0
   },
   {
     "title": "GPU-with-webGL",
     "href": "https://github.com/prakashsellathurai/GPU-with-webGL",
-    "description": "WebGL Renderer Demo with local GPU resource access"
+    "description": "WebGL Renderer Demo with local GPU resource access",
+    "stars": 0
   },
   {
     "title": "ICRAET_conference_paper",
     "href": "https://github.com/prakashsellathurai/ICRAET_conference_paper",
-    "description": "Thesis on Automatic Packing system for Hydrphonic substitute packaging at mass scale"
+    "description": "Thesis on Automatic Packing system for Hydrphonic substitute packaging at mass scale",
+    "stars": 0
   },
   {
     "title": "Awesome-Product-Management",
     "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
-    "description": "A curated list of Product Management Resources :seedling:"
+    "description": "A curated list of Product Management Resources :seedling:",
+    "stars": 48
   },
   {
     "title": "idiota",
     "href": "https://github.com/prakashsellathurai/idiota",
-    "description": "Minimal version control system implemented in python"
+    "description": "Minimal version control system implemented in python",
+    "stars": 0
   },
   {
     "title": "cassava-leaf-disease-classification",
     "href": "https://github.com/prakashsellathurai/cassava-leaf-disease-classification",
-    "description": "Deep learning Solution to identify the type of disease present on the cassava Leaf Images"
+    "description": "Deep learning Solution to identify the type of disease present on the cassava Leaf Images",
+    "stars": 0
   },
   {
     "title": "DoctorPrescriptionClientApp",
     "href": "https://github.com/prakashsellathurai/DoctorPrescriptionClientApp",
-    "description": "Remote consulting Healthcare Application - A SMART INDIA HACKATHON project  (https://www.sih.gov.in/)"
+    "description": "Remote consulting Healthcare Application - A SMART INDIA HACKATHON project  (https://www.sih.gov.in/)",
+    "stars": 0
   },
   {
     "title": "Heimdall",
     "href": "https://github.com/prakashsellathurai/Heimdall",
-    "description": "HN content  Curator available as a browser extension"
+    "description": "HN content  Curator available as a browser extension",
+    "stars": 1
   },
   {
     "title": "Lorentz-Attractor",
     "href": "https://github.com/prakashsellathurai/Lorentz-Attractor",
-    "description": "Lorentz Attractor simulation "
+    "description": "Lorentz Attractor simulation ",
+    "stars": 0
   },
   {
     "title": "sentiment-analyzer-Web-App",
     "href": "https://github.com/prakashsellathurai/sentiment-analyzer-Web-App",
-    "description": "Web App to do Sentiment Analysis on the given text"
+    "description": "Web App to do Sentiment Analysis on the given text",
+    "stars": 0
   },
   {
     "title": "The-Mandelbrot-Set",
     "href": "https://github.com/prakashsellathurai/The-Mandelbrot-Set",
-    "description": "The Mandelbrot Set implemented in p5 js"
+    "description": "The Mandelbrot Set implemented in p5 js",
+    "stars": 0
   },
   {
     "title": "github-metrics",
     "href": "https://github.com/prakashsellathurai/github-metrics",
-    "description": "Github contributions as infographic"
+    "description": "Github contributions as infographic",
+    "stars": 0
   },
   {
     "title": "AlgorithmicProblemSolving-and-MachineLearning-FlashCards",
     "href": "https://github.com/prakashsellathurai/AlgorithmicProblemSolving-and-MachineLearning-FlashCards",
-    "description": "AlgorithmicProblemSolving and MachineLearning FlashCards"
+    "description": "AlgorithmicProblemSolving and MachineLearning FlashCards",
+    "stars": 0
   },
   {
     "title": "spell-checker",
     "href": "https://github.com/prakashsellathurai/spell-checker",
-    "description": "a toy spelling corrector that achieves 80 or 90% accuracy at a processing speed of at least 10 words per second in about half a page of code."
+    "description": "a toy spelling corrector that achieves 80 or 90% accuracy at a processing speed of at least 10 words per second in about half a page of code.",
+    "stars": 0
   },
   {
     "title": "ML-ASSIGNMENT-IDfy",
     "href": "https://github.com/prakashsellathurai/ML-ASSIGNMENT-IDfy",
-    "description": "OCR Recognition via custom trained Tesseract "
+    "description": "OCR Recognition via custom trained Tesseract ",
+    "stars": 0
   },
   {
     "title": "newsapp",
     "href": "https://github.com/prakashsellathurai/newsapp",
-    "description": "News app curates data from Google news api"
+    "description": "News app curates data from Google news api",
+    "stars": 0
   },
   {
     "title": "GPT-2-Blogger",
     "href": "https://github.com/prakashsellathurai/GPT-2-Blogger",
-    "description": "Blogging AI built on top of GPT-2 :pencil: :thought_balloon:"
+    "description": "Blogging AI built on top of GPT-2 :pencil: :thought_balloon:",
+    "stars": 0
   },
   {
     "title": "Auto-Content-Generation",
     "href": "https://github.com/prakashsellathurai/Auto-Content-Generation",
-    "description": "Text Generation using LSTM Architecture"
+    "description": "Text Generation using LSTM Architecture",
+    "stars": 0
   },
   {
     "title": "covid-19-analysis",
     "href": "https://github.com/prakashsellathurai/covid-19-analysis",
-    "description": "Analysis of Covid 19 data"
+    "description": "Analysis of Covid 19 data",
+    "stars": 0
   },
   {
     "title": "openpose-docker",
     "href": "https://github.com/prakashsellathurai/openpose-docker",
-    "description": "A docker build for CMU openpose with Python 3 API GPU support"
+    "description": "A docker build for CMU openpose with Python 3 API GPU support",
+    "stars": 1
   },
   {
     "title": "explore",
     "href": "https://github.com/prakashsellathurai/explore",
-    "description": "Community-curated topic and collection pages on GitHub"
+    "description": "Community-curated topic and collection pages on GitHub",
+    "stars": 0
   },
   {
     "title": "amp-cache-url-translator",
     "href": "https://github.com/prakashsellathurai/amp-cache-url-translator",
-    "description": "Tool to convert an website into it's AMP cache version"
+    "description": "Tool to convert an website into it's AMP cache version",
+    "stars": 0
   },
   {
     "title": "EverybodyDanceNow",
     "href": "https://github.com/prakashsellathurai/EverybodyDanceNow",
-    "description": "Motion Retargeting Video Subjects"
+    "description": "Motion Retargeting Video Subjects",
+    "stars": 0
   },
   {
     "title": "Ros-Line-Follower-Robot",
     "href": "https://github.com/prakashsellathurai/Ros-Line-Follower-Robot",
-    "description": "Line Follower Robot program for RoS simulation"
+    "description": "Line Follower Robot program for RoS simulation",
+    "stars": 1
   },
   {
     "title": "time-series-analysis",
     "href": "https://github.com/prakashsellathurai/time-series-analysis",
-    "description": "forecasting techniques for continuous data"
+    "description": "forecasting techniques for continuous data",
+    "stars": 0
   },
   {
     "title": "automatic-robot",
     "href": "https://github.com/prakashsellathurai/automatic-robot",
-    "description": "Open-AI bot for automation "
+    "description": "Open-AI bot for automation ",
+    "stars": 0
   },
   {
     "title": "maze-solver--classic",
     "href": "https://github.com/prakashsellathurai/maze-solver--classic",
-    "description": "path finder via recursive division algorithm :octocat:"
+    "description": "path finder via recursive division algorithm :octocat:",
+    "stars": 0
   },
   {
     "title": "anaconda-opencv-cuda",
     "href": "https://github.com/prakashsellathurai/anaconda-opencv-cuda",
-    "description": "OpenCV environment built on anaconda gpu"
+    "description": "OpenCV environment built on anaconda gpu",
+    "stars": 0
   },
   {
     "title": "optimal-question-paper-generation",
     "href": "https://github.com/prakashsellathurai/optimal-question-paper-generation",
-    "description": "Combinatorial optimization algorithm  for Question paper generation task"
+    "description": "Combinatorial optimization algorithm  for Question paper generation task",
+    "stars": 1
   },
   {
     "title": "conway-s-game-of-life",
     "href": "https://github.com/prakashsellathurai/conway-s-game-of-life",
-    "description": "Conway's game of life simulation with genetic algorithm"
+    "description": "Conway's game of life simulation with genetic algorithm",
+    "stars": 0
   },
   {
     "title": "Automatic_furnace_handler",
     "href": "https://github.com/prakashsellathurai/Automatic_furnace_handler",
-    "description": "Embedded C++ code for furnace monitoring and control system"
+    "description": "Embedded C++ code for furnace monitoring and control system",
+    "stars": 0
   },
   {
     "title": "solidwork_models",
     "href": "https://github.com/prakashsellathurai/solidwork_models",
-    "description": "Asset management Repo of solid work model files"
+    "description": "Asset management Repo of solid work model files",
+    "stars": 0
   },
   {
     "title": "prime-factorization",
     "href": "https://github.com/prakashsellathurai/prime-factorization",
-    "description": "Prime Factorization algorithm implemented in JS"
+    "description": "Prime Factorization algorithm implemented in JS",
+    "stars": 0
   },
   {
     "title": "compiler",
     "href": "https://github.com/prakashsellathurai/compiler",
-    "description": "light weight compiler "
+    "description": "light weight compiler ",
+    "stars": 0
   },
   {
     "title": "EXPERIMENTS-WITH-BLOCKCHAIN",
     "href": "https://github.com/prakashsellathurai/EXPERIMENTS-WITH-BLOCKCHAIN",
-    "description": "bare minimum blockchain core experiments"
+    "description": "bare minimum blockchain core experiments",
+    "stars": 0
   },
   {
     "title": "pythonQrCodeReader",
     "href": "https://github.com/prakashsellathurai/pythonQrCodeReader",
-    "description": "QrCode scanner from a webcam"
+    "description": "QrCode scanner from a webcam",
+    "stars": 3
   },
   {
     "title": "OPTICAL_CHARACTER_RECOGNITION",
     "href": "https://github.com/prakashsellathurai/OPTICAL_CHARACTER_RECOGNITION",
-    "description": "OCR implemented using the KNN algorithm "
+    "description": "OCR implemented using the KNN algorithm ",
+    "stars": 0
   }
 ]

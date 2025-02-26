@@ -4,6 +4,7 @@ interface Project {
   description: string
   href?: string
   imgSrc?: string
+  stars?: number
 }
 
 const projectsNamesToShowcase = [

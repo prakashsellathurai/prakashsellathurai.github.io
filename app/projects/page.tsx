@@ -1,10 +1,30 @@
 import { projectsData } from '@/data/projectsData'
 import Card from '@/components/Card'
 import { genPageMetadata } from 'app/seo'
+import { Thing, WithContext } from 'schema-dts'
 
 export const metadata = genPageMetadata({ title: 'Projects' })
 
 export default function Projects() {
+  const structuredData: WithContext<Thing>[] = projectsData.map((project) => ({
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: project.title,
+    description: project.description,
+    url: project.href,
+    image: project.imgSrc,
+    offers: {
+      '@type': 'Offer',
+      price: 0,
+      priceCurrency: 'USD',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: 5,
+      ratingCount: Math.max(project.stars || 0, 1),
+    },
+  }))
+
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -30,6 +50,10 @@ export default function Projects() {
           </div>
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </>
   )
 }

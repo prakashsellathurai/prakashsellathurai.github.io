@@ -2,6 +2,8 @@ import { ReactNode } from 'react'
 import type { Authors } from 'contentlayer/generated'
 import SocialIcon from '@/components/social-icons'
 import Image from '@/components/Image'
+import { Person, WithContext, ProfilePage } from 'schema-dts'
+import { siteUrl } from '@/data/siteMetadata'
 
 interface Props {
   children: ReactNode
@@ -10,6 +12,24 @@ interface Props {
 
 export default function AuthorLayout({ children, content }: Props) {
   const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github } = content
+
+  const structuredData: WithContext<ProfilePage> = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    dateCreated: '2024-12-23T12:34:00-05:00',
+    dateModified: '2024-12-26T14:53:00-05:00',
+    mainEntity: {
+      '@type': 'Person',
+      name: name,
+      alternateName: 'Prakash S', // Replace with actual alternate name if available
+      identifier: '123475623', // Replace with actual identifier if available
+      description:
+        'Prakash is a Software Engineer with a multidisciplinary background in Mechatronics, specializing in Computer Vision and Python. He has worked at Amazon and Bigthinx, and co-founded ClothX. His interests include software engineering, information theory, and automation projects.',
+      image: avatar,
+      url: siteUrl,
+      sameAs: [github, linkedin, twitter, bluesky].filter(Boolean), // Filter out any undefined or empty values
+    },
+  }
 
   return (
     <>
@@ -41,6 +61,10 @@ export default function AuthorLayout({ children, content }: Props) {
           </div>
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </>
   )
 }

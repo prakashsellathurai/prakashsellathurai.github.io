@@ -9,12 +9,27 @@ import AuthorLayout from '@/layouts/AuthorLayout'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import Bookshelf from '@/components/books'
 import SampleProjects from '@/components/SampleProjects'
+import { BlogPosting, WithContext } from 'schema-dts'
 
 const MAX_DISPLAY = 5
 
 export default function Home({ posts }) {
   const author = allAuthors.find((p) => p.slug === 'default') as Authors
   const mainContent = coreContent(author)
+
+  const structuredData: WithContext<BlogPosting>[] = posts.slice(0, MAX_DISPLAY).map((post) => ({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    datePublished: post.date,
+    description: post.summary,
+    author: {
+      '@type': 'Person',
+      name: siteMetadata.author,
+    },
+    url: `${siteMetadata.siteUrl}/essays/${post.slug}`,
+  }))
+
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -93,6 +108,10 @@ export default function Home({ posts }) {
       )}
       <Bookshelf />
       <SampleProjects />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </>
   )
 }

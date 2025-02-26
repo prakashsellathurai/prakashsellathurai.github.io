@@ -43,6 +43,7 @@ async function fetchRepos() {
       title: datum.name,
       href: datum.html_url,
       description: datum.description,
+      stars: datum.stargazers_count,
     }))
 
     // Save json data to a file

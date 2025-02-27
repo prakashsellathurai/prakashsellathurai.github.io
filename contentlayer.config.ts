@@ -109,6 +109,7 @@ export const Essay = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
+    description: { type: 'string' },
   },
   computedFields: {
     ...computedFields,
@@ -143,6 +144,7 @@ export const Authors = defineDocumentType(() => ({
     linkedin: { type: 'string' },
     github: { type: 'string' },
     layout: { type: 'string' },
+    description: { type: 'string' },
   },
   computedFields,
 }))

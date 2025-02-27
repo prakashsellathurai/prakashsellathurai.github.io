@@ -1,7 +1,6 @@
-import { withContentlayer } from 'next-contentlayer2'
-import withBundleAnalyzer from '@next/bundle-analyzer'
-
-const bundleAnalyzer = withBundleAnalyzer({
+/* eslint-disable @typescript-eslint/no-require-imports */
+const { withContentlayer } = require('next-contentlayer2')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 // You might need to insert additional domains in script-src if you are using external services
@@ -58,11 +57,9 @@ const output = process.env.EXPORT ? 'export' : undefined
 const basePath = process.env.BASE_PATH || undefined
 const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 
-/**
- * @type {import('next').NextConfig}
- **/
+/** @type {import('next').NextConfig} */
 const nextConfig = () => {
-  const plugins = [withContentlayer, bundleAnalyzer]
+  const plugins = [withContentlayer, withBundleAnalyzer]
   return plugins.reduce((acc, next) => next(acc), {
     output,
     basePath,
@@ -103,4 +100,4 @@ const nextConfig = () => {
   })
 }
 
-export default nextConfig
+module.exports = nextConfig

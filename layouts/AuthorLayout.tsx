@@ -33,8 +33,8 @@ export default function AuthorLayout({ children, content }: Props) {
 
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
+      <div className="divide-y divide-gray-200 dark:divide-gray-700 ">
+        <div className="items-start space-y-2 rounded-2xl bg-gray-50 p-8 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
           <div className="flex flex-col items-center space-x-2 pt-8">
             {avatar && (
               <Image
@@ -42,7 +42,7 @@ export default function AuthorLayout({ children, content }: Props) {
                 alt="avatar"
                 width={192}
                 height={192}
-                className="h-48 w-48 rounded-full"
+                className="mx-auto h-full rounded-3xl object-cover drop-shadow-xl lg:mx-0 "
               />
             )}
             <h3 className="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight">{name}</h3>

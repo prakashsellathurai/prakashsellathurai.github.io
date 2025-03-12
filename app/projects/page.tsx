@@ -37,7 +37,7 @@ export default function Projects() {
           </p>
         </div>
         <div className="container py-12">
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {projectsData.map((d) => (
               <Card
                 key={d.title}

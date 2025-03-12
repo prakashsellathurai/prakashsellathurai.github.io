@@ -53,4 +53,26 @@ async function fetchRepos() {
   }
 }
 
+async function listSubtree(githubrepo, path, ref = 'main') {
+  const url = `https://api.github.com/repos/${githubrepo}/git/trees/${ref}?recursive=1`
+  const response = await fetch(url)
+  const data = await response.json()
+
+  const files = data.tree
+    .filter((file) => file.type === 'blob' && file.path.startsWith(path))
+    .map((file) => file.path)
+
+  return files
+}
+
+async function writeleetcodeSolutionsAsJson() {
+  const files = await listSubtree('prakashsellathurai/leetcode-solutions', 'problems', 'gh-pages')
+  const yamldata = files.map((file) => ({
+    title: file,
+    href: `leetcode-solutions/${file}`,
+  }))
+  fs.writeFileSync('./data/leetcode-solutions.json', JSON.stringify(yamldata, null, 4), 'utf-8')
+}
+
 fetchRepos()
+writeleetcodeSolutionsAsJson()

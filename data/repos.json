@@ -6,6 +6,12 @@
     "stars": 0
   },
   {
+    "title": "Heimdall",
+    "href": "https://github.com/prakashsellathurai/Heimdall",
+    "description": "HN content  Curator available as a browser extension",
+    "stars": 1
+  },
+  {
     "title": "pyqoi",
     "href": "https://github.com/prakashsellathurai/pyqoi",
     "description": "Python Library to Encode/Decode the images in “Quite OK Image” (qoi) format ",
@@ -142,12 +148,6 @@
     "href": "https://github.com/prakashsellathurai/DoctorPrescriptionClientApp",
     "description": "Remote consulting Healthcare Application - A SMART INDIA HACKATHON project  (https://www.sih.gov.in/)",
     "stars": 0
-  },
-  {
-    "title": "Heimdall",
-    "href": "https://github.com/prakashsellathurai/Heimdall",
-    "description": "HN content  Curator available as a browser extension",
-    "stars": 1
   },
   {
     "title": "Lorentz-Attractor",

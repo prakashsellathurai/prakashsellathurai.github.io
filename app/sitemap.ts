@@ -10,11 +10,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogRoutes = allEssays
     .filter((post) => !post.draft)
     .map((post) => ({
-      url: `${siteUrl}/${post.path}`,
+      url: `${siteUrl}${post.path}`,
       lastModified: post.lastmod || post.date,
     }))
 
-  const routes = ['', 'essays', 'projects', 'tags', 'about', 'bookmarks'].map((route) => ({
+  const routes = [
+    '',
+    'essays',
+    'projects',
+    'tags',
+    'about',
+    'bookmarks',
+    'static/resume/prakash_s_resume.pdf',
+    'leetcode-solutions',
+  ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }))

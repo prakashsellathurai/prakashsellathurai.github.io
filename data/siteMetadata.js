@@ -7,7 +7,7 @@ const siteMetadata = {
     'Prakash is a Software Engineer with a multidisciplinary background in Mechatronics, specializing in Computer Vision and Python. He has worked at Amazon and Bigthinx, and co-founded ClothX. His interests include software engineering, information theory, and automation projects.',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://prakashsellathurai.github.io/',
+  siteUrl: 'https://prakashsellathurai.com/',
   siteRepo: 'https://github.com/prakashsellathurai/prakashsellathurai.github.io',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/logo.png`,

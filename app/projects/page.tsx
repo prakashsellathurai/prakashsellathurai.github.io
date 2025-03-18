@@ -33,7 +33,14 @@ export default function Projects() {
             Projects
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Here are some of the projects I have worked on.
+            Below is a selection of projects I have worked on, dynamically generated from my{' '}
+            <a
+              href="https://github.com/prakashsellathurai"
+              className="text-blue-500 hover:underline"
+            >
+              GitHub
+            </a>{' '}
+            profile.
           </p>
         </div>
         <div className="container py-12">

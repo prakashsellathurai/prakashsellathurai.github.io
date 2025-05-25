@@ -8,7 +8,7 @@ import SearchButton from './SearchButton'
 
 const Header = () => {
   let headerClass =
-    'flex items-center w-full bg-white dark:bg-gray-950 justify-between my-10 rounded-lg'
+    'flex items-center w-full bg-white dark:bg-gray-800 justify-between my-10 rounded-lg dark:px-6'
   if (siteMetadata.stickyNav) {
     headerClass += ' sticky top-0 z-50'
   }

@@ -65,11 +65,14 @@ const Bookshelf: React.FC = () => {
         {' '}
         <a href="https://www.goodreads.com/user/show/105903487-prakash-sellathurai">Bookshelf</a>
       </h2>
-      <div className="bg-gray-100 p-6">
+      <div className="bg-gray-100 p-6 dark:bg-gray-800">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
           {books.map((book, index) => (
             <a key={book.title} href={book.link} target="_blank" rel="noopener noreferrer">
-              <div key={index} className="flex h-96 flex-col rounded-lg bg-white p-4 shadow-md">
+              <div
+                key={index}
+                className="flex h-96 flex-col rounded-lg bg-white p-4 shadow-md dark:bg-gray-900"
+              >
                 <Image
                   src={book.cover}
                   alt={book.title}

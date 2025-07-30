@@ -1,8 +1,38 @@
 [
   {
+    "title": "entity",
+    "href": "https://github.com/prakashsellathurai/entity",
+    "description": "Entity: The  AI agent that bridges you and your OS—seamlessly execute commands and control apps on Windows, macOS, and Linux.",
+    "stars": 0
+  },
+  {
+    "title": "leetcode-solutions",
+    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+    "description": "My solutions to Leetcode problems",
+    "stars": 0
+  },
+  {
+    "title": "Timebased-logger",
+    "href": "https://github.com/prakashsellathurai/Timebased-logger",
+    "description": "A simple Python library to log messages based on time intervals, not message count.",
+    "stars": 2
+  },
+  {
     "title": "prakashsellathurai.github.io",
     "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
     "description": "personal website",
+    "stars": 0
+  },
+  {
+    "title": "codecrafters-git-python",
+    "href": "https://github.com/prakashsellathurai/codecrafters-git-python",
+    "description": null,
+    "stars": 0
+  },
+  {
+    "title": "vintage-Vibe-watchface",
+    "href": "https://github.com/prakashsellathurai/vintage-Vibe-watchface",
+    "description": null,
     "stars": 0
   },
   {
@@ -16,12 +46,6 @@
     "href": "https://github.com/prakashsellathurai/pyqoi",
     "description": "Python Library to Encode/Decode the images in “Quite OK Image” (qoi) format ",
     "stars": 1
-  },
-  {
-    "title": "leetcode-solutions",
-    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
-    "description": "My solutions to Leetcode problems",
-    "stars": 0
   },
   {
     "title": "finance-analysis-data-app",
@@ -129,7 +153,7 @@
     "title": "Awesome-Product-Management",
     "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
     "description": "A curated list of Product Management Resources :seedling:",
-    "stars": 48
+    "stars": 53
   },
   {
     "title": "idiota",

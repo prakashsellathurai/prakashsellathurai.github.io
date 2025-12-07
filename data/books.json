@@ -12,6 +12,42 @@
   ],
   "read": [
     {
+      "title": "The Two Towers (The Lord of the Rings, #2)",
+      "link": "https://www.goodreads.com/review/show/4154035733?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1486871714l/222910._SY475_.jpg",
+      "author": "J.R.R. Tolkien",
+      "rating": "0",
+      "description": "Alternate Cover Edition ISBN 0345296060 (ISBN13: 9780345296061)One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind themFrodo and his Companions of the Ring have been beset by danger during their quest to prevent the Ruling Ring from falling into the hands of the Dark Lord by destroying it in the Cracks of Doom. They have lost the wizard, Gandalf, in a battle in the Mines of Moria. And Boromir, seduced by the power of the Ring, tried to seize it by force. While Frodo and Sam made their escape, the rest of the company was attacked by Orcs. Now they continue the journey alone down the great River Anduin—alone, that is, save for the mysterious creeping figure that follows wherever they go.",
+      "pubDate": "Sun, 07 Dec 2025 04:35:28 -0800"
+    },
+    {
+      "title": "The Art of War",
+      "link": "https://www.goodreads.com/review/show/4289088623?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1551957016l/44297006._SY475_.jpg",
+      "author": "Sun Tzu",
+      "rating": "5",
+      "description": "Twenty-Five Hundred years ago, Sun Tzu wrote this classic book of military strategy based on Chinese warfare and military thought. Since that time, all levels of military have used the teaching on Sun Tzu to warfare and civilization have adapted these teachings for use in politics, business and everyday life. The Art of War is a book which should be used to gain advantage of opponents in the boardroom and battlefield alike.",
+      "pubDate": "Sun, 07 Dec 2025 04:31:57 -0800"
+    },
+    {
+      "title": "Hackers & Painters: Big Ideas from the Computer Age",
+      "link": "https://www.goodreads.com/review/show/4736573293?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1387653624l/6565257.jpg",
+      "author": "Paul    Graham",
+      "rating": "0",
+      "description": "\"The computer world is like an intellectual Wild West, in which you can shoot anyone you wish with your ideas, if you're willing to risk the consequences. \" --from Hackers &amp; Big Ideas from the Computer Age, by Paul GrahamWe are living in the computer age, in a world increasingly designed and engineered by computer programmers and software designers, by people who call themselves hackers. Who are these people, what motivates them, and why should you care?Consider these Everything around us is turning into computers. Your typewriter is gone, replaced by a computer. Your phone has turned into a computer. So has your camera. Soon your TV will. Your car was not only designed on computers, but has more processing power in it than a room-sized mainframe did in 1970. Letters, encyclopedias, newspapers, and even your local store are being replaced by the Internet.Hackers &amp; Big Ideas from the Computer Age, by Paul Graham, explains this world and the motivations of the people who occupy it. In clear, thoughtful prose that draws on illuminating historical examples, Graham takes readers on an unflinching exploration into what he calls \"an intellectual Wild West.\"The ideas discussed in this book will have a powerful and lasting impact on how we think, how we work, how we develop technology, and how we live. Topics include the importance of beauty in software design, how to make wealth, heresy and free speech, the programming language renaissance, the open-source movement, digital design, internet startups, and more.",
+      "pubDate": "Sun, 07 Dec 2025 04:31:38 -0800"
+    },
+    {
+      "title": "Warnings: Finding Cassandras to Stop Catastrophes",
+      "link": "https://www.goodreads.com/review/show/5879444801?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1495550719l/32600755._SY475_.jpg",
+      "author": "Richard A. Clarke",
+      "rating": "0",
+      "description": "Millions of lives lost to catastrophes—natural and man-made—could have been saved by the advance warnings of experts. Can we find those prescient people before the next catastrophe strikes? Two CEOs and White House national security veterans reveal insider views of previous disasters, chilling insights on today’s threats to mankind, and a prescription to protect us This is the story of the future of national security, threatening technologies, the US economy, and possibly the fate of civilization.In Greek mythology Cassandra foresaw calamities, but was cursed by the gods to be ignored. Modern-day Cassandras clearly predicted the disasters of Katrina, Fukushima, the Great Recession, the rise of ISIS, and many others. Like her, they were ignored. There are others right now warning of impending disasters, but how do we know which warnings are likely to be right?Through riveting explorations in a variety of fields, the authors uncover a method to separate the accurate Cassandras from the crazy doomsayers. They then investigate the experts who today are warning of future disasters—the threats from artificial intelligence, bio-hacking, mutating viruses, and more—and whose calls are not being heeded. Their penetrating insights are essential for anyone, any business, or any government that doesn’t want to be a blind victim to tomorrow’s catastrophe.",
+      "pubDate": "Sun, 07 Dec 2025 04:30:37 -0800"
+    },
+    {
       "title": "Antifragile: Things That Gain from Disorder",
       "link": "https://www.goodreads.com/review/show/4191228674?utm_medium=api&utm_source=rss",
       "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1352422827l/13530973.jpg",
@@ -174,15 +210,6 @@
       "pubDate": "Mon, 30 Oct 2023 08:49:19 -0700"
     },
     {
-      "title": "Warnings: Finding Cassandras to Stop Catastrophes",
-      "link": "https://www.goodreads.com/review/show/5879444801?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1495550719l/32600755._SY475_.jpg",
-      "author": "Richard A. Clarke",
-      "rating": "0",
-      "description": "Millions of lives lost to catastrophes—natural and man-made—could have been saved by the advance warnings of experts. Can we find those prescient people before the next catastrophe strikes? Two CEOs and White House national security veterans reveal insider views of previous disasters, chilling insights on today’s threats to mankind, and a prescription to protect us This is the story of the future of national security, threatening technologies, the US economy, and possibly the fate of civilization.In Greek mythology Cassandra foresaw calamities, but was cursed by the gods to be ignored. Modern-day Cassandras clearly predicted the disasters of Katrina, Fukushima, the Great Recession, the rise of ISIS, and many others. Like her, they were ignored. There are others right now warning of impending disasters, but how do we know which warnings are likely to be right?Through riveting explorations in a variety of fields, the authors uncover a method to separate the accurate Cassandras from the crazy doomsayers. They then investigate the experts who today are warning of future disasters—the threats from artificial intelligence, bio-hacking, mutating viruses, and more—and whose calls are not being heeded. Their penetrating insights are essential for anyone, any business, or any government that doesn’t want to be a blind victim to tomorrow’s catastrophe.",
-      "pubDate": "Sun, 01 Oct 2023 08:30:24 -0700"
-    },
-    {
       "title": "Mahabharatham",
       "link": "https://www.goodreads.com/review/show/5878667700?utm_medium=api&utm_source=rss",
       "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1425746616l/25092689.jpg",
@@ -219,24 +246,6 @@
       "pubDate": "Sat, 30 Sep 2023 21:46:22 -0700"
     },
     {
-      "title": "Hackers & Painters: Big Ideas from the Computer Age",
-      "link": "https://www.goodreads.com/review/show/4736573293?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1387653624l/6565257.jpg",
-      "author": "Paul    Graham",
-      "rating": "0",
-      "description": "\"The computer world is like an intellectual Wild West, in which you can shoot anyone you wish with your ideas, if you're willing to risk the consequences. \" --from Hackers &amp; Big Ideas from the Computer Age, by Paul GrahamWe are living in the computer age, in a world increasingly designed and engineered by computer programmers and software designers, by people who call themselves hackers. Who are these people, what motivates them, and why should you care?Consider these Everything around us is turning into computers. Your typewriter is gone, replaced by a computer. Your phone has turned into a computer. So has your camera. Soon your TV will. Your car was not only designed on computers, but has more processing power in it than a room-sized mainframe did in 1970. Letters, encyclopedias, newspapers, and even your local store are being replaced by the Internet.Hackers &amp; Big Ideas from the Computer Age, by Paul Graham, explains this world and the motivations of the people who occupy it. In clear, thoughtful prose that draws on illuminating historical examples, Graham takes readers on an unflinching exploration into what he calls \"an intellectual Wild West.\"The ideas discussed in this book will have a powerful and lasting impact on how we think, how we work, how we develop technology, and how we live. Topics include the importance of beauty in software design, how to make wealth, heresy and free speech, the programming language renaissance, the open-source movement, digital design, internet startups, and more.",
-      "pubDate": "Sat, 30 Sep 2023 21:45:29 -0700"
-    },
-    {
-      "title": "The Two Towers (The Lord of the Rings, #2)",
-      "link": "https://www.goodreads.com/review/show/4154035733?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1486871714l/222910._SY475_.jpg",
-      "author": "J.R.R. Tolkien",
-      "rating": "0",
-      "description": "Alternate Cover Edition ISBN 0345296060 (ISBN13: 9780345296061)One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind themFrodo and his Companions of the Ring have been beset by danger during their quest to prevent the Ruling Ring from falling into the hands of the Dark Lord by destroying it in the Cracks of Doom. They have lost the wizard, Gandalf, in a battle in the Mines of Moria. And Boromir, seduced by the power of the Ring, tried to seize it by force. While Frodo and Sam made their escape, the rest of the company was attacked by Orcs. Now they continue the journey alone down the great River Anduin—alone, that is, save for the mysterious creeping figure that follows wherever they go.",
-      "pubDate": "Sat, 30 Sep 2023 21:19:55 -0700"
-    },
-    {
       "title": "The Manager's Path: A Guide for Tech Leaders Navigating Growth and Change",
       "link": "https://www.goodreads.com/review/show/4403185740?utm_medium=api&utm_source=rss",
       "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1497730855l/35453295._SY475_.jpg",
@@ -244,15 +253,6 @@
       "rating": "0",
       "description": "SPD",
       "pubDate": "Fri, 29 Apr 2022 00:54:18 -0700"
-    },
-    {
-      "title": "The Art of War",
-      "link": "https://www.goodreads.com/review/show/4289088623?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1551957016l/44297006._SY475_.jpg",
-      "author": "Sun Tzu",
-      "rating": "5",
-      "description": "Twenty-Five Hundred years ago, Sun Tzu wrote this classic book of military strategy based on Chinese warfare and military thought. Since that time, all levels of military have used the teaching on Sun Tzu to warfare and civilization have adapted these teachings for use in politics, business and everyday life. The Art of War is a book which should be used to gain advantage of opponents in the boardroom and battlefield alike.",
-      "pubDate": "Thu, 14 Oct 2021 23:30:54 -0700"
     },
     {
       "title": "The Algorithm Design Manual",
@@ -325,6 +325,62 @@
       "rating": "5",
       "description": "Alternate cover edition of ISBN 9780062457738In this generation-defining self-help guide, a superstar blogger cuts through the crap to show us how to stop trying to be \"positive\" all the time so that we can truly become better, happier people.For decades, we’ve been told that positive thinking is the key to a happy, rich life. \"F**k positivity,\" Mark Manson says. \"Let’s be honest, shit is f**ked and we have to live with it.\" In his wildly popular Internet blog, Manson doesn’t sugarcoat or equivocate. He tells it like it is—a dose of raw, refreshing, honest truth that is sorely lacking today. The Subtle Art of Not Giving a F**k is his antidote to the coddling, let’s-all-feel-good mindset that has infected American society and spoiled a generation, rewarding them with gold medals just for showing up.Manson makes the argument, backed both by academic research and well-timed poop jokes, that improving our lives hinges not on our ability to turn lemons into lemonade, but on learning to stomach lemons better. Human beings are flawed and limited—\"not everybody can be extraordinary, there are winners and losers in society, and some of it is not fair or your fault.\" Manson advises us to get to know our limitations and accept them. Once we embrace our fears, faults, and uncertainties, once we stop running and avoiding and start confronting painful truths, we can begin to find the courage, perseverance, honesty, responsibility, curiosity, and forgiveness we seek.There are only so many things we can give a f**k about so we need to figure out which ones really matter, Manson makes clear. While money is nice, caring about what you do with your life is better, because true wealth is about experience. A much-needed grab-you-by-the-shoulders-and-look-you-in-the-eye moment of real-talk, filled with entertaining stories and profane, ruthless humor, The Subtle Art of Not Giving a F**k is a refreshing slap for a generation to help them lead contented, grounded lives.",
       "pubDate": "Wed, 04 Aug 2021 04:35:48 -0700"
+    }
+  ],
+  "curated": [
+    {
+      "title": "Ulagai Ulukkiya Vaasagangal",
+      "link": "https://www.goodreads.com/review/show/6303975993?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
+      "author": "V. Irai Anbu",
+      "rating": "5",
+      "description": "",
+      "pubDate": "Sun, 07 Dec 2025 04:56:09 -0800"
+    },
+    {
+      "title": "You and Your Research",
+      "link": "https://www.goodreads.com/review/show/4234916625?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
+      "author": "Richard Hamming",
+      "rating": "0",
+      "description": "",
+      "pubDate": "Sun, 07 Dec 2025 04:53:24 -0800"
+    },
+    {
+      "title": "The Two Towers (The Lord of the Rings, #2)",
+      "link": "https://www.goodreads.com/review/show/4154035733?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1486871714l/222910._SY475_.jpg",
+      "author": "J.R.R. Tolkien",
+      "rating": "0",
+      "description": "Alternate Cover Edition ISBN 0345296060 (ISBN13: 9780345296061)One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind themFrodo and his Companions of the Ring have been beset by danger during their quest to prevent the Ruling Ring from falling into the hands of the Dark Lord by destroying it in the Cracks of Doom. They have lost the wizard, Gandalf, in a battle in the Mines of Moria. And Boromir, seduced by the power of the Ring, tried to seize it by force. While Frodo and Sam made their escape, the rest of the company was attacked by Orcs. Now they continue the journey alone down the great River Anduin—alone, that is, save for the mysterious creeping figure that follows wherever they go.",
+      "pubDate": "Sun, 07 Dec 2025 04:35:28 -0800"
+    },
+    {
+      "title": "The Art of War",
+      "link": "https://www.goodreads.com/review/show/4289088623?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1551957016l/44297006._SY475_.jpg",
+      "author": "Sun Tzu",
+      "rating": "5",
+      "description": "Twenty-Five Hundred years ago, Sun Tzu wrote this classic book of military strategy based on Chinese warfare and military thought. Since that time, all levels of military have used the teaching on Sun Tzu to warfare and civilization have adapted these teachings for use in politics, business and everyday life. The Art of War is a book which should be used to gain advantage of opponents in the boardroom and battlefield alike.",
+      "pubDate": "Sun, 07 Dec 2025 04:31:57 -0800"
+    },
+    {
+      "title": "Hackers & Painters: Big Ideas from the Computer Age",
+      "link": "https://www.goodreads.com/review/show/4736573293?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1387653624l/6565257.jpg",
+      "author": "Paul    Graham",
+      "rating": "0",
+      "description": "\"The computer world is like an intellectual Wild West, in which you can shoot anyone you wish with your ideas, if you're willing to risk the consequences. \" --from Hackers &amp; Big Ideas from the Computer Age, by Paul GrahamWe are living in the computer age, in a world increasingly designed and engineered by computer programmers and software designers, by people who call themselves hackers. Who are these people, what motivates them, and why should you care?Consider these Everything around us is turning into computers. Your typewriter is gone, replaced by a computer. Your phone has turned into a computer. So has your camera. Soon your TV will. Your car was not only designed on computers, but has more processing power in it than a room-sized mainframe did in 1970. Letters, encyclopedias, newspapers, and even your local store are being replaced by the Internet.Hackers &amp; Big Ideas from the Computer Age, by Paul Graham, explains this world and the motivations of the people who occupy it. In clear, thoughtful prose that draws on illuminating historical examples, Graham takes readers on an unflinching exploration into what he calls \"an intellectual Wild West.\"The ideas discussed in this book will have a powerful and lasting impact on how we think, how we work, how we develop technology, and how we live. Topics include the importance of beauty in software design, how to make wealth, heresy and free speech, the programming language renaissance, the open-source movement, digital design, internet startups, and more.",
+      "pubDate": "Sun, 07 Dec 2025 04:31:38 -0800"
+    },
+    {
+      "title": "Warnings: Finding Cassandras to Stop Catastrophes",
+      "link": "https://www.goodreads.com/review/show/5879444801?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1495550719l/32600755._SY475_.jpg",
+      "author": "Richard A. Clarke",
+      "rating": "0",
+      "description": "Millions of lives lost to catastrophes—natural and man-made—could have been saved by the advance warnings of experts. Can we find those prescient people before the next catastrophe strikes? Two CEOs and White House national security veterans reveal insider views of previous disasters, chilling insights on today’s threats to mankind, and a prescription to protect us This is the story of the future of national security, threatening technologies, the US economy, and possibly the fate of civilization.In Greek mythology Cassandra foresaw calamities, but was cursed by the gods to be ignored. Modern-day Cassandras clearly predicted the disasters of Katrina, Fukushima, the Great Recession, the rise of ISIS, and many others. Like her, they were ignored. There are others right now warning of impending disasters, but how do we know which warnings are likely to be right?Through riveting explorations in a variety of fields, the authors uncover a method to separate the accurate Cassandras from the crazy doomsayers. They then investigate the experts who today are warning of future disasters—the threats from artificial intelligence, bio-hacking, mutating viruses, and more—and whose calls are not being heeded. Their penetrating insights are essential for anyone, any business, or any government that doesn’t want to be a blind victim to tomorrow’s catastrophe.",
+      "pubDate": "Sun, 07 Dec 2025 04:30:37 -0800"
     }
   ]
 }

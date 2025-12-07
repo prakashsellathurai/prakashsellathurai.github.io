@@ -1,14 +1,8 @@
 [
   {
-    "title": "OLE_MACHINE",
-    "href": "https://github.com/prakashsellathurai/OLE_MACHINE",
-    "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project",
-    "stars": 0
-  },
-  {
-    "title": "leetcode-solutions",
-    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
-    "description": "My solutions to Leetcode problems",
+    "title": "prakashsellathurai.github.io",
+    "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+    "description": "personal website",
     "stars": 0
   },
   {
@@ -18,9 +12,15 @@
     "stars": 0
   },
   {
-    "title": "prakashsellathurai.github.io",
-    "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-    "description": "personal website",
+    "title": "OLE_MACHINE",
+    "href": "https://github.com/prakashsellathurai/OLE_MACHINE",
+    "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project",
+    "stars": 0
+  },
+  {
+    "title": "leetcode-solutions",
+    "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+    "description": "My solutions to Leetcode problems",
     "stars": 0
   },
   {

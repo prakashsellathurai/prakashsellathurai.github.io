@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-const SHELVES = ['currently-reading', 'read']
+const SHELVES = ['currently-reading', 'read', 'curated']
 
 async function getBooks(shelf) {
   const url = `https://www.goodreads.com/review/list_rss/105903487?shelf=${shelf}`

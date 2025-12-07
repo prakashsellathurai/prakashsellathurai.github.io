@@ -1,5 +1,9 @@
 import booksData from '@/data/books.json'
-import { projectsData as fallbackProjectsData, Project } from '@/data/projectsData'
+import {
+  projectsData as fallbackProjectsData,
+  Project,
+  projectsNamesToShowcase,
+} from '@/data/projectsData'
 
 export interface Book {
   title: string
@@ -23,7 +27,12 @@ export async function getBooks(shelf: string): Promise<Book[]> {
   } catch (error) {
     console.error(error)
     // @ts-ignore
-    return booksData[shelf] || []
+    const fallback = booksData[shelf]
+    if (!fallback && shelf === 'curated') {
+      // @ts-ignore
+      return booksData['read']?.filter((b) => b.rating === '5') || []
+    }
+    return fallback || []
   }
 }
 
@@ -83,15 +92,17 @@ export async function getProjects(): Promise<Project[]> {
     }
 
     const repos = await res.json()
-    return repos.map((repo) => ({
+    const allProjects = repos.map((repo) => ({
       title: repo.name,
       description: repo.description,
       href: repo.html_url,
       imgSrc: undefined, // GitHub API doesn't provide image, fallback or handle elsewhere?
       stars: repo.stargazers_count,
     }))
+
+    return allProjects.filter((project) => projectsNamesToShowcase.includes(project.title))
   } catch (error) {
     console.error('Error fetching projects:', error)
-    return fallbackProjectsData
+    return fallbackProjectsData.filter((project) => projectsNamesToShowcase.includes(project.title))
   }
 }

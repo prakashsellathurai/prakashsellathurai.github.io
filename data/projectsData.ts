@@ -28,4 +28,4 @@ const sampleProjects: Project[] = projectsNamesToShowcase // preserve order of p
   .filter((project): project is Project => project !== undefined)
 const leetcodeSolutions: LeetcodeSolutions[] = leetcodesolutions as LeetcodeSolutions[]
 
-export { projectsData, sampleProjects, leetcodeSolutions }
+export { projectsData, sampleProjects, leetcodeSolutions, projectsNamesToShowcase }

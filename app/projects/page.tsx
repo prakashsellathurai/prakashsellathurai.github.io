@@ -5,28 +5,7 @@ import { Thing, WithContext } from 'schema-dts'
 
 export const metadata = genPageMetadata({ title: 'Projects' })
 
-async function getProjects(): Promise<Project[]> {
-  try {
-    const res = await fetch('https://api.github.com/users/prakashsellathurai/repos?per_page=100', {
-      next: { revalidate: 3600 },
-    })
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch projects')
-    }
-
-    const repos = await res.json()
-    return repos.map((repo) => ({
-      title: repo.name,
-      description: repo.description,
-      href: repo.html_url,
-      stars: repo.stargazers_count,
-    }))
-  } catch (error) {
-    console.error('Error fetching projects:', error)
-    return fallbackProjectsData
-  }
-}
+import { getProjects } from '@/lib/data'
 
 export default async function Projects() {
   const projectsData = await getProjects()

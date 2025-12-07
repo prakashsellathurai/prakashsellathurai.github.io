@@ -1,17 +1,16 @@
 import React from 'react'
-import Card from './Card'
 import Image from './Image'
 import Link from './Link'
-import { sampleProjects } from '@/data/projectsData'
+import { Project } from '@/data/projectsData'
 
-const SampleProjects: React.FC = () => {
+const SampleProjects: React.FC<{ projects: Project[] }> = ({ projects }) => {
   return (
     <>
       <h2 className="mb-6 mt-12 text-3xl font-bold">Projects</h2>
 
       <div className="container mb-6 ">
         <div className="grid grid-cols-1 gap-8">
-          {sampleProjects.map((d) => (
+          {projects.map((d) => (
             <div
               key={d.title}
               className={`${
@@ -67,7 +66,7 @@ const SampleProjects: React.FC = () => {
       </div>
       <div className="flex items-center py-3 text-sm text-gray-800 before:me-6 before:flex-1 before:border-t before:border-gray-200 after:ms-6 after:flex-1 after:border-t after:border-gray-200 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         {' '}
-        <a href="./projects">Read More</a>
+        <a href="/projects">Read More</a>
       </div>
     </>
   )

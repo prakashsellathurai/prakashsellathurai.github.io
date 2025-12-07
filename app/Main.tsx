@@ -13,7 +13,7 @@ import { BlogPosting, WithContext } from 'schema-dts'
 
 const MAX_DISPLAY = 5
 
-export default function Home({ posts }) {
+export default function Home({ posts, books, projects }) {
   const author = allAuthors.find((p) => p.slug === 'default') as Authors
   const mainContent = coreContent(author)
 
@@ -106,8 +106,8 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
-      <Bookshelf />
-      <SampleProjects />
+      <Bookshelf books={books.slice(0, 6)} />
+      <SampleProjects projects={projects.slice(0, 6)} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

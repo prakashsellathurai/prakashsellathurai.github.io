@@ -35,7 +35,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
 
   return (
     <SectionContainer>
-      <div className=" rounded-lg  bg-white dark:bg-gray-800 dark:px-6">
+      <div className=" rounded-lg dark:px-6">
         <ScrollTopAndComment />
         <article>
           <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">

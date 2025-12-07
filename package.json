@@ -9,7 +9,9 @@
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "update-books": "node ./scripts/books.mjs",
+    "update-github": "node ./scripts/github.js"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",
@@ -21,6 +23,7 @@
     "body-scroll-lock": "^4.0.0-beta.0",
     "contentlayer2": "0.5.3",
     "esbuild": "0.20.2",
+    "fast-xml-parser": "^5.3.2",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.2",
     "hast-util-from-html-isomorphic": "^2.0.0",

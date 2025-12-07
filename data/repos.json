@@ -1,8 +1,8 @@
 [
   {
-    "title": "entity",
-    "href": "https://github.com/prakashsellathurai/entity",
-    "description": "Entity: The  AI agent that bridges you and your OS—seamlessly execute commands and control apps on Windows, macOS, and Linux.",
+    "title": "OLE_MACHINE",
+    "href": "https://github.com/prakashsellathurai/OLE_MACHINE",
+    "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project",
     "stars": 0
   },
   {
@@ -12,16 +12,58 @@
     "stars": 0
   },
   {
-    "title": "Timebased-logger",
-    "href": "https://github.com/prakashsellathurai/Timebased-logger",
-    "description": "A simple Python library to log messages based on time intervals, not message count.",
-    "stars": 2
+    "title": "grimoire",
+    "href": "https://github.com/prakashsellathurai/grimoire",
+    "description": "scripts, notebooks and computer codes",
+    "stars": 0
   },
   {
     "title": "prakashsellathurai.github.io",
     "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
     "description": "personal website",
     "stars": 0
+  },
+  {
+    "title": "InterDimensionalCable",
+    "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
+    "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
+    "stars": 0
+  },
+  {
+    "title": "CircuitProtect",
+    "href": "https://github.com/prakashsellathurai/CircuitProtect",
+    "description": "Microservice Circuit Breaker",
+    "stars": 0
+  },
+  {
+    "title": "entity",
+    "href": "https://github.com/prakashsellathurai/entity",
+    "description": "Entity: The  AI agent that bridges you and your OS—seamlessly execute commands and control apps on Windows, macOS, and Linux.",
+    "stars": 0
+  },
+  {
+    "title": "scrapy",
+    "href": "https://github.com/prakashsellathurai/scrapy",
+    "description": "Scrapy, a fast high-level web crawling & scraping framework for Python.",
+    "stars": 0
+  },
+  {
+    "title": "pkafka",
+    "href": "https://github.com/prakashsellathurai/pkafka",
+    "description": null,
+    "stars": 0
+  },
+  {
+    "title": "pgrep",
+    "href": "https://github.com/prakashsellathurai/pgrep",
+    "description": null,
+    "stars": 0
+  },
+  {
+    "title": "Timebased-logger",
+    "href": "https://github.com/prakashsellathurai/Timebased-logger",
+    "description": "A simple Python library to log messages based on time intervals, not message count.",
+    "stars": 2
   },
   {
     "title": "codecrafters-git-python",
@@ -114,12 +156,6 @@
     "stars": 6
   },
   {
-    "title": "OLE_MACHINE",
-    "href": "https://github.com/prakashsellathurai/OLE_MACHINE",
-    "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project",
-    "stars": 0
-  },
-  {
     "title": "DeFIR",
     "href": "https://github.com/prakashsellathurai/DeFIR",
     "description": "Image Retrieval System to find similar images based on their content using the Nearest Neighbor Search Algorithm and Deep Learning. ",
@@ -153,7 +189,7 @@
     "title": "Awesome-Product-Management",
     "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
     "description": "A curated list of Product Management Resources :seedling:",
-    "stars": 53
+    "stars": 58
   },
   {
     "title": "idiota",

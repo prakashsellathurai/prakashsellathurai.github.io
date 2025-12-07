@@ -1,6 +1,6 @@
 import repos from './repos.json'
 import leetcodesolutions from './leetcode-solutions.json'
-interface Project {
+export interface Project {
   title: string
   description: string
   href?: string

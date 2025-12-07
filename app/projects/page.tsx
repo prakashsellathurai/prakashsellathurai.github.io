@@ -1,11 +1,35 @@
-import { projectsData } from '@/data/projectsData'
+import { projectsData as fallbackProjectsData, Project } from '@/data/projectsData'
 import Card from '@/components/Card'
 import { genPageMetadata } from 'app/seo'
 import { Thing, WithContext } from 'schema-dts'
 
 export const metadata = genPageMetadata({ title: 'Projects' })
 
-export default function Projects() {
+async function getProjects(): Promise<Project[]> {
+  try {
+    const res = await fetch('https://api.github.com/users/prakashsellathurai/repos?per_page=100', {
+      next: { revalidate: 3600 },
+    })
+
+    if (!res.ok) {
+      throw new Error('Failed to fetch projects')
+    }
+
+    const repos = await res.json()
+    return repos.map((repo) => ({
+      title: repo.name,
+      description: repo.description,
+      href: repo.html_url,
+      stars: repo.stargazers_count,
+    }))
+  } catch (error) {
+    console.error('Error fetching projects:', error)
+    return fallbackProjectsData
+  }
+}
+
+export default async function Projects() {
+  const projectsData = await getProjects()
   const structuredData: WithContext<Thing>[] = projectsData.map((project) => ({
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',

@@ -8,7 +8,7 @@ export const metadata = genPageMetadata({ title: 'Projects' })
 import { getProjects } from '@/lib/data'
 
 export default async function Projects() {
-  const projectsData = await getProjects()
+  const projectsData = await getProjects(true)
   const structuredData: WithContext<Thing>[] = projectsData.map((project) => ({
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',

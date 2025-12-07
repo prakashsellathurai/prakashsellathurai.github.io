@@ -81,7 +81,7 @@ function parseBooks(xml: string): Book[] {
   return books
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(showAll = false): Promise<Project[]> {
   try {
     const res = await fetch('https://api.github.com/users/prakashsellathurai/repos?per_page=100', {
       next: { revalidate: 3600 },
@@ -100,9 +100,16 @@ export async function getProjects(): Promise<Project[]> {
       stars: repo.stargazers_count,
     }))
 
+    if (showAll) {
+      return allProjects
+    }
+
     return allProjects.filter((project) => projectsNamesToShowcase.includes(project.title))
   } catch (error) {
     console.error('Error fetching projects:', error)
+    if (showAll) {
+      return fallbackProjectsData
+    }
     return fallbackProjectsData.filter((project) => projectsNamesToShowcase.includes(project.title))
   }
 }

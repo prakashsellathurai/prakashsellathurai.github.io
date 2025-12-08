@@ -72,11 +72,11 @@ const nextConfig = () => {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'picsum.photos',
+          hostname: '**',
         },
         {
-          protocol: 'https',
-          hostname: 'i.gr-assets.com',
+          protocol: 'http',
+          hostname: '**',
         },
       ],
       unoptimized,

@@ -32,12 +32,12 @@ export default function Home({ posts, books, projects }) {
 
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="redline-border mb-8 divide-y divide-gray-200 rounded-lg p-6 dark:divide-gray-700">
         <AuthorLayout content={mainContent}>
           <MDXLayoutRenderer code={author.body.code} />
         </AuthorLayout>
       </div>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="redline-border mb-8 divide-y divide-gray-200 rounded-lg p-6 dark:divide-gray-700">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5 lg:pt-12">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-3xl md:leading-14 lg:text-3xl">
             Latest Essays
@@ -106,8 +106,12 @@ export default function Home({ posts, books, projects }) {
           </Link>
         </div>
       )}
-      <Bookshelf books={books.slice(0, 6)} />
-      <SampleProjects projects={projects.slice(0, 6)} />
+      <div className="redline-border mb-8 rounded-lg p-6">
+        <Bookshelf books={books.slice(0, 6)} />
+      </div>
+      <div className="redline-border mb-8 rounded-lg p-6">
+        <SampleProjects projects={projects.slice(0, 6)} />
+      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

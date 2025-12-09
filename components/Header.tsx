@@ -2,7 +2,6 @@ import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
 import Link from './Link'
 import MobileNav from './MobileNav'
-import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
 
 const Header = () => {
@@ -64,7 +63,6 @@ const Header = () => {
 
           <div className="flex items-center gap-2 pl-2 sm:border-l sm:border-gray-200 sm:pl-4 dark:sm:border-gray-800">
             <SearchButton />
-            <ThemeSwitch />
             <MobileNav />
           </div>
         </div>

@@ -65,7 +65,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   )
 }
 
-export default function ListLayoutWithTags({
+export default function EssaysLayout({
   posts,
   title,
   initialDisplayPosts = [],

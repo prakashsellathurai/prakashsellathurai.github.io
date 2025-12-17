@@ -12,13 +12,15 @@ export default async function Page() {
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
   return (
     <>
-      <div className="flex flex-col items-start justify-start divide-y divide-gray-200 dark:divide-gray-700 md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6 md:divide-y-0">
-        <div className="space-x-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:border-r-2 md:px-6 md:text-6xl md:leading-14">
+      <div className="glass-panel-enhanced my-8 rounded-3xl p-8 md:p-10">
+        {/* Enhanced Header */}
+        <div className="mb-8 space-y-2 border-b border-gray-200/60 pb-8 pt-6 dark:border-gray-700/60 md:space-y-5">
+          <h1 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Tags
           </h1>
         </div>
-        <div className="flex max-w-lg flex-wrap">
+
+        <div className="flex flex-wrap gap-4">
           {tagKeys.length === 0 && 'No tags found.'}
           {sortedTags.map((t) => {
             return (
@@ -26,7 +28,7 @@ export default async function Page() {
                 <Tag text={t} />
                 <Link
                   href={`/tags/${slug(t)}`}
-                  className="-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"
+                  className="-ml-2 text-sm font-semibold uppercase text-gray-600 transition-colors hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400"
                   aria-label={`View posts tagged ${t}`}
                 >
                   {` (${tagCounts[t]})`}

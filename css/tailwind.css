@@ -72,7 +72,7 @@ input:-webkit-autofill:focus {
 
 .body-custom-background {
   /* Blueprint technical drawing background - Pure CSS */
-  background-color: #4a6fa5;
+  background-color: theme('colors.primary.600');
   background-image:
     /* Main grid - large */
     linear-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px),
@@ -82,7 +82,8 @@ input:-webkit-autofill:focus {
     /* Diagonal lines */ /* Circles pattern */
     radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
     radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-    /* Base gradient */ radial-gradient(ellipse at top left, #5c7db5, #4a6fa5);
+    /* Base gradient */
+    radial-gradient(ellipse at top left, theme('colors.primary.500'), theme('colors.primary.700'));
   background-size:
     100px 100px,
     100px 100px,
@@ -130,7 +131,7 @@ input:-webkit-autofill:focus {
 
 .dark .body-custom-background {
   /* Blueprint technical drawing background - Pure CSS - Dark mode */
-  background-color: #2d3d5a;
+  background-color: theme('colors.primary.900');
   background-image:
     /* Main grid - large */
     linear-gradient(rgba(255, 255, 255, 0.12) 2px, transparent 2px),
@@ -140,7 +141,8 @@ input:-webkit-autofill:focus {
     /* Diagonal lines */ /* Circles pattern */
     radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08) 2px, transparent 2px),
     radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 2px, transparent 2px),
-    /* Base gradient */ radial-gradient(ellipse at top left, #3d4d6a, #2d3d5a);
+    /* Base gradient */
+    radial-gradient(ellipse at top left, theme('colors.primary.800'), theme('colors.primary.950'));
   background-size:
     100px 100px,
     100px 100px,
@@ -301,6 +303,85 @@ input:-webkit-autofill:focus {
   }
 }
 
-.filter-active {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Enhanced Glassmorphism */
+.glass-panel-enhanced {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.dark .glass-panel-enhanced {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.5),
+    0 2px 4px -1px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+/* Gradient Animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Section Fade In */
+.section-fade-in {
+  /* Using existing fadeInUp keyframes but defining class */
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+/* Custom Scrollbar for code blocks etc */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+}
+
+@keyframes diagonal-open {
+  0% {
+    opacity: 0;
+    /* Start with points collapsed at center for TL/BR, but extended for TR/BL */
+    clip-path: polygon(50% 50%, 150% -50%, 50% 50%, -50% 150%);
+  }
+
+  100% {
+    opacity: 1;
+    /* Fully expanded box */
+    clip-path: polygon(-50% -50%, 150% -50%, 150% 150%, -50% 150%);
+  }
+}
+
+.animate-diagonal-open {
+  /* Smoother Quintic ease-out with slightly longer duration */
+  animation: diagonal-open 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+  will-change: clip-path, opacity;
 }

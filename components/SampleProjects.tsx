@@ -5,70 +5,93 @@ import { Project } from '@/data/projectsData'
 
 const SampleProjects: React.FC<{ projects: Project[] }> = ({ projects }) => {
   return (
-    <>
-      <h2 className="mb-6 mt-12 text-3xl font-bold">Projects</h2>
+    <div className="grid grid-cols-1 gap-8">
+      {projects.map((d) => (
+        <div
+          key={d.title}
+          className={`${
+            d.imgSrc && 'h-full'
+          } card-project group relative flex size-full flex-col overflow-hidden rounded-3xl border border-gray-200/60 bg-white/80 backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-2xl dark:border-gray-700/60 dark:bg-gray-800/60`}
+        >
+          {/* Hover glow effect */}
+          <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/10 via-transparent to-secondary-400/10" />
+          </div>
 
-      <div className="container mb-6 ">
-        <div className="grid grid-cols-1 gap-8">
-          {projects.map((d) => (
-            <div
-              key={d.title}
-              className={`${
-                d.imgSrc && 'h-full'
-              }  size-full overflow-hidden rounded-bl-3xl border-b-2 border-l-2 border-gray-200 border-opacity-60 dark:border-gray-700`}
-            >
-              {d.imgSrc &&
-                (d.href ? (
-                  <Link href={d.href} aria-label={`Link to ${d.title}`}>
-                    <Image
-                      alt={d.title}
-                      src={d.imgSrc}
-                      className="object-cover object-center md:h-36 lg:h-48"
-                      width={544}
-                      height={306}
-                    />
-                  </Link>
-                ) : (
-                  <Image
-                    alt={d.title}
-                    src={d.imgSrc}
-                    className="object-cover object-center md:h-36 lg:h-48"
-                    width={544}
-                    height={306}
-                  />
-                ))}
-              <div className="p-6">
-                <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
-                  {d.href ? (
-                    <Link href={d.href} aria-label={`Link to ${d.title}`}>
-                      {d.title}
-                    </Link>
-                  ) : (
-                    d.title
-                  )}
-                </h2>
-                <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
-                  {d.description}
-                </p>
-                {d.href && (
-                  <Link
-                    href={d.href}
-                    className="text-base font-medium leading-6 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label={`Link to ${d.title}`}
-                  >
-                    Learn more &rarr;
-                  </Link>
-                )}
+          {d.imgSrc &&
+            (d.href ? (
+              <Link
+                href={d.href}
+                aria-label={`Link to ${d.title}`}
+                className="relative block overflow-hidden"
+              >
+                <Image
+                  alt={d.title}
+                  src={d.imgSrc}
+                  className="w-full object-cover object-center transition-transform duration-700 group-hover:scale-110 md:h-48 lg:h-64"
+                  width={544}
+                  height={306}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              </Link>
+            ) : (
+              <div className="relative overflow-hidden">
+                <Image
+                  alt={d.title}
+                  src={d.imgSrc}
+                  className="w-full object-cover object-center transition-transform duration-700 group-hover:scale-110 md:h-48 lg:h-64"
+                  width={544}
+                  height={306}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
-            </div>
-          ))}
+            ))}
+
+          <div className="relative flex flex-1 flex-col p-6">
+            <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight transition-colors duration-300 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+              {d.href ? (
+                <Link href={d.href} aria-label={`Link to ${d.title}`}>
+                  {d.title}
+                </Link>
+              ) : (
+                d.title
+              )}
+            </h2>
+            <p className="prose mb-4 line-clamp-3 flex-1 text-gray-500 dark:text-gray-400">
+              {d.description}
+            </p>
+            {d.href && (
+              <div className="mt-auto pt-4">
+                <Link
+                  href={d.href}
+                  className="group/link inline-flex items-center gap-1 text-base font-medium leading-6 text-primary-500 transition-all duration-300 hover:gap-2 hover:text-primary-600 dark:hover:text-primary-400"
+                  aria-label={`Link to ${d.title}`}
+                >
+                  Learn more
+                  <svg
+                    className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Blueprint-style corner brackets */}
+          <div className="pointer-events-none absolute left-2 top-2 h-4 w-4 border-l-2 border-t-2 border-primary-400/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="pointer-events-none absolute bottom-2 right-2 h-4 w-4 border-b-2 border-r-2 border-primary-400/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
-      </div>
-      <div className="flex items-center py-3 text-sm text-gray-800 before:me-6 before:flex-1 before:border-t before:border-gray-200 after:ms-6 after:flex-1 after:border-t after:border-gray-200 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
-        {' '}
-        <a href="/projects">Read More</a>
-      </div>
-    </>
+      ))}
+    </div>
   )
 }
 

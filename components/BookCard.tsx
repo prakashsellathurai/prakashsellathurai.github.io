@@ -8,7 +8,7 @@ const BookCard = ({ book }: { book: Book }) => {
       href={book.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+      className="animate-diagonal-open group relative flex flex-col overflow-hidden rounded-2xl border border-gray-200/60 bg-white/80 backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-xl dark:border-gray-700/60 dark:bg-gray-800/60"
     >
       <div className="relative aspect-[2/3] w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
         <Image
@@ -16,16 +16,19 @@ const BookCard = ({ book }: { book: Book }) => {
           alt={book.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-110"
         />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-1 text-lg font-bold leading-tight text-gray-900 group-hover:text-primary-500 dark:text-gray-100 dark:group-hover:text-primary-400">
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="mb-2 text-lg font-bold leading-tight text-gray-900 transition-colors duration-300 group-hover:text-primary-600 dark:text-gray-100 dark:group-hover:text-primary-400">
           {book.title}
         </h3>
-        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">{book.author}</p>
+        <p className="mb-3 text-sm font-medium text-gray-500 dark:text-gray-400">{book.author}</p>
+
         {book.rating && parseInt(book.rating) > 0 && (
-          <div className="mt-auto flex items-center text-yellow-400">
+          <div className="mt-auto flex items-center gap-1 text-yellow-500">
             {[...Array(5)].map((_, i) => (
               <svg
                 key={i}

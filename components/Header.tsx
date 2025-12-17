@@ -5,38 +5,34 @@ import MobileNav from './MobileNav'
 import SearchButton from './SearchButton'
 
 const Header = () => {
-  let headerClass = 'relative z-50 w-full mb-6'
-  if (siteMetadata.stickyNav) {
-    headerClass += ' sticky top-0 backdrop-blur-sm bg-white/70 dark:bg-slate-900/70'
-  }
-
   return (
-    <header className={headerClass}>
-      {/* Tech/Blueprint Deco Line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-50 dark:via-gray-700" />
+    <header className="relative z-50 mb-6 w-full">
+      {/* Structural Line / HUD top border */}
+      <div className="pointer-events-none absolute -top-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-70" />
 
-      <div className="flex items-center justify-between py-5">
+      {/* Main Header Container - Glassy and Technical */}
+      <div className="glass-panel-enhanced relative flex items-center justify-between rounded-none border-x-0 border-b border-t-0 border-b-primary-500/20 px-4 py-4 backdrop-blur-xl sm:rounded-2xl sm:border sm:px-8">
+        {/* Technical Corner Markers (Decorative) */}
+        <div className="pointer-events-none absolute -left-1 -top-1 h-3 w-3 border-l-2 border-t-2 border-secondary-400 opacity-50" />
+        <div className="pointer-events-none absolute -right-1 -top-1 h-3 w-3 border-r-2 border-t-2 border-secondary-400 opacity-50" />
+        <div className="pointer-events-none absolute -bottom-1 -left-1 h-3 w-3 border-b-2 border-l-2 border-secondary-400 opacity-50" />
+        <div className="pointer-events-none absolute -bottom-1 -right-1 h-3 w-3 border-b-2 border-r-2 border-secondary-400 opacity-50" />
+
         <Link
           href="/"
           aria-label={siteMetadata.headerTitle}
-          className="group flex items-center gap-2"
+          className="group relative flex items-center gap-3 overflow-hidden rounded-md px-2 py-1 transition-all hover:bg-primary-500/10"
         >
-          <div className="relative flex items-center px-3 py-1">
-            {/* Redline Layout - Logo */}
-            <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <div className="absolute inset-0 border border-dashed border-primary-500/40" />
-              <div className="absolute left-0 top-0 h-1.5 w-1.5 border-l-2 border-t-2 border-primary-500" />
-              <div className="absolute right-0 top-0 h-1.5 w-1.5 border-r-2 border-t-2 border-primary-500" />
-              <div className="absolute bottom-0 left-0 h-1.5 w-1.5 border-b-2 border-l-2 border-primary-500" />
-              <div className="absolute bottom-0 right-0 h-1.5 w-1.5 border-b-2 border-r-2 border-primary-500" />
-            </div>
+          {/* Logo Animation / Tech Effect */}
 
-            <div className="text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+          <div className="hidden flex-col sm:flex">
+            <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-gray-100">
               {siteMetadata.siteHome}
-            </div>
+            </span>
           </div>
         </Link>
 
+        {/* Desktop Navigation */}
         <div className="flex items-center gap-6">
           <div className="hidden items-center gap-1 sm:flex">
             {headerNavLinks
@@ -45,23 +41,25 @@ const Header = () => {
                 <Link
                   key={link.title}
                   href={link.href}
-                  className="group relative px-3 py-1 text-sm font-medium text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
+                  className="group relative px-4 py-2 font-mono text-sm font-medium text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
                 >
-                  {/* Redline Layout - Nav Links */}
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <div className="absolute inset-0 border border-dashed border-primary-500/40" />
-                    <div className="absolute left-0 top-0 h-1.5 w-1.5 border-l-2 border-t-2 border-primary-500" />
-                    <div className="absolute right-0 top-0 h-1.5 w-1.5 border-r-2 border-t-2 border-primary-500" />
-                    <div className="absolute bottom-0 left-0 h-1.5 w-1.5 border-b-2 border-l-2 border-primary-500" />
-                    <div className="absolute bottom-0 right-0 h-1.5 w-1.5 border-b-2 border-r-2 border-primary-500" />
-                  </div>
+                  {/* Hover Bracket Effect */}
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 text-secondary-500 opacity-0 transition-opacity group-hover:opacity-100">
+                    [
+                  </span>
+                  <span className="relative z-10">{link.title}</span>
+                  <span className="absolute right-0 top-1/2 -translate-y-1/2 text-secondary-500 opacity-0 transition-opacity group-hover:opacity-100">
+                    ]
+                  </span>
 
-                  <span className="relative block">{link.title}</span>
+                  {/* Subtle background glow on hover */}
+                  <div className="absolute inset-0 -z-10 mx-2 rounded bg-primary-500/0 transition-colors group-hover:bg-primary-500/5" />
                 </Link>
               ))}
           </div>
 
-          <div className="flex items-center gap-2 pl-2 sm:border-l sm:border-gray-200 sm:pl-4 dark:sm:border-gray-800">
+          {/* Utilities (Search, Theme, Mobile Menu) */}
+          <div className="flex items-center gap-3 border-l border-gray-200 pl-4 dark:border-gray-700">
             <SearchButton />
             <MobileNav />
           </div>

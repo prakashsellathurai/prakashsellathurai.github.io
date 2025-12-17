@@ -37,7 +37,7 @@ export default async function Projects() {
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {/* Enhanced Header */}
         <div className="space-y-4 pb-8 pt-6 md:space-y-6">
-          <h1 className="bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-4xl font-extrabold leading-tight tracking-tight text-transparent dark:from-primary-400 dark:to-purple-400 sm:text-5xl md:text-6xl md:leading-tight">
+          <h1 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-4xl font-extrabold leading-tight tracking-tight text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 sm:text-5xl md:text-6xl md:leading-tight">
             Projects Portfolio
           </h1>
 
@@ -93,7 +93,9 @@ export default async function Projects() {
 
         {/* Projects with Filters */}
         <div className="pt-8">
-          <ProjectsClient projects={projectsData} />
+          <div className="glass-panel-enhanced rounded-3xl p-8 md:p-10">
+            <ProjectsClient projects={projectsData} />
+          </div>
         </div>
       </div>
       <script

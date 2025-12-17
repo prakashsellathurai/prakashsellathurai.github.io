@@ -52,10 +52,10 @@ const Card = ({
   }
 
   return (
-    <div className="card-project group relative size-full overflow-hidden rounded-3xl border-2 border-gray-200/60 bg-white/80 backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-2xl dark:border-gray-700/60 dark:bg-gray-800/60">
+    <div className="card-project animate-diagonal-open group relative size-full overflow-hidden rounded-3xl border-2 border-gray-200/60 bg-white/80 backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-2xl dark:border-gray-700/60 dark:bg-gray-800/60">
       {/* Hover glow effect */}
       <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-transparent to-purple-400/20" />
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-transparent to-secondary-400/20" />
       </div>
 
       {/* Image Section */}

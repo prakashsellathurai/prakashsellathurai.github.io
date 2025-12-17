@@ -6,6 +6,10 @@ export interface Project {
   href?: string
   imgSrc?: string
   stars?: number
+  language?: string
+  forks?: number
+  tags?: string[]
+  updatedAt?: string
 }
 
 interface LeetcodeSolutions {

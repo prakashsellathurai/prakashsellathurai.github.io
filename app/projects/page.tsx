@@ -1,7 +1,7 @@
 import { projectsData as fallbackProjectsData, Project } from '@/data/projectsData'
-import Card from '@/components/Card'
 import { genPageMetadata } from 'app/seo'
 import { Thing, WithContext } from 'schema-dts'
+import ProjectsClient from '@/components/ProjectsClient'
 
 export const metadata = genPageMetadata({ title: 'Projects' })
 
@@ -28,36 +28,72 @@ export default async function Projects() {
     },
   }))
 
+  // Calculate total stats
+  const totalStars = projectsData.reduce((sum, project) => sum + (project.stars || 0), 0)
+  const totalProjects = projectsData.length
+
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Projects
+        {/* Enhanced Header */}
+        <div className="space-y-4 pb-8 pt-6 md:space-y-6">
+          <h1 className="bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-4xl font-extrabold leading-tight tracking-tight text-transparent dark:from-primary-400 dark:to-purple-400 sm:text-5xl md:text-6xl md:leading-tight">
+            Projects Portfolio
           </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Below is a selection of projects I have worked on, dynamically generated from my{' '}
+
+          {/* Stats Row */}
+          <div className="flex flex-wrap gap-6 text-sm md:text-base">
+            <div className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30">
+                <svg
+                  className="h-5 w-5 text-primary-600 dark:text-primary-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 100 4v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2a2 2 0 100-4V6z" />
+                </svg>
+              </div>
+              <div>
+                <div className="font-bold text-gray-900 dark:text-gray-100">{totalProjects}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Projects</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30">
+                <svg
+                  className="h-5 w-5 text-yellow-600 dark:text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              </div>
+              <div>
+                <div className="font-bold text-gray-900 dark:text-gray-100">{totalStars}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Total Stars</div>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-base leading-7 text-gray-600 dark:text-gray-400 md:text-lg">
+            Explore my open-source projects and contributions, dynamically fetched from{' '}
             <a
               href="https://github.com/prakashsellathurai"
-              className="text-blue-500 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-primary-500 transition-colors hover:text-primary-600 hover:underline dark:hover:text-primary-400"
             >
               GitHub
-            </a>{' '}
-            profile.
+            </a>
+            . Each project showcases different technologies, frameworks, and problem-solving
+            approaches.
           </p>
         </div>
-        <div className="container py-12">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {projectsData.map((d) => (
-              <Card
-                key={d.title}
-                title={d.title}
-                description={d.description}
-                imgSrc={d.imgSrc}
-                href={d.href}
-              />
-            ))}
-          </div>
+
+        {/* Projects with Filters */}
+        <div className="pt-8">
+          <ProjectsClient projects={projectsData} />
         </div>
       </div>
       <script

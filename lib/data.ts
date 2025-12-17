@@ -98,6 +98,10 @@ export async function getProjects(showAll = false): Promise<Project[]> {
       href: repo.html_url,
       imgSrc: undefined, // GitHub API doesn't provide image, fallback or handle elsewhere?
       stars: repo.stargazers_count,
+      language: repo.language,
+      forks: repo.forks_count,
+      tags: repo.topics || [],
+      updatedAt: repo.updated_at,
     }))
 
     if (showAll) {

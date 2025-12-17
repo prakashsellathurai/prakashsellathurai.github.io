@@ -220,3 +220,87 @@ input:-webkit-autofill:focus {
   right: -1px;
   border-width: 0 2px 2px 0;
 }
+
+/* Project Card Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.card-project {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+/* Staggered animation delays for cards */
+.card-project:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.card-project:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.card-project:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.card-project:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.card-project:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.card-project:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.card-project:nth-child(7) {
+  animation-delay: 0.7s;
+}
+
+.card-project:nth-child(8) {
+  animation-delay: 0.8s;
+}
+
+.card-project:nth-child(9) {
+  animation-delay: 0.9s;
+}
+
+.card-project:nth-child(n + 10) {
+  animation-delay: 1s;
+}
+
+/* Filter button animations */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.filter-active {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

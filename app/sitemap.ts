@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 import { allEssays } from 'contentlayer/generated'
 import siteMetadata from '@/data/siteMetadata'
-import { leetcodeSolutions } from '@/data/projectsData'
+import { leetcodeSolutions, projectsData } from '@/data/projectsData'
 
 export const dynamic = 'force-static'
 
@@ -13,6 +13,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .map((post) => ({
       url: `${siteUrl}${post.path}`,
       lastModified: post.lastmod || post.date,
+    }))
+
+  const projectRoutes = projectsData
+    .filter((project) => project.website && project.website.startsWith('http'))
+    .map((project) => ({
+      url: project.website as string,
+      lastModified: new Date().toISOString().split('T')[0],
     }))
 
   const routes = [
@@ -30,5 +37,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date().toISOString().split('T')[0],
   }))
 
-  return [...routes, ...blogRoutes]
+  return [...routes, ...blogRoutes, ...projectRoutes]
 }

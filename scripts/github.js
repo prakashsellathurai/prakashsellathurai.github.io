@@ -42,6 +42,7 @@ async function fetchRepos() {
     const yamldata = data.map((datum) => ({
       title: datum.name,
       href: datum.html_url,
+      website: datum.homepage,
       description: datum.description,
       stars: datum.stargazers_count,
     }))

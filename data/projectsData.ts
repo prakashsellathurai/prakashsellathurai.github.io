@@ -4,6 +4,7 @@ export interface Project {
   title: string
   description: string
   href?: string
+  website?: string
   imgSrc?: string
   stars?: number
   language?: string

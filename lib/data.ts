@@ -96,6 +96,7 @@ export async function getProjects(showAll = false): Promise<Project[]> {
       title: repo.name,
       description: repo.description,
       href: repo.html_url,
+      website: repo.homepage,
       imgSrc: undefined, // GitHub API doesn't provide image, fallback or handle elsewhere?
       stars: repo.stargazers_count,
       language: repo.language,

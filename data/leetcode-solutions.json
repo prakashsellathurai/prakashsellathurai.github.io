@@ -32,12 +32,20 @@
     "href": "leetcode-solutions/problems/0186-reverse-words-in-a-string-ii/index.html"
   },
   {
+    "title": "problems/0206-reverse-linked-list/index.html",
+    "href": "leetcode-solutions/problems/0206-reverse-linked-list/index.html"
+  },
+  {
     "title": "problems/0212-word-search-ii/index.html",
     "href": "leetcode-solutions/problems/0212-word-search-ii/index.html"
   },
   {
     "title": "problems/0238-product-of-array-except-self/index.html",
     "href": "leetcode-solutions/problems/0238-product-of-array-except-self/index.html"
+  },
+  {
+    "title": "problems/0645-set-mismatch/index.html",
+    "href": "leetcode-solutions/problems/0645-set-mismatch/index.html"
   },
   {
     "title": "problems/0729-my-calendar-i/index.html",
@@ -528,6 +536,10 @@
     "href": "leetcode-solutions/problems/236-lowest-common-ancestor-of-a-binary-tree/index.html"
   },
   {
+    "title": "problems/2385-amount-of-time-for-binary-tree-to-be-infected/index.html",
+    "href": "leetcode-solutions/problems/2385-amount-of-time-for-binary-tree-to-be-infected/index.html"
+  },
+  {
     "title": "problems/239-sliding-window-maximum/index.html",
     "href": "leetcode-solutions/problems/239-sliding-window-maximum/index.html"
   },
@@ -538,6 +550,10 @@
   {
     "title": "problems/242-valid-anagram/index.html",
     "href": "leetcode-solutions/problems/242-valid-anagram/index.html"
+  },
+  {
+    "title": "problems/2571-minimum-operations-to-reduce-an-integer-to-0/index.html",
+    "href": "leetcode-solutions/problems/2571-minimum-operations-to-reduce-an-integer-to-0/index.html"
   },
   {
     "title": "problems/258-add-digits/index.html",

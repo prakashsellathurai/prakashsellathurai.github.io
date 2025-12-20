@@ -9,33 +9,39 @@ import { sortPosts } from 'pliny/utils/contentlayer.js'
 
 const outputFolder = process.env.EXPORT ? 'out' : 'public'
 
-const generateRssItem = (config, post) => `
+const generateRssItem = (config, post) => {
+  const siteUrl = config.siteUrl.endsWith('/') ? config.siteUrl.slice(0, -1) : config.siteUrl
+  return `
   <item>
-    <guid>${config.siteUrl}/blog/${post.slug}</guid>
+    <guid>${siteUrl}/${post.path}</guid>
     <title>${escape(post.title)}</title>
-    <link>${config.siteUrl}/blog/${post.slug}</link>
+    <link>${siteUrl}/${post.path}</link>
     ${post.summary && `<description>${escape(post.summary)}</description>`}
     <pubDate>${new Date(post.date).toUTCString()}</pubDate>
     <author>${config.email} (${config.author})</author>
     ${post.tags && post.tags.map((t) => `<category>${t}</category>`).join('')}
   </item>
 `
+}
 
-const generateRss = (config, posts, page = 'feed.xml') => `
+const generateRss = (config, posts, page = 'feed.xml') => {
+  const siteUrl = config.siteUrl.endsWith('/') ? config.siteUrl.slice(0, -1) : config.siteUrl
+  return `
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
       <title>${escape(config.title)}</title>
-      <link>${config.siteUrl}/blog</link>
+      <link>${siteUrl}/essays</link>
       <description>${escape(config.description)}</description>
       <language>${config.language}</language>
       <managingEditor>${config.email} (${config.author})</managingEditor>
       <webMaster>${config.email} (${config.author})</webMaster>
       <lastBuildDate>${new Date(posts[0].date).toUTCString()}</lastBuildDate>
-      <atom:link href="${config.siteUrl}/${page}" rel="self" type="application/rss+xml"/>
+      <atom:link href="${siteUrl}/${page}" rel="self" type="application/rss+xml"/>
       ${posts.map((post) => generateRssItem(config, post)).join('')}
     </channel>
   </rss>
 `
+}
 
 async function generateRSS(config, allEssays, page = 'feed.xml') {
   const publishPosts = allEssays.filter((post) => post.draft !== true)

@@ -34,14 +34,14 @@ export default function Home({ posts, books, projects }) {
     <>
       {/* Enhanced Hero Section with Author Info */}
       <div className="hero-section relative mb-16 overflow-hidden rounded-3xl">
-        {/* Animated gradient background */}
-        <div className="animate-gradient-shift absolute inset-0 bg-gradient-to-br from-primary-500/20 via-primary-600/20 to-secondary-500/20" />
+        {/* Animated gradient background - Neutral Primary */}
+        <div className="animate-gradient-shift absolute inset-0 bg-gradient-to-br from-primary-500/10 via-primary-400/5 to-primary-500/10" />
 
-        {/* Glass panel overlay */}
-        <div className="animate-diagonal-open relative rounded-3xl border-2 border-white/20 bg-white/40 p-8 shadow-2xl backdrop-blur-xl dark:border-gray-700/20 dark:bg-gray-900/40 md:p-12">
-          {/* Floating corner accents */}
-          <div className="absolute left-4 top-4 h-16 w-16 rounded-tl-2xl border-l-4 border-t-4 border-primary-400/60" />
-          <div className="absolute bottom-4 right-4 h-16 w-16 rounded-br-2xl border-b-4 border-r-4 border-primary-400/60" />
+        {/* Glass panel overlay - Lower opacity for B&W Blueprint */}
+        <div className="animate-diagonal-open relative rounded-3xl border border-black/10 bg-white/20 p-8 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-black/20 md:p-12">
+          {/* Floating corner accents - Secondary */}
+          <div className="absolute left-4 top-4 h-16 w-16 rounded-tl-2xl border-l-2 border-t-2 border-primary-400/30" />
+          <div className="absolute bottom-4 right-4 h-16 w-16 rounded-br-2xl border-b-2 border-r-2 border-primary-400/30" />
 
           <AuthorLayout content={mainContent}>
             <MDXLayoutRenderer code={author.body.code} />
@@ -50,17 +50,20 @@ export default function Home({ posts, books, projects }) {
       </div>
 
       {/* Latest Essays Section */}
-      <section className="section-fade-in mb-16">
-        <div className="glass-panel-enhanced animate-diagonal-open rounded-3xl p-8 md:p-10">
+      <section className="section-fade-in relative mb-16 overflow-hidden rounded-3xl">
+        {/* Animated gradient background - Consistency with Hero */}
+        <div className="animate-gradient-shift absolute inset-0 bg-gradient-to-br from-primary-500/10 via-primary-400/5 to-primary-500/10" />
+
+        <div className="glass-panel-enhanced animate-diagonal-open relative rounded-3xl p-8 md:p-10">
           {/* Section header with decorative line */}
           <div className="relative mb-12">
             <div className="flex items-center gap-4">
-              <div className="h-1 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500" />
-              <h2 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-4xl font-extrabold text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 md:text-5xl">
+              <div className="h-1 w-12 rounded-full bg-primary-500/40" />
+              <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 md:text-5xl">
                 Latest Essays
               </h2>
             </div>
-            <div className="mt-3 h-px bg-gradient-to-r from-primary-500/20 via-primary-600/20 to-transparent" />
+            <div className="mt-3 h-px bg-primary-500/20" />
           </div>
 
           {/* Essays grid */}
@@ -73,11 +76,11 @@ export default function Home({ posts, books, projects }) {
               return (
                 <li
                   key={slug}
-                  className="essay-card animate-diagonal-open group relative overflow-hidden rounded-2xl border border-gray-200/60 bg-gradient-to-br from-white/60 to-gray-50/60 backdrop-blur-sm transition-all duration-500 hover:scale-[1.01] hover:border-primary-400/60 hover:shadow-2xl dark:border-gray-700/60 dark:from-gray-800/60 dark:to-gray-900/60"
+                  className="essay-card animate-diagonal-open group relative overflow-hidden rounded-2xl border border-black/5 bg-white/20 backdrop-blur-xl transition-all duration-500 hover:scale-[1.01] hover:border-black/20 hover:shadow-xl dark:border-white/5 dark:bg-black/20"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {/* Hover gradient effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/0 via-transparent to-secondary-500/0 transition-all duration-500 group-hover:from-primary-500/10 group-hover:to-secondary-500/10" />
+                  {/* Hover effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-secondary-500/0 transition-all duration-500 group-hover:bg-secondary-500/5" />
 
                   <article className="relative p-6 md:p-8">
                     <div className="space-y-4 xl:grid xl:grid-cols-4 xl:items-start xl:gap-8 xl:space-y-0">
@@ -140,7 +143,7 @@ export default function Home({ posts, books, projects }) {
                         {/* Read more link */}
                         <Link
                           href={`/essays/${slug}`}
-                          className="group/link inline-flex items-center gap-2 text-base font-semibold text-primary-600 transition-all duration-300 hover:gap-3 dark:text-primary-400"
+                          className="group/link inline-flex items-center gap-2 text-base font-semibold text-gray-900 transition-all duration-300 hover:gap-3 hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
                           aria-label={`Read more: "${title}"`}
                         >
                           <span>Read more</span>
@@ -163,8 +166,8 @@ export default function Home({ posts, books, projects }) {
                   </article>
 
                   {/* Corner decorations */}
-                  <div className="absolute right-2 top-2 h-8 w-8 rounded-tr-lg border-r-2 border-t-2 border-primary-400/0 transition-all duration-500 group-hover:border-primary-400/60" />
-                  <div className="absolute bottom-2 left-2 h-8 w-8 rounded-bl-lg border-b-2 border-l-2 border-primary-400/0 transition-all duration-500 group-hover:border-primary-400/60" />
+                  <div className="absolute right-2 top-2 h-8 w-8 rounded-tr-lg border-r border-t border-primary-400/0 transition-all duration-500 group-hover:border-primary-400/30" />
+                  <div className="absolute bottom-2 left-2 h-8 w-8 rounded-bl-lg border-b border-l border-primary-400/0 transition-all duration-500 group-hover:border-primary-400/30" />
                 </li>
               )
             })}
@@ -175,7 +178,7 @@ export default function Home({ posts, books, projects }) {
             <div className="mt-10 flex justify-center">
               <Link
                 href="/essays"
-                className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                className="group inline-flex items-center gap-3 rounded-full bg-gray-800 px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-900 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-100"
                 aria-label="All posts"
               >
                 <span>View All Essays</span>
@@ -199,12 +202,18 @@ export default function Home({ posts, books, projects }) {
       </section>
 
       {/* Bookshelf Section */}
-      <section className="section-fade-in mb-16" style={{ animationDelay: '0.2s' }}>
-        <div className="glass-panel-enhanced animate-diagonal-open rounded-3xl p-8 md:p-10">
+      <section
+        className="section-fade-in relative mb-16 overflow-hidden rounded-3xl"
+        style={{ animationDelay: '0.2s' }}
+      >
+        {/* Animated gradient background - Consistency with Hero */}
+        <div className="animate-gradient-shift absolute inset-0 bg-gradient-to-br from-secondary-500/10 via-secondary-400/5 to-secondary-500/10" />
+
+        <div className="glass-panel-enhanced animate-diagonal-open relative rounded-3xl p-8 md:p-10">
           <div className="relative mb-8">
             <div className="flex items-center gap-4">
-              <div className="h-1 w-12 rounded-full bg-gradient-to-r from-secondary-500 to-primary-500" />
-              <h2 className="bg-gradient-to-r from-gray-900 via-secondary-600 to-primary-600 bg-clip-text text-3xl font-extrabold text-transparent dark:from-gray-100 dark:via-secondary-400 dark:to-primary-400 md:text-4xl">
+              <div className="h-1 w-12 rounded-full bg-secondary-500/40" />
+              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 md:text-4xl">
                 Reading List
               </h2>
             </div>
@@ -214,12 +223,18 @@ export default function Home({ posts, books, projects }) {
       </section>
 
       {/* Projects Section */}
-      <section className="section-fade-in mb-16" style={{ animationDelay: '0.3s' }}>
-        <div className="glass-panel-enhanced animate-diagonal-open rounded-3xl p-8 md:p-10">
+      <section
+        className="section-fade-in relative mb-16 overflow-hidden rounded-3xl"
+        style={{ animationDelay: '0.3s' }}
+      >
+        {/* Animated gradient background - Consistency with Hero */}
+        <div className="animate-gradient-shift absolute inset-0 bg-gradient-to-br from-primary-500/10 via-primary-400/5 to-primary-500/10" />
+
+        <div className="glass-panel-enhanced animate-diagonal-open relative rounded-3xl p-8 md:p-10">
           <div className="relative mb-8">
             <div className="flex items-center gap-4">
-              <div className="h-1 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500" />
-              <h2 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 md:text-4xl">
+              <div className="h-1 w-12 rounded-full bg-primary-500/40" />
+              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 md:text-4xl">
                 Featured Projects
               </h2>
             </div>

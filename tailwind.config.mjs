@@ -27,8 +27,8 @@ module.exports = {
         sans: ['var(--font-space-grotesk)', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.indigo,
-        secondary: colors.cyan,
+        primary: colors.blue,
+        secondary: colors.blue,
         gray: colors.gray,
       },
       zIndex: {
@@ -40,9 +40,9 @@ module.exports = {
         DEFAULT: {
           css: {
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.gray.900'),
               '&:hover': {
-                color: `${theme('colors.primary.600')}`,
+                color: theme('colors.primary.600'),
               },
               code: { color: theme('colors.primary.400') },
             },
@@ -61,9 +61,9 @@ module.exports = {
         invert: {
           css: {
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.gray.100'),
               '&:hover': {
-                color: `${theme('colors.primary.400')}`,
+                color: theme('colors.primary.400'),
               },
               code: { color: theme('colors.primary.400') },
             },

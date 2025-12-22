@@ -11,11 +11,11 @@ const SampleProjects: React.FC<{ projects: Project[] }> = ({ projects }) => {
           key={d.title}
           className={`${
             d.imgSrc && 'h-full'
-          } card-project group relative flex size-full flex-col overflow-hidden rounded-3xl border border-gray-200/60 bg-white/80 backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-2xl dark:border-gray-700/60 dark:bg-gray-800/60`}
+          } card-project group relative flex size-full flex-col overflow-hidden rounded-3xl border border-black/10 bg-white/20 backdrop-blur-xl transition-all duration-500 hover:scale-[1.02] hover:border-black/20 hover:shadow-xl dark:border-white/10 dark:bg-black/20`}
         >
-          {/* Hover glow effect */}
+          {/* Hover glow effect - Neutral Primary */}
           <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/10 via-transparent to-secondary-400/10" />
+            <div className="absolute inset-0 rounded-3xl bg-primary-500/5" />
           </div>
 
           {d.imgSrc &&
@@ -64,7 +64,7 @@ const SampleProjects: React.FC<{ projects: Project[] }> = ({ projects }) => {
               <div className="mt-auto pt-4">
                 <Link
                   href={d.href}
-                  className="group/link inline-flex items-center gap-1 text-base font-medium leading-6 text-primary-500 transition-all duration-300 hover:gap-2 hover:text-primary-600 dark:hover:text-primary-400"
+                  className="group/link inline-flex items-center gap-1 text-base font-medium leading-6 text-gray-900 transition-all duration-300 hover:gap-2 hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
                   aria-label={`Link to ${d.title}`}
                 >
                   Learn more
@@ -86,9 +86,9 @@ const SampleProjects: React.FC<{ projects: Project[] }> = ({ projects }) => {
             )}
           </div>
 
-          {/* Blueprint-style corner brackets */}
-          <div className="pointer-events-none absolute left-2 top-2 h-4 w-4 border-l-2 border-t-2 border-primary-400/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute bottom-2 right-2 h-4 w-4 border-b-2 border-r-2 border-primary-400/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          {/* Blueprint-style corner brackets - Neutral Secondary */}
+          <div className="pointer-events-none absolute left-2 top-2 h-4 w-4 border-l border-t border-primary-400/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="pointer-events-none absolute bottom-2 right-2 h-4 w-4 border-b border-r border-primary-400/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
       ))}
     </div>

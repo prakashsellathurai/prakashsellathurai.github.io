@@ -80,7 +80,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                             {author.twitter && (
                               <Link
                                 href={author.twitter}
-                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                                className="text-gray-900 transition-colors hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
                               >
                                 {author.twitter
                                   .replace('https://twitter.com/', '@')
@@ -118,7 +118,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                           <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                             Previous Essay
                           </h2>
-                          <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                          <div className="text-gray-900 transition-colors hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400">
                             <Link href={`/${prev.path}`}>{prev.title}</Link>
                           </div>
                         </div>
@@ -128,7 +128,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                           <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                             Next Essay
                           </h2>
-                          <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                          <div className="text-gray-900 transition-colors hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400">
                             <Link href={`/${next.path}`}>{next.title}</Link>
                           </div>
                         </div>
@@ -139,7 +139,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 <div className="pt-4 xl:pt-8">
                   <Link
                     href={`/${basePath}`}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    className="text-gray-900 transition-colors hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
                     aria-label="Back to the Essays"
                   >
                     &larr; Back to the Essays

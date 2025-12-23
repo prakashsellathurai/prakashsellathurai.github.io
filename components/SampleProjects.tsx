@@ -57,14 +57,14 @@ const SampleProjects: React.FC<{ projects: Project[] }> = ({ projects }) => {
                 d.title
               )}
             </h2>
-            <p className="prose mb-4 line-clamp-3 flex-1 text-gray-500 dark:text-gray-400">
+            <p className="prose mb-4 line-clamp-3 flex-1 text-black/50 dark:text-white/40">
               {d.description}
             </p>
             {d.href && (
               <div className="mt-auto pt-4">
                 <Link
                   href={d.href}
-                  className="group/link inline-flex items-center gap-1 text-base font-medium leading-6 text-gray-900 transition-all duration-300 hover:gap-2 hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
+                  className="group/link inline-flex items-center gap-1 text-base font-medium leading-6 text-black transition-all duration-300 hover:gap-2 hover:text-primary-600 dark:text-white dark:hover:text-primary-400"
                   aria-label={`Link to ${d.title}`}
                 >
                   Learn more

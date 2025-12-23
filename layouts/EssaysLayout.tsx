@@ -81,14 +81,14 @@ export default function EssaysLayout({
   return (
     <>
       <div className="pb-6 pt-6">
-        <h1 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+        <h1 className="bg-gradient-to-r from-black via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-white dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
           {title}
         </h1>
       </div>
 
       <div className="flex flex-col sm:flex-row sm:space-x-8 lg:space-x-12">
         {/* Sidebar - Modern Glass Style */}
-        <div className="glass-panel-enhanced animate-diagonal-open mb-8 hidden h-max min-w-[280px] max-w-[280px] flex-none rounded-2xl p-6 shadow-lg sm:mb-0 sm:flex">
+        <div className="glass-panel-enhanced animate-diagonal-open mb-8 hidden h-max min-w-[280px] max-w-[280px] flex-none rounded-2xl bg-black/20 p-6 shadow-lg sm:mb-0 sm:flex">
           <div className="w-full">
             <h3 className="mb-4 font-bold uppercase tracking-wider text-primary-500">Category</h3>
             <div className="mb-6 h-px w-full bg-gradient-to-r from-primary-500/50 to-transparent" />
@@ -105,7 +105,7 @@ export default function EssaysLayout({
                 ) : (
                   <Link
                     href={`/essays`}
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-all hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800/50"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-black/70 transition-all hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
                   >
                     <span>All Essays</span>
                   </Link>
@@ -126,11 +126,13 @@ export default function EssaysLayout({
                     ) : (
                       <Link
                         href={`/tags/${slug(t)}`}
-                        className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-all hover:translate-x-1 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800/50"
+                        className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-black/70 transition-all hover:translate-x-1 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
                         aria-label={`View posts tagged ${t}`}
                       >
                         <span>{t}</span>
-                        <span className="text-xs text-gray-400">{tagCounts[t]}</span>
+                        <span className="text-xs text-black/40 dark:text-white/40">
+                          {tagCounts[t]}
+                        </span>
                       </Link>
                     )}
                   </li>
@@ -148,7 +150,7 @@ export default function EssaysLayout({
               return (
                 <li
                   key={path}
-                  className="glass-panel-enhanced animate-diagonal-open group relative overflow-hidden rounded-2xl border border-transparent p-6 transition-all duration-300 hover:scale-[1.01] hover:border-primary-400/50 hover:shadow-2xl"
+                  className="glass-panel-enhanced animate-diagonal-open group relative overflow-hidden rounded-2xl border border-transparent bg-black/20 p-6 transition-all duration-300 hover:scale-[1.01] hover:border-primary-400/50 hover:shadow-2xl"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* Blueprint/Tech Decor - The "Old" Aspect */}
@@ -169,7 +171,7 @@ export default function EssaysLayout({
                       <div className="flex items-center justify-between">
                         <dl>
                           <dt className="sr-only">Published on</dt>
-                          <dd className="flex items-center gap-2 text-sm font-medium leading-6 text-gray-500 dark:text-gray-400">
+                          <dd className="flex items-center gap-2 text-sm font-medium leading-6 text-black/50 dark:text-white/50">
                             <span className="h-2 w-2 animate-pulse rounded-full bg-primary-500"></span>
                             <time dateTime={date} suppressHydrationWarning className="font-mono">
                               {formatDate(date, siteMetadata.locale)}
@@ -181,7 +183,7 @@ export default function EssaysLayout({
                       <h2 className="text-2xl font-bold leading-8 tracking-tight">
                         <Link
                           href={`/${path}`}
-                          className="text-gray-900 transition-colors group-hover:text-primary-600 dark:text-gray-100 dark:group-hover:text-primary-400"
+                          className="text-black transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400"
                         >
                           {title}
                         </Link>
@@ -199,7 +201,7 @@ export default function EssaysLayout({
                       </div>
                     </div>
 
-                    <div className="prose max-w-none border-l-2 border-primary-500/20 pl-4 text-gray-500 dark:text-gray-400">
+                    <div className="prose max-w-none border-l-2 border-primary-500/20 pl-4 text-black/70 dark:text-white/70">
                       {summary}
                     </div>
 

@@ -8,9 +8,9 @@ const BookCard = ({ book }: { book: Book }) => {
       href={book.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="animate-diagonal-open group relative flex flex-col overflow-hidden rounded-2xl border border-gray-200/60 bg-white/80 backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-xl dark:border-gray-700/60 dark:bg-gray-800/60"
+      className="animate-diagonal-open group relative flex flex-col overflow-hidden rounded-2xl border border-black/10 bg-white/80 backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-xl dark:border-white/10 dark:bg-white/5"
     >
-      <div className="relative aspect-[2/3] w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+      <div className="relative aspect-[2/3] w-full overflow-hidden bg-black/5 dark:bg-white/5">
         <Image
           src={book.imageUrl}
           alt={book.title}
@@ -22,17 +22,17 @@ const BookCard = ({ book }: { book: Book }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="mb-2 text-lg font-bold leading-tight text-gray-900 transition-colors duration-300 group-hover:text-primary-600 dark:text-gray-100 dark:group-hover:text-primary-400">
+        <h3 className="mb-2 text-lg font-bold leading-tight text-black transition-colors duration-300 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
           {book.title}
         </h3>
-        <p className="mb-3 text-sm font-medium text-gray-500 dark:text-gray-400">{book.author}</p>
+        <p className="mb-3 text-sm font-medium text-black/50 dark:text-white/40">{book.author}</p>
 
         {book.rating && parseInt(book.rating) > 0 && (
           <div className="mt-auto flex items-center gap-1 text-yellow-500">
             {[...Array(5)].map((_, i) => (
               <svg
                 key={i}
-                className={`h-4 w-4 ${i < parseInt(book.rating!) ? 'fill-current' : 'text-gray-300 dark:text-gray-600'}`}
+                className={`h-4 w-4 ${i < parseInt(book.rating!) ? 'fill-current' : 'text-black/30 dark:text-white/20'}`}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"

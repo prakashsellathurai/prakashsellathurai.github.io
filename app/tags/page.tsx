@@ -14,8 +14,8 @@ export default async function Page() {
     <>
       <div className="glass-panel-enhanced my-8 rounded-3xl p-8 md:p-10">
         {/* Enhanced Header */}
-        <div className="mb-8 space-y-2 border-b border-gray-200/60 pb-8 pt-6 dark:border-gray-700/60 md:space-y-5">
-          <h1 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+        <div className="mb-8 space-y-2 border-b border-black/10 pb-8 pt-6 dark:border-white/10 md:space-y-5">
+          <h1 className="bg-gradient-to-r from-black via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-white dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Tags
           </h1>
         </div>
@@ -28,7 +28,7 @@ export default async function Page() {
                 <Tag text={t} />
                 <Link
                   href={`/tags/${slug(t)}`}
-                  className="-ml-2 text-sm font-semibold uppercase text-gray-600 transition-colors hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400"
+                  className="-ml-2 text-sm font-semibold uppercase text-black/60 transition-colors hover:text-primary-500 dark:text-white/30 dark:hover:text-primary-400"
                   aria-label={`View posts tagged ${t}`}
                 >
                   {` (${tagCounts[t]})`}

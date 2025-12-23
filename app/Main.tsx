@@ -59,7 +59,7 @@ export default function Home({ posts, books, projects }) {
           <div className="relative mb-12">
             <div className="flex items-center gap-4">
               <div className="h-1 w-12 rounded-full bg-primary-500/40" />
-              <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 md:text-5xl">
+              <h2 className="text-4xl font-extrabold tracking-tight text-black dark:text-white md:text-5xl">
                 Latest Essays
               </h2>
             </div>
@@ -69,7 +69,7 @@ export default function Home({ posts, books, projects }) {
           {/* Essays grid */}
           <ul className="space-y-8">
             {!posts.length && (
-              <p className="py-12 text-center text-gray-500 dark:text-gray-400">No posts found.</p>
+              <p className="py-12 text-center text-black/50 dark:text-white/50">No posts found.</p>
             )}
             {posts.slice(0, MAX_DISPLAY).map((post, index) => {
               const { slug, date, title, summary, tags } = post
@@ -113,7 +113,7 @@ export default function Home({ posts, books, projects }) {
                           <h3 className="text-2xl font-bold leading-tight tracking-tight md:text-3xl">
                             <Link
                               href={`/essays/${slug}`}
-                              className="text-gray-900 transition-colors duration-300 group-hover:text-primary-600 dark:text-gray-100 dark:group-hover:text-primary-400"
+                              className="text-black transition-colors duration-300 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400"
                             >
                               {title}
                             </Link>
@@ -125,7 +125,7 @@ export default function Home({ posts, books, projects }) {
                               {tags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="inline-flex cursor-pointer items-center rounded-full border border-gray-200/60 bg-gray-100/80 px-3 py-1 text-xs font-medium text-gray-700 backdrop-blur-sm transition-colors duration-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700/60 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
+                                  className="inline-flex cursor-pointer items-center rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium text-black/70 backdrop-blur-sm transition-colors duration-300 hover:bg-primary-100 hover:text-primary-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
                                 >
                                   <span className="mr-1">#</span>
                                   {tag}
@@ -136,14 +136,14 @@ export default function Home({ posts, books, projects }) {
                         </div>
 
                         {/* Summary */}
-                        <p className="prose prose-gray line-clamp-2 max-w-none leading-relaxed text-gray-600 dark:prose-invert dark:text-gray-400">
+                        <p className="prose line-clamp-2 max-w-none leading-relaxed text-black/70 dark:prose-invert dark:text-white/70">
                           {summary}
                         </p>
 
                         {/* Read more link */}
                         <Link
                           href={`/essays/${slug}`}
-                          className="group/link inline-flex items-center gap-2 text-base font-semibold text-gray-900 transition-all duration-300 hover:gap-3 hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400"
+                          className="group/link inline-flex items-center gap-2 text-base font-semibold text-black transition-all duration-300 hover:gap-3 hover:text-primary-600 dark:text-white dark:hover:text-primary-400"
                           aria-label={`Read more: "${title}"`}
                         >
                           <span>Read more</span>
@@ -178,7 +178,7 @@ export default function Home({ posts, books, projects }) {
             <div className="mt-10 flex justify-center">
               <Link
                 href="/essays"
-                className="group inline-flex items-center gap-3 rounded-full bg-gray-800 px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-900 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-100"
+                className="group inline-flex items-center gap-3 rounded-full bg-black px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-black/80 dark:bg-white dark:text-black dark:hover:bg-white/80"
                 aria-label="All posts"
               >
                 <span>View All Essays</span>
@@ -213,7 +213,7 @@ export default function Home({ posts, books, projects }) {
           <div className="relative mb-8">
             <div className="flex items-center gap-4">
               <div className="h-1 w-12 rounded-full bg-secondary-500/40" />
-              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 md:text-4xl">
+              <h2 className="text-3xl font-extrabold tracking-tight text-black dark:text-white md:text-4xl">
                 Reading List
               </h2>
             </div>
@@ -234,7 +234,7 @@ export default function Home({ posts, books, projects }) {
           <div className="relative mb-8">
             <div className="flex items-center gap-4">
               <div className="h-1 w-12 rounded-full bg-primary-500/40" />
-              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 md:text-4xl">
+              <h2 className="text-3xl font-extrabold tracking-tight text-black dark:text-white md:text-4xl">
                 Featured Projects
               </h2>
             </div>

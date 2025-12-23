@@ -33,7 +33,7 @@ const MobileNav = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          className="h-8 w-8 text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+          className="h-8 w-8 text-black hover:text-primary-500 dark:text-white dark:hover:text-primary-400"
         >
           <path
             fillRule="evenodd"
@@ -79,7 +79,7 @@ const MobileNav = () => {
                   <Link
                     key={link.title}
                     href={link.href}
-                    className="group relative mb-6 py-2 pr-4 font-mono text-xl font-bold tracking-widest text-gray-900 outline outline-0 transition-colors hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+                    className="group relative mb-6 py-2 pr-4 font-mono text-xl font-bold tracking-widest text-black outline outline-0 transition-colors hover:text-primary-500 dark:text-white dark:hover:text-primary-400"
                     onClick={onToggleNav}
                   >
                     <span className="-latest-y-1/2 absolute -left-4 top-1/2 text-sm text-secondary-500 opacity-0 transition-opacity group-hover:opacity-100">
@@ -91,11 +91,11 @@ const MobileNav = () => {
               </nav>
 
               <button
-                className="fixed right-4 top-4 z-80 h-10 w-10 p-1 text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+                className="fixed right-4 top-4 z-80 h-10 w-10 p-1 text-black hover:text-primary-500 dark:text-white dark:hover:text-primary-400"
                 aria-label="Toggle Menu"
                 onClick={onToggleNav}
               >
-                <div className="relative flex h-full w-full items-center justify-center rounded border border-gray-300 dark:border-gray-700">
+                <div className="relative flex h-full w-full items-center justify-center rounded border border-black/10 dark:border-white/10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"

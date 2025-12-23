@@ -99,7 +99,7 @@ const nextConfig = () => {
         watchOptions: {
           aggregateTimeout: 1000,
           poll: 1000,
-          ignored: ['node_modules', '.next'],
+          ignored: ['node_modules', '.next', '.yarn'],
         },
       }
     },

@@ -9,10 +9,10 @@ export default function NotFound() {
         </h1>
       </div>
       <div className="max-w-md">
-        <p className="mb-4 text-xl font-bold leading-normal text-gray-900 dark:text-gray-100 md:text-2xl">
+        <p className="mb-4 text-xl font-bold leading-normal text-black dark:text-white md:text-2xl">
           Sorry we couldn't find this page.
         </p>
-        <p className="mb-8 text-gray-600 dark:text-gray-400">
+        <p className="mb-8 text-black/60 dark:text-white/60">
           But don't worry, you can find plenty of other things on our homepage.
         </p>
         <Link

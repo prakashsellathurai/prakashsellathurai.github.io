@@ -34,10 +34,10 @@ export default async function Projects() {
 
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="divide-y divide-black/10 dark:divide-white/10">
         {/* Enhanced Header */}
         <div className="space-y-4 pb-8 pt-6 md:space-y-6">
-          <h1 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-4xl font-extrabold leading-tight tracking-tight text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 sm:text-5xl md:text-6xl md:leading-tight">
+          <h1 className="bg-gradient-to-r from-black via-primary-600 to-secondary-600 bg-clip-text text-4xl font-extrabold leading-tight tracking-tight text-transparent dark:from-white dark:via-primary-400 dark:to-secondary-400 sm:text-5xl md:text-6xl md:leading-tight">
             Projects Portfolio
           </h1>
 
@@ -54,8 +54,8 @@ export default async function Projects() {
                 </svg>
               </div>
               <div>
-                <div className="font-bold text-gray-900 dark:text-gray-100">{totalProjects}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Projects</div>
+                <div className="font-bold text-black dark:text-white">{totalProjects}</div>
+                <div className="text-xs text-black/50 dark:text-white/40">Projects</div>
               </div>
             </div>
 
@@ -70,13 +70,13 @@ export default async function Projects() {
                 </svg>
               </div>
               <div>
-                <div className="font-bold text-gray-900 dark:text-gray-100">{totalStars}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Total Stars</div>
+                <div className="font-bold text-black dark:text-white">{totalStars}</div>
+                <div className="text-xs text-black/50 dark:text-white/40">Total Stars</div>
               </div>
             </div>
           </div>
 
-          <p className="text-base leading-7 text-gray-600 dark:text-gray-400 md:text-lg">
+          <p className="text-base leading-7 text-black/60 dark:text-white/40 md:text-lg">
             Explore my open-source projects and contributions, dynamically fetched from{' '}
             <a
               href="https://github.com/prakashsellathurai"

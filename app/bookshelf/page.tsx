@@ -15,13 +15,13 @@ export default async function BookshelfPage() {
   const read = await getBooks('read')
 
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+    <div className="divide-y divide-black/10 dark:divide-white/10">
       {/* Enhanced Header */}
       <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-        <h1 className="bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-gray-100 dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+        <h1 className="bg-gradient-to-r from-black via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-white dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
           Bookshelf
         </h1>
-        <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+        <p className="text-lg leading-7 text-black/50 dark:text-white/40">
           A collection of books I'm currently reading and have read.
         </p>
       </div>
@@ -32,7 +32,7 @@ export default async function BookshelfPage() {
             <section>
               <div className="mb-8 flex items-center gap-4">
                 <div className="h-1 w-12 rounded-full bg-gradient-to-r from-secondary-500 to-primary-500" />
-                <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
                   Currently Reading
                 </h2>
               </div>
@@ -47,9 +47,7 @@ export default async function BookshelfPage() {
           <section>
             <div className="mb-8 flex items-center gap-4">
               <div className="h-1 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500" />
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-                Read
-              </h2>
+              <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">Read</h2>
             </div>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {read.map((book) => (

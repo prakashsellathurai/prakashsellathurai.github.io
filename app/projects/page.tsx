@@ -55,7 +55,7 @@ export default async function Projects() {
               </div>
               <div>
                 <div className="font-bold text-black dark:text-white">{totalProjects}</div>
-                <div className="text-xs text-black/50 dark:text-white/40">Projects</div>
+                <div className="text-xs text-black dark:text-white">Projects</div>
               </div>
             </div>
 
@@ -71,12 +71,12 @@ export default async function Projects() {
               </div>
               <div>
                 <div className="font-bold text-black dark:text-white">{totalStars}</div>
-                <div className="text-xs text-black/50 dark:text-white/40">Total Stars</div>
+                <div className="text-xs text-black dark:text-white">Total Stars</div>
               </div>
             </div>
           </div>
 
-          <p className="text-base leading-7 text-black/60 dark:text-white/40 md:text-lg">
+          <p className="text-base leading-7 text-black dark:text-white md:text-lg">
             Explore my open-source projects and contributions, dynamically fetched from{' '}
             <a
               href="https://github.com/prakashsellathurai"

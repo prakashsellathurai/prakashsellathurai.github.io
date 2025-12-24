@@ -69,7 +69,7 @@ export default function Home({ posts, books, projects }) {
           {/* Essays grid */}
           <ul className="space-y-8">
             {!posts.length && (
-              <p className="py-12 text-center text-black/50 dark:text-white/50">No posts found.</p>
+              <p className="py-12 text-center text-black dark:text-white">No posts found.</p>
             )}
             {posts.slice(0, MAX_DISPLAY).map((post, index) => {
               const { slug, date, title, summary, tags } = post
@@ -125,7 +125,7 @@ export default function Home({ posts, books, projects }) {
                               {tags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="inline-flex cursor-pointer items-center rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium text-black/70 backdrop-blur-sm transition-colors duration-300 hover:bg-primary-100 hover:text-primary-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
+                                  className="inline-flex cursor-pointer items-center rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium text-black backdrop-blur-sm transition-colors duration-300 hover:bg-primary-100 hover:text-primary-700 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
                                 >
                                   <span className="mr-1">#</span>
                                   {tag}
@@ -136,7 +136,7 @@ export default function Home({ posts, books, projects }) {
                         </div>
 
                         {/* Summary */}
-                        <p className="prose line-clamp-2 max-w-none leading-relaxed text-black/70 dark:prose-invert dark:text-white/70">
+                        <p className="prose line-clamp-2 max-w-none leading-relaxed text-black dark:prose-invert dark:text-white">
                           {summary}
                         </p>
 

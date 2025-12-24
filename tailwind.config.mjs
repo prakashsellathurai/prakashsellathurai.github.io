@@ -27,9 +27,14 @@ module.exports = {
         sans: ['var(--font-space-grotesk)', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.blue,
-        secondary: colors.blue,
+        primary: colors.orange,
+        secondary: colors.orange,
         gray: colors.gray,
+        brand: {
+          black: '#000000',
+          white: '#ffffff',
+          accent: colors.orange,
+        },
       },
       zIndex: {
         60: '60',
@@ -39,36 +44,40 @@ module.exports = {
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
+            color: theme('colors.brand.black'),
             a: {
-              color: theme('colors.black'),
+              color: theme('colors.brand.black'),
               '&:hover': {
                 color: theme('colors.primary.600'),
               },
               code: { color: theme('colors.primary.400') },
             },
             'h1,h2': {
+              color: theme('colors.brand.black'),
               fontWeight: '700',
               letterSpacing: theme('letterSpacing.tight'),
             },
             h3: {
+              color: theme('colors.brand.black'),
               fontWeight: '600',
             },
             code: {
-              color: theme('colors.indigo.500'),
+              color: theme('colors.primary.500'),
             },
           },
         },
         invert: {
           css: {
+            color: theme('colors.brand.white'),
             a: {
-              color: theme('colors.white'),
+              color: theme('colors.brand.white'),
               '&:hover': {
                 color: theme('colors.primary.400'),
               },
               code: { color: theme('colors.primary.400') },
             },
             'h1,h2,h3,h4,h5,h6': {
-              color: theme('colors.white'),
+              color: theme('colors.brand.black'),
             },
           },
         },
@@ -81,11 +90,11 @@ module.exports = {
     ({ addBase, theme }) => {
       addBase({
         'a, button': {
-          outlineColor: theme('colors.primary.500'),
+          outlineColor: theme('colors.brand.black'),
           '&:focus-visible': {
             outline: '2px solid',
             borderRadius: theme('borderRadius.DEFAULT'),
-            outlineColor: theme('colors.primary.500'),
+            outlineColor: theme('colors.brand.black'),
           },
         },
       })

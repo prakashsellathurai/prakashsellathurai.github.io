@@ -105,7 +105,7 @@ export default function EssaysLayout({
                 ) : (
                   <Link
                     href={`/essays`}
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-black/70 transition-all hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-black transition-all hover:bg-black/5 dark:text-white dark:hover:bg-white/5"
                   >
                     <span>All Essays</span>
                   </Link>
@@ -126,13 +126,11 @@ export default function EssaysLayout({
                     ) : (
                       <Link
                         href={`/tags/${slug(t)}`}
-                        className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-black/70 transition-all hover:translate-x-1 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
+                        className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-black transition-all hover:translate-x-1 hover:bg-black/5 dark:text-white dark:hover:bg-white/5"
                         aria-label={`View posts tagged ${t}`}
                       >
                         <span>{t}</span>
-                        <span className="text-xs text-black/40 dark:text-white/40">
-                          {tagCounts[t]}
-                        </span>
+                        <span className="text-xs text-black dark:text-white">{tagCounts[t]}</span>
                       </Link>
                     )}
                   </li>
@@ -171,7 +169,7 @@ export default function EssaysLayout({
                       <div className="flex items-center justify-between">
                         <dl>
                           <dt className="sr-only">Published on</dt>
-                          <dd className="flex items-center gap-2 text-sm font-medium leading-6 text-black/50 dark:text-white/50">
+                          <dd className="flex items-center gap-2 text-sm font-medium leading-6 text-black dark:text-white">
                             <span className="h-2 w-2 animate-pulse rounded-full bg-primary-500"></span>
                             <time dateTime={date} suppressHydrationWarning className="font-mono">
                               {formatDate(date, siteMetadata.locale)}
@@ -201,7 +199,7 @@ export default function EssaysLayout({
                       </div>
                     </div>
 
-                    <div className="prose max-w-none border-l-2 border-primary-500/20 pl-4 text-black/70 dark:text-white/70">
+                    <div className="prose max-w-none border-l-2 border-primary-500/20 pl-4 text-black dark:text-white">
                       {summary}
                     </div>
 

@@ -11,7 +11,7 @@
 }
 
 .footnotes {
-  @apply mt-12 border-t border-black/10 pt-8 dark:border-white/10;
+  @apply mt-12 border-t border-brand-black/10 pt-8 dark:border-brand-white/10;
 }
 
 .data-footnote-backref {
@@ -72,18 +72,18 @@ input:-webkit-autofill:focus {
 
 .body-custom-background {
   /* Blueprint technical drawing background - Black & White */
-  background-color: theme('colors.white');
+  background-color: theme('colors.brand.white');
   background-image:
     /* Main grid - large */
-    linear-gradient(theme('colors.black / 3%') 2px, transparent 2px),
-    linear-gradient(90deg, theme('colors.black / 3%') 2px, transparent 2px),
-    /* Fine grid - small */ linear-gradient(theme('colors.black / 2%') 1px, transparent 1px),
-    linear-gradient(90deg, theme('colors.black / 2%') 1px, transparent 1px),
+    linear-gradient(theme('colors.brand.black / 3%') 2px, transparent 2px),
+    linear-gradient(90deg, theme('colors.brand.black / 3%') 2px, transparent 2px),
+    /* Fine grid - small */ linear-gradient(theme('colors.brand.black / 2%') 1px, transparent 1px),
+    linear-gradient(90deg, theme('colors.brand.black / 2%') 1px, transparent 1px),
     /* Circles pattern */
-    radial-gradient(circle at 20% 30%, theme('colors.black / 1%') 2px, transparent 2px),
-    radial-gradient(circle at 80% 70%, theme('colors.black / 1%') 2px, transparent 2px),
+    radial-gradient(circle at 20% 30%, theme('colors.brand.black / 1%') 2px, transparent 2px),
+    radial-gradient(circle at 80% 70%, theme('colors.brand.black / 1%') 2px, transparent 2px),
     /* Base gradient */
-    radial-gradient(ellipse at top left, theme('colors.white'), theme('colors.gray.100'));
+    radial-gradient(ellipse at top left, theme('colors.brand.white'), theme('colors.gray.100'));
   background-size:
     100px 100px,
     100px 100px,
@@ -102,7 +102,7 @@ input:-webkit-autofill:focus {
     0 0;
   background-attachment: fixed;
   position: relative;
-  color: theme('colors.gray.900');
+  color: theme('colors.brand.black');
 }
 
 .body-custom-background::before {
@@ -112,7 +112,7 @@ input:-webkit-autofill:focus {
   left: 0;
   right: 0;
   bottom: 0;
-  background: theme('colors.white / 20%');
+  background: theme('colors.brand.white / 20%');
   pointer-events: none;
   z-index: 0;
 }
@@ -129,13 +129,13 @@ input:-webkit-autofill:focus {
 
 .dark .body-custom-background {
   /* Blueprint technical drawing background - Black & White - Dark mode */
-  background-color: #000000;
+  background-color: theme('colors.brand.black');
   background-image:
     /* Main grid - large */
-    linear-gradient(theme('colors.white / 5%') 2px, transparent 2px),
-    linear-gradient(90deg, theme('colors.white / 5%') 2px, transparent 2px),
-    /* Fine grid - small */ linear-gradient(theme('colors.white / 3%') 1px, transparent 1px),
-    linear-gradient(90deg, theme('colors.white / 3%') 1px, transparent 1px),
+    linear-gradient(theme('colors.brand.white / 5%') 2px, transparent 2px),
+    linear-gradient(90deg, theme('colors.brand.white / 5%') 2px, transparent 2px),
+    /* Fine grid - small */ linear-gradient(theme('colors.brand.white / 3%') 1px, transparent 1px),
+    linear-gradient(90deg, theme('colors.brand.white / 3%') 1px, transparent 1px),
     /* Circles pattern */
     /* radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.02) 2px, transparent 2px), */
     /* radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.02) 2px, transparent 2px), */
@@ -158,7 +158,7 @@ input:-webkit-autofill:focus {
     0 0;
   background-attachment: fixed;
   position: relative;
-  color: theme('colors.white');
+  color: theme('colors.brand.white');
 }
 
 .dark .body-custom-background::before {
@@ -168,34 +168,34 @@ input:-webkit-autofill:focus {
   left: 0;
   right: 0;
   bottom: 0;
-  background: theme('colors.black / 20%');
+  background: theme('colors.brand.black / 20%');
   pointer-events: none;
   z-index: 0;
 }
 
 .glass-panel {
-  background: theme('colors.white / 20%');
+  background: theme('colors.brand.white / 20%');
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid theme('colors.black / 10%');
-  box-shadow: 0 8px 32px 0 theme('colors.black / 5%');
+  border: 1px solid theme('colors.brand.black / 10%');
+  box-shadow: 0 8px 32px 0 theme('colors.brand.black / 5%');
   border-radius: 1rem;
 }
 
 .dark .glass-panel {
-  background: theme('colors.black / 20%');
-  border: 1px solid theme('colors.white / 10%');
-  box-shadow: 0 8px 32px 0 theme('colors.black / 50%');
+  background: theme('colors.brand.black / 20%');
+  border: 1px solid theme('colors.brand.white / 10%');
+  box-shadow: 0 8px 32px 0 theme('colors.brand.black / 50%');
 }
 
 /* Redlining & Blueprint Structure */
 .redline-border {
-  border: 1px dashed theme('colors.black / 20%');
+  border: 2px dashed theme('colors.brand.black / 20%');
   position: relative;
 }
 
 .dark .redline-border {
-  border: 1px dashed theme('colors.black / 20%');
+  border: 2px dashed theme('colors.brand.black / 20%');
 }
 
 .redline-border::before,
@@ -204,7 +204,7 @@ input:-webkit-autofill:focus {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: theme('colors.black / 40%');
+  border-color: theme('colors.brand.black / 40%');
   border-style: solid;
   transition: all 0.3s ease;
   pointer-events: none;
@@ -212,7 +212,7 @@ input:-webkit-autofill:focus {
 
 .dark .redline-border::before,
 .dark .redline-border::after {
-  border-color: theme('colors.white / 40%');
+  border-color: theme('colors.brand.white / 40%');
 }
 
 .redline-border::before {
@@ -310,23 +310,23 @@ input:-webkit-autofill:focus {
 /* Enhanced Glassmorphism */
 /* Enhanced Glassmorphism - Centralized Refresh */
 .glass-panel-enhanced {
-  background: theme('colors.white / 20%');
+  background: theme('colors.brand.white / 20%');
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid theme('colors.black / 10%');
+  border: 1px solid theme('colors.brand.black / 10%');
   box-shadow:
-    0 4px 6px -1px theme('colors.black / 5%'),
-    0 2px 4px -1px theme('colors.black / 3%'),
-    0 0 0 1px theme('colors.white / 5%') inset;
+    0 4px 6px -1px theme('colors.brand.black / 5%'),
+    0 2px 4px -1px theme('colors.brand.black / 3%'),
+    0 0 0 1px theme('colors.brand.white / 5%') inset;
 }
 
 .dark .glass-panel-enhanced {
-  background: theme('colors.black / 20%');
-  border: 1px solid theme('colors.white / 10%');
+  background: theme('colors.brand.black / 20%');
+  border: 1px solid theme('colors.brand.white / 10%');
   box-shadow:
-    0 4px 6px -1px theme('colors.black / 50%'),
-    0 2px 4px -1px theme('colors.black / 30%'),
-    0 0 0 1px theme('colors.white / 5%') inset;
+    0 4px 6px -1px theme('colors.brand.black / 50%'),
+    0 2px 4px -1px theme('colors.brand.black / 30%'),
+    0 0 0 1px theme('colors.brand.white / 5%') inset;
 }
 
 /* Gradient Animation */
@@ -367,7 +367,7 @@ input:-webkit-autofill:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: theme('colors.black / 20%');
+  background: theme('colors.brand.black / 20%');
   border-radius: 4px;
 }
 

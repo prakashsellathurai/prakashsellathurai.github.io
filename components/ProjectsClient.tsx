@@ -62,7 +62,7 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
             <svg
-              className="h-5 w-5 text-black/40"
+              className="h-5 w-5 text-black"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -90,7 +90,7 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
           <div className="flex items-center gap-2">
             <label
               htmlFor="language-filter"
-              className="text-sm font-medium text-black/70 dark:text-white/30"
+              className="text-sm font-medium text-black dark:text-white"
             >
               Language:
             </label>
@@ -98,7 +98,7 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
               id="language-filter"
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="rounded-lg border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black/70 transition-all duration-300 hover:border-primary-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-white/10 dark:bg-white/5 dark:text-white/30"
+              className="rounded-lg border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black transition-all duration-300 hover:border-primary-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-white/10 dark:bg-white/5 dark:text-white"
             >
               {languages.map((lang) => (
                 <option key={lang} value={lang}>
@@ -110,17 +110,14 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
 
           {/* Sort Filter */}
           <div className="flex items-center gap-2">
-            <label
-              htmlFor="sort-filter"
-              className="text-sm font-medium text-black/70 dark:text-white/30"
-            >
+            <label htmlFor="sort-filter" className="text-sm font-medium text-black dark:text-white">
               Sort by:
             </label>
             <select
               id="sort-filter"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'stars' | 'updated' | 'name')}
-              className="rounded-lg border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black/70 transition-all duration-300 hover:border-primary-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-white/10 dark:bg-white/5 dark:text-white/30"
+              className="rounded-lg border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black transition-all duration-300 hover:border-primary-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-white/10 dark:bg-white/5 dark:text-white"
             >
               <option value="stars">Most Stars</option>
               <option value="updated">Recently Updated</option>
@@ -129,7 +126,7 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
           </div>
 
           {/* Results Count */}
-          <div className="ml-auto text-sm text-black/60 dark:text-white/40">
+          <div className="ml-auto text-sm text-black dark:text-white">
             Showing{' '}
             <span className="font-semibold text-primary-600 dark:text-primary-400">
               {filteredProjects.length}
@@ -141,7 +138,7 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
         {/* Active Filters - Clear All */}
         {(searchTerm || selectedLanguage !== 'all') && (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-black/60 dark:text-white/40">Active filters:</span>
+            <span className="text-sm text-black dark:text-white">Active filters:</span>
             {searchTerm && (
               <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">
                 Search: "{searchTerm}"
@@ -203,7 +200,7 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
         // Empty State
         <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-black/10 bg-black/5 p-12 text-center dark:border-white/10 dark:bg-white/5">
           <svg
-            className="mb-4 h-16 w-16 text-black/40 dark:text-white/40"
+            className="mb-4 h-16 w-16 text-black dark:text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -215,10 +212,10 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
               d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <h3 className="mb-2 text-xl font-semibold text-black/70 dark:text-white/30">
+          <h3 className="mb-2 text-xl font-semibold text-black dark:text-white">
             No projects found
           </h3>
-          <p className="mb-4 text-black/50 dark:text-white/40">
+          <p className="mb-4 text-black dark:text-white">
             Try adjusting your filters or search term
           </p>
           <button

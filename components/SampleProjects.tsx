@@ -57,7 +57,7 @@ const SampleProjects: React.FC<{ projects: Project[] }> = ({ projects }) => {
                 d.title
               )}
             </h2>
-            <p className="prose mb-4 line-clamp-3 flex-1 text-black/50 dark:text-white/40">
+            <p className="prose mb-4 line-clamp-3 flex-1 text-black dark:text-white">
               {d.description}
             </p>
             {d.href && (

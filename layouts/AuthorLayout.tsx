@@ -45,8 +45,8 @@ export default function AuthorLayout({ children, content }: Props) {
             />
           )}
           <h3 className="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight">{name}</h3>
-          <div className="text-black/50 dark:text-white/50">{occupation}</div>
-          <div className="text-black/50 dark:text-white/50">{company}</div>
+          <div className="text-black dark:text-white">{occupation}</div>
+          <div className="text-black dark:text-white">{company}</div>
           <div className="flex space-x-3 pt-6">
             <SocialIcon kind="mail" href={`mailto:${email}`} />
             <SocialIcon kind="github" href={github} />

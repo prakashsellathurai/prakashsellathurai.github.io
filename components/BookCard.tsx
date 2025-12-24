@@ -25,14 +25,14 @@ const BookCard = ({ book }: { book: Book }) => {
         <h3 className="mb-2 text-lg font-bold leading-tight text-black transition-colors duration-300 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
           {book.title}
         </h3>
-        <p className="mb-3 text-sm font-medium text-black/50 dark:text-white/40">{book.author}</p>
+        <p className="mb-3 text-sm font-medium text-black dark:text-white">{book.author}</p>
 
         {book.rating && parseInt(book.rating) > 0 && (
           <div className="mt-auto flex items-center gap-1 text-yellow-500">
             {[...Array(5)].map((_, i) => (
               <svg
                 key={i}
-                className={`h-4 w-4 ${i < parseInt(book.rating!) ? 'fill-current' : 'text-black/30 dark:text-white/20'}`}
+                className={`h-4 w-4 ${i < parseInt(book.rating!) ? 'fill-current' : 'text-black dark:text-white'}`}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"

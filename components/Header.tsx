@@ -41,7 +41,7 @@ const Header = () => {
                 <Link
                   key={link.title}
                   href={link.href}
-                  className="group relative px-4 py-2 font-mono text-sm font-medium text-black/60 transition-colors hover:text-primary-600 dark:text-white/30 dark:hover:text-primary-400"
+                  className="group relative px-4 py-2 font-mono text-sm font-medium text-black transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400"
                 >
                   {/* Hover Bracket Effect */}
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 text-primary-500 opacity-0 transition-opacity group-hover:opacity-100">

@@ -28,7 +28,7 @@ export default async function Page() {
                 <Tag text={t} />
                 <Link
                   href={`/tags/${slug(t)}`}
-                  className="-ml-2 text-sm font-semibold uppercase text-black/60 transition-colors hover:text-primary-500 dark:text-white/30 dark:hover:text-primary-400"
+                  className="-ml-2 text-sm font-semibold uppercase text-black transition-colors hover:text-primary-500 dark:text-white dark:hover:text-primary-400"
                   aria-label={`View posts tagged ${t}`}
                 >
                   {` (${tagCounts[t]})`}

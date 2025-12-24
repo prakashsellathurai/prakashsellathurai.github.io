@@ -99,7 +99,7 @@ const Card = ({
         </h2>
 
         {/* Description */}
-        <p className="prose mb-4 line-clamp-3 max-w-none text-black/60 dark:text-white/40">
+        <p className="prose mb-4 line-clamp-3 max-w-none text-black dark:text-white">
           {description || 'No description available'}
         </p>
 
@@ -117,7 +117,7 @@ const Card = ({
 
           {/* Forks */}
           {forks !== undefined && forks > 0 && (
-            <div className="flex items-center gap-1 text-black/60 dark:text-white/40">
+            <div className="flex items-center gap-1 text-black dark:text-white">
               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 16 16">
                 <path
                   fillRule="evenodd"
@@ -135,13 +135,13 @@ const Card = ({
                 className="h-3 w-3 rounded-full"
                 style={{ backgroundColor: getLanguageColor(language) }}
               />
-              <span className="text-black/70 dark:text-white/30">{language}</span>
+              <span className="text-black dark:text-white">{language}</span>
             </div>
           )}
 
           {/* Updated time */}
           {updatedAt && (
-            <div className="flex items-center gap-1 text-black/50 dark:text-white/40">
+            <div className="flex items-center gap-1 text-black dark:text-white">
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -167,7 +167,7 @@ const Card = ({
               </span>
             ))}
             {tags.length > 3 && (
-              <span className="rounded-full bg-black/10 px-3 py-1 text-xs font-medium text-black/60 dark:bg-white/10 dark:text-white/40">
+              <span className="rounded-full bg-black/10 px-3 py-1 text-xs font-medium text-black dark:bg-white/10 dark:text-white">
                 +{tags.length - 3}
               </span>
             )}

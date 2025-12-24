@@ -44,7 +44,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 <dl className="space-y-10">
                   <div>
                     <dt className="sr-only">Published on</dt>
-                    <dd className="text-base font-medium leading-6 text-black/50 dark:text-white/50">
+                    <dd className="text-base font-medium leading-6 text-black dark:text-white">
                       <time dateTime={date}>
                         {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
                       </time>
@@ -101,7 +101,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 <div className="divide-black/10 text-sm font-medium leading-5 dark:divide-white/10 xl:col-start-1 xl:row-start-2 xl:divide-y">
                   {tags && (
                     <div className="py-4 xl:py-8">
-                      <h2 className="text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
+                      <h2 className="text-xs uppercase tracking-wide text-black dark:text-white">
                         Tags
                       </h2>
                       <div className="flex flex-wrap">
@@ -115,7 +115,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
                       {prev && prev.path && (
                         <div>
-                          <h2 className="text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
+                          <h2 className="text-xs uppercase tracking-wide text-black dark:text-white">
                             Previous Essay
                           </h2>
                           <div className="text-black transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400">
@@ -125,7 +125,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       )}
                       {next && next.path && (
                         <div>
-                          <h2 className="text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
+                          <h2 className="text-xs uppercase tracking-wide text-black dark:text-white">
                             Next Essay
                           </h2>
                           <div className="text-black transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400">

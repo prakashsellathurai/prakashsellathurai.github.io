@@ -21,7 +21,7 @@ export default async function BookshelfPage() {
         <h1 className="bg-gradient-to-r from-black via-primary-600 to-secondary-600 bg-clip-text text-3xl font-extrabold leading-9 tracking-tight text-transparent dark:from-white dark:via-primary-400 dark:to-secondary-400 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
           Bookshelf
         </h1>
-        <p className="text-lg leading-7 text-black/50 dark:text-white/40">
+        <p className="text-lg leading-7 text-black dark:text-white">
           A collection of books I'm currently reading and have read.
         </p>
       </div>

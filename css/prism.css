@@ -36,7 +36,7 @@
 }
 
 .line-number::before {
-  @apply -ml-2 mr-4 inline-block w-4 text-right text-black/40;
+  @apply -ml-2 mr-4 inline-block w-4 text-right text-black;
   content: attr(line);
 }
 

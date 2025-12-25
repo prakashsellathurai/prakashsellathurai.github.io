@@ -88,7 +88,7 @@ export default function EssaysLayout({
 
       <div className="flex flex-col sm:flex-row sm:space-x-8 lg:space-x-12">
         {/* Sidebar - Modern Glass Style */}
-        <div className="glass-panel-enhanced animate-diagonal-open mb-8 hidden h-max min-w-[280px] max-w-[280px] flex-none rounded-2xl bg-black/20 p-6 shadow-lg sm:mb-0 sm:flex">
+        <div className="glass-panel-enhanced animate-diagonal-open mb-8 hidden h-max min-w-[280px] max-w-[280px] flex-none rounded-2xl border-black/20 p-6 shadow-lg sm:mb-0 sm:flex">
           <div className="w-full">
             <h3 className="mb-4 font-bold uppercase tracking-wider text-primary-500">Category</h3>
             <div className="mb-6 h-px w-full bg-gradient-to-r from-primary-500/50 to-transparent" />
@@ -148,7 +148,7 @@ export default function EssaysLayout({
               return (
                 <li
                   key={path}
-                  className="glass-panel-enhanced animate-diagonal-open group relative overflow-hidden rounded-2xl border border-transparent bg-black/20 p-6 transition-all duration-300 hover:scale-[1.01] hover:border-primary-400/50 hover:shadow-2xl"
+                  className="glass-panel-enhanced animate-diagonal-open group relative overflow-hidden rounded-2xl border border-black/20 p-6 transition-all duration-300 hover:scale-[1.01] hover:border-primary-400/50 hover:shadow-2xl"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* Blueprint/Tech Decor - The "Old" Aspect */}

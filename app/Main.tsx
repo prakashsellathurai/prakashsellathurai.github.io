@@ -49,30 +49,30 @@ export default function Home({ posts, books, projects }) {
                       className="flex flex-col gap-2 border-b border-gray-100 pb-6 last:border-0 dark:border-gray-800"
                     >
                       <div className="flex items-baseline justify-between">
-                        <h3 className="text-lg font-bold text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">
+                        <h3 className="text-2xl font-bold text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">
                           <Link href={`/essays/${slug}`}>{title}</Link>
                         </h3>
                         <time
                           dateTime={date}
-                          className="shrink-0 text-xs text-gray-500 dark:text-gray-400"
+                          className="shrink-0 text-base text-gray-500 dark:text-gray-400"
                         >
                           {formatDate(date, siteMetadata.locale)}
                         </time>
                       </div>
-                      <div className="prose max-w-none text-sm text-gray-600 dark:text-gray-300">
+                      <div className="prose max-w-none text-gray-600 dark:text-gray-300">
                         {summary}
                       </div>
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/essays/${slug}`}
-                          className="text-xs font-bold text-gray-500 hover:underline dark:text-gray-400"
+                          className="text-base font-bold text-gray-500 hover:underline dark:text-gray-400"
                         >
                           Read more &rarr;
                         </Link>
                         {tags && tags.length > 0 && (
                           <div className="flex gap-1">
                             {tags.slice(0, 3).map((tag) => (
-                              <span key={tag} className="text-xs text-secondary-500">
+                              <span key={tag} className="text-sm text-secondary-500">
                                 #{tag}
                               </span>
                             ))}
@@ -87,7 +87,7 @@ export default function Home({ posts, books, projects }) {
                 <div className="mt-6 flex justify-end">
                   <Link
                     href="/essays"
-                    className="text-sm font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400"
+                    className="text-base font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400"
                   >
                     View Archive &rarr;
                   </Link>
@@ -124,8 +124,11 @@ export default function Home({ posts, books, projects }) {
                   About {siteMetadata.author}
                 </h3>
               </div>
-              <div className="prose prose-sm dark:prose-invert">
-                <MDXLayoutRenderer code={author.body.code} />
+              <div className="prose dark:prose-invert">
+                <p>
+                  {author.body.raw.split('\n\n')[0]} ...
+                  <Link href="/about">read more</Link>
+                </p>
               </div>
             </div>
 

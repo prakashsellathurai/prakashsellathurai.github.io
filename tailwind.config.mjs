@@ -24,16 +24,27 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['var(--font-space-grotesk)', ...fontFamily.sans],
+        sans: ['var(--font-lora)', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.orange,
-        secondary: colors.orange,
+        primary: {
+          50: '#f0f4f8',
+          100: '#d9e2ec',
+          200: '#bcccdc',
+          300: '#9fb3c8',
+          400: '#829ab1',
+          500: '#3b5998',
+          600: '#304a80',
+          700: '#263b66',
+          800: '#1b2b4d',
+          900: '#101c33',
+        },
+        secondary: colors.slate,
         gray: colors.gray,
         brand: {
-          black: '#000000',
+          black: '#212121', // Slightly softer black
           white: '#ffffff',
-          accent: colors.orange,
+          accent: '#3b5998',
         },
       },
       zIndex: {

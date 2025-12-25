@@ -11,7 +11,7 @@
 }
 
 .footnotes {
-  @apply mt-12 border-t border-brand-black/10 pt-8 dark:border-brand-white/10;
+  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
 }
 
 .data-footnote-backref {
@@ -20,17 +20,6 @@
 
 .csl-entry {
   @apply my-5;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
 }
 
 /* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
@@ -61,302 +50,32 @@ input:-webkit-autofill:focus {
   vertical-align: middle;
 }
 
-.body-custom {
-  letter-spacing: 0.05em;
-  line-height: 145%;
-  font-family: 'Lora';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
+body {
+  @apply bg-white text-black antialiased dark:bg-brand-black dark:text-white;
 }
 
-.body-custom-background {
-  /* Blueprint technical drawing background - Black & White */
-  background-color: theme('colors.brand.white');
-  background-image:
-    /* Main grid - large */
-    linear-gradient(theme('colors.brand.black / 3%') 2px, transparent 2px),
-    linear-gradient(90deg, theme('colors.brand.black / 3%') 2px, transparent 2px),
-    /* Fine grid - small */ linear-gradient(theme('colors.brand.black / 2%') 1px, transparent 1px),
-    linear-gradient(90deg, theme('colors.brand.black / 2%') 1px, transparent 1px),
-    /* Circles pattern */
-    radial-gradient(circle at 20% 30%, theme('colors.brand.black / 1%') 2px, transparent 2px),
-    radial-gradient(circle at 80% 70%, theme('colors.brand.black / 1%') 2px, transparent 2px),
-    /* Base gradient */
-    radial-gradient(ellipse at top left, theme('colors.brand.white'), theme('colors.gray.100'));
-  background-size:
-    100px 100px,
-    100px 100px,
-    20px 20px,
-    20px 20px,
-    400px 400px,
-    400px 400px,
-    100% 100%;
-  background-position:
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0;
-  background-attachment: fixed;
-  position: relative;
-  color: theme('colors.brand.black');
+/* Simple Card Styles - Updated to match Projects Card design */
+.card-simple {
+  @apply relative overflow-hidden rounded-3xl border border-black/10 bg-white/20 p-6 backdrop-blur-xl transition-all duration-500 hover:scale-[1.01] hover:border-black/20 hover:shadow-xl dark:border-white/10 dark:bg-black/20;
 }
 
-.body-custom-background::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: theme('colors.brand.white / 20%');
-  pointer-events: none;
-  z-index: 0;
+.cf-table {
+  @apply w-full border-collapse border border-gray-300 dark:border-gray-600;
 }
 
-@keyframes sciFiBg {
-  0% {
-    background-position: 0 0;
-  }
-
-  100% {
-    background-position: 100% 100%;
-  }
+.cf-table th {
+  @apply border-b border-gray-300 bg-gray-100 px-4 py-2 text-left font-bold text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200;
 }
 
-.dark .body-custom-background {
-  /* Blueprint technical drawing background - Black & White - Dark mode */
-  background-color: theme('colors.brand.black');
-  background-image:
-    /* Main grid - large */
-    linear-gradient(theme('colors.brand.white / 5%') 2px, transparent 2px),
-    linear-gradient(90deg, theme('colors.brand.white / 5%') 2px, transparent 2px),
-    /* Fine grid - small */ linear-gradient(theme('colors.brand.white / 3%') 1px, transparent 1px),
-    linear-gradient(90deg, theme('colors.brand.white / 3%') 1px, transparent 1px),
-    /* Circles pattern */
-    /* radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.02) 2px, transparent 2px), */
-    /* radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.02) 2px, transparent 2px), */
-    /* Base gradient */ /* radial-gradient(ellipse at top left, #1a1a1a, #000000) */;
-  background-size:
-    100px 100px,
-    100px 100px,
-    20px 20px,
-    20px 20px,
-    400px 400px,
-    400px 400px,
-    100% 100%;
-  background-position:
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0;
-  background-attachment: fixed;
-  position: relative;
-  color: theme('colors.brand.white');
+.cf-table td {
+  @apply border-b border-gray-200 px-4 py-2 dark:border-gray-700;
 }
 
-.dark .body-custom-background::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: theme('colors.brand.black / 20%');
-  pointer-events: none;
-  z-index: 0;
+.cf-table tr:nth-child(even) {
+  @apply bg-gray-50 dark:bg-gray-900;
 }
 
-.glass-panel {
-  background: theme('colors.brand.white / 20%');
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid theme('colors.brand.black / 10%');
-  box-shadow: 0 8px 32px 0 theme('colors.brand.black / 5%');
-  border-radius: 1rem;
-}
-
-.dark .glass-panel {
-  background: theme('colors.brand.black / 20%');
-  border: 1px solid theme('colors.brand.white / 10%');
-  box-shadow: 0 8px 32px 0 theme('colors.brand.black / 50%');
-}
-
-/* Redlining & Blueprint Structure */
-.redline-border {
-  border: 2px dashed theme('colors.brand.black / 20%');
-  position: relative;
-}
-
-.dark .redline-border {
-  border: 2px dashed theme('colors.brand.black / 20%');
-}
-
-.redline-border::before,
-.redline-border::after {
-  content: '';
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: theme('colors.brand.black / 40%');
-  border-style: solid;
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
-
-.dark .redline-border::before,
-.dark .redline-border::after {
-  border-color: theme('colors.brand.white / 40%');
-}
-
-.redline-border::before {
-  top: -1px;
-  left: -1px;
-  border-width: 2px 0 0 2px;
-}
-
-.redline-border::after {
-  bottom: -1px;
-  right: -1px;
-  border-width: 0 2px 2px 0;
-}
-
-/* Project Card Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.card-project {
-  animation: fadeInUp 0.6s ease-out backwards;
-}
-
-/* Staggered animation delays for cards */
-.card-project:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.card-project:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.card-project:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-.card-project:nth-child(4) {
-  animation-delay: 0.4s;
-}
-
-.card-project:nth-child(5) {
-  animation-delay: 0.5s;
-}
-
-.card-project:nth-child(6) {
-  animation-delay: 0.6s;
-}
-
-.card-project:nth-child(7) {
-  animation-delay: 0.7s;
-}
-
-.card-project:nth-child(8) {
-  animation-delay: 0.8s;
-}
-
-.card-project:nth-child(9) {
-  animation-delay: 0.9s;
-}
-
-.card-project:nth-child(n + 10) {
-  animation-delay: 1s;
-}
-
-/* Filter button animations */
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.8;
-  }
-}
-
-/* Enhanced Glassmorphism */
-/* Enhanced Glassmorphism - Centralized Refresh */
-.glass-panel-enhanced {
-  background: theme('colors.brand.white / 20%');
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid theme('colors.brand.black / 10%');
-  box-shadow:
-    0 4px 6px -1px theme('colors.brand.black / 5%'),
-    0 2px 4px -1px theme('colors.brand.black / 3%'),
-    0 0 0 1px theme('colors.brand.white / 5%') inset;
-}
-
-.dark .glass-panel-enhanced {
-  background: theme('colors.brand.black / 20%');
-  border: 1px solid theme('colors.brand.white / 10%');
-  box-shadow:
-    0 4px 6px -1px theme('colors.brand.black / 50%'),
-    0 2px 4px -1px theme('colors.brand.black / 30%'),
-    0 0 0 1px theme('colors.brand.white / 5%') inset;
-}
-
-/* Gradient Animation */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient-shift {
-  background-size: 200% 200%;
-  animation: gradient-shift 15s ease infinite;
-}
-
-/* Section Fade In */
-.section-fade-in {
-  /* Using existing fadeInUp keyframes but defining class */
-  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  opacity: 0;
-}
-
-/* Custom Scrollbar for code blocks etc */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -367,26 +86,10 @@ input:-webkit-autofill:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: theme('colors.brand.black / 20%');
+  background: theme('colors.gray.300');
   border-radius: 4px;
 }
 
-@keyframes diagonal-open {
-  0% {
-    opacity: 0;
-    /* Start with points collapsed at center for TL/BR, but extended for TR/BL */
-    clip-path: polygon(50% 50%, 150% -50%, 50% 50%, -50% 150%);
-  }
-
-  100% {
-    opacity: 1;
-    /* Fully expanded box */
-    clip-path: polygon(-50% -50%, 150% -50%, 150% 150%, -50% 150%);
-  }
-}
-
-.animate-diagonal-open {
-  /* Smoother Quintic ease-out with slightly longer duration */
-  animation: diagonal-open 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
-  will-change: clip-path, opacity;
+.dark ::-webkit-scrollbar-thumb {
+  background: theme('colors.gray.600');
 }

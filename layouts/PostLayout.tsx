@@ -34,122 +34,92 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
   const basePath = path.split('/')[0]
 
   return (
-    <SectionContainer>
-      <div className="glass-panel-enhanced animate-diagonal-open mb-8 rounded-3xl bg-black/20 p-6 md:p-10">
-        <ScrollTopAndComment />
-        <article>
-          <div className="xl:divide-y xl:divide-black/10 xl:dark:divide-white/10">
-            <header className="pt-6 xl:pb-6">
-              <div className="space-y-1 text-center">
-                <dl className="space-y-10">
-                  <div>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base font-medium leading-6 text-black dark:text-white">
-                      <time dateTime={date}>
-                        {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
-                      </time>
-                    </dd>
-                  </div>
-                </dl>
-                <div>
-                  <PageTitle>{title}</PageTitle>
-                </div>
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-8 lg:flex-row">
+        {/* Main Article Content */}
+        <div className="w-full lg:w-3/4">
+          <div className="card-simple">
+            <header className="mb-8 border-b border-gray-200 pb-8 dark:border-gray-700">
+              <div className="mb-2 text-center text-sm text-gray-500 dark:text-gray-400">
+                <time dateTime={date}>
+                  {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                </time>
               </div>
+              <h1 className="text-center text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+                {title}
+              </h1>
             </header>
-            <div className="grid-rows-[auto_1fr] divide-y divide-black/10 pb-8 dark:divide-white/10 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
-              <dl className="pb-10 pt-6 xl:border-b xl:border-black/10 xl:pt-11 xl:dark:border-white/10">
-                <dt className="sr-only">Authors</dt>
-                <dd>
-                  <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
-                    {authorDetails.map((author) => (
-                      <li className="flex items-center space-x-2" key={author.name}>
-                        {author.avatar && (
-                          <Image
-                            src={author.avatar}
-                            width={38}
-                            height={38}
-                            alt="avatar"
-                            className="h-10 w-10 rounded-full"
-                          />
-                        )}
-                        <dl className="whitespace-nowrap text-sm font-medium leading-5">
-                          <dt className="sr-only">Name</dt>
-                          <dd className="text-black dark:text-white">{author.name}</dd>
-                          <dt className="sr-only">Twitter</dt>
-                          <dd>
-                            {author.twitter && (
-                              <Link
-                                href={author.twitter}
-                                className="text-black transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400"
-                              >
-                                {author.twitter
-                                  .replace('https://twitter.com/', '@')
-                                  .replace('https://x.com/', '@')}
-                              </Link>
-                            )}
-                          </dd>
-                        </dl>
-                      </li>
-                    ))}
-                  </ul>
-                </dd>
-              </dl>
-              <div className="divide-y divide-black/10 dark:divide-white/10 xl:col-span-3 xl:row-span-2 xl:pb-0">
-                <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
+
+            <div className="prose max-w-none dark:prose-invert">{children}</div>
+
+            <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
+              <div className="flex flex-wrap gap-2 text-sm">
+                <span className="font-bold text-gray-700 dark:text-gray-300">Tags:</span>
+                {tags?.map((tag) => (
+                  <Tag key={tag} text={tag} />
+                ))}
               </div>
-              <footer>
-                <div className="divide-black/10 text-sm font-medium leading-5 dark:divide-white/10 xl:col-start-1 xl:row-start-2 xl:divide-y">
-                  {tags && (
-                    <div className="py-4 xl:py-8">
-                      <h2 className="text-xs uppercase tracking-wide text-black dark:text-white">
-                        Tags
-                      </h2>
-                      <div className="flex flex-wrap">
-                        {tags.map((tag) => (
-                          <Tag key={tag} text={tag} />
-                        ))}
-                      </div>
+
+              <div className="mt-8 flex justify-between">
+                {prev && prev.path && (
+                  <div className="text-left">
+                    <div className="text-xs text-gray-500">Previous Essay</div>
+                    <div className="text-primary-500 hover:text-primary-600">
+                      <Link href={`/${prev.path}`}>{prev.title}</Link>
                     </div>
-                  )}
-                  {(next || prev) && (
-                    <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
-                      {prev && prev.path && (
-                        <div>
-                          <h2 className="text-xs uppercase tracking-wide text-black dark:text-white">
-                            Previous Essay
-                          </h2>
-                          <div className="text-black transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400">
-                            <Link href={`/${prev.path}`}>{prev.title}</Link>
-                          </div>
-                        </div>
-                      )}
-                      {next && next.path && (
-                        <div>
-                          <h2 className="text-xs uppercase tracking-wide text-black dark:text-white">
-                            Next Essay
-                          </h2>
-                          <div className="text-black transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400">
-                            <Link href={`/${next.path}`}>{next.title}</Link>
-                          </div>
-                        </div>
-                      )}
+                  </div>
+                )}
+                {next && next.path && (
+                  <div className="text-right">
+                    <div className="text-xs text-gray-500">Next Essay</div>
+                    <div className="text-primary-500 hover:text-primary-600">
+                      <Link href={`/${next.path}`}>{next.title}</Link>
                     </div>
-                  )}
-                </div>
-                <div className="pt-4 xl:pt-8">
-                  <Link
-                    href={`/${basePath}`}
-                    className="text-black transition-colors hover:text-primary-600 dark:text-white dark:hover:text-primary-400"
-                    aria-label="Back to the Essays"
-                  >
-                    &larr; Back to the Essays
-                  </Link>
-                </div>
-              </footer>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </article>
+        </div>
+
+        {/* Sidebar (Author Info) */}
+        <div className="w-full space-y-6 lg:w-1/4">
+          <div className="card-simple">
+            <div className="mb-4 border-b border-gray-200 pb-2 dark:border-gray-700">
+              <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200">About Author</h3>
+            </div>
+            <div className="flex flex-col items-center">
+              {authorDetails.map((author) => (
+                <div key={author.name} className="contents">
+                  {author.avatar && (
+                    <Image
+                      src={author.avatar}
+                      width={80}
+                      height={80}
+                      alt="avatar"
+                      className="mb-4 h-20 w-20 rounded-full"
+                    />
+                  )}
+                  <h4 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                    {author.name}
+                  </h4>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    {author.occupation}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="card-simple">
+            <div className="mb-4 border-b border-gray-200 pb-2 dark:border-gray-700">
+              <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200">Navigation</h3>
+            </div>
+            <Link href="/essays" className="block text-primary-500 hover:underline">
+              &larr; Back to Essays
+            </Link>
+          </div>
+        </div>
       </div>
-    </SectionContainer>
+    </div>
   )
 }

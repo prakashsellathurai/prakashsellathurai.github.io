@@ -108,7 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
-            <div className="glass-panel redline-border my-4 p-4 sm:my-8 sm:p-8">
+            <div className="glass-panel redline-border">
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
                 <Header />
                 <main className="mb-auto">{children}</main>

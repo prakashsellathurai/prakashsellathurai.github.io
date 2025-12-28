@@ -115,7 +115,7 @@ export default function Home({ posts, books, projects }) {
                     alt="avatar"
                     width={120}
                     height={120}
-                    className="h-32 w-32 rounded-full border-4 border-white shadow-lg dark:border-gray-800"
+                    className="mx-auto h-full rounded-3xl object-cover drop-shadow-xl lg:mx-0 "
                   />
                 )}
               </div>

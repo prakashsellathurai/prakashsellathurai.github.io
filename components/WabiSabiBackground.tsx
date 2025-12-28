@@ -7,7 +7,7 @@ export default function WabiSabiBackground() {
         src="/static/images/wabi-sabi-bg.png"
         alt="Wabi Sabi Background"
         fill
-        className="object-cover opacity-10 mix-blend-multiply dark:opacity-20 dark:mix-blend-soft-light"
+        className="opacity-1 object-cover mix-blend-multiply dark:opacity-20 dark:mix-blend-soft-light"
         priority
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent dark:from-black/50" />

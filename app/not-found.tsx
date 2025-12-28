@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div className="glass-panel-enhanced my-8 flex flex-col items-center justify-center rounded-3xl p-12 text-center md:p-16">
       <div className="space-x-2 pb-8 pt-6 md:space-y-5">
-        <h1 className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-6xl font-extrabold leading-9 tracking-tight text-transparent md:text-8xl md:leading-14">
+        <h1 className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-6xl font-extrabold  tracking-tight text-transparent md:text-8xl ">
           404
         </h1>
       </div>

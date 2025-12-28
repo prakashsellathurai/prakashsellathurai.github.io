@@ -6,7 +6,7 @@ import { allAuthors, Authors } from 'contentlayer/generated'
 import { coreContent } from 'pliny/utils/contentlayer'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import Bookshelf from '@/components/books'
-import SampleProjects from '@/components/SampleProjects'
+
 import { BlogPosting, WithContext } from 'schema-dts'
 
 const MAX_DISPLAY = 10
@@ -100,7 +100,47 @@ export default function Home({ posts, books, projects }) {
               <div className="mb-4 border-b border-gray-200 pb-2 dark:border-gray-700">
                 <h2 className="text-lg font-bold text-primary-500">Featured Projects</h2>
               </div>
-              <SampleProjects projects={projects.slice(0, 4)} />
+              <div className="space-y-6">
+                {!projects.length && <p className="text-gray-500">No projects found.</p>}
+                {projects.slice(0, 6).map((project) => {
+                  const { title, description, href, website, tags } = project
+                  const link = website || href
+                  return (
+                    <article
+                      key={title}
+                      className="flex flex-col gap-2 border-b border-gray-100 pb-6 last:border-0 dark:border-gray-800"
+                    >
+                      <div className="flex items-baseline justify-between">
+                        <h3 className="text-2xl font-bold text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">
+                          {link ? <Link href={link}>{title}</Link> : title}
+                        </h3>
+                      </div>
+                      <div className="prose max-w-none text-gray-600 dark:text-gray-300">
+                        {description}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {link && (
+                          <Link
+                            href={link}
+                            className="text-base font-bold text-gray-500 hover:underline dark:text-gray-400"
+                          >
+                            Learn more &rarr;
+                          </Link>
+                        )}
+                        {tags && tags.length > 0 && (
+                          <div className="flex gap-1">
+                            {tags.slice(0, 3).map((tag) => (
+                              <span key={tag} className="text-sm text-secondary-500">
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
             </div>
           </div>
 

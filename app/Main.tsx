@@ -164,10 +164,11 @@ export default function Home({ posts, books, projects }) {
                   About {siteMetadata.author}
                 </h3>
               </div>
-              <div className="prose dark:prose-invert">
+              <div className="prose text-center dark:prose-invert">
                 <p>
-                  {author.body.raw.split('\n\n')[0]} ...
-                  <Link href="/about">read more</Link>
+                  {author.body.raw.split('\n\n')[0]} <br />
+                  ...
+                  <Link href="/about"> read more on about page</Link>
                 </p>
               </div>
             </div>

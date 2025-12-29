@@ -56,7 +56,7 @@ body {
 
 /* Simple Card Styles - Updated to match Projects Card design */
 .card-simple {
-  @apply relative overflow-hidden rounded-3xl border border-black/10 bg-white/20 p-6 backdrop-blur-xl transition-all duration-500 hover:scale-[1.01] hover:border-black/20 hover:shadow-xl dark:border-white/10 dark:bg-black/20;
+  @apply relative overflow-hidden rounded-3xl border border-black/10 bg-white/20 p-6  transition-all duration-500 hover:scale-[1.01] hover:border-black/20 hover:shadow-xl dark:border-white/10 dark:bg-black/20;
 }
 
 .cf-table {

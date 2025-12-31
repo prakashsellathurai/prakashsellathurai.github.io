@@ -74,7 +74,7 @@ export default function Home({ posts, books, projects }) {
                           <div className="flex gap-1">
                             {tags.slice(0, 3).map((tag) => (
                               <span key={tag} className="text-sm text-secondary-500">
-                                #{tag}
+                                <Link href={`/tags/${tag}`}>#{tag}</Link>
                               </span>
                             ))}
                           </div>

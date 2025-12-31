@@ -37,7 +37,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Main Article Content */}
-        <div className="w-full lg:w-3/4">
+        <div className="w-full ">
           <div className="card-simple">
             <header className="mb-8 border-b border-gray-200 pb-8 dark:border-gray-700">
               <div className="mb-2 text-center text-sm text-gray-500 dark:text-gray-400">
@@ -79,44 +79,6 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 )}
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Sidebar (Author Info) */}
-        <div className="w-full space-y-6 lg:w-1/4">
-          <div className="card-simple">
-            <div className="mb-4 border-b border-gray-200 pb-2 dark:border-gray-700">
-              <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200">About Author</h3>
-            </div>
-            <div className="flex flex-col items-center">
-              {authorDetails.map((author) => (
-                <div key={author.name} className="contents">
-                  {author.avatar && (
-                    <Image
-                      src={author.avatar}
-                      width={80}
-                      height={80}
-                      alt="avatar"
-                      className="mb-4 h-20 w-20 rounded-full"
-                    />
-                  )}
-                  <h4 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                    {author.name}
-                  </h4>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {author.occupation}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="card-simple">
-            <div className="mb-4 border-b border-gray-200 pb-2 dark:border-gray-700">
-              <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200">Navigation</h3>
-            </div>
-            <Link href="/essays" className="block text-primary-500 hover:underline">
-              &larr; Back to Essays
-            </Link>
           </div>
         </div>
       </div>

@@ -12,6 +12,7 @@ import { BlogPosting, WithContext } from 'schema-dts'
 const MAX_DISPLAY = 10
 
 export default function Home({ posts, books, projects }) {
+  posts = posts.filter((blog) => !blog.draft)
   const author = allAuthors.find((p) => p.slug === 'default') as Authors
   const mainContent = coreContent(author)
 

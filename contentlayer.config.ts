@@ -64,23 +64,26 @@ const computedFields: ComputedFields = {
  */
 async function createTagCount(allBlogs) {
   const tagCount: Record<string, number> = {}
-  allBlogs.forEach((file) => {
-    if (file.tags && (!isProduction || file.draft !== true)) {
-      file.tags.forEach((tag) => {
-        const formattedTag = slug(tag)
-        if (formattedTag in tagCount) {
-          tagCount[formattedTag] += 1
-        } else {
-          tagCount[formattedTag] = 1
-        }
-      })
-    }
-  })
+  allBlogs
+    .filter((blog) => !blog.draft)
+    .forEach((file) => {
+      if (file.tags && (!isProduction || file.draft !== true)) {
+        file.tags.forEach((tag) => {
+          const formattedTag = slug(tag)
+          if (formattedTag in tagCount) {
+            tagCount[formattedTag] += 1
+          } else {
+            tagCount[formattedTag] = 1
+          }
+        })
+      }
+    })
   const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
   writeFileSync('./app/tag-data.json', formatted)
 }
 
 function createSearchIndex(allBlogs) {
+  allBlogs = allBlogs.filter((blog) => !blog.draft)
   if (
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig.searchDocumentsPath
@@ -183,6 +186,7 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allEssays } = await importData()
+    allEssays.filter((post) => !post.draft)
     createTagCount(allEssays)
     createSearchIndex(allEssays)
   },

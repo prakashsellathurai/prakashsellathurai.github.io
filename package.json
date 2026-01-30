@@ -1,11 +1,12 @@
 {
-  "name": "tailwind-nextjs-starter-blog",
-  "version": "2.3.0",
+  "name": "prakashsellathurai.github.io",
+  "version": "28.0.0",
   "private": true,
   "scripts": {
     "start": "next dev",
     "dev": "cross-env INIT_CWD=$PWD next dev",
     "build": "contentlayer2 build && cross-env INIT_CWD=$PWD next build && bun ./scripts/postbuild.mjs",
+    "clean": "rm -rf .next && rm -rf .contentlayer && rm -rf out && rm -rf .next/cache  && rm -rf node_modules",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",

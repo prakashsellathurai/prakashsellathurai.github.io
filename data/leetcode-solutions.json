@@ -28,6 +28,10 @@
     "href": "leetcode-solutions/problems/0146-lru-cache/index.html"
   },
   {
+    "title": "problems/0150-evaluate-reverse-polish-notation/index.html",
+    "href": "leetcode-solutions/problems/0150-evaluate-reverse-polish-notation/index.html"
+  },
+  {
     "title": "problems/0186-reverse-words-in-a-string-ii/index.html",
     "href": "leetcode-solutions/problems/0186-reverse-words-in-a-string-ii/index.html"
   },
@@ -44,6 +48,10 @@
     "href": "leetcode-solutions/problems/0238-product-of-array-except-self/index.html"
   },
   {
+    "title": "problems/0636-exclusive-time-of-functions/index.html",
+    "href": "leetcode-solutions/problems/0636-exclusive-time-of-functions/index.html"
+  },
+  {
     "title": "problems/0645-set-mismatch/index.html",
     "href": "leetcode-solutions/problems/0645-set-mismatch/index.html"
   },
@@ -54,6 +62,10 @@
   {
     "title": "problems/0907-sum-of-subarray-minimums/index.html",
     "href": "leetcode-solutions/problems/0907-sum-of-subarray-minimums/index.html"
+  },
+  {
+    "title": "problems/0991-broken-calculator/index.html",
+    "href": "leetcode-solutions/problems/0991-broken-calculator/index.html"
   },
   {
     "title": "problems/0kth-largest-element-in-an-array/index.html",
@@ -262,6 +274,10 @@
   {
     "title": "problems/1354-construct-target-array-with-multiple-sums/index.html",
     "href": "leetcode-solutions/problems/1354-construct-target-array-with-multiple-sums/index.html"
+  },
+  {
+    "title": "problems/1365-how-many-numbers-are-smaller-than-the-current-number/index.html",
+    "href": "leetcode-solutions/problems/1365-how-many-numbers-are-smaller-than-the-current-number/index.html"
   },
   {
     "title": "problems/1379-find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/index.html",

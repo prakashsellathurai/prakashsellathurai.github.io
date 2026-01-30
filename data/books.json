@@ -12,6 +12,24 @@
   ],
   "read": [
     {
+      "title": "Ulagai Ulukkiya Vaasagangal",
+      "link": "https://www.goodreads.com/review/show/6303975993?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-675b3b2743c83e96e2540d2929d5f4d2.png",
+      "author": "V. Irai Anbu",
+      "rating": "5",
+      "description": "",
+      "pubDate": "Sun, 07 Dec 2025 04:56:09 -0800"
+    },
+    {
+      "title": "You and Your Research",
+      "link": "https://www.goodreads.com/review/show/4234916625?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-675b3b2743c83e96e2540d2929d5f4d2.png",
+      "author": "Richard Hamming",
+      "rating": "0",
+      "description": "",
+      "pubDate": "Sun, 07 Dec 2025 04:53:24 -0800"
+    },
+    {
       "title": "The Two Towers (The Lord of the Rings, #2)",
       "link": "https://www.goodreads.com/review/show/4154035733?utm_medium=api&utm_source=rss",
       "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1486871714l/222910._SY475_.jpg",
@@ -98,7 +116,7 @@
       "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1417104941l/18529352.jpg",
       "author": "J.R.R. Tolkien",
       "rating": "0",
-      "description": "One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind themIn ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others. But the One Ring was taken from him, and though he sought it throughout Middle-earth, it remained lost to him. After many ages it fell by chance into the hands of the hobbit Bilbo Baggins.From Sauron's fastness in the Dark Tower of Mordor, his power spread far and wide. Sauron gathered all the Great Rings to him, but always he searched for the One Ring that would complete his dominion.When Bilbo reached his eleventy-first birthday he disappeared, bequeathing to his young cousin Frodo the Ruling Ring and a perilous quest: to journey across Middle-earth, deep into the shadow of the Dark Lord, and destroy the Ring by casting it into the Cracks of Doom.The Lord of the Rings tells of the great quest undertaken by Frodo and the Fellowship of the Ring: Gandalf the Wizard; the hobbits Merry, Pippin, and Sam; Gimli the Dwarf; Legolas the Elf; Boromir of Gondor; and a tall, mysterious stranger called Strider.",
+      "description": "Tolkien's epic The Lord of the Rings Trilogy .. in Arabic! Follow Frodo has he travels to Mordor with his companions.",
       "pubDate": "Wed, 25 Sep 2024 18:18:38 -0700"
     },
     {
@@ -145,15 +163,6 @@
       "rating": "0",
       "description": "Athanaikkum Asaipadu",
       "pubDate": "Thu, 29 Feb 2024 06:09:16 -0800"
-    },
-    {
-      "title": "Ulagai Ulukkiya Vaasagangal",
-      "link": "https://www.goodreads.com/review/show/6303975993?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
-      "author": "V. Irai Anbu",
-      "rating": "5",
-      "description": "",
-      "pubDate": "Thu, 29 Feb 2024 05:52:56 -0800"
     },
     {
       "title": "Half Girlfriend",
@@ -226,15 +235,6 @@
       "rating": "0",
       "description": "The Return of the King is the third part of J.R.R. Tolkien’s epic adventure The Lord of the Rings.One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind them.The Dark Lord has risen, and as he unleashes hordes of Orcs to conquer all Middle-earth, Frodo and Sam struggle deep into his realm in Mordor.To defeat Sauron, the One Ring must be destroyed in the fires of Mount Doom. But the way is impossibly hard, and Frodo is weakening. The Ring corrupts all who bear it and Frodo’s time is running out.Will Sam and Frodo succeed, or will the Dark Lord rule Middle-earth once more?",
       "pubDate": "Sat, 30 Sep 2023 21:48:35 -0700"
-    },
-    {
-      "title": "You and Your Research",
-      "link": "https://www.goodreads.com/review/show/4234916625?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
-      "author": "Richard Hamming",
-      "rating": "0",
-      "description": "",
-      "pubDate": "Sat, 30 Sep 2023 21:46:54 -0700"
     },
     {
       "title": "\"Surely You're Joking, Mr. Feynman!\": Adventures of a Curious Character",
@@ -331,7 +331,7 @@
     {
       "title": "Ulagai Ulukkiya Vaasagangal",
       "link": "https://www.goodreads.com/review/show/6303975993?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
+      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-675b3b2743c83e96e2540d2929d5f4d2.png",
       "author": "V. Irai Anbu",
       "rating": "5",
       "description": "",
@@ -340,7 +340,7 @@
     {
       "title": "You and Your Research",
       "link": "https://www.goodreads.com/review/show/4234916625?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
+      "imageUrl": "https://s.gr-assets.com/assets/nophoto/book/111x148-675b3b2743c83e96e2540d2929d5f4d2.png",
       "author": "Richard Hamming",
       "rating": "0",
       "description": "",

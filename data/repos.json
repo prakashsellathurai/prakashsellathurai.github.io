@@ -7,10 +7,38 @@
     "stars": 0
   },
   {
-    "title": "entity",
-    "href": "https://github.com/prakashsellathurai/entity",
-    "website": "https://pypi.org/project/entityagent/",
-    "description": "Entity: The  AI agent that bridges you and your OS—seamlessly execute commands and control apps on Windows, macOS, and Linux.",
+    "title": "Heimdall",
+    "href": "https://github.com/prakashsellathurai/Heimdall",
+    "website": "https://chromewebstore.google.com/detail/heimdall/kicalmkcgkhjgpijjclbnpodjppniank",
+    "description": "Heimdall is a feature-rich RSS feed curator available as a browser extension.",
+    "stars": 1
+  },
+  {
+    "title": "grimoire",
+    "href": "https://github.com/prakashsellathurai/grimoire",
+    "website": "",
+    "description": "scripts, notebooks and computer codes",
+    "stars": 0
+  },
+  {
+    "title": "Coroebus",
+    "href": "https://github.com/prakashsellathurai/Coroebus",
+    "website": "http://prakashsellathurai.com/Coroebus/",
+    "description": "Coroebus is a performance tracking dashboard designed to help athletes monitor their Training Load, Fitness (CTL), Fatigue (ATL), and Readiness (TSB).",
+    "stars": 0
+  },
+  {
+    "title": "original_performance_takehome",
+    "href": "https://github.com/prakashsellathurai/original_performance_takehome",
+    "website": null,
+    "description": "Anthropic's original performance take-home, now open for you to try!",
+    "stars": 0
+  },
+  {
+    "title": "openchaos",
+    "href": "https://github.com/prakashsellathurai/openchaos",
+    "website": "https://openchaos.dev",
+    "description": "A self-evolving open source project. Every week, the community votes on PRs, and the winner gets merged.",
     "stars": 0
   },
   {
@@ -21,17 +49,24 @@
     "stars": 0
   },
   {
-    "title": "Heimdall",
-    "href": "https://github.com/prakashsellathurai/Heimdall",
-    "website": "https://chromewebstore.google.com/detail/heimdall/kicalmkcgkhjgpijjclbnpodjppniank",
-    "description": "HN content  Curator available as a browser extension",
-    "stars": 1
+    "title": "strava-backup",
+    "href": "https://github.com/prakashsellathurai/strava-backup",
+    "website": "",
+    "description": "This project automatically backs up your Strava activities to a Git repository using GitHub Actions. It fetches your activities using the Strava API and saves them as individual JSON files in the activities/ directory.",
+    "stars": 0
   },
   {
-    "title": "grimoire",
-    "href": "https://github.com/prakashsellathurai/grimoire",
-    "website": "",
-    "description": "scripts, notebooks and computer codes",
+    "title": "scrapy",
+    "href": "https://github.com/prakashsellathurai/scrapy",
+    "website": "https://scrapy.org",
+    "description": "Scrapy, a fast high-level web crawling & scraping framework for Python.",
+    "stars": 0
+  },
+  {
+    "title": "entity",
+    "href": "https://github.com/prakashsellathurai/entity",
+    "website": "https://pypi.org/project/entityagent/",
+    "description": "Entity: The  AI agent that bridges you and your OS—seamlessly execute commands and control apps on Windows, macOS, and Linux.",
     "stars": 0
   },
   {
@@ -53,13 +88,6 @@
     "href": "https://github.com/prakashsellathurai/CircuitProtect",
     "website": "https://replit.com/@prakash1729brt/CircuitProtect",
     "description": "Microservice Circuit Breaker",
-    "stars": 0
-  },
-  {
-    "title": "scrapy",
-    "href": "https://github.com/prakashsellathurai/scrapy",
-    "website": "https://scrapy.org",
-    "description": "Scrapy, a fast high-level web crawling & scraping framework for Python.",
     "stars": 0
   },
   {
@@ -109,6 +137,13 @@
     "href": "https://github.com/prakashsellathurai/finance-analysis-data-app",
     "website": "https://enigmatic-citadel-01269.herokuapp.com/",
     "description": "The Data app that compose the S&P 500 Index Data  and display a visual chart on it",
+    "stars": 0
+  },
+  {
+    "title": "WebLaTex",
+    "href": "https://github.com/prakashsellathurai/WebLaTex",
+    "website": "https://github.com/sanjib-sen/weblatex/generate",
+    "description": "A complete alternative for Overleaf with VSCode + Web + Git Integration + Copilot + Grammar & Spell Checker + Live Collaboration Support. Based on GitHub Codespace and Dev container.",
     "stars": 0
   },
   {
@@ -221,7 +256,7 @@
     "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
     "website": "https://www.prakashsellathurai.com/blog/2020/10/03/awesome-product-management",
     "description": "A curated list of Product Management Resources :seedling:",
-    "stars": 58
+    "stars": 59
   },
   {
     "title": "idiota",

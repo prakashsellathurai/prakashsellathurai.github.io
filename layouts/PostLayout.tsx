@@ -38,7 +38,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Main Article Content */}
         <div className="w-full ">
-          <div className="card-simple">
+          <div>
             <header className="mb-8 border-b border-gray-200 pb-8 dark:border-gray-700">
               <div className="mb-2 text-center text-sm text-gray-500 dark:text-gray-400">
                 <time dateTime={date}>
@@ -50,7 +50,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </h1>
             </header>
 
-            <div className="prose max-w-none dark:prose-invert">{children}</div>
+            <div className="max-w-720px prose mx-auto dark:prose-invert">{children}</div>
 
             <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
               <div className="flex flex-wrap gap-2 text-sm">
@@ -65,7 +65,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <div className="text-left">
                     <div className="text-xs text-gray-500">Previous Essay</div>
                     <div className="text-primary-500 hover:text-primary-600">
-                      <Link href={`/${prev.path}`}>{prev.title}</Link>
+                      <Link href={`/${prev.path}`}>&larr; {prev.title}</Link>
                     </div>
                   </div>
                 )}
@@ -73,7 +73,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <div className="text-right">
                     <div className="text-xs text-gray-500">Next Essay</div>
                     <div className="text-primary-500 hover:text-primary-600">
-                      <Link href={`/${next.path}`}>{next.title}</Link>
+                      <Link href={`/${next.path}`}>{next.title} &rarr;</Link>
                     </div>
                   </div>
                 )}

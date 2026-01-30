@@ -5,13 +5,13 @@
   "scripts": {
     "start": "next dev",
     "dev": "cross-env INIT_CWD=$PWD next dev",
-    "build": "contentlayer2 build && cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
+    "build": "contentlayer2 build && cross-env INIT_CWD=$PWD next build && bun ./scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky",
-    "update-books": "node ./scripts/books.mjs",
-    "update-github": "node ./scripts/github.js"
+    "update-books": "bun ./scripts/books.mjs",
+    "update-github": "bun ./scripts/github.js"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",
@@ -79,6 +79,5 @@
     "*.+(js|jsx|ts|tsx|json|css|md|mdx)": [
       "prettier --write"
     ]
-  },
-  "packageManager": "yarn@3.6.1"
+  }
 }

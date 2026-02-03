@@ -14,6 +14,7 @@ import {
   remarkImgToJsx,
   extractTocHeadings,
 } from 'pliny/mdx-plugins/index.js'
+import { remarkSideNotes } from './scripts/remark-side-notes.mjs'
 // Rehype packages
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
@@ -160,6 +161,7 @@ export default makeSource({
     remarkPlugins: [
       remarkExtractFrontmatter,
       remarkGfm,
+      remarkSideNotes,
       remarkCodeTitles,
       remarkMath,
       remarkImgToJsx,

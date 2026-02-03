@@ -51,7 +51,7 @@ export default function SideNote({ children, title = 'Note' }: SideNoteProps) {
         <PopoverPanel
           static
           as="span"
-          className="absolute left-1/2 z-50 mt-2 w-64 max-w-[90vw] -translate-x-1/2 transform sm:w-72 md:w-80"
+          className="absolute left-full top-1/2 z-50 mr-2 w-64 max-w-[90vw]  transform sm:w-72 md:w-80"
         >
           <span
             className="block overflow-hidden rounded-lg shadow-xl ring-1 ring-black ring-opacity-5"

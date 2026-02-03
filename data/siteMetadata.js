@@ -3,7 +3,7 @@ const siteMetadata = {
   title: 'Prakash S',
   author: 'Prakash Sellathurai',
   headerTitle: 'Prakash S',
-  // Static description (first paragraph from author file)
+  // dynamic  description (first paragraph from author file)
   description:
     'Prakash is a hobbyist turned professional Software Engineer with a background in Mechatronics. He is a tinkerer, deeply passionate about exploring and building new technologies.',
   language: 'en-us',

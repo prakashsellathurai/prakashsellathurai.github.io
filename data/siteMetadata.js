@@ -3,8 +3,9 @@ const siteMetadata = {
   title: 'Prakash S',
   author: 'Prakash Sellathurai',
   headerTitle: 'Prakash S',
+  // Static description (first paragraph from author file)
   description:
-    'Prakash is a hobbyist turned professional Software Engineer with a background in Mechatronics. He is a tinkerer, deeply passionate about exploring and building new technologies. He completed his undergraduate studies in Mechatronics Engineering at SKCET (Sri Krishna College of Engineering and Technology). He has always been a tinkerer and someone who builds things simply because the problem of how they work is too interesting to leave alone. While working on Alexa at Amazon, he contributed to systems like incoming call blocking and malware scanning for LLM architectures. Most of his work happens where performance is the primary constraint. Whether working in Python or C++, his goal is usually to make things fast enough to work on the edge. He enjoys the process of "hardening" research—taking an idea that works in a paper and making it work in production. He has contributed back to the tools he uses, like Keras, because there is a specific kind of satisfaction in building a utility that becomes a permanent part of another developer’s workshop. Lately, he has been spending his time on software, economics, and anthropology. He maintains a few open-source CLI tools and ML projects on GitHub. He is mostly driven by the curiosity that led him to set out and explore the past; it’s a way to keep tinkering with the future.',
+    'Prakash is a hobbyist turned professional Software Engineer with a background in Mechatronics. He is a tinkerer, deeply passionate about exploring and building new technologies.',
   language: 'en-us',
   theme: 'light', // system, dark or light
   siteUrl: 'https://prakashsellathurai.com/',

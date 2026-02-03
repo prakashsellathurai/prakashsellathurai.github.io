@@ -168,8 +168,8 @@ export default function Home({ posts, books, projects }) {
               <div className="prose dark:prose-invert">
                 <p>
                   {author.body.raw.split('\n\n')[0]} <br />
-                  ...
-                  <Link href="/about"> read more on about page</Link>
+                  &#8627;
+                  <Link href="/about"> read more on About page</Link>
                 </p>
               </div>
             </div>

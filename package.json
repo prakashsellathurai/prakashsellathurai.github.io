@@ -14,7 +14,8 @@
     "prepare": "husky",
     "update-books": "bun ./scripts/books.mjs",
     "update-github": "bun ./scripts/github.js",
-    "update-description": "bun ./scripts/sync-description.js"
+    "update-description": "bun ./scripts/sync-description.js",
+    "new-essay": "bun ./scripts/create-essay.mjs"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",

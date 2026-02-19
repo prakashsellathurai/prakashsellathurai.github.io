@@ -1,0 +1,13 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://prakashsellathurai.com/sitemap.xml
+
+# Block search indexing of Next.js internals
+Disallow: /_next/
+Disallow: /api/
+
+# Allow but deprioritize static assets
+Allow: /static/

@@ -1,11 +1,13 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Prakash S',
+  title: "Prakash's Web Page",
   author: 'Prakash Sellathurai',
   headerTitle: 'Prakash S',
   // dynamic  description (first paragraph from author file)
   description:
-    'Prakash is a hobbyist turned professional Software Engineer with a background in Mechatronics. He is a tinkerer, deeply passionate about exploring and building new technologies.',
+    'Prakash Sellathurai is a Software Engineer specializing in Computer Vision, open-source contributions, and innovative technology solutions. With a background in Mechatronics, he bridges hardware and software to build impactful products.',
+  shortDescription:
+    'Software Engineer with expertise in Computer Vision, open-source, and innovative technology solutions.',
   language: 'en-us',
   theme: 'light', // system, dark or light
   siteUrl: 'https://prakashsellathurai.com/',
@@ -18,6 +20,50 @@ const siteMetadata = {
   linkedin: 'https://www.linkedin.com/in/prakashsellathurai/',
   instagram: 'https://www.instagram.com/ch_a_ivalry/',
   locale: 'en-US',
+  // Primary keywords for SEO
+  keywords: [
+    'Prakash Sellathurai',
+    'prakash S',
+    'Indian Software Engineer',
+    'Software Engineer',
+    'Web Development',
+    'Mechatronics',
+    'Open Source',
+    'Technology Blog',
+    'Software Engineering',
+    'Full Stack Development',
+    'React',
+    'Next.js',
+    'TypeScript',
+    'JavaScript',
+  ],
+  // Author details for structured data
+  authorDetails: {
+    '@type': 'Person',
+    name: 'Prakash Sellathurai',
+    alternateName: 'Prakash S',
+    description:
+      'Software Engineer with expertise in web development, open-source contributions, and innovative technology solutions',
+    email: 'prakashsellathurai@gmail.com',
+    image: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
+    url: 'https://prakashsellathurai.com/',
+    sameAs: [
+      'https://github.com/prakashsellathurai',
+      'https://www.linkedin.com/in/prakashsellathurai/',
+      'https://www.instagram.com/ch_a_ivalry/',
+    ],
+    jobTitle: 'Software Engineer',
+    knowsAbout: [
+      'Software Engineering',
+      'Web Development',
+      'Mechatronics',
+      'Open Source',
+      'JavaScript',
+      'TypeScript',
+      'React',
+      'Next.js',
+    ],
+  },
   // set to true if you want a navbar fixed to the top
   stickyNav: false,
   analytics: {

@@ -12,6 +12,7 @@ import WabiSabiBackground from '@/components/WabiSabiBackground'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
+import { generatePersonSchema, generateWebSiteSchema } from '@/lib/generateStructuredData'
 
 const lora = Lora({
   subsets: ['latin'],
@@ -59,6 +60,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: [siteMetadata.socialBanner],
   },
+  keywords: siteMetadata.keywords,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -97,12 +99,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+        <meta name="author" content={siteMetadata.author} />
         <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generatePersonSchema()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebSiteSchema()) }}
         />
       </head>
       <body className="body-custom body-custom-background" suppressHydrationWarning>

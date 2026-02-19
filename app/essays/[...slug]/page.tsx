@@ -13,6 +13,7 @@ import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
+import { generateArticleSchema, generateBreadcrumbSchema } from '@/lib/generateStructuredData'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -52,6 +53,8 @@ export async function generateMetadata(props: {
   return {
     title: post.title,
     description: post.summary,
+    keywords: post.tags || [],
+    authors: authors.map((author) => ({ name: author })),
     openGraph: {
       title: post.title,
       description: post.summary,
@@ -69,6 +72,7 @@ export async function generateMetadata(props: {
       title: post.title,
       description: post.summary,
       images: imageList,
+      creator: '@prakashsellathurai',
     },
   }
 }
@@ -104,6 +108,27 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
     }
   })
 
+  // Get image list for schemas
+  let imageList = [siteMetadata.socialBanner]
+  if (post.images) {
+    imageList = typeof post.images === 'string' ? [post.images] : post.images
+  }
+
+  // Enhanced article schema
+  const articleSchema = generateArticleSchema(
+    post,
+    authorDetails[0]?.name || siteMetadata.author,
+    siteMetadata.siteUrl,
+    imageList
+  )
+
+  // Breadcrumb schema
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: siteMetadata.siteUrl },
+    { name: 'Essays', url: `${siteMetadata.siteUrl}/essays` },
+    { name: post.title, url: `${siteMetadata.siteUrl}/essays/${post.slug}` },
+  ])
+
   const Layout = layouts[post.layout || defaultLayout]
 
   return (
@@ -111,6 +136,14 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
         <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />

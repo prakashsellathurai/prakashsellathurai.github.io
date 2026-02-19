@@ -10,7 +10,7 @@ const BookCard = ({ book }: { book: Book }) => {
       rel="noopener noreferrer"
       className="animate-diagonal-open group relative flex flex-col overflow-hidden rounded-2xl border border-black/10 bg-white/80 backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-primary-400/60 hover:shadow-xl dark:border-white/10 dark:bg-white/5"
     >
-      <div className="relative aspect-[2/3] w-full overflow-hidden bg-black/5 dark:bg-white/5">
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-black/5 dark:bg-white/5">
         <Image
           src={book.imageUrl}
           alt={book.title}
@@ -21,11 +21,11 @@ const BookCard = ({ book }: { book: Book }) => {
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="mb-2 text-lg font-bold leading-tight text-black transition-colors duration-300 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
+      <div className="flex flex-1 flex-col p-3">
+        <h3 className="mb-1 text-base font-bold leading-tight text-black transition-colors duration-300 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
           {book.title}
         </h3>
-        <p className="mb-3 text-sm font-medium text-black dark:text-white">{book.author}</p>
+        <p className="mb-2 text-sm font-medium text-black dark:text-white">{book.author}</p>
 
         {book.rating && parseInt(book.rating) > 0 && (
           <div className="mt-auto flex items-center gap-1 text-yellow-500">

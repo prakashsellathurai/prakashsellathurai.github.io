@@ -51,17 +51,17 @@ export default async function BookshelfPage() {
           </p>
         </div>
 
-        <div className="container py-12">
-          <div className="glass-panel-enhanced space-y-12 rounded-3xl p-8 md:p-10">
+        <div className="container py-8">
+          <div className="glass-panel-enhanced space-y-8 rounded-3xl p-8 md:p-10">
             {currentlyReading.length > 0 && (
               <section>
-                <div className="mb-8 flex items-center gap-4">
+                <div className="mb-6 flex items-center gap-4">
                   <div className="h-1 w-12 rounded-full bg-gradient-to-r from-secondary-500 to-primary-500" />
                   <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
                     Currently Reading
                   </h2>
                 </div>
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {currentlyReading.map((book) => (
                     <BookCard key={book.link} book={book} />
                   ))}
@@ -70,13 +70,13 @@ export default async function BookshelfPage() {
             )}
 
             <section>
-              <div className="mb-8 flex items-center gap-4">
+              <div className="mb-6 flex items-center gap-4">
                 <div className="h-1 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500" />
                 <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
                   Read
                 </h2>
               </div>
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {read.map((book) => (
                   <BookCard key={book.link} book={book} />
                 ))}

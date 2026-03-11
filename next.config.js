@@ -66,14 +66,7 @@ const nextConfig = () => {
     reactStrictMode: true,
     prodBrowserSourceMaps: true,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-    turbopack: {
-      resolveAlias: {
-        react: 'preact/compat',
-        'react-dom': 'preact/compat',
-        'react/jsx-runtime': 'preact/jsx-runtime',
-        'react/jsx-dev-runtime': 'preact/jsx-dev-runtime',
-      },
-    },
+    turbopack: {},
     images: {
       remotePatterns: [
         {
@@ -96,14 +89,6 @@ const nextConfig = () => {
       ]
     },
     webpack: (config, options) => {
-      config.resolve.alias = {
-        ...(config.resolve.alias || {}),
-        react: 'preact/compat',
-        'react-dom': 'preact/compat',
-        'react/jsx-runtime': 'preact/jsx-runtime',
-        'react/jsx-dev-runtime': 'preact/jsx-dev-runtime',
-      }
-
       config.module.rules.push({
         test: /\.svg$/,
         use: ['@svgr/webpack'],

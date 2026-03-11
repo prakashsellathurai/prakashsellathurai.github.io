@@ -9,7 +9,7 @@
     "clean": "rm -rf .next && rm -rf .contentlayer && rm -rf out && rm -rf .next/cache  && rm -rf node_modules",
     "serve": "next start",
     "update-data": "bun run update-books && bun run update-github && bun run update-description",
-    "analyze": "cross-env ANALYZE=true next build",
+    "analyze": "cross-env ANALYZE=true next build --webpack",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky",
     "update-books": "bun ./scripts/books.mjs",

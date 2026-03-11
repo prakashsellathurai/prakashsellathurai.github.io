@@ -96,15 +96,12 @@ const nextConfig = () => {
       ]
     },
     webpack: (config, options) => {
-      // Keep React when running bundle analysis to avoid Next.js 16 + preact/compat incompatibilities.
-      if (process.env.ANALYZE !== 'true') {
-        config.resolve.alias = {
-          ...(config.resolve.alias || {}),
-          react: 'preact/compat',
-          'react-dom': 'preact/compat',
-          'react/jsx-runtime': 'preact/jsx-runtime',
-          'react/jsx-dev-runtime': 'preact/jsx-dev-runtime',
-        }
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        react: 'preact/compat',
+        'react-dom': 'preact/compat',
+        'react/jsx-runtime': 'preact/jsx-runtime',
+        'react/jsx-dev-runtime': 'preact/jsx-dev-runtime',
       }
 
       config.module.rules.push({

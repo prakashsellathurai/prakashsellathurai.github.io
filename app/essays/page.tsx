@@ -5,7 +5,8 @@ import EssaysLayout from '@/layouts/EssaysLayout'
 
 const POSTS_PER_PAGE = 5
 
-export const metadata = genPageMetadata({ title: 'Blog' })
+import { Metadata } from 'next'
+export const metadata: Metadata = genPageMetadata({ title: 'Blog', canonical: '/essays' })
 
 export default async function BlogPage(props: { searchParams: Promise<{ page: string }> }) {
   const allPosts = allCoreContent(sortPosts(allEssays))

@@ -3,7 +3,8 @@ import { genPageMetadata } from 'app/seo'
 import { Thing, WithContext } from 'schema-dts'
 import ProjectsClient from '@/components/ProjectsClient'
 
-export const metadata = genPageMetadata({ title: 'Projects' })
+import { Metadata } from 'next'
+export const metadata: Metadata = genPageMetadata({ title: 'Projects', canonical: '/projects' })
 
 import { getProjects } from '@/lib/data'
 

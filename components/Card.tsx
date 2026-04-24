@@ -52,7 +52,7 @@ const Card = ({
   }
 
   return (
-    <div className="card-project animate-diagonal-open group relative size-full overflow-hidden rounded-3xl border border-black/10 bg-white/20 backdrop-blur-xl transition-all duration-500 hover:scale-[1.02] hover:border-black/20 hover:shadow-xl dark:border-white/10 dark:bg-black/20">
+    <div className="card-project animate-diagonal-open group relative size-full overflow-hidden rounded-3xl border border-black/10 bg-white/20 backdrop-blur-xl transition-all duration-500  dark:border-white/10 dark:bg-black/20">
       {/* Hover glow effect - Neutral Primary */}
       <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute inset-0 rounded-3xl bg-primary-500/5" />

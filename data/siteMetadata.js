@@ -5,7 +5,7 @@ const siteMetadata = {
   headerTitle: 'Prakash S',
   // dynamic  description (first paragraph from author file)
   description:
-    'Prakash Sellathurai is a Software Engineer specializing in Computer Vision, open-source contributions, and innovative technology solutions. With a background in Mechatronics, he bridges hardware and software to build impactful products.',
+    'Prakash is a hobbyist turned professional Software Engineer with a background in Mechatronics. He is a tinkerer, deeply passionate about exploring and building new technologies.',
   shortDescription:
     'Software Engineer with expertise in Computer Vision, open-source, and innovative technology solutions.',
   language: 'en-us',

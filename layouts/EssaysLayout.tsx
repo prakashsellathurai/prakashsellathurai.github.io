@@ -148,7 +148,7 @@ export default function EssaysLayout({
               return (
                 <li
                   key={path}
-                  className="glass-panel-enhanced animate-diagonal-open group relative overflow-hidden rounded-2xl border border-black/20 p-6 transition-all duration-300 hover:scale-[1.01] hover:border-primary-400/50 hover:shadow-2xl"
+                  className="glass-panel-enhanced animate-diagonal-open group relative overflow-hidden rounded-2xl border border-black/20 p-6 transition-all duration-300 "
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* Blueprint/Tech Decor - The "Old" Aspect */}

@@ -16,8 +16,16 @@
     "href": "leetcode-solutions/problems/0013-roman-to-integer/index.html"
   },
   {
+    "title": "problems/0033-search-in-rotated-sorted-array/index.html",
+    "href": "leetcode-solutions/problems/0033-search-in-rotated-sorted-array/index.html"
+  },
+  {
     "title": "problems/0053-maximum-subarray/index.html",
     "href": "leetcode-solutions/problems/0053-maximum-subarray/index.html"
+  },
+  {
+    "title": "problems/0084-largest-rectangle-in-histogram/index.html",
+    "href": "leetcode-solutions/problems/0084-largest-rectangle-in-histogram/index.html"
   },
   {
     "title": "problems/0125-valid-palindrome/index.html",
@@ -26,6 +34,10 @@
   {
     "title": "problems/0146-lru-cache/index.html",
     "href": "leetcode-solutions/problems/0146-lru-cache/index.html"
+  },
+  {
+    "title": "problems/0147-insertion-sort-list/index.html",
+    "href": "leetcode-solutions/problems/0147-insertion-sort-list/index.html"
   },
   {
     "title": "problems/0150-evaluate-reverse-polish-notation/index.html",
@@ -44,8 +56,28 @@
     "href": "leetcode-solutions/problems/0212-word-search-ii/index.html"
   },
   {
+    "title": "problems/0215-kth-largest-element-in-an-array/index.html",
+    "href": "leetcode-solutions/problems/0215-kth-largest-element-in-an-array/index.html"
+  },
+  {
     "title": "problems/0238-product-of-array-except-self/index.html",
     "href": "leetcode-solutions/problems/0238-product-of-array-except-self/index.html"
+  },
+  {
+    "title": "problems/0373-find-k-pairs-with-smallest-sums/index.html",
+    "href": "leetcode-solutions/problems/0373-find-k-pairs-with-smallest-sums/index.html"
+  },
+  {
+    "title": "problems/0459-repeated-substring-pattern/index.html",
+    "href": "leetcode-solutions/problems/0459-repeated-substring-pattern/index.html"
+  },
+  {
+    "title": "problems/0482-license-key-formatting/index.html",
+    "href": "leetcode-solutions/problems/0482-license-key-formatting/index.html"
+  },
+  {
+    "title": "problems/0633-sum-of-square-numbers/index.html",
+    "href": "leetcode-solutions/problems/0633-sum-of-square-numbers/index.html"
   },
   {
     "title": "problems/0636-exclusive-time-of-functions/index.html",
@@ -56,12 +88,36 @@
     "href": "leetcode-solutions/problems/0645-set-mismatch/index.html"
   },
   {
+    "title": "problems/0704-binary-search/index.html",
+    "href": "leetcode-solutions/problems/0704-binary-search/index.html"
+  },
+  {
     "title": "problems/0729-my-calendar-i/index.html",
     "href": "leetcode-solutions/problems/0729-my-calendar-i/index.html"
   },
   {
+    "title": "problems/0739-daily-temperatures/index.html",
+    "href": "leetcode-solutions/problems/0739-daily-temperatures/index.html"
+  },
+  {
+    "title": "problems/0846-hand-of-straights/index.html",
+    "href": "leetcode-solutions/problems/0846-hand-of-straights/index.html"
+  },
+  {
+    "title": "problems/0852-peak-index-in-a-mountain-array/index.html",
+    "href": "leetcode-solutions/problems/0852-peak-index-in-a-mountain-array/index.html"
+  },
+  {
     "title": "problems/0907-sum-of-subarray-minimums/index.html",
     "href": "leetcode-solutions/problems/0907-sum-of-subarray-minimums/index.html"
+  },
+  {
+    "title": "problems/0912-sort-an-array/index.html",
+    "href": "leetcode-solutions/problems/0912-sort-an-array/index.html"
+  },
+  {
+    "title": "problems/0932-beautiful-array/index.html",
+    "href": "leetcode-solutions/problems/0932-beautiful-array/index.html"
   },
   {
     "title": "problems/0991-broken-calculator/index.html",
@@ -188,6 +244,10 @@
     "href": "leetcode-solutions/problems/120-triangle/index.html"
   },
   {
+    "title": "problems/1200-minimum-absolute-difference/index.html",
+    "href": "leetcode-solutions/problems/1200-minimum-absolute-difference/index.html"
+  },
+  {
     "title": "problems/1202-smallest-string-with-swaps/index.html",
     "href": "leetcode-solutions/problems/1202-smallest-string-with-swaps/index.html"
   },
@@ -230,6 +290,10 @@
   {
     "title": "problems/1291-sequential-digits/index.html",
     "href": "leetcode-solutions/problems/1291-sequential-digits/index.html"
+  },
+  {
+    "title": "problems/1296-divide-array-in-sets-of-k-consecutive-numbers/index.html",
+    "href": "leetcode-solutions/problems/1296-divide-array-in-sets-of-k-consecutive-numbers/index.html"
   },
   {
     "title": "problems/1302-deepest-leaves-sum/index.html",
@@ -328,6 +392,10 @@
     "href": "leetcode-solutions/problems/1472-design-browser-history/index.html"
   },
   {
+    "title": "problems/1475-final-prices-with-a-special-discount-in-a-shop/index.html",
+    "href": "leetcode-solutions/problems/1475-final-prices-with-a-special-discount-in-a-shop/index.html"
+  },
+  {
     "title": "problems/1480-running-sum-of-1d-array/index.html",
     "href": "leetcode-solutions/problems/1480-running-sum-of-1d-array/index.html"
   },
@@ -362,6 +430,10 @@
   {
     "title": "problems/1584-min-cost-to-connect-all-points/index.html",
     "href": "leetcode-solutions/problems/1584-min-cost-to-connect-all-points/index.html"
+  },
+  {
+    "title": "problems/1590-make-sum-divisible-by-p/index.html",
+    "href": "leetcode-solutions/problems/1590-make-sum-divisible-by-p/index.html"
   },
   {
     "title": "problems/1592-rearrange-spaces-between-words/index.html",
@@ -418,6 +490,10 @@
   {
     "title": "problems/17-letter-combinations-of-a-phone-number/index.html",
     "href": "leetcode-solutions/problems/17-letter-combinations-of-a-phone-number/index.html"
+  },
+  {
+    "title": "problems/1700-number-of-students-unable-to-eat-lunch/index.html",
+    "href": "leetcode-solutions/problems/1700-number-of-students-unable-to-eat-lunch/index.html"
   },
   {
     "title": "problems/1710-maximum-units-on-a-truck/index.html",
@@ -630,6 +706,10 @@
   {
     "title": "problems/307-range-sum-query-mutable/index.html",
     "href": "leetcode-solutions/problems/307-range-sum-query-mutable/index.html"
+  },
+  {
+    "title": "problems/3071-minimum-operations-to-write-the-letter-y-on-a-grid/index.html",
+    "href": "leetcode-solutions/problems/3071-minimum-operations-to-write-the-letter-y-on-a-grid/index.html"
   },
   {
     "title": "problems/31-next-permutation/index.html",

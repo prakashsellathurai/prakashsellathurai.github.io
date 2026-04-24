@@ -1,23 +1,23 @@
 [
   {
-    "title": "prakashsellathurai.github.io",
-    "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-    "website": "https://prakashsellathurai.com/",
-    "description": "personal website",
+    "title": "cpython",
+    "href": "https://github.com/prakashsellathurai/cpython",
+    "website": "https://www.python.org",
+    "description": "The Python programming language",
     "stars": 0
-  },
-  {
-    "title": "Heimdall",
-    "href": "https://github.com/prakashsellathurai/Heimdall",
-    "website": "https://chromewebstore.google.com/detail/heimdall/kicalmkcgkhjgpijjclbnpodjppniank",
-    "description": "Heimdall is a feature-rich RSS feed curator available as a browser extension.",
-    "stars": 1
   },
   {
     "title": "grimoire",
     "href": "https://github.com/prakashsellathurai/grimoire",
     "website": "",
     "description": "scripts, notebooks and computer codes",
+    "stars": 0
+  },
+  {
+    "title": "entity",
+    "href": "https://github.com/prakashsellathurai/entity",
+    "website": "https://pypi.org/project/entityagent/",
+    "description": "Entity: The  AI agent that bridges you and your OS seamlessly execute commands and control apps on Windows, macOS, and Linux.",
     "stars": 0
   },
   {
@@ -28,24 +28,59 @@
     "stars": 0
   },
   {
-    "title": "original_performance_takehome",
-    "href": "https://github.com/prakashsellathurai/original_performance_takehome",
-    "website": null,
-    "description": "Anthropic's original performance take-home, now open for you to try!",
-    "stars": 0
-  },
-  {
-    "title": "openchaos",
-    "href": "https://github.com/prakashsellathurai/openchaos",
-    "website": "https://openchaos.dev",
-    "description": "A self-evolving open source project. Every week, the community votes on PRs, and the winner gets merged.",
-    "stars": 0
-  },
-  {
     "title": "leetcode-solutions",
     "href": "https://github.com/prakashsellathurai/leetcode-solutions",
     "website": "https://prakashsellathurai.github.io/leetcode-solutions",
     "description": "My solutions to Leetcode problems",
+    "stars": 0
+  },
+  {
+    "title": "Heimdall",
+    "href": "https://github.com/prakashsellathurai/Heimdall",
+    "website": "https://chromewebstore.google.com/detail/heimdall/kicalmkcgkhjgpijjclbnpodjppniank",
+    "description": "Heimdall is a feature-rich RSS feed curator available as a browser extension.",
+    "stars": 1
+  },
+  {
+    "title": "Missionary",
+    "href": "https://github.com/prakashsellathurai/Missionary",
+    "website": "",
+    "description": "Missionary is a web chrome extension that allows users to convert LaTeX code to PDF instantly. It also provides an option to open the LaTeX code in Overleaf for further editing. In chatgpt web ui it will create a button to convert the LaTeX code to PDF instantly",
+    "stars": 0
+  },
+  {
+    "title": "InterDimensionalCable",
+    "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
+    "website": "http://prakashsellathurai.com/InterDimensionalCable/",
+    "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
+    "stars": 0
+  },
+  {
+    "title": "prakashsellathurai.github.io",
+    "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+    "website": "https://prakashsellathurai.com/",
+    "description": "personal website",
+    "stars": 0
+  },
+  {
+    "title": "Financial-Data-Analytics-Kit",
+    "href": "https://github.com/prakashsellathurai/Financial-Data-Analytics-Kit",
+    "website": null,
+    "description": null,
+    "stars": 0
+  },
+  {
+    "title": "numba",
+    "href": "https://github.com/prakashsellathurai/numba",
+    "website": "https://github.com/numba/numba/pull/10428",
+    "description": "Fork for PR:  Add support for np.mean to handle scalar inputs",
+    "stars": 0
+  },
+  {
+    "title": "original_performance_takehome",
+    "href": "https://github.com/prakashsellathurai/original_performance_takehome",
+    "website": null,
+    "description": "Anthropic's original performance take-home, now open for you to try!",
     "stars": 0
   },
   {
@@ -56,31 +91,10 @@
     "stars": 0
   },
   {
-    "title": "scrapy",
-    "href": "https://github.com/prakashsellathurai/scrapy",
-    "website": "https://scrapy.org",
-    "description": "Scrapy, a fast high-level web crawling & scraping framework for Python.",
-    "stars": 0
-  },
-  {
-    "title": "entity",
-    "href": "https://github.com/prakashsellathurai/entity",
-    "website": "https://pypi.org/project/entityagent/",
-    "description": "Entity: The  AI agent that bridges you and your OS—seamlessly execute commands and control apps on Windows, macOS, and Linux.",
-    "stars": 0
-  },
-  {
     "title": "OLE_MACHINE",
     "href": "https://github.com/prakashsellathurai/OLE_MACHINE",
     "website": "",
     "description": "code repository for Automatic Packing system for Hydrphonic substitute packaging at mass scale project",
-    "stars": 0
-  },
-  {
-    "title": "InterDimensionalCable",
-    "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
-    "website": "http://prakashsellathurai.com/InterDimensionalCable/",
-    "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
     "stars": 0
   },
   {
@@ -140,13 +154,6 @@
     "stars": 0
   },
   {
-    "title": "WebLaTex",
-    "href": "https://github.com/prakashsellathurai/WebLaTex",
-    "website": "https://github.com/sanjib-sen/weblatex/generate",
-    "description": "A complete alternative for Overleaf with VSCode + Web + Git Integration + Copilot + Grammar & Spell Checker + Live Collaboration Support. Based on GitHub Codespace and Dev container.",
-    "stars": 0
-  },
-  {
     "title": "Goodreads-Random-Quotes-Badge",
     "href": "https://github.com/prakashsellathurai/Goodreads-Random-Quotes-Badge",
     "website": "https://goodreads-random-quotes-badge.vercel.app/",
@@ -203,13 +210,6 @@
     "stars": 0
   },
   {
-    "title": "open_clip",
-    "href": "https://github.com/prakashsellathurai/open_clip",
-    "website": "",
-    "description": "An open source implementation of CLIP.",
-    "stars": 0
-  },
-  {
     "title": "a-grim-loth",
     "href": "https://github.com/prakashsellathurai/a-grim-loth",
     "website": "https://prakashsellathurai.github.io/a-grim-loth/",
@@ -231,13 +231,6 @@
     "stars": 0
   },
   {
-    "title": "Soar",
-    "href": "https://github.com/prakashsellathurai/Soar",
-    "website": "http://soar.eecs.umich.edu",
-    "description": "Soar, a general cognitive architecture for systems that exhibit intelligent behavior.",
-    "stars": 0
-  },
-  {
     "title": "GPU-with-webGL",
     "href": "https://github.com/prakashsellathurai/GPU-with-webGL",
     "website": "",
@@ -256,7 +249,7 @@
     "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
     "website": "https://www.prakashsellathurai.com/blog/2020/10/03/awesome-product-management",
     "description": "A curated list of Product Management Resources :seedling:",
-    "stars": 59
+    "stars": 60
   },
   {
     "title": "idiota",
@@ -364,24 +357,10 @@
     "stars": 1
   },
   {
-    "title": "explore",
-    "href": "https://github.com/prakashsellathurai/explore",
-    "website": "https://github.com/explore",
-    "description": "Community-curated topic and collection pages on GitHub",
-    "stars": 0
-  },
-  {
     "title": "amp-cache-url-translator",
     "href": "https://github.com/prakashsellathurai/amp-cache-url-translator",
     "website": "https://prakashsellathurai.github.io/amp-cache-url-translator/",
     "description": "Tool to convert an website into it's AMP cache version",
-    "stars": 0
-  },
-  {
-    "title": "EverybodyDanceNow",
-    "href": "https://github.com/prakashsellathurai/EverybodyDanceNow",
-    "website": null,
-    "description": "Motion Retargeting Video Subjects",
     "stars": 0
   },
   {

@@ -1,93 +1,120 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 
-const DATA_DIR = path.join(process.cwd(), 'data')
-const PUBLIC_DIR = path.join(process.cwd(), 'out')
+const DATA_DIR = path.join(process.cwd(), "data");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+const OUT_DIR = path.join(process.cwd(), "out");
 
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) return;
+  ensureDir(dest);
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
   }
 }
 
 function readJson(file) {
-  return JSON.parse(fs.readFileSync(path.join(DATA_DIR, file), 'utf-8'))
+  return JSON.parse(fs.readFileSync(path.join(DATA_DIR, file), "utf-8"));
 }
 
 function readMd(file) {
-  const content = fs.readFileSync(file, 'utf-8')
-  return matter(content)
+  const content = fs.readFileSync(file, "utf-8");
+  return matter(content);
 }
 
 function readSiteMetadata() {
-  const content = fs.readFileSync(path.join(DATA_DIR, 'siteMetadata.js'), 'utf-8')
-  const match = content.match(/const siteMetadata = (\{[\s\S]*?\n\})/)
-  if (!match) return {}
-  const fn = new Function('return ' + match[1])
-  return fn()
+  const content = fs.readFileSync(
+    path.join(DATA_DIR, "siteMetadata.js"),
+    "utf-8",
+  );
+  const match = content.match(/const siteMetadata = (\{[\s\S]*?\n\})/);
+  if (!match) return {};
+  const fn = new Function("return " + match[1]);
+  return fn();
 }
 
 function readAuthor() {
-  const content = fs.readFileSync(path.join(DATA_DIR, 'authors/default.mdx'), 'utf-8')
-  const { data, content: body } = matter(content)
-  return { ...data, body }
+  const content = fs.readFileSync(
+    path.join(DATA_DIR, "authors/default.mdx"),
+    "utf-8",
+  );
+  const { data, content: body } = matter(content);
+  return { ...data, body };
 }
 
 function getEssays() {
-  const essaysDir = path.join(DATA_DIR, 'essays')
-  const files = fs.readdirSync(essaysDir).filter(f => f.endsWith('.md'))
-  return files.map(file => {
-    const { data, content } = readMd(path.join(essaysDir, file))
-    return {
-      slug: file.replace('.md', ''),
-      title: data.title,
-      date: data.date,
-      summary: data.summary,
-      tags: data.tags || [],
-      content,
-    }
-  }).sort((a, b) => new Date(b.date) - new Date(a.date))
+  const essaysDir = path.join(DATA_DIR, "essays");
+  const files = fs.readdirSync(essaysDir).filter((f) => f.endsWith(".md"));
+  return files
+    .map((file) => {
+      const { data, content } = readMd(path.join(essaysDir, file));
+      return {
+        slug: file.replace(".md", ""),
+        title: data.title,
+        date: data.date,
+        summary: data.summary,
+        tags: data.tags || [],
+        content,
+      };
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 function getBooks() {
-  return readJson('books.json')
+  return readJson("books.json");
 }
 
 function getProjects() {
-  return readJson('repos.json')
+  return readJson("repos.json");
 }
 
 function formatDate(dateStr) {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 function escapeHtml(text) {
-  if (!text) return ''
+  if (!text) return "";
   return String(text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function renderMarkdown(content) {
   return content
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+    .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-    .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-    .replace(/^`(.+)`$/gm, '<code>$1</code>')
-    .replace(/```([\s\S]+?)```/g, '<pre><code>$1</code></pre>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^([^<]+)$/gm, match => {
-      if (match.startsWith('<')) return match
-      return match
-    })
+    .replace(/^> (.+)$/gm, "<blockquote>$1</blockquote>")
+    .replace(/^`(.+)`$/gm, "<code>$1</code>")
+    .replace(/```([\s\S]+?)```/g, "<pre><code>$1</code></pre>")
+    .replace(/\n\n/g, "</p><p>")
+    .replace(/^([^<]+)$/gm, (match) => {
+      if (match.startsWith("<")) return match;
+      return match;
+    });
 }
 
 const CSS = `
@@ -119,9 +146,9 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee; text-a
   .sidebar { flex: 1; }
 }
 </style>
-`
+`;
 
-function renderHeader(metadata, nav = '') {
+function renderHeader(metadata, nav = "") {
   return `
 <header>
   <a href="/">Home</a>
@@ -130,7 +157,7 @@ function renderHeader(metadata, nav = '') {
   <a href="/bookshelf.html">Bookshelf</a>
   <a href="/about.html">About</a>
 </header>
-`
+`;
 }
 
 function renderFooter(metadata) {
@@ -138,13 +165,13 @@ function renderFooter(metadata) {
 <footer>
   <p>&copy; ${new Date().getFullYear()} ${escapeHtml(metadata.author)}. Built with plain HTML.</p>
 </footer>
-`
+`;
 }
 
 function buildHome(metadata, essays, books, projects, author) {
-  const recentEssays = essays.slice(0, 10)
-  const featuredProjects = projects.slice(0, 6)
-  const readingList = books['curated']?.slice(0, 5) || []
+  const recentEssays = essays.slice(0, 10);
+  const featuredProjects = projects.slice(0, 6);
+  const readingList = books["curated"]?.slice(0, 5) || [];
 
   let html = `<!DOCTYPE html>
 <html lang="en">
@@ -160,53 +187,68 @@ ${renderHeader(metadata)}
 <div class="layout">
   <div class="main">
     <h1>Latest Essays</h1>
-    ${recentEssays.map(post => `
+    ${recentEssays
+      .map(
+        (post) => `
     <article>
       <h2><a href="/essays/${post.slug}.html">${escapeHtml(post.title)}</a></h2>
       <p class="meta"><time>${formatDate(post.date)}</time></p>
       <p class="summary">${escapeHtml(post.summary)}</p>
       <div class="tags">
-        ${post.tags.slice(0, 3).map(tag => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`).join('')}
+        ${post.tags
+          .slice(0, 3)
+          .map((tag) => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`)
+          .join("")}
       </div>
     </article>
-    `).join('')}
-    
+    `,
+      )
+      .join("")}
+
     <h1>Featured Projects</h1>
-    ${featuredProjects.map(proj => `
+    ${featuredProjects
+      .map(
+        (proj) => `
     <article>
       <h2>${proj.website ? `<a href="${escapeHtml(proj.website)}">${escapeHtml(proj.title)}</a>` : escapeHtml(proj.title)}</h2>
       <p class="summary">${escapeHtml(proj.description)}</p>
-      ${proj.tags?.length ? `<div class="tags">${proj.tags.map(t => `<span>#${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+      ${proj.tags?.length ? `<div class="tags">${proj.tags.map((t) => `<span>#${escapeHtml(t)}</span>`).join("")}</div>` : ""}
     </article>
-    `).join('')}
+    `,
+      )
+      .join("")}
   </div>
-  
+
   <div class="sidebar">
     <div class="sidebar">
       <h3>About ${escapeHtml(metadata.author)}</h3>
-      <p>${escapeHtml(author.body.split('\n\n')[0])}</p>
+      <p>${escapeHtml(author.body.split("\n\n")[0])}</p>
       <p><a href="/about.html">Read more &rarr;</a></p>
     </div>
-    
+
     <div class="sidebar">
       <h3>Reading List</h3>
       <ul class="book-list">
-        ${readingList.map(book => `
+        ${readingList
+          .map(
+            (book) => `
         <li>
           <a href="${escapeHtml(book.link)}" target="_blank" rel="noopener">
             ${escapeHtml(book.title)}
           </a>
         </li>
-        `).join('')}
+        `,
+          )
+          .join("")}
       </ul>
     </div>
   </div>
 </div>
 ${renderFooter(metadata)}
 </body>
-</html>`
+</html>`;
 
-  fs.writeFileSync(path.join(PUBLIC_DIR, 'index.html'), html)
+  fs.writeFileSync(path.join(OUT_DIR, "index.html"), html);
 }
 
 function buildEssaysList(metadata, essays) {
@@ -222,22 +264,29 @@ function buildEssaysList(metadata, essays) {
 <body>
 ${renderHeader(metadata)}
 <h1>Essays</h1>
-${essays.map(post => `
+${essays
+  .map(
+    (post) => `
 <article>
   <h2><a href="/essays/${post.slug}.html">${escapeHtml(post.title)}</a></h2>
   <p class="meta"><time>${formatDate(post.date)}</time></p>
   <p class="summary">${escapeHtml(post.summary)}</p>
   <div class="tags">
-    ${post.tags.slice(0, 3).map(tag => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`).join('')}
+    ${post.tags
+      .slice(0, 3)
+      .map((tag) => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`)
+      .join("")}
   </div>
 </article>
-`).join('')}
+`,
+  )
+  .join("")}
 ${renderFooter(metadata)}
 </body>
-</html>`
+</html>`;
 
-  ensureDir(path.join(PUBLIC_DIR, 'essays'))
-  fs.writeFileSync(path.join(PUBLIC_DIR, 'essays', 'index.html'), html)
+  ensureDir(path.join(OUT_DIR, "essays"));
+  fs.writeFileSync(path.join(OUT_DIR, "essays", "index.html"), html);
 }
 
 function buildEssay(metadata, essay) {
@@ -256,7 +305,7 @@ ${renderHeader(metadata)}
   <h1>${escapeHtml(essay.title)}</h1>
   <p class="meta"><time>${formatDate(essay.date)}</time></p>
   <div class="tags">
-    ${essay.tags.map(tag => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`).join('')}
+    ${essay.tags.map((tag) => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`).join("")}
   </div>
   <div class="content">
     ${renderMarkdown(essay.content)}
@@ -264,9 +313,9 @@ ${renderHeader(metadata)}
 </article>
 ${renderFooter(metadata)}
 </body>
-</html>`
+</html>`;
 
-  fs.writeFileSync(path.join(PUBLIC_DIR, 'essays', `${essay.slug}.html`), html)
+  fs.writeFileSync(path.join(OUT_DIR, "essays", `${essay.slug}.html`), html);
 }
 
 function buildAbout(metadata, author) {
@@ -282,15 +331,15 @@ function buildAbout(metadata, author) {
 <body>
 ${renderHeader(metadata)}
 <h1>About ${escapeHtml(metadata.author)}</h1>
-<h2>${escapeHtml(author.occupation)}${author.company ? ` at ${escapeHtml(author.company)}` : ''}</h2>
+<h2>${escapeHtml(author.occupation)}${author.company ? ` at ${escapeHtml(author.company)}` : ""}</h2>
 <div>
   ${renderMarkdown(author.body)}
 </div>
 ${renderFooter(metadata)}
 </body>
-</html>`
+</html>`;
 
-  fs.writeFileSync(path.join(PUBLIC_DIR, 'about.html'), html)
+  fs.writeFileSync(path.join(OUT_DIR, "about.html"), html);
 }
 
 function buildProjects(metadata, projects) {
@@ -306,24 +355,28 @@ function buildProjects(metadata, projects) {
 <body>
 ${renderHeader(metadata)}
 <h1>Projects</h1>
-${projects.map(proj => `
+${projects
+  .map(
+    (proj) => `
 <article>
   <h2>${proj.website ? `<a href="${escapeHtml(proj.website)}">${escapeHtml(proj.title)}</a>` : escapeHtml(proj.title)}</h2>
-  <p class="summary">${escapeHtml(proj.description) || 'No description'}</p>
+  <p class="summary">${escapeHtml(proj.description) || "No description"}</p>
   <p class="meta"><a href="${escapeHtml(proj.href)}">GitHub</a></p>
 </article>
-`).join('')}
+`,
+  )
+  .join("")}
 ${renderFooter(metadata)}
 </body>
-</html>`
+</html>`;
 
-  fs.writeFileSync(path.join(PUBLIC_DIR, 'projects.html'), html)
+  fs.writeFileSync(path.join(OUT_DIR, "projects.html"), html);
 }
 
 function buildBookshelf(metadata, books) {
-  const currentlyReading = books['currently-reading'] || []
-  const read = books['read'] || []
-  const curated = books['curated'] || []
+  const currentlyReading = books["currently-reading"] || [];
+  const read = books["read"] || [];
+  const curated = books["curated"] || [];
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -338,67 +391,93 @@ function buildBookshelf(metadata, books) {
 ${renderHeader(metadata)}
 <h1>Bookshelf</h1>
 
-${currentlyReading.length ? `
+${
+  currentlyReading.length
+    ? `
 <h2>Currently Reading</h2>
-${currentlyReading.map(book => `
+${currentlyReading
+  .map(
+    (book) => `
 <article>
   <h3>${escapeHtml(book.title)}</h3>
   <p class="meta">by ${escapeHtml(book.author)}</p>
   <p class="summary">${escapeHtml(book.description)}</p>
 </article>
-`).join('')}
-` : ''}
+`,
+  )
+  .join("")}
+`
+    : ""
+}
 
-${curated.length ? `
+${
+  curated.length
+    ? `
 <h2>Curated</h2>
-${curated.map(book => `
+${curated
+  .map(
+    (book) => `
 <article>
   <h3>${escapeHtml(book.title)}</h3>
   <p class="meta">by ${escapeHtml(book.author)}</p>
   <p class="summary">${escapeHtml(book.description)}</p>
 </article>
-`).join('')}
-` : ''}
+`,
+  )
+  .join("")}
+`
+    : ""
+}
 
-${read.length ? `
+${
+  read.length
+    ? `
 <h2>Read</h2>
-${read.map(book => `
+${read
+  .map(
+    (book) => `
 <article>
   <h3>${escapeHtml(book.title)}</h3>
   <p class="meta">by ${escapeHtml(book.author)}</p>
   <p class="summary">${escapeHtml(book.description)}</p>
 </article>
-`).join('')}
-` : ''}
+`,
+  )
+  .join("")}
+`
+    : ""
+}
 
 ${renderFooter(metadata)}
 </body>
-</html>`
+</html>`;
 
-  fs.writeFileSync(path.join(PUBLIC_DIR, 'bookshelf.html'), html)
+  fs.writeFileSync(path.join(OUT_DIR, "bookshelf.html"), html);
 }
 
 function build() {
-  console.log('Reading data...')
-  const metadata = readSiteMetadata()
-  const author = readAuthor()
-  const essays = getEssays()
-  const books = getBooks()
-  const projects = getProjects()
+  console.log("Reading data...");
+  const metadata = readSiteMetadata();
+  const author = readAuthor();
+  const essays = getEssays();
+  const books = getBooks();
+  const projects = getProjects();
 
-  console.log(`Found ${essays.length} essays, ${projects.length} projects`)
+  console.log(`Found ${essays.length} essays, ${projects.length} projects`);
 
-  ensureDir(PUBLIC_DIR)
+  ensureDir(OUT_DIR);
 
-  console.log('Building pages...')
-  buildHome(metadata, essays, books, projects, author)
-  buildEssaysList(metadata, essays)
-  essays.forEach(essay => buildEssay(metadata, essay))
-  buildAbout(metadata, author)
-  buildProjects(metadata, projects)
-  buildBookshelf(metadata, books)
+  copyDir(PUBLIC_DIR, OUT_DIR);
 
-  console.log('Done! Static site generated in public/')
+  console.log("Building pages...");
+  buildHome(metadata, essays, books, projects, author);
+  buildEssaysList(metadata, essays);
+  essays.forEach((essay) => buildEssay(metadata, essay));
+  buildAbout(metadata, author);
+  buildProjects(metadata, projects);
+  buildBookshelf(metadata, books);
+
+  console.log("Done! Static site generated in public/");
 }
 
-build()
+build();

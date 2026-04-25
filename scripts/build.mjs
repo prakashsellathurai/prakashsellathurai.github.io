@@ -113,9 +113,18 @@ function generateSitemap(metadata, essays) {
   const siteUrl = metadata.siteUrl.replace(/\/$/, '');
   const today = new Date().toISOString().split('T')[0];
 
+  const tagSet = new Set();
+  essays.forEach((e) => e.tags.forEach((t) => tagSet.add(t)));
+  const tagEntries = [...tagSet].map((t) => ({
+    loc: `/tags/${t}.html`,
+    lastmod: today,
+    priority: '0.6',
+  }));
+
   const pages = [
     { loc: '/', lastmod: today, priority: '1.0' },
     { loc: '/essays/', lastmod: today, priority: '0.9' },
+    { loc: '/tags/', lastmod: today, priority: '0.8' },
     { loc: '/projects.html', lastmod: today, priority: '0.8' },
     { loc: '/bookshelf.html', lastmod: today, priority: '0.8' },
     { loc: '/about.html', lastmod: today, priority: '0.8' },
@@ -127,7 +136,7 @@ function generateSitemap(metadata, essays) {
     priority: '0.7',
   }));
 
-  const urls = [...pages, ...essayEntries]
+  const urls = [...pages, ...essayEntries, ...tagEntries]
     .map((p) => `  <url>\n    <loc>${siteUrl}${p.loc}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n    <priority>${p.priority}</priority>\n  </url>`)
     .join('\n');
 
@@ -481,6 +490,67 @@ ${renderFooter(metadata)}
   fs.writeFileSync(path.join(OUT_DIR, "bookshelf.html"), html);
 }
 
+function buildTags(metadata, essays) {
+  const tagMap = {};
+  essays.forEach((essay) => {
+    essay.tags.forEach((tag) => {
+      if (!tagMap[tag]) tagMap[tag] = [];
+      tagMap[tag].push(essay);
+    });
+  });
+
+  const sortedTags = Object.entries(tagMap).sort((a, b) => b[1].length - a[1].length);
+
+  const tagsIndexHtml = `<!DOCTYPE html>
+<html lang="en">
+${renderHead(metadata, { title: `Tags - ${metadata.title}`, description: `All tags` })}
+<body>
+${renderHeader(metadata)}
+<h1>Tags</h1>
+<p class="meta">${sortedTags.length} tags</p>
+<div class="tags-cloud">
+  ${sortedTags
+    .map(
+      ([tag, taggedEssays]) => `
+    <a href="/tags/${tag}.html" class="tag">#${escapeHtml(tag)} <span class="count">${taggedEssays.length}</span></a>
+  `,
+    )
+    .join("")}
+</div>
+${renderFooter(metadata)}
+</body>
+</html>`;
+
+  ensureDir(path.join(OUT_DIR, "tags"));
+  fs.writeFileSync(path.join(OUT_DIR, "tags", "index.html"), tagsIndexHtml);
+
+  Object.entries(tagMap).forEach(([tag, taggedEssays]) => {
+    const html = `<!DOCTYPE html>
+<html lang="en">
+${renderHead(metadata, { title: `#${tag} - ${metadata.title}`, description: `Essays tagged with ${tag}` })}
+<body>
+${renderHeader(metadata)}
+<h1>#${escapeHtml(tag)}</h1>
+<p class="meta">${taggedEssays.length} essay${taggedEssays.length !== 1 ? "s" : ""}</p>
+${taggedEssays
+  .map(
+    (post) => `
+<article>
+  <h2><a href="/essays/${post.slug}.html">${escapeHtml(post.title)}</a></h2>
+  <p class="meta"><time>${formatDate(post.date)}</time></p>
+  <p class="summary">${escapeHtml(post.summary)}</p>
+</article>
+`,
+  )
+  .join("")}
+${renderFooter(metadata)}
+</body>
+</html>`;
+
+    fs.writeFileSync(path.join(OUT_DIR, "tags", `${tag}.html`), html);
+  });
+}
+
 function build() {
   console.log("Reading data...");
   const metadata = readSiteMetadata();
@@ -500,6 +570,7 @@ function build() {
   buildHome(metadata, essays, books, projects, author);
   buildEssaysList(metadata, essays);
   essays.forEach((essay) => buildEssay(metadata, essay));
+  buildTags(metadata, essays);
   buildAbout(metadata, author);
   buildProjects(metadata, projects);
   buildBookshelf(metadata, books);

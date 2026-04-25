@@ -95,6 +95,10 @@ function getProjects() {
   return readJson("repos.json");
 }
 
+function getLeetcodeSolutions() {
+  return readJson("leetcode-solutions.json");
+}
+
 function formatDateISO(dateStr) {
   const date = new Date(dateStr);
   return date.toISOString().split('T')[0];
@@ -109,7 +113,7 @@ function formatDate(dateStr) {
   });
 }
 
-function generateSitemap(metadata, essays) {
+function generateSitemap(metadata, essays, projects, leetcodeSolutions) {
   const siteUrl = metadata.siteUrl.replace(/\/$/, '');
   const today = new Date().toISOString().split('T')[0];
 
@@ -124,10 +128,12 @@ function generateSitemap(metadata, essays) {
   const pages = [
     { loc: '/', lastmod: today, priority: '1.0' },
     { loc: '/essays/', lastmod: today, priority: '0.9' },
+    { loc: '/about.html', lastmod: today, priority: '0.9' },
     { loc: '/tags/', lastmod: today, priority: '0.8' },
     { loc: '/projects.html', lastmod: today, priority: '0.8' },
     { loc: '/bookshelf.html', lastmod: today, priority: '0.8' },
-    { loc: '/about.html', lastmod: today, priority: '0.8' },
+    { loc: '/leetcode-solutions/', lastmod: today, priority: '0.6' },
+    { loc: '/static/resume/prakash_s_resume.pdf', lastmod: today, priority: '0.7' },
   ];
 
   const essayEntries = essays.map((e) => ({
@@ -136,7 +142,21 @@ function generateSitemap(metadata, essays) {
     priority: '0.7',
   }));
 
-  const urls = [...pages, ...essayEntries, ...tagEntries]
+  const projectEntries = projects
+    .filter((p) => p.website && p.website.startsWith('http'))
+    .map((p) => ({
+      loc: p.website,
+      lastmod: today,
+      priority: '0.6',
+    }));
+
+  const leetcodeEntries = leetcodeSolutions.map((s) => ({
+    loc: s.href,
+    lastmod: today,
+    priority: '0.5',
+  }));
+
+  const urls = [...pages, ...essayEntries, ...tagEntries, ...projectEntries, ...leetcodeEntries]
     .map((p) => `  <url>\n    <loc>${siteUrl}${p.loc}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n    <priority>${p.priority}</priority>\n  </url>`)
     .join('\n');
 
@@ -431,16 +451,16 @@ ${
     ? `
 <h2>Currently Reading</h2>
 ${currentlyReading
-  .map(
-    (book) => `
+    .map(
+      (book) => `
 <article>
   <h3>${escapeHtml(book.title)}</h3>
   <p class="meta">by ${escapeHtml(book.author)}</p>
   <p class="summary">${escapeHtml(book.description)}</p>
 </article>
 `,
-  )
-  .join("")}
+    )
+    .join("")}
 `
     : ""
 }
@@ -450,16 +470,16 @@ ${
     ? `
 <h2>Curated</h2>
 ${curated
-  .map(
-    (book) => `
+    .map(
+      (book) => `
 <article>
   <h3>${escapeHtml(book.title)}</h3>
   <p class="meta">by ${escapeHtml(book.author)}</p>
   <p class="summary">${escapeHtml(book.description)}</p>
 </article>
 `,
-  )
-  .join("")}
+    )
+    .join("")}
 `
     : ""
 }
@@ -469,16 +489,16 @@ ${
     ? `
 <h2>Read</h2>
 ${read
-  .map(
-    (book) => `
+    .map(
+      (book) => `
 <article>
   <h3>${escapeHtml(book.title)}</h3>
   <p class="meta">by ${escapeHtml(book.author)}</p>
   <p class="summary">${escapeHtml(book.description)}</p>
 </article>
 `,
-  )
-  .join("")}
+    )
+    .join("")}
 `
     : ""
 }
@@ -488,6 +508,31 @@ ${renderFooter(metadata)}
 </html>`;
 
   fs.writeFileSync(path.join(OUT_DIR, "bookshelf.html"), html);
+}
+
+function buildLeetcodeSolutions(metadata, solutions) {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+${renderHead(metadata, { title: `Leetcode Solutions - ${metadata.title}`, description: `My solutions to Leetcode problems` })}
+<body>
+${renderHeader(metadata)}
+<h1>Leetcode Solutions</h1>
+<p class="meta">${solutions.length} solutions</p>
+${solutions
+  .map(
+    (solution) => `
+<article>
+  <h2><a href="${escapeHtml(solution.href)}">${escapeHtml(solution.title)}</a></h2>
+</article>
+`,
+  )
+  .join("")}
+${renderFooter(metadata)}
+</body>
+</html>`;
+
+  ensureDir(path.join(OUT_DIR, "leetcode-solutions"));
+  fs.writeFileSync(path.join(OUT_DIR, "leetcode-solutions", "index.html"), html);
 }
 
 function buildTags(metadata, essays) {
@@ -558,8 +603,9 @@ function build() {
   const essays = getEssays();
   const books = getBooks();
   const projects = getProjects();
+  const leetcodeSolutions = getLeetcodeSolutions();
 
-  console.log(`Found ${essays.length} essays, ${projects.length} projects`);
+  console.log(`Found ${essays.length} essays, ${projects.length} projects, ${leetcodeSolutions.length} leetcode solutions`);
 
   ensureDir(OUT_DIR);
   clearDir(OUT_DIR);
@@ -574,10 +620,11 @@ function build() {
   buildAbout(metadata, author);
   buildProjects(metadata, projects);
   buildBookshelf(metadata, books);
+  buildLeetcodeSolutions(metadata, leetcodeSolutions);
 
   console.log("Generating RSS and sitemap...");
   fs.writeFileSync(path.join(OUT_DIR, "feed.xml"), generateRssFeed(metadata, essays));
-  fs.writeFileSync(path.join(OUT_DIR, "sitemap.xml"), generateSitemap(metadata, essays));
+  fs.writeFileSync(path.join(OUT_DIR, "sitemap.xml"), generateSitemap(metadata, essays, projects, leetcodeSolutions));
 
   console.log("Done! Static site generated in out/");
 }

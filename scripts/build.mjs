@@ -12,6 +12,18 @@ function ensureDir(dir) {
   }
 }
 
+function clearDir(dir) {
+  if (!fs.existsSync(dir)) return;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const entryPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      fs.rmSync(entryPath, { recursive: true });
+    } else {
+      fs.unlinkSync(entryPath);
+    }
+  }
+}
+
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
   ensureDir(dest);
@@ -466,6 +478,7 @@ function build() {
   console.log(`Found ${essays.length} essays, ${projects.length} projects`);
 
   ensureDir(OUT_DIR);
+  clearDir(OUT_DIR);
 
   copyDir(PUBLIC_DIR, OUT_DIR);
 

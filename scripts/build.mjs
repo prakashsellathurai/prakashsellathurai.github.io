@@ -3,7 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 
 const DATA_DIR = path.join(process.cwd(), 'data')
-const PUBLIC_DIR = path.join(process.cwd(), 'public')
+const PUBLIC_DIR = path.join(process.cwd(), 'out')
 
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) {

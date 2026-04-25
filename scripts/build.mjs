@@ -73,6 +73,7 @@ function getEssays() {
   return files
     .map((file) => {
       const { data, content } = readMd(path.join(essaysDir, file));
+      if (data.draft) return null;
       return {
         slug: file.replace(".md", ""),
         title: data.title,
@@ -82,6 +83,7 @@ function getEssays() {
         content,
       };
     })
+    .filter(Boolean)
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 

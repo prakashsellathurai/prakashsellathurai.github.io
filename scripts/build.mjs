@@ -95,6 +95,11 @@ function getProjects() {
   return readJson("repos.json");
 }
 
+function formatDateISO(dateStr) {
+  const date = new Date(dateStr);
+  return date.toISOString().split('T')[0];
+}
+
 function formatDate(dateStr) {
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-US", {
@@ -102,6 +107,64 @@ function formatDate(dateStr) {
     month: "short",
     day: "numeric",
   });
+}
+
+function generateSitemap(metadata, essays) {
+  const siteUrl = metadata.siteUrl.replace(/\/$/, '');
+  const today = new Date().toISOString().split('T')[0];
+
+  const pages = [
+    { loc: '/', lastmod: today, priority: '1.0' },
+    { loc: '/essays/', lastmod: today, priority: '0.9' },
+    { loc: '/projects.html', lastmod: today, priority: '0.8' },
+    { loc: '/bookshelf.html', lastmod: today, priority: '0.8' },
+    { loc: '/about.html', lastmod: today, priority: '0.8' },
+  ];
+
+  const essayEntries = essays.map((e) => ({
+    loc: `/essays/${e.slug}.html`,
+    lastmod: formatDateISO(e.date),
+    priority: '0.7',
+  }));
+
+  const urls = [...pages, ...essayEntries]
+    .map((p) => `  <url>\n    <loc>${siteUrl}${p.loc}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n    <priority>${p.priority}</priority>\n  </url>`)
+    .join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+}
+
+function generateRssFeed(metadata, essays) {
+  const siteUrl = metadata.siteUrl.replace(/\/$/, '');
+  const sortedEssays = [...essays].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const items = sortedEssays
+    .map(
+      (e) => `  <item>
+    <guid>${siteUrl}/essays/${e.slug}.html</guid>
+    <title><![CDATA[${e.title}]]></title>
+    <link>${siteUrl}/essays/${e.slug}.html</link>
+    <description><![CDATA[${e.summary || ''}]]></description>
+    <pubDate>${new Date(e.date).toUTCString()}</pubDate>
+  </item>`,
+    )
+    .join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title><![CDATA[${metadata.title}]]></title>
+    <link>${siteUrl}</link>
+    <description><![CDATA[${metadata.description}]]></description>
+    <language>${metadata.language}</language>
+    <lastBuildDate>${new Date(sortedEssays[0]?.date).toUTCString()}</lastBuildDate>
+    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
+${items}
+  </channel>
+</rss>`;
 }
 
 function escapeHtml(text) {
@@ -441,7 +504,11 @@ function build() {
   buildProjects(metadata, projects);
   buildBookshelf(metadata, books);
 
-  console.log("Done! Static site generated in public/");
+  console.log("Generating RSS and sitemap...");
+  fs.writeFileSync(path.join(OUT_DIR, "feed.xml"), generateRssFeed(metadata, essays));
+  fs.writeFileSync(path.join(OUT_DIR, "sitemap.xml"), generateSitemap(metadata, essays));
+
+  console.log("Done! Static site generated in out/");
 }
 
 build();

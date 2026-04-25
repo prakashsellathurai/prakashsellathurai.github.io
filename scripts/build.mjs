@@ -131,36 +131,9 @@ function renderMarkdown(content) {
     });
 }
 
-const CSS = `
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
-a { color: #0066cc; text-decoration: none; }
-a:hover { text-decoration: underline; }
-header { display: flex; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
-header a { font-weight: 600; }
-h1 { font-size: 1.8rem; margin-bottom: 1rem; }
-h2 { font-size: 1.4rem; margin: 1.5rem 0 0.5rem; }
-h3 { font-size: 1.2rem; margin: 1rem 0 0.5rem; }
-article { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eee; }
-article:last-child { border-bottom: none; }
-.meta { color: #666; font-size: 0.9rem; }
-.summary { color: #555; margin: 0.5rem 0; }
-.tags { margin-top: 0.5rem; }
-.tags a { color: #666; margin-right: 0.5rem; font-size: 0.85rem; }
-.sidebar { background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
-.sidebar h3 { margin-top: 0; font-size: 1rem; }
-.book-list { list-style: none; }
-.book-list li { margin-bottom: 0.5rem; }
-.book-list a { display: flex; justify-content: space-between; }
-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee; text-align: center; color: #666; font-size: 0.9rem; }
-@media (min-width: 700px) {
-  .layout { display: flex; gap: 2rem; }
-  .main { flex: 3; }
-  .sidebar { flex: 1; }
-}
-</style>
-`;
+
+
+const CSS_LINK = '<link rel="stylesheet" href="/static/css/style.css">';
 
 function renderHeader(metadata, nav = "") {
   return `
@@ -194,7 +167,7 @@ function buildHome(metadata, essays, books, projects, author) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(metadata.title)}</title>
   <meta name="description" content="${escapeHtml(metadata.description)}">
-  ${CSS}
+  ${CSS_LINK}
 </head>
 <body>
 ${renderHeader(metadata)}
@@ -273,7 +246,7 @@ function buildEssaysList(metadata, essays) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Essays - ${escapeHtml(metadata.title)}</title>
   <meta name="description" content="Essays by ${escapeHtml(metadata.author)}">
-  ${CSS}
+  ${CSS_LINK}
 </head>
 <body>
 ${renderHeader(metadata)}
@@ -311,7 +284,7 @@ function buildEssay(metadata, essay) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(essay.title)} - ${escapeHtml(metadata.title)}</title>
   <meta name="description" content="${escapeHtml(essay.summary)}">
-  ${CSS}
+  ${CSS_LINK}
 </head>
 <body>
 ${renderHeader(metadata)}
@@ -340,7 +313,7 @@ function buildAbout(metadata, author) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About - ${escapeHtml(metadata.title)}</title>
   <meta name="description" content="About ${escapeHtml(metadata.author)}">
-  ${CSS}
+  ${CSS_LINK}
 </head>
 <body>
 ${renderHeader(metadata)}
@@ -364,7 +337,7 @@ function buildProjects(metadata, projects) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects - ${escapeHtml(metadata.title)}</title>
   <meta name="description" content="Projects by ${escapeHtml(metadata.author)}">
-  ${CSS}
+  ${CSS_LINK}
 </head>
 <body>
 ${renderHeader(metadata)}
@@ -399,7 +372,7 @@ function buildBookshelf(metadata, books) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bookshelf - ${escapeHtml(metadata.title)}</title>
   <meta name="description" content="Books I've read">
-  ${CSS}
+  ${CSS_LINK}
 </head>
 <body>
 ${renderHeader(metadata)}

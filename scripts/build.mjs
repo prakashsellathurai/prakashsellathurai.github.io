@@ -135,6 +135,18 @@ function renderMarkdown(content) {
 
 const CSS_LINK = '<link rel="stylesheet" href="/static/css/style.css">';
 
+function renderHead(metadata, { title, description }) {
+  return `
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  ${CSS_LINK}
+</head>
+`;
+}
+
 function renderHeader(metadata, nav = "") {
   return `
 <header>
@@ -162,13 +174,7 @@ function buildHome(metadata, essays, books, projects, author) {
 
   let html = `<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(metadata.title)}</title>
-  <meta name="description" content="${escapeHtml(metadata.description)}">
-  ${CSS_LINK}
-</head>
+${renderHead(metadata, { title: metadata.title, description: metadata.description })}
 <body>
 ${renderHeader(metadata)}
 <div class="layout">
@@ -241,13 +247,7 @@ ${renderFooter(metadata)}
 function buildEssaysList(metadata, essays) {
   const html = `<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Essays - ${escapeHtml(metadata.title)}</title>
-  <meta name="description" content="Essays by ${escapeHtml(metadata.author)}">
-  ${CSS_LINK}
-</head>
+${renderHead(metadata, { title: `${metadata.title}`, description: `Essays by ${metadata.author}` })}
 <body>
 ${renderHeader(metadata)}
 <h1>Essays</h1>
@@ -279,13 +279,7 @@ ${renderFooter(metadata)}
 function buildEssay(metadata, essay) {
   const html = `<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(essay.title)} - ${escapeHtml(metadata.title)}</title>
-  <meta name="description" content="${escapeHtml(essay.summary)}">
-  ${CSS_LINK}
-</head>
+${renderHead(metadata, { title: `${essay.title} - ${metadata.title}`, description: essay.summary })}
 <body>
 ${renderHeader(metadata)}
 <article>
@@ -308,13 +302,7 @@ ${renderFooter(metadata)}
 function buildAbout(metadata, author) {
   const html = `<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - ${escapeHtml(metadata.title)}</title>
-  <meta name="description" content="About ${escapeHtml(metadata.author)}">
-  ${CSS_LINK}
-</head>
+${renderHead(metadata, { title: `About - ${metadata.title}`, description: `About ${metadata.author}` })}
 <body>
 ${renderHeader(metadata)}
 <h1>About ${escapeHtml(metadata.author)}</h1>
@@ -332,13 +320,7 @@ ${renderFooter(metadata)}
 function buildProjects(metadata, projects) {
   const html = `<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projects - ${escapeHtml(metadata.title)}</title>
-  <meta name="description" content="Projects by ${escapeHtml(metadata.author)}">
-  ${CSS_LINK}
-</head>
+${renderHead(metadata, { title: `Projects - ${metadata.title}`, description: `Projects by ${metadata.author}` })}
 <body>
 ${renderHeader(metadata)}
 <h1>Projects</h1>
@@ -367,13 +349,7 @@ function buildBookshelf(metadata, books) {
 
   const html = `<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bookshelf - ${escapeHtml(metadata.title)}</title>
-  <meta name="description" content="Books I've read">
-  ${CSS_LINK}
-</head>
+${renderHead(metadata, { title: `Bookshelf - ${metadata.title}`, description: `Books I've read` })}
 <body>
 ${renderHeader(metadata)}
 <h1>Bookshelf</h1>

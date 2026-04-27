@@ -1,6 +1,12 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import { remarkSideNotes } from "./remark-side-notes.mjs";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -206,21 +212,15 @@ function escapeHtml(text) {
     .replace(/'/g, "&#039;");
 }
 
-function renderMarkdown(content) {
-  return content
-    .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-    .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-    .replace(/^> (.+)$/gm, "<blockquote>$1</blockquote>")
-    .replace(/^`(.+)`$/gm, "<code>$1</code>")
-    .replace(/```([\s\S]+?)```/g, "<pre><code>$1</code></pre>")
-    .replace(/\n\n/g, "</p><p>")
-    .replace(/^([^<]+)$/gm, (match) => {
-      if (match.startsWith("<")) return match;
-      return match;
-    });
+async function renderMarkdown(content) {
+  const result = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkSideNotes)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStringify)
+    .process(content);
+  return String(result);
 }
 
 
@@ -368,7 +368,7 @@ ${renderFooter(metadata)}
   fs.writeFileSync(path.join(OUT_DIR, "essays", "index.html"), html);
 }
 
-function buildEssay(metadata, essay) {
+async function buildEssay(metadata, essay) {
   const html = `<!DOCTYPE html>
 <html lang="en">
 ${renderHead(metadata, { title: `${essay.title} - ${metadata.title}`, description: essay.summary })}
@@ -381,7 +381,7 @@ ${renderHeader(metadata)}
     ${essay.tags.map((tag) => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`).join("")}
   </div>
   <div class="content">
-    ${renderMarkdown(essay.content)}
+    ${await renderMarkdown(essay.content)}
   </div>
 </article>
 ${renderFooter(metadata)}
@@ -391,7 +391,7 @@ ${renderFooter(metadata)}
   fs.writeFileSync(path.join(OUT_DIR, "essays", `${essay.slug}.html`), html);
 }
 
-function buildAbout(metadata, author) {
+async function buildAbout(metadata, author) {
   const html = `<!DOCTYPE html>
 <html lang="en">
 ${renderHead(metadata, { title: `About - ${metadata.title}`, description: `About ${metadata.author}` })}
@@ -400,7 +400,7 @@ ${renderHeader(metadata)}
 <h1>About ${escapeHtml(metadata.author)}</h1>
 <h2>${escapeHtml(author.occupation)}${author.company ? ` at ${escapeHtml(author.company)}` : ""}</h2>
 <div>
-  ${renderMarkdown(author.body)}
+  ${await renderMarkdown(author.body)}
 </div>
 ${renderFooter(metadata)}
 </body>
@@ -596,7 +596,7 @@ ${renderFooter(metadata)}
   });
 }
 
-function build() {
+async function build() {
   console.log("Reading data...");
   const metadata = readSiteMetadata();
   const author = readAuthor();
@@ -615,9 +615,11 @@ function build() {
   console.log("Building pages...");
   buildHome(metadata, essays, books, projects, author);
   buildEssaysList(metadata, essays);
-  essays.forEach((essay) => buildEssay(metadata, essay));
+  for (const essay of essays) {
+    await buildEssay(metadata, essay);
+  }
   buildTags(metadata, essays);
-  buildAbout(metadata, author);
+  await buildAbout(metadata, author);
   buildProjects(metadata, projects);
   buildBookshelf(metadata, books);
   buildLeetcodeSolutions(metadata, leetcodeSolutions);

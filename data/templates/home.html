@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+{{head}}
+<body>
+{{header}}
+<div class="layout">
+  <div class="main">
+    <h1>Latest Essays</h1>
+    {{recentEssays}}
+
+    <h1>Featured Projects</h1>
+    {{featuredProjects}}
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar">
+      <h3>About {{metadata.author}}</h3>
+      <p>{{authorPreview}}</p>
+      <p><a href="/about.html">Read more &rarr;</a></p>
+    </div>
+
+    <div class="sidebar">
+      <h3>Reading List</h3>
+      <ul class="book-list">
+        {{readingList}}
+      </ul>
+    </div>
+  </div>
+</div>
+{{footer}}
+</body>
+</html>

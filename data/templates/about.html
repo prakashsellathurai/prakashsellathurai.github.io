@@ -1,13 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-{{head}}
-<body>
-{{header}}
-<h1>About {{metadata.author}}</h1>
-<h2>{{author.occupation}}{{#if author.company}} at {{author.company}}{{/if}}</h2>
-<div>
-  {{author.body}}
-</div>
-{{footer}}
-</body>
+    {{head}}
+    <body>
+        {{header}}
+        <h1>About {{metadata.author}}</h1>
+        <div>{{author.body}}</div>
+        {{footer}}
+    </body>
 </html>

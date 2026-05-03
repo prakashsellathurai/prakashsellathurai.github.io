@@ -5,7 +5,13 @@
   "scripts": {
     "build": "bun scripts/build.mjs",
     "dev": "bun scripts/build.mjs && bunx serve out -l 3000 ",
-    "update-data": "bun scripts/books.mjs && bun scripts/github.js"
+    "update-data": "bun scripts/books.mjs && bun scripts/github.js",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

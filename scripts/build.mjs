@@ -7,196 +7,281 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import { remarkSideNotes } from "./remark-side-notes.mjs";
+import { console } from "inspector/promises";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const PUBLIC_DIR = path.join(process.cwd(), "public");
-const OUT_DIR = path.join(process.cwd(), "out");
-
-function ensureDir(dir) {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-}
-
-function clearDir(dir) {
-  if (!fs.existsSync(dir)) return;
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const entryPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      fs.rmSync(entryPath, { recursive: true });
-    } else {
-      fs.unlinkSync(entryPath);
+class FileSystem {
+  static ensureDir(dir) {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
   }
-}
 
-function copyDir(src, dest) {
-  if (!fs.existsSync(src)) return;
-  ensureDir(dest);
-  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-    if (entry.isDirectory()) {
-      copyDir(srcPath, destPath);
-    } else {
-      fs.copyFileSync(srcPath, destPath);
+  static clearDir(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const entryPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        fs.rmSync(entryPath, { recursive: true });
+      } else {
+        fs.unlinkSync(entryPath);
+      }
     }
   }
-}
 
-function readJson(file) {
-  return JSON.parse(fs.readFileSync(path.join(DATA_DIR, file), "utf-8"));
-}
-
-function readMd(file) {
-  const content = fs.readFileSync(file, "utf-8");
-  return matter(content);
-}
-
-function readSiteMetadata() {
-  const content = fs.readFileSync(
-    path.join(DATA_DIR, "siteMetadata.js"),
-    "utf-8",
-  );
-  const match = content.match(/const siteMetadata = (\{[\s\S]*?\n\})/);
-  if (!match) return {};
-  const fn = new Function("return " + match[1]);
-  return fn();
-}
-
-function loadTemplate(templateName) {
-  const templatePath = path.join(DATA_DIR, "templates", `${templateName}.html`);
-  if (!fs.existsSync(templatePath)) {
-    throw new Error(`Template not found: ${templatePath}`);
+  static copyDir(src, dest) {
+    if (!fs.existsSync(src)) return;
+    FileSystem.ensureDir(dest);
+    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        FileSystem.copyDir(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
   }
-  return fs.readFileSync(templatePath, "utf-8");
+
+  static read(file) {
+    return fs.readFileSync(file, "utf-8");
+  }
+
+  static write(file, content) {
+    fs.writeFileSync(file, content);
+  }
+
+  static exists(file) {
+    return fs.existsSync(file);
+  }
 }
 
-function readAuthor() {
-  const content = fs.readFileSync(
-    path.join(DATA_DIR, "authors/default.mdx"),
-    "utf-8",
-  );
-  const { data, content: body } = matter(content);
-  return { ...data, body };
+class DataLoader {
+  constructor(dataDir) {
+    this.dataDir = dataDir;
+  }
+
+  readJson(file) {
+    return JSON.parse(FileSystem.read(path.join(this.dataDir, file)));
+  }
+
+  readMd(file) {
+    const content = FileSystem.read(file);
+    return matter(content);
+  }
+
+  loadTemplate(templateName) {
+    const templatePath = path.join(this.dataDir, "templates", `${templateName}.html`);
+    if (!FileSystem.exists(templatePath)) {
+      throw new Error(`Template not found: ${templatePath}`);
+    }
+    return FileSystem.read(templatePath);
+  }
+
+  readAuthor() {
+    const content = FileSystem.read(path.join(this.dataDir, "authors/default.mdx"));
+    const { data, content: body } = matter(content);
+    return { ...data, body };
+  }
+
+  readSiteMetadata() {
+    const content = FileSystem.read(path.join(this.dataDir, "siteMetadata.js"), "utf-8");
+    const match = content.match(/const siteMetadata = (\{[\s\S]*?\n\})/);
+    if (!match) return {};
+    const fn = new Function("return " + match[1]);
+    return fn();
+  }
+
+  getEssays() {
+    const essaysDir = path.join(this.dataDir, "essays");
+    const files = fs.readdirSync(essaysDir).filter((f) => f.endsWith(".md"));
+    return files
+      .map((file) => {
+        const { data, content } = this.readMd(path.join(essaysDir, file));
+        if (data.draft) return null;
+        return {
+          slug: file.replace(".md", ""),
+          title: data.title,
+          date: data.date,
+          summary: data.summary,
+          tags: data.tags || [],
+          content,
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  getBooks() {
+    return this.readJson("books.json");
+  }
+
+  getProjects() {
+    return this.readJson("repos.json");
+  }
+
+  getLeetcodeSolutions() {
+    return this.readJson("leetcode-solutions.json");
+  }
 }
 
-function getEssays() {
-  const essaysDir = path.join(DATA_DIR, "essays");
-  const files = fs.readdirSync(essaysDir).filter((f) => f.endsWith(".md"));
-  return files
-    .map((file) => {
-      const { data, content } = readMd(path.join(essaysDir, file));
-      if (data.draft) return null;
-      return {
-        slug: file.replace(".md", ""),
-        title: data.title,
-        date: data.date,
-        summary: data.summary,
-        tags: data.tags || [],
-        content,
-      };
-    })
-    .filter(Boolean)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+class Formatter {
+  static formatDateISO(dateStr) {
+    const date = new Date(dateStr);
+    return date.toISOString().split('T')[0];
+  }
+
+  static formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
+
+  static escapeHtml(text) {
+    if (!text) return "";
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 }
 
-function getBooks() {
-  return readJson("books.json");
+class MarkdownRenderer {
+  constructor() {
+    this.processor = unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .use(remarkSideNotes)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify);
+  }
+
+  async render(content) {
+    const result = await this.processor.process(content);
+    return String(result);
+  }
 }
 
-function getProjects() {
-  return readJson("repos.json");
+class TemplateRenderer {
+  static renderHead(metadata, { title, description }) {
+    const cssLink = '<link rel="stylesheet" href="/static/css/style.css">';
+    return `
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${Formatter.escapeHtml(title)}</title>
+  <meta name="description" content="${Formatter.escapeHtml(description)}">
+  ${cssLink}
+</head>
+`;
+  }
+
+  static renderHeader(metadata) {
+    return `
+<header>
+  <a href="/">Home</a>
+  <a href="/essays/">Essays</a>
+  <a href="/projects.html">Projects</a>
+  <a href="/bookshelf.html">Bookshelf</a>
+  <a href="/about.html">About</a>
+</header>
+`;
+  }
+
+  static renderFooter(metadata) {
+    return `
+<footer>
+  <p>&copy; ${new Date().getFullYear()} ${Formatter.escapeHtml(metadata.author)}. Built with plain HTML.</p>
+</footer>
+`;
+  }
+
+  static apply(template, data) {
+    let result = template;
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== undefined) {
+        result = result.replace(new RegExp(`{{${key}}}`, 'g'), value);
+      }
+    }
+    return result;
+  }
 }
 
-function getLeetcodeSolutions() {
-  return readJson("leetcode-solutions.json");
-}
+class FeedGenerator {
+  static generateSitemap(metadata, essays, projects, leetcodeSolutions) {
+    const siteUrl = metadata.siteUrl.replace(/\/$/, '');
+    const today = new Date().toISOString().split('T')[0];
 
-function formatDateISO(dateStr) {
-  const date = new Date(dateStr);
-  return date.toISOString().split('T')[0];
-}
-
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-function generateSitemap(metadata, essays, projects, leetcodeSolutions) {
-  const siteUrl = metadata.siteUrl.replace(/\/$/, '');
-  const today = new Date().toISOString().split('T')[0];
-
-  const tagSet = new Set();
-  essays.forEach((e) => e.tags.forEach((t) => tagSet.add(t)));
-  const tagEntries = [...tagSet].map((t) => ({
-    loc: `/tags/${t}.html`,
-    lastmod: today,
-    priority: '0.6',
-  }));
-
-  const pages = [
-    { loc: '/', lastmod: today, priority: '1.0' },
-    { loc: '/essays/', lastmod: today, priority: '0.9' },
-    { loc: '/about.html', lastmod: today, priority: '0.9' },
-    { loc: '/tags/', lastmod: today, priority: '0.8' },
-    { loc: '/projects.html', lastmod: today, priority: '0.8' },
-    { loc: '/bookshelf.html', lastmod: today, priority: '0.8' },
-    { loc: '/leetcode-solutions/', lastmod: today, priority: '0.6' },
-    { loc: '/static/resume/prakash_s_resume.pdf', lastmod: today, priority: '0.7' },
-  ];
-
-  const essayEntries = essays.map((e) => ({
-    loc: `/essays/${e.slug}.html`,
-    lastmod: formatDateISO(e.date),
-    priority: '0.7',
-  }));
-
-  const projectEntries = projects
-    .filter((p) => p.website && p.website.startsWith('http'))
-    .map((p) => ({
-      loc: p.website,
+    const tagSet = new Set();
+    essays.forEach((e) => e.tags.forEach((t) => tagSet.add(t)));
+    const tagEntries = [...tagSet].map((t) => ({
+      loc: `/tags/${t}.html`,
       lastmod: today,
       priority: '0.6',
     }));
 
-  const leetcodeEntries = leetcodeSolutions.map((s) => ({
-    loc: s.href,
-    lastmod: today,
-    priority: '0.5',
-  }));
+    const pages = [
+      { loc: '/', lastmod: today, priority: '1.0' },
+      { loc: '/essays/', lastmod: today, priority: '0.9' },
+      { loc: '/about.html', lastmod: today, priority: '0.9' },
+      { loc: '/tags/', lastmod: today, priority: '0.8' },
+      { loc: '/projects.html', lastmod: today, priority: '0.8' },
+      { loc: '/bookshelf.html', lastmod: today, priority: '0.8' },
+      { loc: '/leetcode-solutions/', lastmod: today, priority: '0.6' },
+      { loc: '/static/resume/prakash_s_resume.pdf', lastmod: today, priority: '0.7' },
+    ];
 
-  const urls = [...pages, ...essayEntries, ...tagEntries, ...projectEntries, ...leetcodeEntries]
-    .map((p) => `  <url>\n    <loc>${siteUrl}${p.loc}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n    <priority>${p.priority}</priority>\n  </url>`)
-    .join('\n');
+    const essayEntries = essays.map((e) => ({
+      loc: `/essays/${e.slug}.html`,
+      lastmod: Formatter.formatDateISO(e.date),
+      priority: '0.7',
+    }));
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
+    const projectEntries = projects
+      .filter((p) => p.website && p.website.startsWith('http'))
+      .map((p) => ({
+        loc: p.website,
+        lastmod: today,
+        priority: '0.6',
+      }));
+
+    const leetcodeEntries = leetcodeSolutions.map((s) => ({
+      loc: s.href,
+      lastmod: today,
+      priority: '0.5',
+    }));
+
+    const urls = [...pages, ...essayEntries, ...tagEntries, ...projectEntries, ...leetcodeEntries]
+      .map((p) => `  <url>\n    <loc>${siteUrl}${p.loc}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n    <priority>${p.priority}</priority>\n  </url>`)
+      .join('\n');
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
 </urlset>`;
-}
+  }
 
-function generateRssFeed(metadata, essays) {
-  const siteUrl = metadata.siteUrl.replace(/\/$/, '');
-  const sortedEssays = [...essays].sort((a, b) => new Date(b.date) - new Date(a.date));
+  static generateRssFeed(metadata, essays) {
+    const siteUrl = metadata.siteUrl.replace(/\/$/, '');
+    const sortedEssays = [...essays].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const items = sortedEssays
-    .map(
-      (e) => `  <item>
+    const items = sortedEssays
+      .map(
+        (e) => `  <item>
     <guid>${siteUrl}/essays/${e.slug}.html</guid>
     <title><![CDATA[${e.title}]]></title>
     <link>${siteUrl}/essays/${e.slug}.html</link>
     <description><![CDATA[${e.summary || ''}]]></description>
     <pubDate>${new Date(e.date).toUTCString()}</pubDate>
   </item>`,
-    )
-    .join('\n');
+      )
+      .join('\n');
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title><![CDATA[${metadata.title}]]></title>
@@ -208,411 +293,237 @@ function generateRssFeed(metadata, essays) {
 ${items}
   </channel>
 </rss>`;
-}
-
-function escapeHtml(text) {
-  if (!text) return "";
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-async function renderMarkdown(content) {
-  const result = await unified()
-    .use(remarkParse)
-    .use(remarkGfm)
-    .use(remarkSideNotes)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeStringify)
-    .process(content);
-  return String(result);
-}
-
-
-
-const CSS_LINK = '<link rel="stylesheet" href="/static/css/style.css">';
-
-function renderHead(metadata, { title, description }) {
-  return `
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(title)}</title>
-  <meta name="description" content="${escapeHtml(description)}">
-  ${CSS_LINK}
-</head>
-`;
-}
-
-function renderHeader(metadata, nav = "") {
-  return `
-<header>
-  <a href="/">Home</a>
-  <a href="/essays/">Essays</a>
-  <a href="/projects.html">Projects</a>
-  <a href="/bookshelf.html">Bookshelf</a>
-  <a href="/about.html">About</a>
-</header>
-`;
-}
-
-function renderFooter(metadata) {
-  return `
-<footer>
-  <p>&copy; ${new Date().getFullYear()} ${escapeHtml(metadata.author)}. Built with plain HTML.</p>
-</footer>
-`;
-}
-
-function buildHome(metadata, essays, books, projects, author) {
-  const recentEssays = essays.slice(0, 10);
-  const featuredProjects = projects.slice(0, 6);
-  const readingList = books["curated"]?.slice(0, 5) || [];
-  
-  // Load the home template
-  let template = loadTemplate("home");
-  
-  // Replace template placeholders
-  template = template.replace("{{head}}", renderHead(metadata, { title: metadata.title, description: metadata.description }));
-  template = template.replace("{{header}}", renderHeader(metadata));
-  template = template.replace("{{footer}}", renderFooter(metadata));
-  
-  // Generate recent essays HTML
-  const recentEssaysHtml = recentEssays
-    .map(
-      (post) => `
-    <article>
-      <h2><a href="/essays/${post.slug}.html">${escapeHtml(post.title)}</a></h2>
-      <p class="meta"><time>${formatDate(post.date)}</time></p>
-      <p class="summary">${escapeHtml(post.summary)}</p>
-      <div class="tags">
-        ${post.tags
-          .slice(0, 3)
-          .map((tag) => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`)
-          .join("")}
-      </div>
-    </article>
-    `,
-    )
-    .join("");
-  
-  // Generate featured projects HTML
-  const featuredProjectsHtml = featuredProjects
-    .map(
-      (proj) => `
-    <article>
-      <h2>${proj.website ? `<a href="${escapeHtml(proj.website)}">${escapeHtml(proj.title)}</a>` : escapeHtml(proj.title)}</h2>
-      <p class="summary">${escapeHtml(proj.description)}</p>
-      ${proj.tags?.length ? `<div class="tags">${proj.tags.map((t) => `<span>#${escapeHtml(t)}</span>`).join("")}</div>` : ""}
-    </article>
-    `,
-    )
-    .join("");
-    
-  // Generate author preview
-  const authorPreview = escapeHtml(author.body.split("\n\n")[0]);
-  
-  // Generate reading list HTML
-  const readingListHtml = readingList
-    .map(
-      (book) => `
-    <li>
-      <a href="${escapeHtml(book.link)}" target="_blank" rel="noopener">
-        ${escapeHtml(book.title)}
-      </a>
-    </li>
-    `,
-    )
-    .join("");
-  
-  // Replace content placeholders
-  template = template.replace("{{recentEssays}}", recentEssaysHtml);
-  template = template.replace("{{featuredProjects}}", featuredProjectsHtml);
-  template = template.replace("{{authorPreview}}", authorPreview);
-  template = template.replace("{{readingList}}", readingListHtml);
-
-  fs.writeFileSync(path.join(OUT_DIR, "index.html"), template);
-}
-
-function buildEssaysList(metadata, essays) {
-  // Load the essays-list template
-  let template = loadTemplate("essays-list");
-  
-  // Replace template placeholders
-  template = template.replace("{{head}}", renderHead(metadata, { title: `${metadata.title}`, description: `Essays by ${metadata.author}` }));
-  template = template.replace("{{header}}", renderHeader(metadata));
-  template = template.replace("{{footer}}", renderFooter(metadata));
-  
-  // Generate essays list HTML
-  const essaysListHtml = essays
-    .map(
-      (post) => `
-<article>
-  <h2><a href="/essays/${post.slug}.html">${escapeHtml(post.title)}</a></h2>
-  <p class="meta"><time>${formatDate(post.date)}</time></p>
-  <p class="summary">${escapeHtml(post.summary)}</p>
-  <div class="tags">
-    ${post.tags
-      .slice(0, 3)
-      .map((tag) => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`)
-      .join("")}
-  </div>
-</article>
-`,
-    )
-    .join("");
-    
-  // Replace content placeholder
-  template = template.replace("{{essaysList}}", essaysListHtml);
-
-  ensureDir(path.join(OUT_DIR, "essays"));
-  fs.writeFileSync(path.join(OUT_DIR, "essays", "index.html"), template);
-}
-
-async function buildEssay(metadata, essay) {
-  // Load the essay template
-  let template = loadTemplate("essay");
-  
-  // Replace template placeholders
-  template = template.replace("{{head}}", renderHead(metadata, { title: `${essay.title} - ${metadata.title}`, description: essay.summary }));
-  template = template.replace("{{header}}", renderHeader(metadata));
-  template = template.replace("{{footer}}", renderFooter(metadata));
-  
-  // Generate essay-specific content
-  const essayTitle = escapeHtml(essay.title);
-  const essayDate = formatDate(essay.date);
-  const essayTags = essay.tags.map((tag) => `<a href="/tags/${tag}.html">#${escapeHtml(tag)}</a>`).join("");
-  const essayContent = await renderMarkdown(essay.content);
-  
-  // Replace content placeholders
-  template = template.replace("{{essay.title}}", essayTitle);
-  template = template.replace("{{essay.date}}", essayDate);
-  template = template.replace("{{essay.tags}}", essayTags);
-  template = template.replace("{{essay.content}}", essayContent);
-
-  fs.writeFileSync(path.join(OUT_DIR, "essays", `${essay.slug}.html`), template);
-}
-
-async function buildAbout(metadata, author) {
-  // Load the about template
-  let template = loadTemplate("about");
-  
-  // Replace template placeholders
-  template = template.replace("{{head}}", renderHead(metadata, { title: `About - ${metadata.title}`, description: `About ${metadata.author}` }));
-  template = template.replace("{{header}}", renderHeader(metadata));
-  template = template.replace("{{footer}}", renderFooter(metadata));
-  
-  // Generate about-specific content
-  const authorName = escapeHtml(metadata.author);
-  const authorOccupation = escapeHtml(author.occupation);
-  const authorCompany = author.company ? ` at ${escapeHtml(author.company)}` : "";
-  const authorBody = await renderMarkdown(author.body);
-  
-  // Replace content placeholders
-  template = template.replace("{{metadata.author}}", authorName);
-  template = template.replace("{{author.occupation}}", authorOccupation);
-  template = template.replace("{{#if author.company}} at {{author.company}}{{/if}}", authorCompany);
-  template = template.replace("{{author.body}}", authorBody);
-
-  fs.writeFileSync(path.join(OUT_DIR, "about.html"), template);
-}
-
-function buildProjects(metadata, projects) {
-  // Load the projects template
-  let template = loadTemplate("projects");
-  
-  // Replace template placeholders
-  template = template.replace("{{head}}", renderHead(metadata, { title: `Projects - ${metadata.title}`, description: `Projects by ${metadata.author}` }));
-  template = template.replace("{{header}}", renderHeader(metadata));
-  template = template.replace("{{footer}}", renderFooter(metadata));
-  
-  // Generate projects list HTML
-  const projectsListHtml = projects
-    .map(
-      (proj) => `
-<article>
-  <h2>${proj.website ? `<a href="${escapeHtml(proj.website)}">${escapeHtml(proj.title)}</a>` : escapeHtml(proj.title)}</h2>
-  <p class="summary">${escapeHtml(proj.description) || "No description"}</p>
-  <p class="meta"><a href="${escapeHtml(proj.href)}">GitHub</a></p>
-</article>
-`,
-    )
-    .join("");
-    
-  // Replace content placeholder
-  template = template.replace("{{projectsList}}", projectsListHtml);
-
-  fs.writeFileSync(path.join(OUT_DIR, "projects.html"), template);
-}
-
-function buildBookshelf(metadata, books) {
-  const currentlyReading = books["currently-reading"] || [];
-  const read = books["read"] || [];
-  const curated = books["curated"] || [];
-
-  // Load the bookshelf template
-  let template = loadTemplate("bookshelf");
-  
-  // Replace template placeholders
-  template = template.replace("{{head}}", renderHead(metadata, { title: `Bookshelf - ${metadata.title}`, description: `Books I've read` }));
-  template = template.replace("{{header}}", renderHeader(metadata));
-  template = template.replace("{{footer}}", renderFooter(metadata));
-  
-  // Generate currently reading section
-  const currentlyReadingSection = currentlyReading.length
-    ? `
-  <h2>Currently Reading</h2>
-  ${currentlyReading
-      .map(
-        (book) => `
-  <article>
-    <h3>${escapeHtml(book.title)}</h3>
-    <p class="meta">by ${escapeHtml(book.author)}</p>
-    <p class="summary">${escapeHtml(book.description)}</p>
-  </article>
-  `,
-      )
-      .join("")}
-  `
-    : "";
-    
-  // Generate curated section
-  const curatedSection = curated.length
-    ? `
-  <h2>Curated</h2>
-  ${curated
-      .map(
-        (book) => `
-  <article>
-    <h3>${escapeHtml(book.title)}</h3>
-    <p class="meta">by ${escapeHtml(book.author)}</p>
-    <p class="summary">${escapeHtml(book.description)}</p>
-  </article>
-  `,
-      )
-      .join("")}
-  `
-    : "";
-    
-  // Generate read section
-  const readSection = read.length
-    ? `
-  <h2>Read</h2>
-  ${read
-      .map(
-        (book) => `
-  <article>
-    <h3>${escapeHtml(book.title)}</h3>
-    <p class="meta">by ${escapeHtml(book.author)}</p>
-    <p class="summary">${escapeHtml(book.description)}</p>
-  </article>
-  `,
-      )
-      .join("")}
-  `
-    : "";
-  
-  // Replace content placeholders
-  template = template.replace("{{currentlyReadingSection}}", currentlyReadingSection);
-  template = template.replace("{{curatedSection}}", curatedSection);
-  template = template.replace("{{readSection}}", readSection);
-
-  fs.writeFileSync(path.join(OUT_DIR, "bookshelf.html"), template);
-}
-
-
-function buildTags(metadata, essays) {
-  const tagMap = {};
-  essays.forEach((essay) => {
-    essay.tags.forEach((tag) => {
-      if (!tagMap[tag]) tagMap[tag] = [];
-      tagMap[tag].push(essay);
-    });
-  });
-
-  const sortedTags = Object.entries(tagMap).sort((a, b) => b[1].length - a[1].length);
-  
-  // Load templates
-  const tagsIndexTemplate = loadTemplate("tags-index");
-  const tagTemplate = loadTemplate("tag");
-  
-  // Build tags index page
-  let tagsIndexHtml = tagsIndexTemplate
-    .replace("{{head}}", renderHead(metadata, { title: `Tags - ${metadata.title}`, description: `All tags` }))
-    .replace("{{header}}", renderHeader(metadata))
-    .replace("{{footer}}", renderFooter(metadata))
-    .replace("{{tagsCount}}", sortedTags.length)
-    .replace("{{tagsList}}", sortedTags
-      .map(
-        ([tag, taggedEssays]) => `
-    <a href="/tags/${tag}.html" class="tag">#${escapeHtml(tag)} <span class="count">${taggedEssays.length}</span></a>
-    `,
-      )
-      .join(""));
-  
-  ensureDir(path.join(OUT_DIR, "tags"));
-  fs.writeFileSync(path.join(OUT_DIR, "tags", "index.html"), tagsIndexHtml);
-
-  // Build individual tag pages
-  Object.entries(tagMap).forEach(([tag, taggedEssays]) => {
-    const tagHtml = tagTemplate
-      .replace("{{head}}", renderHead(metadata, { title: `#${tag} - ${metadata.title}`, description: `Essays tagged with ${tag}` }))
-      .replace("{{header}}", renderHeader(metadata))
-      .replace("{{footer}}", renderFooter(metadata))
-      .replace("{{tag}}", escapeHtml(tag))
-      .replace("{{taggedEssaysCount}}", taggedEssays.length)
-      .replace("{{#if taggedEssaysCount}}s{{/if}}", taggedEssays.length !== 1 ? "s" : "")
-      .replace("{{taggedEssays}}", taggedEssays
-        .map(
-          (post) => `
-<article>
-  <h2><a href="/essays/${post.slug}.html">${escapeHtml(post.title)}</a></h2>
-  <p class="meta"><time>${formatDate(post.date)}</time></p>
-  <p class="summary">${escapeHtml(post.summary)}</p>
-</article>
-`,
-        )
-        .join(""));
-    
-    fs.writeFileSync(path.join(OUT_DIR, "tags", `${tag}.html`), tagHtml);
-  });
-}
-
-async function build() {
-  console.log("Reading data...");
-  const metadata = readSiteMetadata();
-  const author = readAuthor();
-  const essays = getEssays();
-  const books = getBooks();
-  const projects = getProjects();
-  const leetcodeSolutions = getLeetcodeSolutions();
-
-  console.log(`Found ${essays.length} essays, ${projects.length} projects, ${leetcodeSolutions.length} leetcode solutions`);
-
-  ensureDir(OUT_DIR);
-  clearDir(OUT_DIR);
-
-  copyDir(PUBLIC_DIR, OUT_DIR);
-
-  console.log("Building pages...");
-  buildHome(metadata, essays, books, projects, author);
-  buildEssaysList(metadata, essays);
-  for (const essay of essays) {
-    await buildEssay(metadata, essay);
   }
-  buildTags(metadata, essays);
-  await buildAbout(metadata, author);
-  buildProjects(metadata, projects);
-  buildBookshelf(metadata, books);
-
-  console.log("Generating RSS and sitemap...");
-  fs.writeFileSync(path.join(OUT_DIR, "feed.xml"), generateRssFeed(metadata, essays));
-  fs.writeFileSync(path.join(OUT_DIR, "sitemap.xml"), generateSitemap(metadata, essays, projects, leetcodeSolutions));
-
-  console.log("Done! Static site generated in out/");
 }
 
-build();
+class PageBuilder {
+  constructor(dataLoader, markdownRenderer) {
+    this.dataLoader = dataLoader;
+    this.markdownRenderer = markdownRenderer;
+  }
+
+  buildCommon(template, metadata, pageTitle, pageDescription) {
+    return TemplateRenderer.apply(template, {
+      head: TemplateRenderer.renderHead(metadata, { title: pageTitle, description: pageDescription }),
+      header: TemplateRenderer.renderHeader(metadata),
+      footer: TemplateRenderer.renderFooter(metadata),
+    });
+  }
+
+  async buildHome(metadata, essays, books, projects, author) {
+    const template = this.dataLoader.loadTemplate("home");
+    let html = this.buildCommon(template, metadata, metadata.title, metadata.description);
+
+    const recentEssaysHtml = essays.slice(0, 10).map((post) => `
+    <article>
+      <h2><a href="/essays/${post.slug}.html">${Formatter.escapeHtml(post.title)}</a></h2>
+      <p class="meta"><time>${Formatter.formatDate(post.date)}</time></p>
+      <p class="summary">${Formatter.escapeHtml(post.summary)}</p>
+      <div class="tags">
+        ${post.tags.slice(0, 3).map((tag) => `<a href="/tags/${tag}.html">#${Formatter.escapeHtml(tag)}</a>`).join("")}
+      </div>
+    </article>`).join("");
+
+    const featuredProjectsHtml = projects.slice(0, 6).map((proj) => `
+    <article>
+      <h2>${proj.website ? `<a href="${Formatter.escapeHtml(proj.website)}">${Formatter.escapeHtml(proj.title)}</a>` : Formatter.escapeHtml(proj.title)}</h2>
+      <p class="summary">${Formatter.escapeHtml(proj.description)}</p>
+      ${proj.tags?.length ? `<div class="tags">${proj.tags.map((t) => `<span>#${Formatter.escapeHtml(t)}</span>`).join("")}</div>` : ""}
+    </article>`).join("");
+
+    const readingListHtml = (books["curated"] || []).slice(0, 5).map((book) => `
+    <li>
+      <a href="${Formatter.escapeHtml(book.link)}" target="_blank" rel="noopener">${Formatter.escapeHtml(book.title)}</a>
+    </li>`).join("");
+
+    html = TemplateRenderer.apply(html, {
+      recentEssays: recentEssaysHtml,
+      featuredProjects: featuredProjectsHtml,
+      authorPreview: Formatter.escapeHtml(author.body.split("\n\n")[0]),
+      readingList: readingListHtml,
+      "metadata.author": Formatter.escapeHtml(metadata.author),
+    });
+
+    FileSystem.write(path.join(process.cwd(), "out", "index.html"), html);
+  }
+
+  async buildEssaysList(metadata, essays) {
+    const template = this.dataLoader.loadTemplate("essays-list");
+    let html = this.buildCommon(template, metadata, metadata.title, `Essays by ${metadata.author}`);
+
+    const essaysListHtml = essays.map((post) => `
+<article>
+  <h2><a href="/essays/${post.slug}.html">${Formatter.escapeHtml(post.title)}</a></h2>
+  <p class="meta"><time>${Formatter.formatDate(post.date)}</time></p>
+  <p class="summary">${Formatter.escapeHtml(post.summary)}</p>
+  <div class="tags">
+    ${post.tags.slice(0, 3).map((tag) => `<a href="/tags/${tag}.html">#${Formatter.escapeHtml(tag)}</a>`).join("")}
+  </div>
+</article>`).join("");
+
+    html = TemplateRenderer.apply(html, { essaysList: essaysListHtml });
+
+    FileSystem.ensureDir(path.join(process.cwd(), "out", "essays"));
+    FileSystem.write(path.join(process.cwd(), "out", "essays", "index.html"), html);
+  }
+
+  async buildEssay(metadata, essay) {
+    const template = this.dataLoader.loadTemplate("essay");
+    let html = this.buildCommon(template, metadata, `${essay.title} - ${metadata.title}`, essay.summary);
+
+    const essayContent = await this.markdownRenderer.render(essay.content);
+
+    html = TemplateRenderer.apply(html, {
+      "essay.title": Formatter.escapeHtml(essay.title),
+      "essay.date": Formatter.formatDate(essay.date),
+      "essay.tags": essay.tags.map((tag) => `<a href="/tags/${tag}.html">#${Formatter.escapeHtml(tag)}</a>`).join(""),
+      "essay.content": essayContent,
+    });
+
+    FileSystem.write(path.join(process.cwd(), "out", "essays", `${essay.slug}.html`), html);
+  }
+
+  async buildAbout(metadata, author) {
+    const template = this.dataLoader.loadTemplate("about");
+    let html = this.buildCommon(template, metadata, `About - ${metadata.title}`, `About ${metadata.author}`);
+
+    const authorBody = await this.markdownRenderer.render(author.body);
+
+    html = TemplateRenderer.apply(html, {
+      "metadata.author": Formatter.escapeHtml(metadata.author),
+      "author.occupation": Formatter.escapeHtml(author.occupation),
+      "author.body": authorBody,
+    });
+
+    FileSystem.write(path.join(process.cwd(), "out", "about.html"), html);
+  }
+
+  buildProjects(metadata, projects) {
+    const template = this.dataLoader.loadTemplate("projects");
+    let html = this.buildCommon(template, metadata, `Projects - ${metadata.title}`, `Projects by ${metadata.author}`);
+
+    const projectsListHtml = projects.map((proj) => `
+<article>
+  <h2>${proj.website ? `<a href="${Formatter.escapeHtml(proj.website)}">${Formatter.escapeHtml(proj.title)}</a>` : Formatter.escapeHtml(proj.title)}</h2>
+  <p class="summary">${Formatter.escapeHtml(proj.description) || "No description"}</p>
+  <p class="meta"><a href="${Formatter.escapeHtml(proj.href)}">GitHub</a></p>
+</article>`).join("");
+
+    html = TemplateRenderer.apply(html, { projectsList: projectsListHtml });
+
+    FileSystem.write(path.join(process.cwd(), "out", "projects.html"), html);
+  }
+
+  buildBookshelf(metadata, books) {
+    const template = this.dataLoader.loadTemplate("bookshelf");
+    let html = this.buildCommon(template, metadata, `Bookshelf - ${metadata.title}`, `Books I've read`);
+
+    const buildBookSection = (title, bookList) => {
+      if (!bookList.length) return "";
+      return `
+  <h2>${title}</h2>
+  ${bookList.map((book) => `
+  <article>
+    <h3>${Formatter.escapeHtml(book.title)}</h3>
+    <p class="meta">by ${Formatter.escapeHtml(book.author)}</p>
+    <p class="summary">${Formatter.escapeHtml(book.description)}</p>
+  </article>`).join("")}`;
+    };
+
+    html = TemplateRenderer.apply(html, {
+      currentlyReadingSection: buildBookSection("Currently Reading", books["currently-reading"] || []),
+      curatedSection: buildBookSection("Curated", books["curated"] || []),
+      readSection: buildBookSection("Read", books["read"] || []),
+    });
+
+    FileSystem.write(path.join(process.cwd(), "out", "bookshelf.html"), html);
+  }
+
+  buildTags(metadata, essays) {
+    const tagMap = {};
+    essays.forEach((essay) => {
+      essay.tags.forEach((tag) => {
+        if (!tagMap[tag]) tagMap[tag] = [];
+        tagMap[tag].push(essay);
+      });
+    });
+
+    const sortedTags = Object.entries(tagMap).sort((a, b) => b[1].length - a[1].length);
+
+    const tagsIndexTemplate = this.dataLoader.loadTemplate("tags-index");
+    const tagTemplate = this.dataLoader.loadTemplate("tag");
+
+    let tagsIndexHtml = this.buildCommon(tagsIndexTemplate, metadata, `Tags - ${metadata.title}`, "All tags");
+    tagsIndexHtml = TemplateRenderer.apply(tagsIndexHtml, {
+      tagsCount: sortedTags.length,
+      tagsList: sortedTags.map(([tag, taggedEssays]) => `
+    <a href="/tags/${tag}.html" class="tag">#${Formatter.escapeHtml(tag)} <span class="count">${taggedEssays.length}</span></a>`).join(""),
+    });
+
+    FileSystem.ensureDir(path.join(process.cwd(), "out", "tags"));
+    FileSystem.write(path.join(process.cwd(), "out", "tags", "index.html"), tagsIndexHtml);
+
+    Object.entries(tagMap).forEach(([tag, taggedEssays]) => {
+      let tagHtml = this.buildCommon(tagTemplate, metadata, `#${tag} - ${metadata.title}`, `Essays tagged with ${tag}`);
+      tagHtml = TemplateRenderer.apply(tagHtml, {
+        tag: Formatter.escapeHtml(tag),
+        taggedEssaysCount: taggedEssays.length,
+        "{{#if taggedEssaysCount}}s{{/if}}": taggedEssays.length !== 1 ? "s" : "",
+        taggedEssays: taggedEssays.map((post) => `
+<article>
+  <h2><a href="/essays/${post.slug}.html">${Formatter.escapeHtml(post.title)}</a></h2>
+  <p class="meta"><time>${Formatter.formatDate(post.date)}</time></p>
+  <p class="summary">${Formatter.escapeHtml(post.summary)}</p>
+</article>`).join(""),
+      });
+
+      FileSystem.write(path.join(process.cwd(), "out", "tags", `${tag}.html`), tagHtml);
+    });
+  }
+}
+
+class SiteBuilder {
+  constructor() {
+    const dataDir = path.join(process.cwd(), "data");
+    this.dataLoader = new DataLoader(dataDir);
+    this.markdownRenderer = new MarkdownRenderer();
+    this.pageBuilder = new PageBuilder(this.dataLoader, this.markdownRenderer);
+    this.outDir = path.join(process.cwd(), "out");
+    this.publicDir = path.join(process.cwd(), "public");
+  }
+
+  async build() {
+    console.log("Reading data...");
+    const metadata = this.dataLoader.readSiteMetadata();
+    const author = this.dataLoader.readAuthor();
+    const essays = this.dataLoader.getEssays();
+    const books = this.dataLoader.getBooks();
+    const projects = this.dataLoader.getProjects();
+    const leetcodeSolutions = this.dataLoader.getLeetcodeSolutions();
+
+    console.log(`Found ${essays.length} essays, ${projects.length} projects, ${leetcodeSolutions.length} leetcode solutions`);
+
+    FileSystem.ensureDir(this.outDir);
+    FileSystem.clearDir(this.outDir);
+    FileSystem.copyDir(this.publicDir, this.outDir);
+
+    console.log("Building pages...");
+    await this.pageBuilder.buildHome(metadata, essays, books, projects, author);
+    await this.pageBuilder.buildEssaysList(metadata, essays);
+    for (const essay of essays) {
+      await this.pageBuilder.buildEssay(metadata, essay);
+    }
+    this.pageBuilder.buildTags(metadata, essays);
+    await this.pageBuilder.buildAbout(metadata, author);
+    this.pageBuilder.buildProjects(metadata, projects);
+    this.pageBuilder.buildBookshelf(metadata, books);
+
+    console.log("Generating RSS and sitemap...");
+    FileSystem.write(path.join(this.outDir, "feed.xml"), FeedGenerator.generateRssFeed(metadata, essays));
+    FileSystem.write(path.join(this.outDir, "sitemap.xml"), FeedGenerator.generateSitemap(metadata, essays, projects, leetcodeSolutions));
+
+    console.log("Done! Static site generated in out/");
+  }
+}
+
+new SiteBuilder().build();

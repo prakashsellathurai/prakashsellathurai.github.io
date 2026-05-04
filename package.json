@@ -6,8 +6,8 @@
     "build": "bun code/scripts/build.mjs",
     "dev": "bun code/scripts/build.mjs && bunx serve out -l 3000 ",
     "update-data": "bun code/scripts/books.mjs && bun code/scripts/github.js",
-    "test": "bunx playwright test",
-    "test:ui": "bunx playwright test --ui"
+    "test": "bunx playwright test -c code/tests/playwright.config.ts",
+    "test:ui": "bunx playwright test --ui  -c code/tests/playwright.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

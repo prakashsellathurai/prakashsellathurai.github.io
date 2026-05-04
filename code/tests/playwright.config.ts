@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './code/tests',
+  testDir: './',
   webServer: {
     command: 'npm run dev',
     port: 3000,

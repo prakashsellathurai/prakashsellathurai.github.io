@@ -1,6 +1,6 @@
 # prakashsellathurai.github.io
 
-Personal website built with plain HTML.
+Personal website.
 
 ## Development
 
@@ -17,7 +17,10 @@ bun run update-data
 
 ## Structure
 
-- `data/` - Essays (MD), books, projects, metadata
-- `public/` - static Public contents
-- `scripts/` - Build scripts
-- `out/` - Generated static site output
+- `data/`
+    - `non-public/` - Essays (MD), books, projects, authors, site metadata
+    - `public/`     - Static assets (images, fonts, favicons)
+- `code/`
+    - `scripts/`    - Build scripts
+    - `test/`       - Playwright tests
+- `out/`            - Generated static site output (deployed to GitHub Pages)

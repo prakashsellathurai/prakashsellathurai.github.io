@@ -484,12 +484,12 @@ class PageBuilder {
 
 class SiteBuilder {
   constructor() {
-    const dataDir = path.join(process.cwd(), "data");
+    const dataDir = path.join(process.cwd(), "data", "non-public");
     this.dataLoader = new DataLoader(dataDir);
     this.markdownRenderer = new MarkdownRenderer();
     this.pageBuilder = new PageBuilder(this.dataLoader, this.markdownRenderer);
     this.outDir = path.join(process.cwd(), "out");
-    this.publicDir = path.join(process.cwd(), "public");
+    this.publicDir = path.join(process.cwd(), "data", "public");
   }
 
   async build() {

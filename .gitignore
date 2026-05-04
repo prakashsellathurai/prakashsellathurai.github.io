@@ -15,7 +15,7 @@
 # next.js
 /.next/
 /out/
-public/sitemap.xml
+data/public/sitemap.xml
 .vercel
 
 # production
@@ -23,10 +23,10 @@ public/sitemap.xml
 *.xml
 
 # rss feed
-/public/feed.xml
+/data/public/feed.xml
 
 # search
-/public/search.json
+data/public/search.json
 
 # misc
 .DS_Store

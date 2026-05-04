@@ -126,6 +126,9 @@ article:last-child {
     padding: 1.5rem;
     border-radius: 4px;
     margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .sidebar h3 {

@@ -275,6 +275,31 @@ footer {
     color: var(--accent);
 }
 
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 2px solid var(--border);
+}
+
+.avatar-large {
+    width: 180px;
+    height: 180px;
+}
+
+.sidebar .avatar {
+    display: block;
+    margin: 0 auto 1rem;
+    width: 100px;
+    height: 100px;
+}
+
+.sidebar-about {
+    text-align: center;
+}
+
 @media (min-width: 900px) {
     .content .sidenote {
         float: right;

@@ -310,7 +310,7 @@ class PageBuilder {
     });
   }
 
-  async buildHome(metadata, essays, books, projects, author) {
+  async buildHome(metadata, essays, books, projects, author, avatar) {
     const template = this.dataLoader.loadTemplate("home");
     let html = this.buildCommon(template, metadata, metadata.title, metadata.description);
 
@@ -342,6 +342,7 @@ class PageBuilder {
       authorPreview: Formatter.escapeHtml(author.body.split("\n\n")[0]),
       readingList: readingListHtml,
       "metadata.author": Formatter.escapeHtml(metadata.author),
+      avatar: avatar,
     });
 
     FileSystem.write(path.join(process.cwd(), "out", "index.html"), html);
@@ -383,7 +384,7 @@ class PageBuilder {
     FileSystem.write(path.join(process.cwd(), "out", "essays", `${essay.slug}.html`), html);
   }
 
-  async buildAbout(metadata, author) {
+  async buildAbout(metadata, author, avatar) {
     const template = this.dataLoader.loadTemplate("about");
     let html = this.buildCommon(template, metadata, `About - ${metadata.title}`, `About ${metadata.author}`);
 
@@ -393,6 +394,7 @@ class PageBuilder {
       "metadata.author": Formatter.escapeHtml(metadata.author),
       "author.occupation": Formatter.escapeHtml(author.occupation),
       "author.body": authorBody,
+      avatar: avatar,
     });
 
     FileSystem.write(path.join(process.cwd(), "out", "about.html"), html);
@@ -508,13 +510,14 @@ class SiteBuilder {
     FileSystem.copyDir(this.publicDir, this.outDir);
 
     console.log("Building pages...");
-    await this.pageBuilder.buildHome(metadata, essays, books, projects, author);
+    const avatar = `${process.env.BASE_PATH || ''}/static/images/avatar.jpg`;
+    await this.pageBuilder.buildHome(metadata, essays, books, projects, author, avatar);
     await this.pageBuilder.buildEssaysList(metadata, essays);
     for (const essay of essays) {
       await this.pageBuilder.buildEssay(metadata, essay);
     }
     this.pageBuilder.buildTags(metadata, essays);
-    await this.pageBuilder.buildAbout(metadata, author);
+    await this.pageBuilder.buildAbout(metadata, author, avatar);
     this.pageBuilder.buildProjects(metadata, projects);
     this.pageBuilder.buildBookshelf(metadata, books);
 

@@ -191,6 +191,7 @@ class TemplateRenderer {
     return `
 <header>
   <a href="/">Home</a>
+  <a href="/static/resume/prakash_s_resume.pdf">Resume</a>
   <a href="/essays/">Essays</a>
   <a href="/projects.html">Projects</a>
   <a href="/bookshelf.html">Bookshelf</a>
@@ -202,7 +203,7 @@ class TemplateRenderer {
   static renderFooter(metadata) {
     return `
 <footer>
-  <p>&copy; ${new Date().getFullYear()} ${Formatter.escapeHtml(metadata.author)}. Built with plain HTML.</p>
+  <p>&copy; ${new Date().getFullYear()} ${Formatter.escapeHtml(metadata.author)}.</p>
 </footer>
 `;
   }

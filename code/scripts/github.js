@@ -94,7 +94,7 @@ async function fetchRepos() {
     const rest = reposWithPinned.filter((r) => !r.pinned)
     const finalData = [...pinnedFirst, ...rest]
     // Save json data to a file
-    fs.writeFileSync('./data/repos.json', JSON.stringify(finalData, null, 4), 'utf-8')
+    fs.writeFileSync('./data/non-public/repos.json', JSON.stringify(finalData, null, 4), 'utf-8')
     console.log(`Updated repos.json with ${finalData.length} repos (${pinnedFirst.length} pinned)`)
   } catch (error) {
     console.error('Error fetching GitHub repositories:', error)
@@ -115,7 +115,7 @@ async function writeleetcodeSolutionsAsJson() {
     title: file,
     href: `leetcode-solutions/${file}`,
   }))
-  fs.writeFileSync('./data/leetcode-solutions.json', JSON.stringify(yamldata, null, 4), 'utf-8')
+  fs.writeFileSync('./data/non-public/leetcode-solutions.json', JSON.stringify(yamldata, null, 4), 'utf-8')
 }
 fetchRepos()
 writeleetcodeSolutionsAsJson()

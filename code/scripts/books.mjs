@@ -69,8 +69,8 @@ async function fetchBooks() {
     booksData[shelf] = await getBooks(shelf)
   }
 
-  fs.writeFileSync('./data/books.json', JSON.stringify(booksData, null, 2), 'utf-8')
-  console.log('Books data saved to ./data/books.json')
+  fs.writeFileSync('./data/non-public/books.json', JSON.stringify(booksData, null, 2), 'utf-8')
+  console.log('Books data saved to ./data/non-public/books.json')
 }
 
 fetchBooks()

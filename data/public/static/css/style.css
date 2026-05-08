@@ -17,8 +17,17 @@
   --border-radius: calc(var(--phi) * 1rem);
 }
 
+@font-face {
+  font-family: "Lora";
+  src: url("/static/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2") format("woff2"),
+       url("/static/fonts/lora-v20-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: "Lora", Georgia, "Times New Roman", serif;
   line-height: 1.8;
   color: var(--text);
   background: var(--bg);

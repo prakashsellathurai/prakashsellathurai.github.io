@@ -3,11 +3,11 @@
     {{head}}
     <body>
         {{header}}
-        <div style="text-align: center;">
-            <img src="{{avatar}}" alt="{{metadata.author}}" class="avatar avatar-large">
+        <div class="centered-layout">
+            <img src="{{avatar}}" alt="{{metadata.author}}" class="avatar avatar-large avatar-centered">
+            <h1 >{{metadata.author}}</h1>
+            <div>{{author.body}}</div>
         </div>
-        <h1>About {{metadata.author}}</h1>
-        <div>{{author.body}}</div>
         {{footer}}
     </body>
 </html>

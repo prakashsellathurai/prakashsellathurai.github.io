@@ -299,6 +299,29 @@ footer {
   height: 180px;
 }
 
+.avatar-centered {
+  display: block;
+  margin: 0 auto 1.5rem;
+}
+
+.centered-layout {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.centered-layout > h1 {
+  margin-bottom: 2rem;
+}
+
+.centered-layout > div {
+  text-align: left;
+}
+
+.centered-layout > div > p {
+  margin-bottom: 1.25rem;
+}
+
 .sidebar .avatar {
   display: block;
   margin: 0 auto 1rem;

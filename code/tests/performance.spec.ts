@@ -1,3 +1,18 @@
+/**
+ * Core Web Vitals Performance Tests
+ *
+ * Based on Google's Core Web Vitals thresholds:
+ * https://web.dev/articles/vitals-thresholds
+ *
+ * | Metric | Good (green) | Needs Improvement (orange) | Poor (red) |
+ * |--------|--------------|------------------------------|------------|
+ * | LCP    | < 2500ms     | 2500-4000ms                 | > 4000ms   |
+ * | CLS    | < 0.1        | 0.1-0.25                    | > 0.25     |
+ * | INP    | < 200ms      | 200-500ms                   | > 500ms    |
+ * | TTFB   | < 600ms      | 600-1800ms                  | > 1800ms   |
+ * | TBT    | < 200ms      | 200-600ms                   | > 600ms    |
+ */
+
 import { test, expect } from '@playwright/test';
 
 test.describe('Page Speed / Core Web Vitals', () => {

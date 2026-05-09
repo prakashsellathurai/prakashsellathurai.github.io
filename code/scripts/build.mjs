@@ -167,7 +167,39 @@ class MarkdownRenderer {
 }
 
 class TemplateRenderer {
-  static renderHead(metadata, { title, description }) {
+  static renderHead(metadata, { title, description, url = '', image = '' }) {
+    const siteUrl = metadata.siteUrl.replace(/\/$/, '');
+    const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
+    const ogImage = image || metadata.socialBanner || metadata.siteLogo;
+    const keywords = metadata.keywords?.join(', ') || '';
+
+    const canonical = `<link rel="canonical" href="${fullUrl}">`;
+    const keywordsMeta = keywords ? `<meta name="keywords" content="${Formatter.escapeHtml(keywords)}">` : '';
+    const openGraph = `
+  <meta property="og:title" content="${Formatter.escapeHtml(title)}">
+  <meta property="og:description" content="${Formatter.escapeHtml(description)}">
+  <meta property="og:url" content="${fullUrl}">
+  <meta property="og:image" content="${siteUrl}${ogImage}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="${Formatter.escapeHtml(metadata.title)}">`;
+    const twitterCard = `
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${Formatter.escapeHtml(title)}">
+  <meta name="twitter:description" content="${Formatter.escapeHtml(description)}">
+  <meta name="twitter:image" content="${siteUrl}${ogImage}">`;
+    const jsonLd = `
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "${Formatter.escapeHtml(metadata.author)}",
+    "url": "${siteUrl}",
+    "sameAs": ${JSON.stringify(metadata.authorDetails?.sameAs || [])},
+    "jobTitle": "${Formatter.escapeHtml(metadata.authorDetails?.jobTitle || 'Software Engineer')}",
+    "description": "${Formatter.escapeHtml(metadata.description)}"
+  }
+  </script>`;
+
     const cssLink = '<link rel="stylesheet" href="/static/css/style.css">';
     const favicon = `
   <link rel="apple-touch-icon" sizes="180x180" href="/static/favicons/apple-touch-icon.png">
@@ -181,6 +213,11 @@ class TemplateRenderer {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${Formatter.escapeHtml(title)}</title>
   <meta name="description" content="${Formatter.escapeHtml(description)}">
+  ${keywordsMeta}
+  ${canonical}
+  ${openGraph}
+  ${twitterCard}
+  ${jsonLd}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
@@ -313,9 +350,9 @@ class PageBuilder {
     this.markdownRenderer = markdownRenderer;
   }
 
-  buildCommon(template, metadata, pageTitle, pageDescription) {
+  buildCommon(template, metadata, pageTitle, pageDescription, url = '', image = '') {
     return TemplateRenderer.apply(template, {
-      head: TemplateRenderer.renderHead(metadata, { title: pageTitle, description: pageDescription }),
+      head: TemplateRenderer.renderHead(metadata, { title: pageTitle, description: pageDescription, url, image }),
       header: TemplateRenderer.renderHeader(metadata),
       footer: TemplateRenderer.renderFooter(metadata),
     });
@@ -323,7 +360,7 @@ class PageBuilder {
 
   async buildHome(metadata, essays, books, projects, author, avatar) {
     const template = this.dataLoader.loadTemplate("home");
-    let html = this.buildCommon(template, metadata, metadata.title, metadata.description);
+    let html = this.buildCommon(template, metadata, metadata.title, metadata.description, '/');
 
     const recentEssaysHtml = essays.slice(0, 10).map((post) => `
     <article>
@@ -361,7 +398,7 @@ class PageBuilder {
 
   async buildEssaysList(metadata, essays) {
     const template = this.dataLoader.loadTemplate("essays-list");
-    let html = this.buildCommon(template, metadata, metadata.title, `Essays by ${metadata.author}`);
+    let html = this.buildCommon(template, metadata, metadata.title, `Essays by ${metadata.author}`, '/essays/');
 
     const essaysListHtml = essays.map((post) => `
 <article>
@@ -381,7 +418,7 @@ class PageBuilder {
 
   async buildEssay(metadata, essay) {
     const template = this.dataLoader.loadTemplate("essay");
-    let html = this.buildCommon(template, metadata, `${essay.title} - ${metadata.title}`, essay.summary);
+    let html = this.buildCommon(template, metadata, `${essay.title} - ${metadata.title}`, essay.summary, `/essays/${essay.slug}.html`);
 
     const essayContent = await this.markdownRenderer.render(essay.content);
 
@@ -397,7 +434,7 @@ class PageBuilder {
 
   async buildAbout(metadata, author, avatar) {
     const template = this.dataLoader.loadTemplate("about");
-    let html = this.buildCommon(template, metadata, `About - ${metadata.title}`, `About ${metadata.author}`);
+    let html = this.buildCommon(template, metadata, `About - ${metadata.title}`, `About ${metadata.author}`, '/about.html');
 
     const authorBody = await this.markdownRenderer.render(author.body);
 
@@ -413,7 +450,7 @@ class PageBuilder {
 
   buildProjects(metadata, projects) {
     const template = this.dataLoader.loadTemplate("projects");
-    let html = this.buildCommon(template, metadata, `Projects - ${metadata.title}`, `Projects by ${metadata.author}`);
+    let html = this.buildCommon(template, metadata, `Projects - ${metadata.title}`, `Projects by ${metadata.author}`, '/projects.html');
 
     const projectsListHtml = projects.map((proj) => `
 <article>
@@ -429,7 +466,7 @@ class PageBuilder {
 
   buildBookshelf(metadata, books) {
     const template = this.dataLoader.loadTemplate("bookshelf");
-    let html = this.buildCommon(template, metadata, `Bookshelf - ${metadata.title}`, `Books I've read`);
+    let html = this.buildCommon(template, metadata, `Bookshelf - ${metadata.title}`, `Books I've read`, '/bookshelf.html');
 
     const buildBookSection = (title, bookList) => {
       if (!bookList.length) return "";
@@ -466,7 +503,7 @@ class PageBuilder {
     const tagsIndexTemplate = this.dataLoader.loadTemplate("tags-index");
     const tagTemplate = this.dataLoader.loadTemplate("tag");
 
-    let tagsIndexHtml = this.buildCommon(tagsIndexTemplate, metadata, `Tags - ${metadata.title}`, "All tags");
+    let tagsIndexHtml = this.buildCommon(tagsIndexTemplate, metadata, `Tags - ${metadata.title}`, "All tags", '/tags/');
     tagsIndexHtml = TemplateRenderer.apply(tagsIndexHtml, {
       tagsCount: sortedTags.length,
       tagsList: sortedTags.map(([tag, taggedEssays]) => `
@@ -477,7 +514,7 @@ class PageBuilder {
     FileSystem.write(path.join(process.cwd(), "out", "tags", "index.html"), tagsIndexHtml);
 
     Object.entries(tagMap).forEach(([tag, taggedEssays]) => {
-      let tagHtml = this.buildCommon(tagTemplate, metadata, `#${tag} - ${metadata.title}`, `Essays tagged with ${tag}`);
+      let tagHtml = this.buildCommon(tagTemplate, metadata, `#${tag} - ${metadata.title}`, `Essays tagged with ${tag}`, `/tags/${tag}.html`);
       tagHtml = TemplateRenderer.apply(tagHtml, {
         tag: Formatter.escapeHtml(tag),
         taggedEssaysCount: taggedEssays.length,
@@ -532,9 +569,10 @@ class SiteBuilder {
     this.pageBuilder.buildProjects(metadata, projects);
     this.pageBuilder.buildBookshelf(metadata, books);
 
-    console.log("Generating RSS and sitemap...");
+    console.log("Generating RSS, sitemap, and robots.txt...");
     FileSystem.write(path.join(this.outDir, "feed.xml"), FeedGenerator.generateRssFeed(metadata, essays));
     FileSystem.write(path.join(this.outDir, "sitemap.xml"), FeedGenerator.generateSitemap(metadata, essays, projects, leetcodeSolutions));
+    FileSystem.write(path.join(this.outDir, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${metadata.siteUrl}sitemap.xml`);
 
     console.log("Done! Static site generated in out/");
   }

@@ -481,7 +481,7 @@ class PageBuilder {
       tagHtml = TemplateRenderer.apply(tagHtml, {
         tag: Formatter.escapeHtml(tag),
         taggedEssaysCount: taggedEssays.length,
-        "{{#if taggedEssaysCount}}s{{/if}}": taggedEssays.length !== 1 ? "s" : "",
+        taggedEssaysCountLabel: `essay${taggedEssays.length !== 1 ? 's' : ''}`,
         taggedEssays: taggedEssays.map((post) => `
 <article>
   <h2><a href="/essays/${post.slug}.html">${Formatter.escapeHtml(post.title)}</a></h2>

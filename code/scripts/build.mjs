@@ -207,6 +207,7 @@ class TemplateRenderer {
   <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png">
   <link rel="manifest" href="/static/favicons/site.webmanifest">
   <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#8b7355">`;
+    const rssLink = `<link rel="alternate" type="application/rss+xml" title="${Formatter.escapeHtml(metadata.title)}" href="${siteUrl}/feed.xml">`;
     return `
 <head>
   <meta charset="UTF-8">
@@ -221,6 +222,7 @@ class TemplateRenderer {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  ${rssLink}
   ${favicon}
   ${cssLink}
 </head>
@@ -236,6 +238,13 @@ class TemplateRenderer {
   <a href="/projects.html">Projects</a>
   <a href="/bookshelf.html">Bookshelf</a>
   <a href="/about.html">About</a>
+  <a href="/feed.xml" class="rss-link" aria-label="RSS Feed">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 11a9 9 0 0 1 9 9"/>
+      <path d="M4 4a16 16 0 0 1 16 16"/>
+      <circle cx="5" cy="19" r="1"/>
+    </svg>
+  </a>
 </header>
 `;
   }

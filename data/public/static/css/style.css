@@ -73,6 +73,16 @@ header a:hover {
   color: var(--text);
 }
 
+.rss-link {
+  display: flex;
+  align-items: center;
+  color: var(--accent);
+}
+
+.rss-link:hover {
+  color: var(--accent-light);
+}
+
 h1 {
   font-size: 1.8rem;
   font-weight: 400;

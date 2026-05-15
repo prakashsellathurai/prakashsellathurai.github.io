@@ -486,10 +486,6 @@ class PageBuilder {
     const template = this.dataLoader.loadTemplate("bookshelf");
     let html = this.buildCommon(template, metadata, `Bookshelf - ${metadata.title}`, `Books I've read`, '/bookshelf.html');
 
-    const curated = books["curated"] || [];
-    const curatedKeys = new Set(curated.map((b) => b.title + "||" + b.author));
-    const readBooks = (books["read"] || []).filter((b) => !curatedKeys.has(b.title + "||" + b.author));
-
     const titleColor = (title) => {
       let hash = 0;
       for (let i = 0; i < title.length; i++) {
@@ -506,43 +502,27 @@ class PageBuilder {
 
     const isPlaceholderCover = (url) => !url || url.includes("nophoto");
 
-    const buildBookCard = (book) => {
-      const escapedTitle = Formatter.escapeHtml(book.title);
-      const escapedAuthor = Formatter.escapeHtml(book.author);
-      const stars = renderStars(book.rating);
-      const href = Formatter.escapeHtml(book.link || "#");
+    const categoryConfigs = [
+      { label: "Curated", dataKey: "curated", stripeColor: "#d4a017" },
+      { label: "Currently Reading", dataKey: "currently-reading", stripeColor: "#2ecc71" },
+      { label: "Read", dataKey: "read", stripeColor: "#5b7fa5" },
+    ];
 
-      let coverHtml;
-      if (isPlaceholderCover(book.imageUrl)) {
-        coverHtml = `<div class="book-cover book-cover-fallback" style="background:${titleColor(book.title)}"><span>${escapedTitle}</span></div>`;
-      } else {
-        coverHtml = `<div class="book-cover"><img src="${Formatter.escapeHtml(book.imageUrl)}" alt="${escapedTitle}" loading="lazy"></div>`;
-      }
+    const curated = books["curated"] || [];
+    const currentlyReading = books["currently-reading"] || [];
+    const dedupKeys = new Set([
+      ...curated.map((b) => b.title + "||" + b.author),
+      ...currentlyReading.map((b) => b.title + "||" + b.author),
+    ]);
+    const readBooks = (books["read"] || []).filter((b) => !dedupKeys.has(b.title + "||" + b.author));
 
-      return `
-    <a href="${href}" class="book-card" target="_blank" rel="noopener">
-      ${coverHtml}
-      <div class="book-info">
-        <span class="book-title">${escapedTitle}</span>
-        <span class="book-author">${escapedAuthor}</span>
-        ${stars ? `<span class="book-rating">${stars}</span>` : ""}
-      </div>
-    </a>`;
-    };
+    const groups = [
+      { ...categoryConfigs[0], books: curated },
+      { ...categoryConfigs[1], books: currentlyReading },
+      { ...categoryConfigs[2], books: readBooks },
+    ].filter(g => g.books.length > 0);
 
-    const buildBookSection = (title, bookList) => {
-      if (!bookList.length) return "";
-      return `
-  <section class="shelf-section">
-    <h2 class="shelf-header">${title}</h2>
-    <div class="shelf">
-      <div class="shelf-books">${bookList.map(buildBookCard).join("")}</div>
-      <div class="shelf-surface"></div>
-    </div>
-  </section>`;
-    };
-
-    const buildSpine = (book) => {
+    const buildSpine = (book, category) => {
       const escapedTitle = Formatter.escapeHtml(book.title);
       const escapedAuthor = Formatter.escapeHtml(book.author);
       const stars = renderStars(book.rating);
@@ -556,6 +536,7 @@ class PageBuilder {
 
       return `
     <a href="${href}" class="book-spine" target="_blank" rel="noopener" style="--spine-color:${color}">
+      <div class="spine-stripe" style="--stripe-color:${category.stripeColor}"></div>
       <span class="spine-title">${escapedTitle}</span>
       <div class="spine-tooltip">
         <div class="spine-tooltip-cover">${coverHtml || `<div class="spine-tooltip-fallback" style="background:${color}">${escapedTitle}</div>`}</div>
@@ -563,35 +544,44 @@ class PageBuilder {
           <strong>${escapedTitle}</strong>
           <span>${escapedAuthor}</span>
           ${stars ? `<span class="book-rating">${stars}</span>` : ""}
+          <span class="spine-tooltip-label" style="color:${category.stripeColor}">${category.label}</span>
         </div>
       </div>
     </a>`;
     };
 
-    const buildBookcaseSection = (title, bookList) => {
-      if (!bookList.length) return "";
+    const buildUnifiedBookcase = (groups) => {
       const chunkSize = 12;
-      const shelves = [];
-      for (let i = 0; i < bookList.length; i += chunkSize) {
-        shelves.push(`
+      const shelvesHtml = groups.map((group, groupIndex) => {
+        const isLastGroup = groupIndex === groups.length - 1;
+        const chunks = [];
+        for (let i = 0; i < group.books.length; i += chunkSize) {
+          const isFirst = i === 0;
+          const isLastChunk = i + chunkSize >= group.books.length;
+          let booksHtml = group.books.slice(i, i + chunkSize).map(b => buildSpine(b, group)).join("");
+          if (isLastChunk && !isLastGroup) {
+            booksHtml += `<div class="bookend"></div>`;
+          }
+          chunks.push(`
     <div class="bookcase-shelf">
-      <div class="shelf-books">${bookList.slice(i, i + chunkSize).map(buildSpine).join("")}</div>
+      ${isFirst ? `<h3 class="shelf-group-header" style="--group-color:${group.stripeColor}">${group.label}</h3>` : ""}
+      <div class="shelf-books">${booksHtml}</div>
       <div class="shelf-board"></div>
     </div>`);
-      }
+        }
+        return chunks.join("");
+      }).join("");
+
       return `
   <section class="shelf-section">
-    <h2 class="shelf-header">${title}</h2>
     <div class="bookcase">
-      ${shelves.join("")}
+      ${shelvesHtml}
     </div>
   </section>`;
     };
 
     html = TemplateRenderer.apply(html, {
-      currentlyReadingSection: buildBookSection("Currently Reading", books["currently-reading"] || []),
-      curatedSection: buildBookSection("Curated", curated),
-      readSection: buildBookcaseSection("Read", readBooks),
+      bookshelfSection: buildUnifiedBookcase(groups),
     });
 
     FileSystem.write(path.join(process.cwd(), "out", "bookshelf.html"), html);

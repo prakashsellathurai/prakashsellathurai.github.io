@@ -448,13 +448,13 @@ footer {
 
 .shelf-group-header {
   font-size: 0.72rem;
-  font-weight: 400;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 2.5px;
   margin: 0 0 0.6rem 0.25rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #b8a894;
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+  color: #a89880;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
 }
 
 .spine-tooltip-label {
@@ -468,95 +468,56 @@ footer {
 /* Bookcase (spine display) */
 .bookcase {
   background:
-    radial-gradient(ellipse 85% 20% at 50% 0%, rgba(200,160,100,0.1), transparent 70%),
+    radial-gradient(ellipse 85% 20% at 50% 0%, rgba(180,165,140,0.06), transparent 70%),
     repeating-linear-gradient(
       87deg,
-      transparent 0px, transparent 5px,
-      rgba(0,0,0,0.025) 5px, rgba(0,0,0,0.025) 5.5px,
-      transparent 5.5px, transparent 12px,
-      rgba(255,255,255,0.012) 12px, rgba(255,255,255,0.012) 12.4px,
-      transparent 12.4px, transparent 20px,
-      rgba(0,0,0,0.02) 20px, rgba(0,0,0,0.02) 20.3px,
-      transparent 20.3px, transparent 30px,
-      rgba(255,255,255,0.008) 30px, rgba(255,255,255,0.008) 30.3px,
-      transparent 30.3px, transparent 40px
+      transparent 0px, transparent 6px,
+      rgba(160,145,125,0.035) 6px, rgba(160,145,125,0.035) 6.4px,
+      transparent 6.4px, transparent 14px,
+      rgba(255,255,255,0.025) 14px, rgba(255,255,255,0.025) 14.3px,
+      transparent 14.3px, transparent 25px,
+      rgba(160,145,125,0.025) 25px, rgba(160,145,125,0.025) 25.3px,
+      transparent 25.3px, transparent 35px,
+      rgba(255,255,255,0.015) 35px, rgba(255,255,255,0.015) 35.3px,
+      transparent 35.3px, transparent 45px
     ),
-    radial-gradient(ellipse 4px 10px at 18% 35%, rgba(0,0,0,0.08) 0%, transparent 100%),
-    radial-gradient(ellipse 3px 6px at 72% 55%, rgba(0,0,0,0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 5px 8px at 88% 20%, rgba(0,0,0,0.05) 0%, transparent 100%),
-    linear-gradient(180deg, #3d3025, #2a1f16);
-  border: 8px solid;
-  border-color: #7a6040 #4a3320 #3a2218 #5a4030;
-  border-radius: 4px;
+    linear-gradient(180deg, #f2ecde, #ece4d4);
+  border: 1px solid #d4ccba;
+  border-radius: 6px;
   padding: 1.5rem 1.5rem 0.75rem;
   box-shadow:
-    inset 2px 2px 4px rgba(0,0,0,0.25),
-    inset -1px -1px 2px rgba(255,255,255,0.03),
-    0 6px 28px rgba(0,0,0,0.35);
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    0 4px 20px rgba(120,105,85,0.1);
 }
 
 .bookcase-shelf {
-  position: relative;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.25rem;
 }
 
 .bookcase-shelf:last-child {
   margin-bottom: 0;
 }
 
-.bookcase-shelf::before,
-.bookcase-shelf::after {
-  content: "";
-  position: absolute;
-  bottom: 16px;
-  width: 14px;
-  height: 30px;
-  background:
-    linear-gradient(90deg, #5a4330, #3d2818),
-    linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.2));
-  border: 1px solid #1a0e05;
-  border-top: none;
-  border-radius: 0 0 3px 3px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.bookcase-shelf::before {
-  left: -6px;
-  border-left: none;
-}
-
-.bookcase-shelf::after {
-  right: -6px;
-  border-right: none;
-}
-
 .shelf-board {
   position: relative;
-  height: 18px;
+  height: 14px;
   margin-top: 0.85rem;
   border-radius: 2px;
   background:
     linear-gradient(to bottom,
       rgba(255,255,255,0.06) 0px,
-      transparent 4px
+      transparent 3px
     ),
     repeating-linear-gradient(
       92deg,
-      transparent 0px, transparent 6px,
-      rgba(0,0,0,0.05) 6px, rgba(0,0,0,0.05) 6.5px,
-      transparent 6.5px, transparent 15px,
-      rgba(255,255,255,0.018) 15px, rgba(255,255,255,0.018) 15.3px,
-      transparent 15.3px, transparent 25px,
-      rgba(0,0,0,0.035) 25px, rgba(0,0,0,0.035) 25.4px,
-      transparent 25.4px, transparent 35px
+      transparent 0px, transparent 8px,
+      rgba(160,145,125,0.03) 8px, rgba(160,145,125,0.03) 8.3px,
+      transparent 8.3px, transparent 22px
     ),
-    linear-gradient(to bottom,
-      #6a5340 0%,
-      #5a4330 100%
-    );
+    linear-gradient(to bottom, #ded4c0, #d4c8b4);
   box-shadow:
-    inset 0 3px 6px rgba(0,0,0,0.12),
-    0 8px 16px rgba(0,0,0,0.3);
+    inset 0 2px 3px rgba(120,105,85,0.08),
+    0 6px 14px rgba(120,105,85,0.12);
 }
 
 .shelf-board::after {
@@ -564,24 +525,23 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -8px;
-  height: 8px;
-  background: linear-gradient(to bottom, #4a3320 0%, #2a1a0a 100%);
+  bottom: -6px;
+  height: 6px;
+  background: linear-gradient(to bottom, #c8bba6, #b8ab96);
   border-radius: 0 0 2px 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.35);
+  box-shadow: 0 1px 2px rgba(120,105,85,0.12);
 }
 
 .bookend {
   width: 8px;
-  height: 80px;
+  height: 75px;
   align-self: flex-end;
-  background: linear-gradient(135deg, #e8c84c 0%, #c9a42e 40%, #8a6e1a 100%);
+  background: linear-gradient(135deg, #d4c8a8, #bfb08e);
   clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%);
   border-radius: 2px;
   box-shadow:
-    1px 0 3px rgba(0,0,0,0.35),
-    -1px 0 1px rgba(255,255,255,0.12),
-    inset -1px 0 2px rgba(0,0,0,0.2),
+    1px 0 2px rgba(120,105,85,0.2),
+    inset -1px 0 2px rgba(0,0,0,0.04),
     inset 1px 1px 0 rgba(255,255,255,0.25);
   flex-shrink: 0;
 }
@@ -599,7 +559,7 @@ footer {
   cursor: pointer;
   transition: transform 0.15s ease, filter 0.15s ease;
   flex-shrink: 0;
-  filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.3));
+  filter: drop-shadow(1px 2px 3px rgba(120,105,85,0.25));
 }
 
 .book-spine::before {
@@ -620,7 +580,7 @@ footer {
 
 .book-spine:hover {
   transform: translateY(-5px);
-  filter: drop-shadow(2px 8px 12px rgba(0,0,0,0.4));
+  filter: drop-shadow(2px 8px 12px rgba(120,105,85,0.3));
 }
 
 .spine-title {

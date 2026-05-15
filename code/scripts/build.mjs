@@ -503,9 +503,9 @@ class PageBuilder {
     const isPlaceholderCover = (url) => !url || url.includes("nophoto");
 
     const categoryConfigs = [
-      { label: "Curated", dataKey: "curated", stripeColor: "#d4a017" },
-      { label: "Currently Reading", dataKey: "currently-reading", stripeColor: "#2ecc71" },
-      { label: "Read", dataKey: "read", stripeColor: "#5b7fa5" },
+      { label: "Curated", dataKey: "curated", stripeColor: "#8b7355" },
+      { label: "Currently Reading", dataKey: "currently-reading", stripeColor: "#7a9a6a" },
+      { label: "Read", dataKey: "read", stripeColor: "#7a8796" },
     ];
 
     const curated = books["curated"] || [];

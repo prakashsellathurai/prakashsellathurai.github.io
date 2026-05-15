@@ -571,7 +571,6 @@ class PageBuilder {
     <div class="bookcase-shelf">
       ${isFirst ? `<h3 class="shelf-group-header" style="--group-color:${group.stripeColor}">${group.label}</h3>` : ""}
       <div class="shelf-books">${booksHtml}</div>
-      <div class="shelf-board"></div>
     </div>`);
         }
         return chunks.join("");

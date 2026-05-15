@@ -508,7 +508,6 @@ footer {
 .shelf-board {
   position: relative;
   height: 14px;
-  margin-top: 0.85rem;
   border-radius: 2px;
   background:
     linear-gradient(to bottom,
@@ -544,7 +543,6 @@ footer {
   height: 75px;
   align-self: flex-end;
   background: linear-gradient(135deg, #d4c8a8, #bfb08e);
-  clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%);
   border-radius: 2px;
   box-shadow:
     1px 0 2px rgba(120,105,85,0.2),
@@ -567,6 +565,7 @@ footer {
   transition: transform 0.15s ease, filter 0.15s ease;
   flex-shrink: 0;
   filter: drop-shadow(1px 2px 3px rgba(120,105,85,0.25));
+  transform: rotate(var(--spine-tilt, 0deg));
 }
 
 .book-spine::before {
@@ -586,7 +585,7 @@ footer {
 }
 
 .book-spine:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) rotate(var(--spine-tilt, 0deg));
   filter: drop-shadow(2px 8px 12px rgba(120,105,85,0.3));
 }
 

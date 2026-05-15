@@ -486,13 +486,17 @@ class PageBuilder {
     const template = this.dataLoader.loadTemplate("bookshelf");
     let html = this.buildCommon(template, metadata, `Bookshelf - ${metadata.title}`, `Books I've read`, '/bookshelf.html');
 
-    const titleColor = (title) => {
-      let hash = 0;
-      for (let i = 0; i < title.length; i++) {
-        hash = title.charCodeAt(i) + ((hash << 5) - hash);
+    const hashStr = (s) => {
+      let h = 0;
+      for (let i = 0; i < s.length; i++) {
+        h = s.charCodeAt(i) + ((h << 5) - h);
       }
-      return `hsl(${Math.abs(hash) % 360}, 50%, 45%)`;
+      return h;
     };
+
+    const titleColor = (title) => `hsl(${Math.abs(hashStr(title)) % 360}, 50%, 45%)`;
+
+    const titleTilt = (title) => (Math.abs(hashStr(title)) % 5) - 2;
 
     const renderStars = (rating) => {
       const n = parseInt(rating, 10);
@@ -528,6 +532,7 @@ class PageBuilder {
       const stars = renderStars(book.rating);
       const href = Formatter.escapeHtml(book.link || "#");
       const color = titleColor(book.title);
+      const tilt = titleTilt(book.title);
 
       let coverHtml = "";
       if (!isPlaceholderCover(book.imageUrl)) {
@@ -535,7 +540,7 @@ class PageBuilder {
       }
 
       return `
-    <a href="${href}" class="book-spine" target="_blank" rel="noopener" style="--spine-color:${color}">
+    <a href="${href}" class="book-spine" target="_blank" rel="noopener" style="--spine-color:${color};--spine-tilt:${tilt}deg">
       <div class="spine-stripe" style="--stripe-color:${category.stripeColor}"></div>
       <span class="spine-title">${escapedTitle}</span>
       <div class="spine-tooltip">

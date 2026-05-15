@@ -432,16 +432,19 @@ footer {
 }
 
 .shelf-surface {
-  height: 7px;
+  height: 8px;
   margin-top: 0.85rem;
   border-radius: 3px;
-  background: linear-gradient(
-    to bottom,
-    #8b7355,
-    #7a6348 40%,
-    #6b5340 60%,
-    #5a4330
-  );
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.04) 3px,
+      rgba(0,0,0,0.04) 5px
+    ),
+    linear-gradient(to bottom, #8b7355 1px, #7a6348 3px, #6b5340 55%, #5a4330);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .book-card {
@@ -525,4 +528,189 @@ footer {
   color: #d4a017;
   font-size: 0.85rem;
   letter-spacing: 2px;
+}
+
+/* Bookcase (spine display for Read section) */
+.bookcase {
+  background: var(--bg-alt);
+  border-radius: var(--border-radius);
+  padding: 1.5rem 1.5rem 0.75rem;
+  border: 1px solid var(--border);
+}
+
+.bookcase-shelf {
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+.bookcase-shelf:last-child {
+  margin-bottom: 0;
+}
+
+.bookcase-shelf::before,
+.bookcase-shelf::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  width: 14px;
+  height: 18px;
+  border: 2px solid #5a4330;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(135deg, #8b7355 40%, #6b5340);
+}
+
+.bookcase-shelf::before {
+  left: -2px;
+  border-left: none;
+}
+
+.bookcase-shelf::after {
+  right: -2px;
+  border-right: none;
+}
+
+.shelf-board {
+  position: relative;
+  height: 12px;
+  margin-top: 0.85rem;
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 4px,
+      rgba(0,0,0,0.03) 4px,
+      rgba(0,0,0,0.04) 5px,
+      transparent 5px,
+      transparent 8px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 80px,
+      rgba(0,0,0,0.06) 80px,
+      rgba(0,0,0,0.06) 82px
+    ),
+    linear-gradient(to bottom, #8b7355 1px, #7a6348 3px, #6b5340 40%, #5a4330 70%, #4a3320);
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.shelf-board::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px 2px 0 0;
+}
+
+.book-spine {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 44px;
+  height: 170px;
+  background: var(--spine-color, hsl(0, 50%, 45%));
+  border-radius: 3px 3px 0 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.book-spine:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.spine-title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  color: rgba(255,255,255,0.92);
+  font-size: 0.68rem;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 0.5rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 155px;
+  letter-spacing: 0.5px;
+}
+
+.spine-tooltip {
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  width: 180px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.book-spine:hover .spine-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.spine-tooltip-cover {
+  width: 100%;
+  aspect-ratio: 2/3;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  background: var(--bg-alt);
+}
+
+.spine-tooltip-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.spine-tooltip-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 0.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.spine-tooltip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+}
+
+.spine-tooltip-info strong {
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

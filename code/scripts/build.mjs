@@ -542,10 +542,56 @@ class PageBuilder {
   </section>`;
     };
 
+    const buildSpine = (book) => {
+      const escapedTitle = Formatter.escapeHtml(book.title);
+      const escapedAuthor = Formatter.escapeHtml(book.author);
+      const stars = renderStars(book.rating);
+      const href = Formatter.escapeHtml(book.link || "#");
+      const color = titleColor(book.title);
+
+      let coverHtml = "";
+      if (!isPlaceholderCover(book.imageUrl)) {
+        coverHtml = `<img src="${Formatter.escapeHtml(book.imageUrl)}" alt="${escapedTitle}">`;
+      }
+
+      return `
+    <a href="${href}" class="book-spine" target="_blank" rel="noopener" style="--spine-color:${color}">
+      <span class="spine-title">${escapedTitle}</span>
+      <div class="spine-tooltip">
+        <div class="spine-tooltip-cover">${coverHtml || `<div class="spine-tooltip-fallback" style="background:${color}">${escapedTitle}</div>`}</div>
+        <div class="spine-tooltip-info">
+          <strong>${escapedTitle}</strong>
+          <span>${escapedAuthor}</span>
+          ${stars ? `<span class="book-rating">${stars}</span>` : ""}
+        </div>
+      </div>
+    </a>`;
+    };
+
+    const buildBookcaseSection = (title, bookList) => {
+      if (!bookList.length) return "";
+      const chunkSize = 12;
+      const shelves = [];
+      for (let i = 0; i < bookList.length; i += chunkSize) {
+        shelves.push(`
+    <div class="bookcase-shelf">
+      <div class="shelf-books">${bookList.slice(i, i + chunkSize).map(buildSpine).join("")}</div>
+      <div class="shelf-board"></div>
+    </div>`);
+      }
+      return `
+  <section class="shelf-section">
+    <h2 class="shelf-header">${title}</h2>
+    <div class="bookcase">
+      ${shelves.join("")}
+    </div>
+  </section>`;
+    };
+
     html = TemplateRenderer.apply(html, {
       currentlyReadingSection: buildBookSection("Currently Reading", books["currently-reading"] || []),
       curatedSection: buildBookSection("Curated", curated),
-      readSection: buildBookSection("Read", readBooks),
+      readSection: buildBookcaseSection("Read", readBooks),
     });
 
     FileSystem.write(path.join(process.cwd(), "out", "bookshelf.html"), html);

@@ -10,4 +10,5 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:3000',
   },
+  reporter: process.env.CI ? [['html', { outputFolder: 'playwright-report' }], ['list']] : 'list',
 });

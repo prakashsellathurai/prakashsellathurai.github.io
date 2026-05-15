@@ -486,22 +486,66 @@ class PageBuilder {
     const template = this.dataLoader.loadTemplate("bookshelf");
     let html = this.buildCommon(template, metadata, `Bookshelf - ${metadata.title}`, `Books I've read`, '/bookshelf.html');
 
+    const curated = books["curated"] || [];
+    const curatedKeys = new Set(curated.map((b) => b.title + "||" + b.author));
+    const readBooks = (books["read"] || []).filter((b) => !curatedKeys.has(b.title + "||" + b.author));
+
+    const titleColor = (title) => {
+      let hash = 0;
+      for (let i = 0; i < title.length; i++) {
+        hash = title.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return `hsl(${Math.abs(hash) % 360}, 50%, 45%)`;
+    };
+
+    const renderStars = (rating) => {
+      const n = parseInt(rating, 10);
+      if (!n || n === 0) return "";
+      return "★".repeat(n) + "☆".repeat(5 - n);
+    };
+
+    const isPlaceholderCover = (url) => !url || url.includes("nophoto");
+
+    const buildBookCard = (book) => {
+      const escapedTitle = Formatter.escapeHtml(book.title);
+      const escapedAuthor = Formatter.escapeHtml(book.author);
+      const stars = renderStars(book.rating);
+      const href = Formatter.escapeHtml(book.link || "#");
+
+      let coverHtml;
+      if (isPlaceholderCover(book.imageUrl)) {
+        coverHtml = `<div class="book-cover book-cover-fallback" style="background:${titleColor(book.title)}"><span>${escapedTitle}</span></div>`;
+      } else {
+        coverHtml = `<div class="book-cover"><img src="${Formatter.escapeHtml(book.imageUrl)}" alt="${escapedTitle}" loading="lazy"></div>`;
+      }
+
+      return `
+    <a href="${href}" class="book-card" target="_blank" rel="noopener">
+      ${coverHtml}
+      <div class="book-info">
+        <span class="book-title">${escapedTitle}</span>
+        <span class="book-author">${escapedAuthor}</span>
+        ${stars ? `<span class="book-rating">${stars}</span>` : ""}
+      </div>
+    </a>`;
+    };
+
     const buildBookSection = (title, bookList) => {
       if (!bookList.length) return "";
       return `
-  <h2>${title}</h2>
-  ${bookList.map((book) => `
-  <article>
-    <h3>${Formatter.escapeHtml(book.title)}</h3>
-    <p class="meta">by ${Formatter.escapeHtml(book.author)}</p>
-    <p class="summary">${Formatter.escapeHtml(book.description)}</p>
-  </article>`).join("")}`;
+  <section class="shelf-section">
+    <h2 class="shelf-header">${title}</h2>
+    <div class="shelf">
+      <div class="shelf-books">${bookList.map(buildBookCard).join("")}</div>
+      <div class="shelf-surface"></div>
+    </div>
+  </section>`;
     };
 
     html = TemplateRenderer.apply(html, {
       currentlyReadingSection: buildBookSection("Currently Reading", books["currently-reading"] || []),
-      curatedSection: buildBookSection("Curated", books["curated"] || []),
-      readSection: buildBookSection("Read", books["read"] || []),
+      curatedSection: buildBookSection("Curated", curated),
+      readSection: buildBookSection("Read", readBooks),
     });
 
     FileSystem.write(path.join(process.cwd(), "out", "bookshelf.html"), html);

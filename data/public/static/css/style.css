@@ -339,9 +339,6 @@ footer {
   height: 100px;
 }
 
-.sidebar-about {
-  text-align: center;
-}
 
 @media (min-width: 900px) {
   .content .sidenote {
@@ -353,4 +350,56 @@ footer {
     font-size: 0.8rem;
     line-height: 1.5;
   }
+}
+
+.projects-section {
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: var(--bg-alt);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border);
+}
+
+.project-card h3 {
+  font-size: 1.15rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.project-card .summary {
+  font-size: 0.95rem;
+  margin: 0.5rem 0;
+}
+
+.project-card .tags span {
+  color: var(--text-muted);
+  margin-right: 0.75rem;
+  font-size: 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+
+.section-footer {
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+.section-footer a {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
 }

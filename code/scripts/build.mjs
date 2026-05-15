@@ -379,14 +379,19 @@ class PageBuilder {
       <div class="tags">
         ${post.tags.slice(0, 3).map((tag) => `<a href="/tags/${tag}.html">#${Formatter.escapeHtml(tag)}</a>`).join("")}
       </div>
-    </article>`).join("");
+    </article>`).join("") + `
+    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>`;
 
-    const featuredProjectsHtml = projects.slice(0, 6).map((proj) => `
-    <article>
-      <h2>${proj.website ? `<a href="${Formatter.escapeHtml(proj.website)}">${Formatter.escapeHtml(proj.title)}</a>` : Formatter.escapeHtml(proj.title)}</h2>
+    const featuredProjectsHtml = `
+    <div class="project-grid">` +
+    projects.slice(0, 6).map((proj) => `
+    <div class="project-card">
+      <h3>${proj.website ? `<a href="${Formatter.escapeHtml(proj.website)}">${Formatter.escapeHtml(proj.title)}</a>` : Formatter.escapeHtml(proj.title)}</h3>
       <p class="summary">${Formatter.escapeHtml(proj.description)}</p>
       ${proj.tags?.length ? `<div class="tags">${proj.tags.map((t) => `<span>#${Formatter.escapeHtml(t)}</span>`).join("")}</div>` : ""}
-    </article>`).join("");
+    </div>`).join("") + `
+    </div>
+    <p class="section-footer"><a href="/projects.html">All projects &rarr;</a></p>`;
 
     const readingListHtml = (books["curated"] || []).slice(0, 5).map((book) => `
     <li>
@@ -461,12 +466,16 @@ class PageBuilder {
     const template = this.dataLoader.loadTemplate("projects");
     let html = this.buildCommon(template, metadata, `Projects - ${metadata.title}`, `Projects by ${metadata.author}`, '/projects.html');
 
-    const projectsListHtml = projects.map((proj) => `
-<article>
-  <h2>${proj.website ? `<a href="${Formatter.escapeHtml(proj.website)}">${Formatter.escapeHtml(proj.title)}</a>` : Formatter.escapeHtml(proj.title)}</h2>
-  <p class="summary">${Formatter.escapeHtml(proj.description) || "No description"}</p>
-  <p class="meta"><a href="${Formatter.escapeHtml(proj.href)}">GitHub</a></p>
-</article>`).join("");
+    const projectsListHtml = `
+    <div class="project-grid">` +
+    projects.map((proj) => `
+    <div class="project-card">
+      <h3>${proj.website ? `<a href="${Formatter.escapeHtml(proj.website)}">${Formatter.escapeHtml(proj.title)}</a>` : Formatter.escapeHtml(proj.title)}</h3>
+      <p class="summary">${Formatter.escapeHtml(proj.description)}</p>
+      ${proj.tags?.length ? `<div class="tags">${proj.tags.map((t) => `<span>#${Formatter.escapeHtml(t)}</span>`).join("")}</div>` : ""}
+      <p class="meta"><a href="${Formatter.escapeHtml(proj.href)}">GitHub</a></p>
+    </div>`).join("") + `
+    </div>`;
 
     html = TemplateRenderer.apply(html, { projectsList: projectsListHtml });
 

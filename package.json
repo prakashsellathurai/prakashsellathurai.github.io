@@ -1,0 +1,25 @@
+{
+  "name": "prakashsellathurai.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "bun code/scripts/build.mjs",
+    "dev": "bun code/scripts/build.mjs && bunx serve out -l 3000 ",
+    "update-data": "bun code/scripts/utils/books.mjs && bun code/scripts/utils/github.js && bun code/scripts/utils/sync-description.js",
+    "test": "bunx playwright test -c code/tests/playwright.config.ts",
+    "test:ui": "bunx playwright test --ui  -c code/tests/playwright.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "rehype-stringify": "^10.0.1",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
+  }
+}

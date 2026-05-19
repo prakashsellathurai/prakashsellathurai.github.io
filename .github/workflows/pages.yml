@@ -23,14 +23,8 @@ jobs:
       - uses: oven-sh/setup-bun@v1
       - id: configurepages
         uses: actions/configure-pages@v5
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/bun.lockb') }}-
-      - run: bun install
+      - run: bun install --frozen-lockfile
+      - run: bun audit
       - run: bun run build
         env:
           EXPORT: 1

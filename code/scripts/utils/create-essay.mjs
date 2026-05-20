@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import path from 'path'
-import { slug as slugify } from 'github-slugger'
+import { slug } from '../lib/slug.mjs'
 
 const ROOT = process.cwd()
 const ESSAYS_DIR = path.join(ROOT, 'data','non-public' , 'essays')
@@ -125,7 +125,7 @@ if (!template) {
   process.exit(1)
 }
 
-const slug = args.slug ? String(args.slug) : slugify(String(title))
+const resultSlug = args.slug ? String(args.slug) : slug(String(title))
 const ext = (args.ext || 'md').toLowerCase()
 const draft = args.publish ? false : true
 
@@ -163,11 +163,11 @@ const frontmatter = [
   .filter(Boolean)
   .join('\n')
 
-let filename = `${slug}.${ext}`
+let filename = `${resultSlug}.${ext}`
 let targetPath = path.join(ESSAYS_DIR, filename)
 let counter = 1
 while (existsSync(targetPath)) {
-  filename = `${slug}-${counter}.${ext}`
+  filename = `${resultSlug}-${counter}.${ext}`
   targetPath = path.join(ESSAYS_DIR, filename)
   counter += 1
 }

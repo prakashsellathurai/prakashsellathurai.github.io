@@ -1,13 +1,7 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkGfm from "remark-gfm";
-import remarkRehype from "remark-rehype";
-import rehypeStringify from "rehype-stringify";
-import { visit } from 'unist-util-visit'
-import { console } from "inspector/promises";
+import { parseFrontmatter } from "./lib/frontmatter.mjs";
+import { MarkdownRenderer } from "./lib/markdown.mjs";
 
 
 class FileSystem {
@@ -67,7 +61,7 @@ class DataLoader {
 
   readMd(file) {
     const content = FileSystem.read(file);
-    return matter(content);
+    return parseFrontmatter(content);
   }
 
   loadTemplate(templateName) {
@@ -80,7 +74,7 @@ class DataLoader {
 
   readAuthor() {
     const content = FileSystem.read(path.join(this.dataDir, "authors/default.mdx"));
-    const { data, content: body } = matter(content);
+    const { data, content: body } = parseFrontmatter(content);
     return { ...data, body };
   }
 
@@ -148,79 +142,6 @@ class Formatter {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
-  }
-}
-
-class MarkdownRenderer {
-  constructor() {
-    this.processor = unified()
-      .use(remarkParse)
-      .use(remarkGfm)
-      .use(MarkdownRenderer.remarkSideNotes)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeStringify);
-  }
-
-  async render(content) {
-    const result = await this.processor.process(content);
-    return String(result);
-  }
-
-  static remarkSideNotes() {
-    return (tree) => {
-      const definitions = new Map()
-
-      visit(tree, 'footnoteDefinition', (node) => {
-        definitions.set(node.identifier, node.children)
-      })
-
-      visit(tree, 'footnoteReference', (node, index, parent) => {
-        const children = definitions.get(node.identifier)
-
-        if (children) {
-          let content = children
-          if (content.length > 0 && content[0].type === 'paragraph') {
-            content = content[0].children
-          }
-
-          function collectText(node) {
-            if (node.type === 'text') return node.value
-            if (node.children) return node.children.map(collectText).join('')
-            return ''
-          }
-          const textContent = content
-            .map(collectText)
-            .join('')
-
-          const id = `sn-${node.identifier}`
-
-          const sideNoteRef = {
-            type: 'text',
-            value: ''
-          }
-          sideNoteRef.data = {
-            hName: 'a',
-            hProperties: { className: 'sidenote-number', href: `#${id}` },
-            hChildren: [{ type: 'text', value: node.label || node.identifier }]
-          }
-
-          const sideNoteContent = {
-            type: 'text',
-            value: ''
-          }
-          sideNoteContent.data = {
-            hName: 'span',
-            hProperties: { className: 'sidenote', id },
-            hChildren: [{ type: 'text', value: ` ${textContent}` }]
-          }
-
-          parent.children.splice(index, 1, sideNoteRef, sideNoteContent)
-        }
-      })
-
-      const newChildren = tree.children.filter(node => node.type !== 'footnoteDefinition')
-      tree.children = newChildren
-    }
   }
 }
 

@@ -1,0 +1,91 @@
+{
+  "title": "Prakash's Web Page",
+  "author": "Prakash Sellathurai",
+  "headerTitle": "Prakash S",
+  "description": "Prakash is a hobbyist turned professional Software Engineer with a background in Mechatronics. He is a tinkerer, deeply passionate about exploring and building new technologies.",
+  "shortDescription": "Software Engineer with expertise in Computer Vision, open-source, and innovative technology solutions.",
+  "language": "en-us",
+  "theme": "light",
+  "siteUrl": "https://prakashsellathurai.com/",
+  "siteRepo": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+  "siteLogo": "__BASE_PATH__/static/images/logo.png",
+  "socialBanner": "__BASE_PATH__/static/images/logo.png",
+  "siteHome": "Home",
+  "email": "prakashsellathurai@gmail.com",
+  "github": "https://github.com/prakashsellathurai",
+  "linkedin": "https://www.linkedin.com/in/prakashsellathurai/",
+  "instagram": "https://www.instagram.com/ch_a_ivalry/",
+  "locale": "en-US",
+  "keywords": [
+    "Prakash Sellathurai",
+    "prakash S",
+    "Indian Software Engineer",
+    "Software Engineer",
+    "Web Development",
+    "Mechatronics",
+    "Open Source",
+    "Technology Blog",
+    "Software Engineering",
+    "Full Stack Development",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "JavaScript"
+  ],
+  "authorDetails": {
+    "@type": "Person",
+    "name": "Prakash Sellathurai",
+    "alternateName": "Prakash S",
+    "description": "Software Engineer with expertise in web development, open-source contributions, and innovative technology solutions",
+    "email": "prakashsellathurai@gmail.com",
+    "image": "__BASE_PATH__/static/images/logo.png",
+    "url": "https://prakashsellathurai.com/",
+    "sameAs": [
+      "https://github.com/prakashsellathurai",
+      "https://www.linkedin.com/in/prakashsellathurai/",
+      "https://www.instagram.com/ch_a_ivalry/"
+    ],
+    "jobTitle": "Software Engineer",
+    "knowsAbout": [
+      "Software Engineering",
+      "Web Development",
+      "Mechatronics",
+      "Open Source",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Next.js"
+    ]
+  },
+  "stickyNav": false,
+  "analytics": {
+    "googleAnalytics": {
+      "googleAnalyticsId": "G-1BMPC95JP7"
+    }
+  },
+  "newsletter": {
+    "provider": "buttondown"
+  },
+  "comments": {
+    "provider": "giscus",
+    "giscusConfig": {
+      "repo": "",
+      "repositoryId": "",
+      "category": "",
+      "categoryId": "",
+      "mapping": "pathname",
+      "reactions": "1",
+      "metadata": "0",
+      "theme": "light",
+      "darkTheme": "transparent_dark",
+      "themeURL": "",
+      "lang": "en"
+    }
+  },
+  "search": {
+    "provider": "kbar",
+    "kbarConfig": {
+      "searchDocumentsPath": "__BASE_PATH__/search.json"
+    }
+  }
+}

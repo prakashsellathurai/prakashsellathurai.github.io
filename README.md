@@ -6,13 +6,16 @@ Personal website.
 
 ```bash
 # Generate static HTML pages from data files
-bun run build
+make build
 
 # Start a local development server
-bun run dev
+make dev
 
 # Update data (books, github stats)
-bun run update-data
+make update-data
+
+# Run tests
+make test
 ```
 
 ## Structure
@@ -22,5 +25,5 @@ bun run update-data
     - `public/`     - Static assets (images, fonts, favicons)
 - `code/`
     - `scripts/`    - Build scripts
-    - `test/`       - Playwright tests
+    - `tests/`      - Playwright tests
 - `out/`            - Generated static site output (deployed to GitHub Pages)

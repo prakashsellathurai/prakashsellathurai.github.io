@@ -1,9 +1,0 @@
-[install]
-# Supply chain security: never execute install scripts unless explicitly trusted
-ignoreScripts = true
-
-# Block packages published less than 24 hours ago (86400s = 24h)
-minimumReleaseAge = 86400
-
-# Only Playwright needs postinstall to download browser binaries
-trustedDependencies = ["@playwright/test", "playwright"]

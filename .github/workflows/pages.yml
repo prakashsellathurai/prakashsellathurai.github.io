@@ -20,12 +20,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v1
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install Python
+        run: uv python install
+      - name: Install dependencies
+        run: uv sync
       - id: configurepages
         uses: actions/configure-pages@v5
-      - run: bun install --frozen-lockfile
-      - run: bun audit
-      - run: bun run build
+      - name: Build site
+        run: make build
         env:
           EXPORT: 1
           UNOPTIMIZED: 1

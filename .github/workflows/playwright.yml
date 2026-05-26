@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Tests
 on:
   push:
     branches: [ main ]
@@ -10,25 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: oven-sh/setup-bun@v2
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
       with:
-        bun-version: latest
-    - run: bun install --frozen-lockfile
-    - run: bun audit
+        enable-cache: true
+    - name: Install Python
+      run: uv python install
+    - name: Install dependencies
+      run: make install-dev
     - name: Cache Playwright browsers
       id: playwright-cache
       uses: actions/cache@v4
       with:
         path: ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+        key: ${{ runner.os }}-playwright-${{ hashFiles('uv.lock') }}
     - name: Install Playwright Browsers
       if: steps.playwright-cache.outputs.cache-hit != 'true'
-      run: bunx playwright install --with-deps
-    - name: Run Playwright tests
-      run: bun run test
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      run: make install-playwright
+    - name: Run tests
+      run: make test

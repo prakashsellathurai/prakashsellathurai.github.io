@@ -16,6 +16,14 @@
         "href": "leetcode-solutions/problems/0013-roman-to-integer/index.html"
     },
     {
+        "title": "problems/0026-remove-duplicates-from-sorted-array/index.html",
+        "href": "leetcode-solutions/problems/0026-remove-duplicates-from-sorted-array/index.html"
+    },
+    {
+        "title": "problems/0027-remove-element/index.html",
+        "href": "leetcode-solutions/problems/0027-remove-element/index.html"
+    },
+    {
         "title": "problems/0033-search-in-rotated-sorted-array/index.html",
         "href": "leetcode-solutions/problems/0033-search-in-rotated-sorted-array/index.html"
     },
@@ -24,8 +32,16 @@
         "href": "leetcode-solutions/problems/0053-maximum-subarray/index.html"
     },
     {
+        "title": "problems/0080-remove-duplicates-from-sorted-array-ii/index.html",
+        "href": "leetcode-solutions/problems/0080-remove-duplicates-from-sorted-array-ii/index.html"
+    },
+    {
         "title": "problems/0084-largest-rectangle-in-histogram/index.html",
         "href": "leetcode-solutions/problems/0084-largest-rectangle-in-histogram/index.html"
+    },
+    {
+        "title": "problems/0088-merge-sorted-array/index.html",
+        "href": "leetcode-solutions/problems/0088-merge-sorted-array/index.html"
     },
     {
         "title": "problems/0125-valid-palindrome/index.html",
@@ -42,6 +58,10 @@
     {
         "title": "problems/0150-evaluate-reverse-polish-notation/index.html",
         "href": "leetcode-solutions/problems/0150-evaluate-reverse-polish-notation/index.html"
+    },
+    {
+        "title": "problems/0169-majority-element/index.html",
+        "href": "leetcode-solutions/problems/0169-majority-element/index.html"
     },
     {
         "title": "problems/0186-reverse-words-in-a-string-ii/index.html",
@@ -74,6 +94,10 @@
     {
         "title": "problems/0482-license-key-formatting/index.html",
         "href": "leetcode-solutions/problems/0482-license-key-formatting/index.html"
+    },
+    {
+        "title": "problems/0622-design-circular-queue/index.html",
+        "href": "leetcode-solutions/problems/0622-design-circular-queue/index.html"
     },
     {
         "title": "problems/0633-sum-of-square-numbers/index.html",

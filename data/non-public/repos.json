@@ -48,9 +48,17 @@
         "pinned": true
     },
     {
+        "title": "prakashsellathurai.github.io",
+        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+        "website": "https://prakashsellathurai.com/",
+        "description": "personal website",
+        "stars": 0,
+        "pinned": false
+    },
+    {
         "title": "ssserve",
         "href": "https://github.com/prakashsellathurai/ssserve",
-        "website": "https://prakashsellathurai.com/ssserve/",
+        "website": "https://pypi.org/project/ssserve/",
         "description": "Python port of [vercel/serve](https://github.com/vercel/serve) \u2014 static file serving and directory listing.",
         "stars": 0,
         "pinned": false
@@ -60,14 +68,6 @@
         "href": "https://github.com/prakashsellathurai/leetcode-solutions",
         "website": "https://prakashsellathurai.github.io/leetcode-solutions",
         "description": "My solutions to Leetcode problems",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "prakashsellathurai.github.io",
-        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-        "website": "https://prakashsellathurai.com/",
-        "description": "personal website",
         "stars": 0,
         "pinned": false
     },
@@ -292,7 +292,7 @@
         "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
         "website": "https://www.prakashsellathurai.com/blog/2020/10/03/awesome-product-management",
         "description": "A curated list of Product Management Resources :seedling:",
-        "stars": 61,
+        "stars": 62,
         "pinned": false
     },
     {

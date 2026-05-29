@@ -1,13 +1,13 @@
 {
   "currently-reading": [
     {
-      "title": "What If?: Serious Scientific Answers to Absurd Hypothetical Questions",
-      "link": "https://www.goodreads.com/review/show/8127405475?utm_medium=api&utm_source=rss",
-      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1451351509l/21413662._SX318_.jpg",
-      "author": "Randall Munroe",
+      "title": "Relevant Search: With applications for Solr and Elasticsearch",
+      "link": "https://www.goodreads.com/review/show/8641013276?utm_medium=api&utm_source=rss",
+      "imageUrl": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1451247412l/28328882._SX318_.jpg",
+      "author": "Doug Turnbull",
       "rating": "0",
-      "description": "Fans of the xkcd comic ask Munroe a lot of strange questions: What if you tried to hit a baseball pitched at 90 percent the speed of light? How fast can you hit a speed bump while driving and live? If there was a robot apocalypse, how long would humanity last? What if everyone only had one soulmate? What would happen if the moon went away?In pursuit of answers, Munroe runs computer simulations, pores over stacks of declassified military research memos, solves differential equations, and consults with nuclear reactor operators. His responses are masterpieces of clarity and hilarity, complemented by his signature xkcd comics. (They often predict the complete annihilation of humankind, or at least a really big explosion.)In celebration of 10 years of unusual insight, Randall Munroe has revised his classic blockbuster to ask what if? x 10. The result is 10x the adventure of scientific inquiry. Featuring brand-new 2-color annotations and illustrations, this special anniversary edition is far more than a book for geeks, What If? explains the laws of science in operation in a way that every intelligent reader will enjoy and feel much smarter for having read.",
-      "pubDate": "Sat, 06 Dec 2025 21:43:42 -0800"
+      "description": "SummaryRelevant Search demystifies relevance work. Using Elasticsearch, it teaches you how to return engaging search results to your users, helping you understand and leverage the internals of Lucene-based search engines.Purchase of the print book includes a free eBook in PDF, Kindle, and ePub formats from Manning Publications.About the TechnologyUsers are accustomed to and expect instant, relevant search results. To achieve this, you must master the search engine. Yet for many developers, relevance ranking is mysterious or confusing.About the BookRelevant Search demystifies the subject and shows you that a search engine is a programmable relevance framework. You'll learn how to apply Elasticsearch or Solr to your business's unique ranking problems. The book demonstrates how to program relevance and how to incorporate secondary data sources, taxonomies, text analytics, and personalization. In practice, a relevance framework requires softer skills as well, such as collaborating with stakeholders to discover the right relevance requirements for your business. By the end, you'll be able to achieve a virtuous cycle of provable, measurable relevance improvements over a search product's lifetime.What's InsideAbout the ReaderFor developers trying to build smarter search with Elasticsearch or Solr.About the AuthorsDoug Turnbull is lead relevance consultant at OpenSource Connections, where he frequently speaks and blogs. John Berryman is a data engineer at Eventbrite, where he specializes in recommendations and search.Foreword author, Trey Grainger , is a director of engineering at CareerBuilder and author of Solr in Action .Table of Contents",
+      "pubDate": "Fri, 29 May 2026 06:02:00 -0700"
     }
   ],
   "read": [

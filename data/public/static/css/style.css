@@ -30,18 +30,39 @@
 }
 
 body {
+    position: relative;
     font-family: "Lora", Georgia, "Times New Roman", serif;
     line-height: 1.8;
     color: var(--text);
     background: var(--bg);
     background-image:
         linear-gradient(rgba(245, 242, 235, 0.3), rgba(245, 242, 235, 0.3)),
-        url("/static/images/wabi-sabi-bg.webp");
+        url("/static/images/wabi-sabi-bg-low.webp");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     margin: 0 auto;
     padding: 3rem 1.5rem;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(245, 242, 235, 0.3), rgba(245, 242, 235, 0.3)),
+        url("/static/images/wabi-sabi-bg.webp");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0;
+    animation: bg-fade-in 0.6s ease 0.3s forwards;
+}
+
+@keyframes bg-fade-in {
+    to { opacity: 1; }
 }
 
 a {

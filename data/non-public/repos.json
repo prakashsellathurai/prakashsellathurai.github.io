@@ -1,18 +1,18 @@
 [
     {
-        "title": "cpython",
-        "href": "https://github.com/prakashsellathurai/cpython",
-        "website": "https://www.python.org",
-        "description": "Fork for PR: #148226 Fix null dereference in Generic Alias object",
-        "stars": 0,
-        "pinned": true
-    },
-    {
         "title": "Heimdall",
         "href": "https://github.com/prakashsellathurai/Heimdall",
         "website": "https://chromewebstore.google.com/detail/heimdall/kicalmkcgkhjgpijjclbnpodjppniank",
         "description": "Heimdall is a feature-rich RSS feed curator available as a browser extension.",
         "stars": 1,
+        "pinned": true
+    },
+    {
+        "title": "cpython",
+        "href": "https://github.com/prakashsellathurai/cpython",
+        "website": "https://www.python.org",
+        "description": "Fork for PR: #148226 Fix null dereference in Generic Alias object",
+        "stars": 0,
         "pinned": true
     },
     {

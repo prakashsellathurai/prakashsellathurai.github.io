@@ -48,6 +48,14 @@
         "pinned": true
     },
     {
+        "title": "InterDimensionalCable",
+        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
+        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
+        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
+        "stars": 0,
+        "pinned": false
+    },
+    {
         "title": "prakashsellathurai.github.io",
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
@@ -76,14 +84,6 @@
         "href": "https://github.com/prakashsellathurai/grimoire",
         "website": "",
         "description": "scripts, notebooks and computer codes",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "InterDimensionalCable",
-        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
-        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
-        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
         "stars": 0,
         "pinned": false
     },

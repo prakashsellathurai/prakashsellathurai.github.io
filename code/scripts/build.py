@@ -245,6 +245,7 @@ class TemplateRenderer:
 
         person_schema = {
             "@type": "Person",
+            "@id": site_url + "/#person",
             "name": author_name,
             "url": site_url,
             "sameAs": same_as,
@@ -581,12 +582,25 @@ class PageBuilder:
         template = self.data_loader.load_template("about")
         site_url = metadata["siteUrl"].rstrip("/")
 
+        author_details = metadata.get("authorDetails", {})
+        person = {
+            "@type": "Person",
+            "name": metadata["author"],
+            "url": site_url,
+            "sameAs": author_details.get("sameAs", []),
+            "jobTitle": author_details.get("jobTitle", "Software Engineer"),
+            "description": metadata.get("description", ""),
+        }
+        author_img = author_details.get("image") or metadata.get("siteLogo", "")
+        if author_img:
+            person["image"] = site_url + author_img
+        email = metadata.get("email")
+        if email:
+            person["email"] = email
+
         about_page = {
-            "@type": "AboutPage",
-            "name": f"About {metadata['author']}",
-            "description": f"About {metadata['author']}",
-            "url": site_url + "/about.html",
-            "mainEntity": {"@type": "Person", "name": metadata["author"]},
+            "@type": "ProfilePage",
+            "mainEntity": person,
         }
 
         html = self.build_common(

@@ -154,14 +154,16 @@ class TestEssaySEO:
 
 
 class TestAboutPageSEO:
-    def test_should_have_about_page_schema(self, page):
+    def test_should_have_profile_page_schema(self, page):
         page.goto("/about.html")
         data = _load_json_ld(page)
-        about = _get_schema(data, "AboutPage")
-        assert about
-        assert "About" in about["name"]
-        assert about["mainEntity"]["@type"] == "Person"
-        assert "prakashsellathurai.com" in about["url"]
+        profile = _get_schema(data, "ProfilePage")
+        assert profile
+        assert profile["mainEntity"]["@type"] == "Person"
+        assert profile["mainEntity"]["name"]
+        assert profile["mainEntity"]["image"]
+        assert profile["mainEntity"]["sameAs"]
+        assert profile["mainEntity"]["email"]
 
     def test_should_have_about_breadcrumbs(self, page):
         page.goto("/about.html")

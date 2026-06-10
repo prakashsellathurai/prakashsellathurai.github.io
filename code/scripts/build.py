@@ -150,7 +150,55 @@ class DataLoader:
 
 class TemplateRenderer:
     @staticmethod
-    def render_head(metadata, page_info):
+    def _breadcrumbs_for_url(url, site_url):
+        if not url or url == "/":
+            return None
+
+        page_names = {
+            "/essays/": "Essays",
+            "/about.html": "About",
+            "/projects.html": "Projects",
+            "/bookshelf.html": "Bookshelf",
+            "/tags/": "Tags",
+        }
+
+        items = []
+
+        if url in page_names:
+            items.append({
+                "@type": "ListItem", "position": 1,
+                "item": {"@id": site_url + "/", "name": "Home"}
+            })
+            items.append({
+                "@type": "ListItem", "position": 2,
+                "item": {"@id": site_url + url, "name": page_names[url]}
+            })
+        else:
+            parts = url.strip("/").split("/")
+            if len(parts) >= 2:
+                parent_path = "/" + parts[0] + "/"
+                parent_name = page_names.get(parent_path, parts[0].replace(".html", "").replace("-", " ").title())
+                items.append({
+                    "@type": "ListItem", "position": 1,
+                    "item": {"@id": site_url + "/", "name": "Home"}
+                })
+                items.append({
+                    "@type": "ListItem", "position": 2,
+                    "item": {"@id": site_url + parent_path, "name": parent_name}
+                })
+                child_name = parts[-1].replace(".html", "").replace("-", " ").title()
+                items.append({
+                    "@type": "ListItem", "position": 3,
+                    "item": {"@id": site_url + url, "name": child_name}
+                })
+
+        if not items:
+            return None
+
+        return {"@type": "BreadcrumbList", "itemListElement": items}
+
+    @staticmethod
+    def render_head(metadata, page_info, extra_schemas=None):
         site_url = metadata["siteUrl"].rstrip("/")
         full_url = f"{site_url}{page_info['url']}" if page_info["url"] else site_url
         og_image = page_info.get("image") or metadata.get("socialBanner") or metadata.get("siteLogo", "")
@@ -174,22 +222,60 @@ class TemplateRenderer:
   <meta name="twitter:image" content="{site_url}{og_image}">"""
 
         author_details = metadata.get("authorDetails", {})
-        same_as = json.dumps(author_details.get("sameAs", []))
-        job_title = _escape_html(author_details.get("jobTitle", "Software Engineer"))
-        desc = _escape_html(metadata.get("description", ""))
-        author_name = _escape_html(metadata.get("author", ""))
+        same_as = author_details.get("sameAs", [])
+        author_name = metadata.get("author", "")
+        job_title = author_details.get("jobTitle", "Software Engineer")
+        author_desc = metadata.get("description", "")
 
+        schemas = []
+
+        schemas.append({
+            "@type": "WebSite",
+            "url": site_url + "/",
+            "name": metadata["title"],
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": site_url + "/?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+            }
+        })
+
+        person_schema = {
+            "@type": "Person",
+            "name": author_name,
+            "url": site_url,
+            "sameAs": same_as,
+            "jobTitle": job_title,
+            "description": author_desc,
+        }
+        author_img = author_details.get("image") or metadata.get("siteLogo", "")
+        if author_img:
+            person_schema["image"] = site_url + author_img
+        email = metadata.get("email")
+        if email:
+            person_schema["email"] = email
+        schemas.append(person_schema)
+
+        breadcrumbs = TemplateRenderer._breadcrumbs_for_url(page_info.get("url", ""), site_url)
+        if breadcrumbs:
+            schemas.append(breadcrumbs)
+
+        if extra_schemas:
+            schemas.extend(extra_schemas)
+
+        if len(schemas) == 1:
+            schemas[0]["@context"] = "https://schema.org"
+            json_ld_obj = schemas[0]
+        else:
+            json_ld_obj = {"@context": "https://schema.org", "@graph": schemas}
+
+        json_ld_str = json.dumps(json_ld_obj, indent=2)
         json_ld = f"""
   <script type="application/ld+json">
-  {{
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "{author_name}",
-    "url": "{site_url}",
-    "sameAs": {same_as},
-    "jobTitle": "{job_title}",
-    "description": "{desc}"
-  }}
+  {json_ld_str}
   </script>"""
 
         css_link = '<link rel="stylesheet" href="/static/css/style.css">'
@@ -372,14 +458,14 @@ class PageBuilder:
         self.data_loader = data_loader
         self.markdown_renderer = markdown_renderer
 
-    def build_common(self, template, metadata, page_title, page_description, url="", image=""):
+    def build_common(self, template, metadata, page_title, page_description, url="", image="", extra_schemas=None):
         return TemplateRenderer.apply(template, {
             "head": TemplateRenderer.render_head(metadata, {
                 "title": page_title,
                 "description": page_description,
                 "url": url,
                 "image": image,
-            }),
+            }, extra_schemas=extra_schemas),
             "header": TemplateRenderer.render_header(metadata),
             "footer": TemplateRenderer.render_footer(metadata),
         })
@@ -457,11 +543,27 @@ class PageBuilder:
 
     def build_essay(self, metadata, essay):
         template = self.data_loader.load_template("essay")
+        site_url = metadata["siteUrl"].rstrip("/")
+        essay_url = f"/essays/{essay['slug']}.html"
+
+        blog_posting = {
+            "@type": "BlogPosting",
+            "headline": essay["title"],
+            "description": essay.get("summary", ""),
+            "datePublished": _format_date_iso(essay["date"]),
+            "dateModified": _format_date_iso(essay["date"]),
+            "author": {"@type": "Person", "name": metadata["author"]},
+            "url": site_url + essay_url,
+            "image": site_url + (metadata.get("socialBanner") or metadata.get("siteLogo", "")),
+            "mainEntityOfPage": {"@type": "WebPage", "@id": site_url + essay_url},
+        }
+
         html = self.build_common(
             template, metadata,
             f"{essay['title']} - {metadata['title']}",
             essay["summary"],
-            f"/essays/{essay['slug']}.html",
+            essay_url,
+            extra_schemas=[blog_posting],
         )
 
         essay_content = self.markdown_renderer.render(essay["content"])
@@ -477,11 +579,22 @@ class PageBuilder:
 
     def build_about(self, metadata, author, avatar):
         template = self.data_loader.load_template("about")
+        site_url = metadata["siteUrl"].rstrip("/")
+
+        about_page = {
+            "@type": "AboutPage",
+            "name": f"About {metadata['author']}",
+            "description": f"About {metadata['author']}",
+            "url": site_url + "/about.html",
+            "mainEntity": {"@type": "Person", "name": metadata["author"]},
+        }
+
         html = self.build_common(
             template, metadata,
             f"About - {metadata['title']}",
             f"About {metadata['author']}",
             "/about.html",
+            extra_schemas=[about_page],
         )
 
         author_body = self.markdown_renderer.render(author["body"])
@@ -497,11 +610,39 @@ class PageBuilder:
 
     def build_projects(self, metadata, projects):
         template = self.data_loader.load_template("projects")
+        site_url = metadata["siteUrl"].rstrip("/")
+
+        software_items = []
+        for i, p in enumerate(projects, 1):
+            app_url = p.get("website") or p["href"]
+            app = {
+                "@type": "SoftwareApplication",
+                "name": p["title"],
+                "description": p.get("description", ""),
+                "url": app_url,
+                "codeRepository": p["href"],
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "author": {"@type": "Person", "name": metadata["author"]},
+            }
+            software_items.append({
+                "@type": "ListItem", "position": i, "item": app,
+            })
+
+        collection_schema = {
+            "@type": "CollectionPage",
+            "mainEntity": {
+                "@type": "ItemList",
+                "itemListElement": software_items,
+            },
+        }
+
         html = self.build_common(
             template, metadata,
             f"Projects - {metadata['title']}",
             f"Projects by {metadata['author']}",
             "/projects.html",
+            extra_schemas=[collection_schema],
         )
 
         projects_list_html = (

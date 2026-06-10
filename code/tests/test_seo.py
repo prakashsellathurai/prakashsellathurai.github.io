@@ -4,6 +4,21 @@ import re
 from playwright.sync_api import expect
 
 
+def _get_schema(data, schema_type):
+    if data.get("@type") == schema_type:
+        return data
+    if "@graph" in data:
+        for item in data["@graph"]:
+            if item.get("@type") == schema_type:
+                return item
+    return None
+
+
+def _load_json_ld(page):
+    text = page.locator('script[type="application/ld+json"]').text_content()
+    return json.loads(text) if text else None
+
+
 class TestHomepageSEO:
     def test_should_have_title_tag(self, page):
         page.goto("/")
@@ -41,12 +56,28 @@ class TestHomepageSEO:
 
     def test_should_have_json_ld_structured_data(self, page):
         page.goto("/")
-        json_ld = page.locator('script[type="application/ld+json"]').text_content()
-        assert json_ld
-        data = json.loads(json_ld)
-        assert data["@type"] == "Person"
-        assert data["name"]
-        assert "prakashsellathurai.com" in data["url"]
+        data = _load_json_ld(page)
+        assert data
+
+    def test_should_have_website_schema(self, page):
+        page.goto("/")
+        data = _load_json_ld(page)
+        website = _get_schema(data, "WebSite")
+        assert website
+        assert website["name"]
+        assert website["url"] == "https://prakashsellathurai.com/"
+        assert website["potentialAction"]["@type"] == "SearchAction"
+        assert "search_term_string" in website["potentialAction"]["query-input"]
+
+    def test_should_have_person_schema(self, page):
+        page.goto("/")
+        data = _load_json_ld(page)
+        person = _get_schema(data, "Person")
+        assert person
+        assert person["name"]
+        assert "prakashsellathurai.com" in person["url"]
+        assert person.get("image")
+        assert person.get("email")
 
     def test_should_have_robots_txt(self, page):
         response = page.request.get("/robots.txt")
@@ -94,3 +125,73 @@ class TestEssaySEO:
         page.goto(href)
         canonical = page.locator('link[rel="canonical"]').get_attribute("href")
         assert "/essays/" in canonical
+
+    def test_should_have_blog_posting_schema(self, page):
+        page.goto("/essays/")
+        first_essay = page.locator("article h2 a").first
+        href = first_essay.get_attribute("href")
+        page.goto(href)
+        data = _load_json_ld(page)
+        blog = _get_schema(data, "BlogPosting")
+        assert blog
+        assert blog["headline"]
+        assert blog["datePublished"]
+        assert blog["author"]["@type"] == "Person"
+        assert blog["author"]["name"]
+        assert "prakashsellathurai.com" in blog["url"]
+
+    def test_should_have_essay_breadcrumbs(self, page):
+        page.goto("/essays/")
+        first_essay = page.locator("article h2 a").first
+        href = first_essay.get_attribute("href")
+        page.goto(href)
+        data = _load_json_ld(page)
+        breadcrumbs = _get_schema(data, "BreadcrumbList")
+        assert breadcrumbs
+        assert len(breadcrumbs["itemListElement"]) >= 3
+        assert breadcrumbs["itemListElement"][0]["item"]["name"] == "Home"
+        assert breadcrumbs["itemListElement"][1]["item"]["name"] == "Essays"
+
+
+class TestAboutPageSEO:
+    def test_should_have_about_page_schema(self, page):
+        page.goto("/about.html")
+        data = _load_json_ld(page)
+        about = _get_schema(data, "AboutPage")
+        assert about
+        assert "About" in about["name"]
+        assert about["mainEntity"]["@type"] == "Person"
+        assert "prakashsellathurai.com" in about["url"]
+
+    def test_should_have_about_breadcrumbs(self, page):
+        page.goto("/about.html")
+        data = _load_json_ld(page)
+        breadcrumbs = _get_schema(data, "BreadcrumbList")
+        assert breadcrumbs
+        assert len(breadcrumbs["itemListElement"]) == 2
+        assert breadcrumbs["itemListElement"][1]["item"]["name"] == "About"
+
+
+class TestProjectsPageSEO:
+    def test_should_have_collection_page_schema(self, page):
+        page.goto("/projects.html")
+        data = _load_json_ld(page)
+        collection = _get_schema(data, "CollectionPage")
+        assert collection
+        assert collection["mainEntity"]["@type"] == "ItemList"
+        items = collection["mainEntity"]["itemListElement"]
+        assert len(items) > 0
+        first = items[0]
+        assert first["@type"] == "ListItem"
+        assert first["item"]["@type"] == "SoftwareApplication"
+        assert first["item"]["name"]
+        assert first["item"]["codeRepository"]
+        assert first["item"]["applicationCategory"] == "DeveloperApplication"
+
+    def test_should_have_projects_breadcrumbs(self, page):
+        page.goto("/projects.html")
+        data = _load_json_ld(page)
+        breadcrumbs = _get_schema(data, "BreadcrumbList")
+        assert breadcrumbs
+        assert len(breadcrumbs["itemListElement"]) == 2
+        assert breadcrumbs["itemListElement"][1]["item"]["name"] == "Projects"

@@ -257,6 +257,9 @@ class TemplateRenderer:
         email = metadata.get("email")
         if email:
             person_schema["email"] = email
+        knows_about = author_details.get("knowsAbout")
+        if knows_about:
+            person_schema["knowsAbout"] = knows_about
         schemas.append(person_schema)
 
         breadcrumbs = TemplateRenderer._breadcrumbs_for_url(page_info.get("url", ""), site_url)
@@ -580,13 +583,31 @@ class PageBuilder:
     def build_about(self, metadata, author, avatar):
         template = self.data_loader.load_template("about")
         site_url = metadata["siteUrl"].rstrip("/")
+        author_details = metadata.get("authorDetails", {})
+
+        main_entity = {
+            "@type": "Person",
+            "name": metadata["author"],
+            "description": author_details.get("description") or metadata.get("description", ""),
+            "sameAs": author_details.get("sameAs", []),
+            "jobTitle": author_details.get("jobTitle", "Software Engineer"),
+        }
+        img = author_details.get("image") or metadata.get("siteLogo", "")
+        if img:
+            main_entity["image"] = site_url + img.replace("__BASE_PATH__", "")
+        email = metadata.get("email")
+        if email:
+            main_entity["email"] = email
+        knows_about = author_details.get("knowsAbout")
+        if knows_about:
+            main_entity["knowsAbout"] = knows_about
 
         about_page = {
-            "@type": "AboutPage",
+            "@type": "ProfilePage",
             "name": f"About {metadata['author']}",
             "description": f"About {metadata['author']}",
             "url": site_url + "/about.html",
-            "mainEntity": {"@type": "Person", "name": metadata["author"]},
+            "mainEntity": main_entity,
         }
 
         html = self.build_common(

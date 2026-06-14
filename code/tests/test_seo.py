@@ -157,11 +157,24 @@ class TestAboutPageSEO:
     def test_should_have_about_page_schema(self, page):
         page.goto("/about.html")
         data = _load_json_ld(page)
-        about = _get_schema(data, "AboutPage")
+        about = _get_schema(data, "ProfilePage")
         assert about
         assert "About" in about["name"]
         assert about["mainEntity"]["@type"] == "Person"
         assert "prakashsellathurai.com" in about["url"]
+
+    def test_should_have_profile_rich_result(self, page):
+        page.goto("/about.html")
+        data = _load_json_ld(page)
+        about = _get_schema(data, "ProfilePage")
+        person = about["mainEntity"]
+        assert person["name"] == "Prakash Sellathurai"
+        assert person["description"]
+        assert person["sameAs"]
+        assert person["jobTitle"]
+        assert person["image"]
+        assert person["email"]
+        assert person["knowsAbout"]
 
     def test_should_have_about_breadcrumbs(self, page):
         page.goto("/about.html")

@@ -257,6 +257,9 @@ class TemplateRenderer:
         email = metadata.get("email")
         if email:
             person_schema["email"] = email
+        knows_about = author_details.get("knowsAbout")
+        if knows_about:
+            person_schema["knowsAbout"] = knows_about
         schemas.append(person_schema)
 
         breadcrumbs = TemplateRenderer._breadcrumbs_for_url(page_info.get("url", ""), site_url)
@@ -580,13 +583,31 @@ class PageBuilder:
     def build_about(self, metadata, author, avatar):
         template = self.data_loader.load_template("about")
         site_url = metadata["siteUrl"].rstrip("/")
+        author_details = metadata.get("authorDetails", {})
+
+        main_entity = {
+            "@type": "Person",
+            "name": metadata["author"],
+            "description": author_details.get("description") or metadata.get("description", ""),
+            "sameAs": author_details.get("sameAs", []),
+            "jobTitle": author_details.get("jobTitle", "Software Engineer"),
+        }
+        img = author_details.get("image") or metadata.get("siteLogo", "")
+        if img:
+            main_entity["image"] = site_url + img.replace("__BASE_PATH__", "")
+        email = metadata.get("email")
+        if email:
+            main_entity["email"] = email
+        knows_about = author_details.get("knowsAbout")
+        if knows_about:
+            main_entity["knowsAbout"] = knows_about
 
         about_page = {
-            "@type": "AboutPage",
+            "@type": "ProfilePage",
             "name": f"About {metadata['author']}",
             "description": f"About {metadata['author']}",
             "url": site_url + "/about.html",
-            "mainEntity": {"@type": "Person", "name": metadata["author"]},
+            "mainEntity": main_entity,
         }
 
         html = self.build_common(
@@ -664,12 +685,6 @@ class PageBuilder:
 
     def build_bookshelf(self, metadata, books):
         template = self.data_loader.load_template("bookshelf")
-        html = self.build_common(
-            template, metadata,
-            f"Bookshelf - {metadata['title']}",
-            "Books I've read",
-            "/bookshelf.html",
-        )
 
         def _hash_str(s):
             h = 0
@@ -716,6 +731,48 @@ class PageBuilder:
             {**category_configs[2], "books": read_books},
         ]
         groups = [g for g in groups_data if g["books"]]
+
+        site_url = metadata["siteUrl"].rstrip("/")
+        all_books = curated + currently_reading + read_books
+        book_list_items = []
+        for i, book in enumerate(all_books, 1):
+            b_schema = {"@type": "Book", "name": book["title"]}
+            b_schema["author"] = book.get("author", "")
+            b_schema["url"] = book.get("link", "")
+            if not _is_placeholder_cover(book.get("imageUrl", "")):
+                b_schema["image"] = book["imageUrl"]
+            try:
+                rating = int(book.get("rating", 0))
+            except (ValueError, TypeError):
+                rating = 0
+            if rating > 0:
+                b_schema["aggregateRating"] = {
+                    "@type": "AggregateRating",
+                    "ratingValue": rating,
+                    "ratingCount": 1,
+                    "bestRating": 5,
+                    "worstRating": 1,
+                }
+            book_list_items.append({"@type": "ListItem", "position": i, "item": b_schema})
+
+        collection_schema = {
+            "@type": "CollectionPage",
+            "name": "Bookshelf",
+            "description": "Books I've read",
+            "url": site_url + "/bookshelf.html",
+            "mainEntity": {
+                "@type": "ItemList",
+                "itemListElement": book_list_items,
+            },
+        }
+
+        html = self.build_common(
+            template, metadata,
+            f"Bookshelf - {metadata['title']}",
+            "Books I've read",
+            "/bookshelf.html",
+            extra_schemas=[collection_schema],
+        )
 
         def _build_spine(book, category):
             escaped_title = _escape_html(book.get("title", ""))

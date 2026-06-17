@@ -27,7 +27,16 @@ def _escape_html(text):
 
 def _format_date_iso(date_str):
     d = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
-    return d.strftime("%Y-%m-%d")
+    return d.isoformat()
+
+
+def _build_author_schema(metadata):
+    details = metadata.get("authorDetails", {})
+    author = {"@type": "Person", "name": metadata["author"]}
+    for key in ("url", "sameAs", "email", "jobTitle", "image"):
+        if key in details:
+            author[key] = details[key]
+    return author
 
 
 def _format_date(date_str):
@@ -555,7 +564,7 @@ class PageBuilder:
             "description": essay.get("summary", ""),
             "datePublished": _format_date_iso(essay["date"]),
             "dateModified": _format_date_iso(essay["date"]),
-            "author": {"@type": "Person", "name": metadata["author"]},
+            "author": _build_author_schema(metadata),
             "url": site_url + essay_url,
             "image": site_url + (metadata.get("socialBanner") or metadata.get("siteLogo", "")),
             "mainEntityOfPage": {"@type": "WebPage", "@id": site_url + essay_url},
@@ -588,6 +597,7 @@ class PageBuilder:
         main_entity = {
             "@type": "Person",
             "name": metadata["author"],
+            "url": site_url,
             "description": author_details.get("description") or metadata.get("description", ""),
             "sameAs": author_details.get("sameAs", []),
             "jobTitle": author_details.get("jobTitle", "Software Engineer"),
@@ -644,7 +654,19 @@ class PageBuilder:
                 "codeRepository": p["href"],
                 "applicationCategory": "DeveloperApplication",
                 "operatingSystem": "Any",
-                "author": {"@type": "Person", "name": metadata["author"]},
+                "author": _build_author_schema(metadata),
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD",
+                },
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": p.get("stars", 0),
+                    "bestRating": max((r.get("stars", 0) for r in projects), default=0),
+                    "worstRating": 0,
+                    "ratingCount": 1,
+                },
             }
             software_items.append({
                 "@type": "ListItem", "position": i, "item": app,

@@ -28,8 +28,16 @@
         "href": "leetcode-solutions/problems/0033-search-in-rotated-sorted-array/index.html"
     },
     {
+        "title": "problems/0045-jump-game-ii/index.html",
+        "href": "leetcode-solutions/problems/0045-jump-game-ii/index.html"
+    },
+    {
         "title": "problems/0053-maximum-subarray/index.html",
         "href": "leetcode-solutions/problems/0053-maximum-subarray/index.html"
+    },
+    {
+        "title": "problems/0055-jump-game/index.html",
+        "href": "leetcode-solutions/problems/0055-jump-game/index.html"
     },
     {
         "title": "problems/0080-remove-duplicates-from-sorted-array-ii/index.html",
@@ -42,6 +50,14 @@
     {
         "title": "problems/0088-merge-sorted-array/index.html",
         "href": "leetcode-solutions/problems/0088-merge-sorted-array/index.html"
+    },
+    {
+        "title": "problems/0121-best-time-to-buy-and-sell-stock/index.html",
+        "href": "leetcode-solutions/problems/0121-best-time-to-buy-and-sell-stock/index.html"
+    },
+    {
+        "title": "problems/0122-best-time-to-buy-and-sell-stock-ii/index.html",
+        "href": "leetcode-solutions/problems/0122-best-time-to-buy-and-sell-stock-ii/index.html"
     },
     {
         "title": "problems/0125-valid-palindrome/index.html",
@@ -68,6 +84,10 @@
         "href": "leetcode-solutions/problems/0186-reverse-words-in-a-string-ii/index.html"
     },
     {
+        "title": "problems/0189-rotate-array/index.html",
+        "href": "leetcode-solutions/problems/0189-rotate-array/index.html"
+    },
+    {
         "title": "problems/0206-reverse-linked-list/index.html",
         "href": "leetcode-solutions/problems/0206-reverse-linked-list/index.html"
     },
@@ -84,12 +104,24 @@
         "href": "leetcode-solutions/problems/0238-product-of-array-except-self/index.html"
     },
     {
+        "title": "problems/0274-h-index/index.html",
+        "href": "leetcode-solutions/problems/0274-h-index/index.html"
+    },
+    {
         "title": "problems/0373-find-k-pairs-with-smallest-sums/index.html",
         "href": "leetcode-solutions/problems/0373-find-k-pairs-with-smallest-sums/index.html"
     },
     {
+        "title": "problems/0380-insert-delete-getrandom-o1/index.html",
+        "href": "leetcode-solutions/problems/0380-insert-delete-getrandom-o1/index.html"
+    },
+    {
         "title": "problems/0459-repeated-substring-pattern/index.html",
         "href": "leetcode-solutions/problems/0459-repeated-substring-pattern/index.html"
+    },
+    {
+        "title": "problems/0460-lfu-cache/index.html",
+        "href": "leetcode-solutions/problems/0460-lfu-cache/index.html"
     },
     {
         "title": "problems/0482-license-key-formatting/index.html",
@@ -110,6 +142,10 @@
     {
         "title": "problems/0645-set-mismatch/index.html",
         "href": "leetcode-solutions/problems/0645-set-mismatch/index.html"
+    },
+    {
+        "title": "problems/0703-kth-largest-element-in-a-stream/index.html",
+        "href": "leetcode-solutions/problems/0703-kth-largest-element-in-a-stream/index.html"
     },
     {
         "title": "problems/0704-binary-search/index.html",

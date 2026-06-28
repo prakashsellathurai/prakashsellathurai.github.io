@@ -12,8 +12,24 @@
         "href": "leetcode-solutions/problems/0005-longest-palindromic-substring/index.html"
     },
     {
+        "title": "problems/0006-zigzag-conversion/index.html",
+        "href": "leetcode-solutions/problems/0006-zigzag-conversion/index.html"
+    },
+    {
+        "title": "problems/0011-container-with-most-water/index.html",
+        "href": "leetcode-solutions/problems/0011-container-with-most-water/index.html"
+    },
+    {
+        "title": "problems/0012-integer-to-roman/index.html",
+        "href": "leetcode-solutions/problems/0012-integer-to-roman/index.html"
+    },
+    {
         "title": "problems/0013-roman-to-integer/index.html",
         "href": "leetcode-solutions/problems/0013-roman-to-integer/index.html"
+    },
+    {
+        "title": "problems/0014-longest-common-prefix/index.html",
+        "href": "leetcode-solutions/problems/0014-longest-common-prefix/index.html"
     },
     {
         "title": "problems/0026-remove-duplicates-from-sorted-array/index.html",
@@ -24,8 +40,16 @@
         "href": "leetcode-solutions/problems/0027-remove-element/index.html"
     },
     {
+        "title": "problems/0028-find-the-index-of-the-first-occurrence-in-a-string/index.html",
+        "href": "leetcode-solutions/problems/0028-find-the-index-of-the-first-occurrence-in-a-string/index.html"
+    },
+    {
         "title": "problems/0033-search-in-rotated-sorted-array/index.html",
         "href": "leetcode-solutions/problems/0033-search-in-rotated-sorted-array/index.html"
+    },
+    {
+        "title": "problems/0042-trapping-rain-water/index.html",
+        "href": "leetcode-solutions/problems/0042-trapping-rain-water/index.html"
     },
     {
         "title": "problems/0045-jump-game-ii/index.html",
@@ -38,6 +62,14 @@
     {
         "title": "problems/0055-jump-game/index.html",
         "href": "leetcode-solutions/problems/0055-jump-game/index.html"
+    },
+    {
+        "title": "problems/0058-length-of-last-word/index.html",
+        "href": "leetcode-solutions/problems/0058-length-of-last-word/index.html"
+    },
+    {
+        "title": "problems/0068-text-justification/index.html",
+        "href": "leetcode-solutions/problems/0068-text-justification/index.html"
     },
     {
         "title": "problems/0080-remove-duplicates-from-sorted-array-ii/index.html",
@@ -64,6 +96,14 @@
         "href": "leetcode-solutions/problems/0125-valid-palindrome/index.html"
     },
     {
+        "title": "problems/0134-gas-station/index.html",
+        "href": "leetcode-solutions/problems/0134-gas-station/index.html"
+    },
+    {
+        "title": "problems/0135-candy/index.html",
+        "href": "leetcode-solutions/problems/0135-candy/index.html"
+    },
+    {
         "title": "problems/0146-lru-cache/index.html",
         "href": "leetcode-solutions/problems/0146-lru-cache/index.html"
     },
@@ -74,6 +114,14 @@
     {
         "title": "problems/0150-evaluate-reverse-polish-notation/index.html",
         "href": "leetcode-solutions/problems/0150-evaluate-reverse-polish-notation/index.html"
+    },
+    {
+        "title": "problems/0151-reverse-words-in-a-string/index.html",
+        "href": "leetcode-solutions/problems/0151-reverse-words-in-a-string/index.html"
+    },
+    {
+        "title": "problems/0167-two-sum-ii-input-array-is-sorted/index.html",
+        "href": "leetcode-solutions/problems/0167-two-sum-ii-input-array-is-sorted/index.html"
     },
     {
         "title": "problems/0169-majority-element/index.html",
@@ -114,6 +162,10 @@
     {
         "title": "problems/0380-insert-delete-getrandom-o1/index.html",
         "href": "leetcode-solutions/problems/0380-insert-delete-getrandom-o1/index.html"
+    },
+    {
+        "title": "problems/0392-is-subsequence/index.html",
+        "href": "leetcode-solutions/problems/0392-is-subsequence/index.html"
     },
     {
         "title": "problems/0459-repeated-substring-pattern/index.html",
@@ -742,6 +794,10 @@
     {
         "title": "problems/295-find-median-from-data-stream/index.html",
         "href": "leetcode-solutions/problems/295-find-median-from-data-stream/index.html"
+    },
+    {
+        "title": "problems/2965-find-missing-and-repeated-values/index.html",
+        "href": "leetcode-solutions/problems/2965-find-missing-and-repeated-values/index.html"
     },
     {
         "title": "problems/297-serialize-and-deserialize-binary-tree/index.html",

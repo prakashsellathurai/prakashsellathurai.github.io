@@ -56,6 +56,14 @@
         "pinned": false
     },
     {
+        "title": "grimoire",
+        "href": "https://github.com/prakashsellathurai/grimoire",
+        "website": "",
+        "description": "scripts, notebooks and computer codes",
+        "stars": 0,
+        "pinned": false
+    },
+    {
         "title": "prakashsellathurai.github.io",
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
@@ -68,14 +76,6 @@
         "href": "https://github.com/prakashsellathurai/slough",
         "website": "",
         "description": "Experimental toy library to dry-run Python code traces every variable value line-by-line through execution.",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "grimoire",
-        "href": "https://github.com/prakashsellathurai/grimoire",
-        "website": "",
-        "description": "scripts, notebooks and computer codes",
         "stars": 0,
         "pinned": false
     },

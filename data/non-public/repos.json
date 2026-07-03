@@ -56,6 +56,22 @@
         "pinned": false
     },
     {
+        "title": "slough",
+        "href": "https://github.com/prakashsellathurai/slough",
+        "website": "https://pypi.org/project/slough/",
+        "description": "Experimental toy library to dry-run Python code traces every variable value line-by-line through execution.",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "InterDimensionalCable",
+        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
+        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
+        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
+        "stars": 0,
+        "pinned": false
+    },
+    {
         "title": "grimoire",
         "href": "https://github.com/prakashsellathurai/grimoire",
         "website": "",
@@ -68,22 +84,6 @@
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
         "description": "personal website",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "slough",
-        "href": "https://github.com/prakashsellathurai/slough",
-        "website": "",
-        "description": "Experimental toy library to dry-run Python code traces every variable value line-by-line through execution.",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "InterDimensionalCable",
-        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
-        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
-        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
         "stars": 0,
         "pinned": false
     },
@@ -300,7 +300,7 @@
         "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
         "website": "https://www.prakashsellathurai.com/blog/2020/10/03/awesome-product-management",
         "description": "A curated list of Product Management Resources :seedling:",
-        "stars": 62,
+        "stars": 63,
         "pinned": false
     },
     {

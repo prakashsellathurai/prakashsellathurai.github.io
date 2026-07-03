@@ -9,7 +9,6 @@ from datetime import datetime, timezone
 from lib.frontmatter import parse_frontmatter
 from lib.markdown import MarkdownRenderer
 
-
 BASE_PATH = os.environ.get("BASE_PATH", "")
 
 
@@ -113,7 +112,9 @@ class DataLoader:
         return parse_frontmatter(content)
 
     def load_template(self, template_name):
-        template_path = os.path.join(self.data_dir, "templates", f"{template_name}.html")
+        template_path = os.path.join(
+            self.data_dir, "templates", f"{template_name}.html"
+        )
         if not FileSystem.exists(template_path):
             raise FileNotFoundError(f"Template not found: {template_path}")
         return FileSystem.read(template_path)
@@ -136,19 +137,24 @@ class DataLoader:
             if parsed["data"].get("draft"):
                 continue
             data = parsed["data"]
-            result.append({
-                "slug": file.replace(".md", ""),
-                "title": data.get("title", ""),
-                "date": data.get("date", ""),
-                "summary": data.get("summary", ""),
-                "tags": data.get("tags", []),
-                "content": parsed["content"],
-            })
+            result.append(
+                {
+                    "slug": file.replace(".md", ""),
+                    "title": data.get("title", ""),
+                    "date": data.get("date", ""),
+                    "summary": data.get("summary", ""),
+                    "tags": data.get("tags", []),
+                    "content": parsed["content"],
+                }
+            )
         result.sort(key=lambda x: x["date"], reverse=True)
         return result
 
     def get_books(self):
         return self.read_json("books.json")
+
+    def get_precept(self):
+        return self.read_json("precept.json")
 
     def get_projects(self):
         return self.read_json("repos.json")
@@ -174,32 +180,49 @@ class TemplateRenderer:
         items = []
 
         if url in page_names:
-            items.append({
-                "@type": "ListItem", "position": 1,
-                "item": {"@id": site_url + "/", "name": "Home"}
-            })
-            items.append({
-                "@type": "ListItem", "position": 2,
-                "item": {"@id": site_url + url, "name": page_names[url]}
-            })
+            items.append(
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {"@id": site_url + "/", "name": "Home"},
+                }
+            )
+            items.append(
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {"@id": site_url + url, "name": page_names[url]},
+                }
+            )
         else:
             parts = url.strip("/").split("/")
             if len(parts) >= 2:
                 parent_path = "/" + parts[0] + "/"
-                parent_name = page_names.get(parent_path, parts[0].replace(".html", "").replace("-", " ").title())
-                items.append({
-                    "@type": "ListItem", "position": 1,
-                    "item": {"@id": site_url + "/", "name": "Home"}
-                })
-                items.append({
-                    "@type": "ListItem", "position": 2,
-                    "item": {"@id": site_url + parent_path, "name": parent_name}
-                })
+                parent_name = page_names.get(
+                    parent_path, parts[0].replace(".html", "").replace("-", " ").title()
+                )
+                items.append(
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "item": {"@id": site_url + "/", "name": "Home"},
+                    }
+                )
+                items.append(
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "item": {"@id": site_url + parent_path, "name": parent_name},
+                    }
+                )
                 child_name = parts[-1].replace(".html", "").replace("-", " ").title()
-                items.append({
-                    "@type": "ListItem", "position": 3,
-                    "item": {"@id": site_url + url, "name": child_name}
-                })
+                items.append(
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "item": {"@id": site_url + url, "name": child_name},
+                    }
+                )
 
         if not items:
             return None
@@ -210,24 +233,32 @@ class TemplateRenderer:
     def render_head(metadata, page_info, extra_schemas=None):
         site_url = metadata["siteUrl"].rstrip("/")
         full_url = f"{site_url}{page_info['url']}" if page_info["url"] else site_url
-        og_image = page_info.get("image") or metadata.get("socialBanner") or metadata.get("siteLogo", "")
+        og_image = (
+            page_info.get("image")
+            or metadata.get("socialBanner")
+            or metadata.get("siteLogo", "")
+        )
         keywords = ", ".join(metadata.get("keywords", []))
 
         canonical = f'<link rel="canonical" href="{full_url}">'
-        keywords_meta = f'<meta name="keywords" content="{_escape_html(keywords)}">' if keywords else ""
+        keywords_meta = (
+            f'<meta name="keywords" content="{_escape_html(keywords)}">'
+            if keywords
+            else ""
+        )
 
         open_graph = f"""
-  <meta property="og:title" content="{_escape_html(page_info['title'])}">
-  <meta property="og:description" content="{_escape_html(page_info['description'])}">
+  <meta property="og:title" content="{_escape_html(page_info["title"])}">
+  <meta property="og:description" content="{_escape_html(page_info["description"])}">
   <meta property="og:url" content="{full_url}">
   <meta property="og:image" content="{site_url}{og_image}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="{_escape_html(metadata['title'])}">"""
+  <meta property="og:site_name" content="{_escape_html(metadata["title"])}">"""
 
         twitter_card = f"""
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{_escape_html(page_info['title'])}">
-  <meta name="twitter:description" content="{_escape_html(page_info['description'])}">
+  <meta name="twitter:title" content="{_escape_html(page_info["title"])}">
+  <meta name="twitter:description" content="{_escape_html(page_info["description"])}">
   <meta name="twitter:image" content="{site_url}{og_image}">"""
 
         author_details = metadata.get("authorDetails", {})
@@ -238,19 +269,21 @@ class TemplateRenderer:
 
         schemas = []
 
-        schemas.append({
-            "@type": "WebSite",
-            "url": site_url + "/",
-            "name": metadata["title"],
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": {
-                    "@type": "EntryPoint",
-                    "urlTemplate": site_url + "/?q={search_term_string}"
+        schemas.append(
+            {
+                "@type": "WebSite",
+                "url": site_url + "/",
+                "name": metadata["title"],
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": {
+                        "@type": "EntryPoint",
+                        "urlTemplate": site_url + "/?q={search_term_string}",
+                    },
+                    "query-input": "required name=search_term_string",
                 },
-                "query-input": "required name=search_term_string"
             }
-        })
+        )
 
         person_schema = {
             "@type": "Person",
@@ -271,7 +304,9 @@ class TemplateRenderer:
             person_schema["knowsAbout"] = knows_about
         schemas.append(person_schema)
 
-        breadcrumbs = TemplateRenderer._breadcrumbs_for_url(page_info.get("url", ""), site_url)
+        breadcrumbs = TemplateRenderer._breadcrumbs_for_url(
+            page_info.get("url", ""), site_url
+        )
         if breadcrumbs:
             schemas.append(breadcrumbs)
 
@@ -304,8 +339,8 @@ class TemplateRenderer:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{_escape_html(page_info['title'])}</title>
-  <meta name="description" content="{_escape_html(page_info['description'])}">
+  <title>{_escape_html(page_info["title"])}</title>
+  <meta name="description" content="{_escape_html(page_info["description"])}">
   {keywords_meta}
   {canonical}
   {open_graph}
@@ -345,7 +380,7 @@ class TemplateRenderer:
         year = datetime.now().year
         return f"""
 <footer>
-  <p>&copy; {year} {_escape_html(metadata['author'])}.</p>
+  <p>&copy; {year} {_escape_html(metadata["author"])}.</p>
 </footer>
 """
 
@@ -382,11 +417,19 @@ class FeedGenerator:
             {"loc": "/projects.html", "lastmod": today, "priority": "0.8"},
             {"loc": "/bookshelf.html", "lastmod": today, "priority": "0.8"},
             {"loc": "/leetcode-solutions/", "lastmod": today, "priority": "0.6"},
-            {"loc": "/static/resume/prakash_s_resume.pdf", "lastmod": today, "priority": "0.7"},
+            {
+                "loc": "/static/resume/prakash_s_resume.pdf",
+                "lastmod": today,
+                "priority": "0.7",
+            },
         ]
 
         essay_entries = [
-            {"loc": f"/essays/{e['slug']}.html", "lastmod": _format_date_iso(e["date"]), "priority": "0.7"}
+            {
+                "loc": f"/essays/{e['slug']}.html",
+                "lastmod": _format_date_iso(e["date"]),
+                "priority": "0.7",
+            }
             for e in essays
         ]
 
@@ -397,27 +440,37 @@ class FeedGenerator:
             if not website:
                 continue
             try:
-                hostname = website.split("://")[1].split("/")[0] if "://" in website else website.split("/")[0]
+                hostname = (
+                    website.split("://")[1].split("/")[0]
+                    if "://" in website
+                    else website.split("/")[0]
+                )
             except Exception:
                 continue
             if hostname == site_hostname:
                 loc = website.replace("http://", "https://")
-                project_entries.append({"loc": loc, "lastmod": today, "priority": "0.6"})
+                project_entries.append(
+                    {"loc": loc, "lastmod": today, "priority": "0.6"}
+                )
 
         leetcode_entries = [
             {"loc": s["href"], "lastmod": today, "priority": "0.5"}
             for s in leetcode_solutions
         ]
 
-        urls_data = pages + essay_entries + tag_entries + project_entries + leetcode_entries
+        urls_data = (
+            pages + essay_entries + tag_entries + project_entries + leetcode_entries
+        )
         url_lines = []
         for p in urls_data:
             if p["loc"].startswith("http"):
                 loc = p["loc"]
             else:
-                loc = site_url + ("/" if not p["loc"].startswith("/") else "") + p["loc"]
+                loc = (
+                    site_url + ("/" if not p["loc"].startswith("/") else "") + p["loc"]
+                )
             url_lines.append(
-                f'  <url>\n    <loc>{loc}</loc>\n    <lastmod>{p["lastmod"]}</lastmod>\n    <priority>{p["priority"]}</priority>\n  </url>'
+                f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{p['lastmod']}</lastmod>\n    <priority>{p['priority']}</priority>\n  </url>"
             )
 
         urls_xml = "\n".join(url_lines)
@@ -436,10 +489,10 @@ class FeedGenerator:
             d = datetime.fromisoformat(e["date"].replace("Z", "+00:00"))
             pub_date = d.strftime("%a, %d %b %Y %H:%M:%S GMT")
             items.append(f"""  <item>
-    <guid>{site_url}/essays/{e['slug']}.html</guid>
-    <title><![CDATA[{e['title']}]]></title>
-    <link>{site_url}/essays/{e['slug']}.html</link>
-    <description><![CDATA[{e.get('summary', '')}]]></description>
+    <guid>{site_url}/essays/{e["slug"]}.html</guid>
+    <title><![CDATA[{e["title"]}]]></title>
+    <link>{site_url}/essays/{e["slug"]}.html</link>
+    <description><![CDATA[{e.get("summary", "")}]]></description>
     <pubDate>{pub_date}</pubDate>
   </item>""")
 
@@ -454,10 +507,10 @@ class FeedGenerator:
         return f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title><![CDATA[{metadata['title']}]]></title>
+    <title><![CDATA[{metadata["title"]}]]></title>
     <link>{site_url}</link>
-    <description><![CDATA[{metadata['description']}]]></description>
-    <language>{metadata.get('language', 'en-us')}</language>
+    <description><![CDATA[{metadata["description"]}]]></description>
+    <language>{metadata.get("language", "en-us")}</language>
     <lastBuildDate>{last_build}</lastBuildDate>
     <atom:link href="{site_url}/feed.xml" rel="self" type="application/rss+xml"/>
 {items_xml}
@@ -470,33 +523,54 @@ class PageBuilder:
         self.data_loader = data_loader
         self.markdown_renderer = markdown_renderer
 
-    def build_common(self, template, metadata, page_title, page_description, url="", image="", extra_schemas=None):
-        return TemplateRenderer.apply(template, {
-            "head": TemplateRenderer.render_head(metadata, {
-                "title": page_title,
-                "description": page_description,
-                "url": url,
-                "image": image,
-            }, extra_schemas=extra_schemas),
-            "header": TemplateRenderer.render_header(metadata),
-            "footer": TemplateRenderer.render_footer(metadata),
-        })
+    def build_common(
+        self,
+        template,
+        metadata,
+        page_title,
+        page_description,
+        url="",
+        image="",
+        extra_schemas=None,
+    ):
+        return TemplateRenderer.apply(
+            template,
+            {
+                "head": TemplateRenderer.render_head(
+                    metadata,
+                    {
+                        "title": page_title,
+                        "description": page_description,
+                        "url": url,
+                        "image": image,
+                    },
+                    extra_schemas=extra_schemas,
+                ),
+                "header": TemplateRenderer.render_header(metadata),
+                "footer": TemplateRenderer.render_footer(metadata),
+            },
+        )
 
-    def build_home(self, metadata, essays, books, projects, author, avatar):
+    def build_home(self, metadata, essays, books, projects, author, avatar, precept):
         template = self.data_loader.load_template("home")
-        html = self.build_common(template, metadata, metadata["title"], metadata["description"], "/")
+        html = self.build_common(
+            template, metadata, metadata["title"], metadata["description"], "/"
+        )
 
-        recent_essays_html = "\n".join(
-            f"""    <article>
-      <h2><a href="/essays/{e['slug']}.html">{_escape_html(e['title'])}</a></h2>
-      <p class="meta"><time>{_format_date(e['date'])}</time></p>
-      <p class="summary">{_escape_html(e['summary'])}</p>
+        recent_essays_html = (
+            "\n".join(
+                f"""    <article>
+      <h2><a href="/essays/{e["slug"]}.html">{_escape_html(e["title"])}</a></h2>
+      <p class="meta"><time>{_format_date(e["date"])}</time></p>
+      <p class="summary">{_escape_html(e["summary"])}</p>
       <div class="tags">
-        {''.join(f'<a href="/tags/{t}.html">#{_escape_html(t)}</a>' for t in e['tags'][:3])}
+        {"".join(f'<a href="/tags/{t}.html">#{_escape_html(t)}</a>' for t in e["tags"][:3])}
       </div>
     </article>"""
-            for e in essays[:10]
-        ) + '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
+                for e in essays[:10]
+            )
+            + '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
+        )
 
         featured_projects_html = (
             '<div class="project-grid">'
@@ -504,7 +578,7 @@ class PageBuilder:
                 f"""    <div class="project-card">
       <h3>{f'<a href="{_escape_html(p["website"])}">{_escape_html(p["title"])}</a>' if p.get("website") else _escape_html(p["title"])}</h3>
       <p class="summary">{_escape_html(p.get("description", ""))}</p>
-      {('<div class="tags">' + "".join(f'<span>#{_escape_html(t)}</span>' for t in p.get("tags", [])) + "</div>") if p.get("tags") else ""}
+      {('<div class="tags">' + "".join(f"<span>#{_escape_html(t)}</span>" for t in p.get("tags", [])) + "</div>") if p.get("tags") else ""}
     </div>"""
                 for p in projects[:6]
             )
@@ -521,28 +595,45 @@ class PageBuilder:
 
         first_para = author["body"].split("\n\n")[0] if author["body"] else ""
 
-        html = TemplateRenderer.apply(html, {
-            "recentEssays": recent_essays_html,
-            "featuredProjects": featured_projects_html,
-            "authorPreview": _escape_html(first_para),
-            "readingList": reading_list_html,
-            "metadata.author": _escape_html(metadata["author"]),
-            "avatar": avatar,
-        })
+        precept_html = "\n".join(
+            f"""    <li>
+      <a href="{_escape_html(p["link"])}" target="_blank" rel="noopener">{_escape_html(p["title"])}</a>
+    </li>"""
+            for p in (precept or [])
+        )
+
+        html = TemplateRenderer.apply(
+            html,
+            {
+                "recentEssays": recent_essays_html,
+                "featuredProjects": featured_projects_html,
+                "authorPreview": _escape_html(first_para),
+                "readingList": reading_list_html,
+                "preceptList": precept_html,
+                "metadata.author": _escape_html(metadata["author"]),
+                "avatar": avatar,
+            },
+        )
 
         FileSystem.write(os.path.join(os.getcwd(), "out", "index.html"), html)
 
     def build_essays_list(self, metadata, essays):
         template = self.data_loader.load_template("essays-list")
-        html = self.build_common(template, metadata, metadata["title"], f"Essays by {metadata['author']}", "/essays/")
+        html = self.build_common(
+            template,
+            metadata,
+            metadata["title"],
+            f"Essays by {metadata['author']}",
+            "/essays/",
+        )
 
         essays_list_html = "\n".join(
             f"""<article>
-  <h2><a href="/essays/{e['slug']}.html">{_escape_html(e['title'])}</a></h2>
-  <p class="meta"><time>{_format_date(e['date'])}</time></p>
-  <p class="summary">{_escape_html(e['summary'])}</p>
+  <h2><a href="/essays/{e["slug"]}.html">{_escape_html(e["title"])}</a></h2>
+  <p class="meta"><time>{_format_date(e["date"])}</time></p>
+  <p class="summary">{_escape_html(e["summary"])}</p>
   <div class="tags">
-    {''.join(f'<a href="/tags/{t}.html">#{_escape_html(t)}</a>' for t in e['tags'][:3])}
+    {"".join(f'<a href="/tags/{t}.html">#{_escape_html(t)}</a>' for t in e["tags"][:3])}
   </div>
 </article>"""
             for e in essays
@@ -566,12 +657,14 @@ class PageBuilder:
             "dateModified": _format_date_iso(essay["date"]),
             "author": _build_author_schema(metadata),
             "url": site_url + essay_url,
-            "image": site_url + (metadata.get("socialBanner") or metadata.get("siteLogo", "")),
+            "image": site_url
+            + (metadata.get("socialBanner") or metadata.get("siteLogo", "")),
             "mainEntityOfPage": {"@type": "WebPage", "@id": site_url + essay_url},
         }
 
         html = self.build_common(
-            template, metadata,
+            template,
+            metadata,
             f"{essay['title']} - {metadata['title']}",
             essay["summary"],
             essay_url,
@@ -580,14 +673,22 @@ class PageBuilder:
 
         essay_content = self.markdown_renderer.render(essay["content"])
 
-        html = TemplateRenderer.apply(html, {
-            "essay.title": _escape_html(essay["title"]),
-            "essay.date": _format_date(essay["date"]),
-            "essay.tags": " ".join(f'<a href="/tags/{t}.html">#{_escape_html(t)}</a>' for t in essay["tags"]),
-            "essay.content": essay_content,
-        })
+        html = TemplateRenderer.apply(
+            html,
+            {
+                "essay.title": _escape_html(essay["title"]),
+                "essay.date": _format_date(essay["date"]),
+                "essay.tags": " ".join(
+                    f'<a href="/tags/{t}.html">#{_escape_html(t)}</a>'
+                    for t in essay["tags"]
+                ),
+                "essay.content": essay_content,
+            },
+        )
 
-        FileSystem.write(os.path.join(os.getcwd(), "out", "essays", f"{essay['slug']}.html"), html)
+        FileSystem.write(
+            os.path.join(os.getcwd(), "out", "essays", f"{essay['slug']}.html"), html
+        )
 
     def build_about(self, metadata, author, avatar):
         template = self.data_loader.load_template("about")
@@ -598,7 +699,8 @@ class PageBuilder:
             "@type": "Person",
             "name": metadata["author"],
             "url": site_url,
-            "description": author_details.get("description") or metadata.get("description", ""),
+            "description": author_details.get("description")
+            or metadata.get("description", ""),
             "sameAs": author_details.get("sameAs", []),
             "jobTitle": author_details.get("jobTitle", "Software Engineer"),
         }
@@ -621,7 +723,8 @@ class PageBuilder:
         }
 
         html = self.build_common(
-            template, metadata,
+            template,
+            metadata,
             f"About - {metadata['title']}",
             f"About {metadata['author']}",
             "/about.html",
@@ -630,12 +733,15 @@ class PageBuilder:
 
         author_body = self.markdown_renderer.render(author["body"])
 
-        html = TemplateRenderer.apply(html, {
-            "metadata.author": _escape_html(metadata["author"]),
-            "author.occupation": _escape_html(author.get("occupation", "")),
-            "author.body": author_body,
-            "avatar": avatar,
-        })
+        html = TemplateRenderer.apply(
+            html,
+            {
+                "metadata.author": _escape_html(metadata["author"]),
+                "author.occupation": _escape_html(author.get("occupation", "")),
+                "author.body": author_body,
+                "avatar": avatar,
+            },
+        )
 
         FileSystem.write(os.path.join(os.getcwd(), "out", "about.html"), html)
 
@@ -668,9 +774,13 @@ class PageBuilder:
                     "ratingCount": 1,
                 },
             }
-            software_items.append({
-                "@type": "ListItem", "position": i, "item": app,
-            })
+            software_items.append(
+                {
+                    "@type": "ListItem",
+                    "position": i,
+                    "item": app,
+                }
+            )
 
         collection_schema = {
             "@type": "CollectionPage",
@@ -681,7 +791,8 @@ class PageBuilder:
         }
 
         html = self.build_common(
-            template, metadata,
+            template,
+            metadata,
             f"Projects - {metadata['title']}",
             f"Projects by {metadata['author']}",
             "/projects.html",
@@ -694,7 +805,7 @@ class PageBuilder:
                 f"""    <div class="project-card">
       <h3>{f'<a href="{_escape_html(p["website"])}">{_escape_html(p["title"])}</a>' if p.get("website") else _escape_html(p["title"])}</h3>
       <p class="summary">{_escape_html(p.get("description", ""))}</p>
-      {('<div class="tags">' + "".join(f'<span>#{_escape_html(t)}</span>' for t in p.get("tags", [])) + "</div>") if p.get("tags") else ""}
+      {('<div class="tags">' + "".join(f"<span>#{_escape_html(t)}</span>" for t in p.get("tags", [])) + "</div>") if p.get("tags") else ""}
       <p class="meta"><a href="{_escape_html(p["href"])}">GitHub</a></p>
     </div>"""
                 for p in projects
@@ -723,7 +834,7 @@ class PageBuilder:
         def _render_stars(rating):
             try:
                 n = int(rating)
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 return ""
             if not n:
                 return ""
@@ -734,7 +845,11 @@ class PageBuilder:
 
         category_configs = [
             {"label": "Curated", "dataKey": "curated", "stripeColor": "#8b7355"},
-            {"label": "Currently Reading", "dataKey": "currently-reading", "stripeColor": "#7a9a6a"},
+            {
+                "label": "Currently Reading",
+                "dataKey": "currently-reading",
+                "stripeColor": "#7a9a6a",
+            },
             {"label": "Read", "dataKey": "read", "stripeColor": "#7a8796"},
         ]
 
@@ -745,7 +860,11 @@ class PageBuilder:
             dedup_keys.add(b["title"] + "||" + b.get("author", ""))
         for b in currently_reading:
             dedup_keys.add(b["title"] + "||" + b.get("author", ""))
-        read_books = [b for b in books.get("read", []) if b["title"] + "||" + b.get("author", "") not in dedup_keys]
+        read_books = [
+            b
+            for b in books.get("read", [])
+            if b["title"] + "||" + b.get("author", "") not in dedup_keys
+        ]
 
         groups_data = [
             {**category_configs[0], "books": curated},
@@ -765,7 +884,7 @@ class PageBuilder:
                 b_schema["image"] = book["imageUrl"]
             try:
                 rating = int(book.get("rating", 0))
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 rating = 0
             if rating > 0:
                 b_schema["aggregateRating"] = {
@@ -775,7 +894,9 @@ class PageBuilder:
                     "bestRating": 5,
                     "worstRating": 1,
                 }
-            book_list_items.append({"@type": "ListItem", "position": i, "item": b_schema})
+            book_list_items.append(
+                {"@type": "ListItem", "position": i, "item": b_schema}
+            )
 
         collection_schema = {
             "@type": "CollectionPage",
@@ -789,7 +910,8 @@ class PageBuilder:
         }
 
         html = self.build_common(
-            template, metadata,
+            template,
+            metadata,
             f"Bookshelf - {metadata['title']}",
             "Books I've read",
             "/bookshelf.html",
@@ -832,27 +954,37 @@ class PageBuilder:
                 for i in range(0, len(group["books"]), chunk_size):
                     is_first = i == 0
                     is_last_chunk = i + chunk_size >= len(group["books"])
-                    books_html = "".join(_build_spine(b, group) for b in group["books"][i : i + chunk_size])
+                    books_html = "".join(
+                        _build_spine(b, group)
+                        for b in group["books"][i : i + chunk_size]
+                    )
                     if is_last_chunk and not is_last_group:
                         books_html += '<div class="bookend"></div>'
-                    header = f'<h3 class="shelf-group-header" style="--group-color:{group["stripeColor"]}">{group["label"]}</h3>' if is_first else ""
-                    chunks.append(f'''
+                    header = (
+                        f'<h3 class="shelf-group-header" style="--group-color:{group["stripeColor"]}">{group["label"]}</h3>'
+                        if is_first
+                        else ""
+                    )
+                    chunks.append(f"""
     <div class="bookcase-shelf">
       {header}
       <div class="shelf-books">{books_html}</div>
-    </div>''')
+    </div>""")
                 shelves.append("".join(chunks))
             shelves_html = "".join(shelves)
-            return f'''
+            return f"""
   <section class="shelf-section">
     <div class="bookcase">
       {shelves_html}
     </div>
-  </section>'''
+  </section>"""
 
-        html = TemplateRenderer.apply(html, {
-            "bookshelfSection": _build_unified_bookcase(groups),
-        })
+        html = TemplateRenderer.apply(
+            html,
+            {
+                "bookshelfSection": _build_unified_bookcase(groups),
+            },
+        )
 
         FileSystem.write(os.path.join(os.getcwd(), "out", "bookshelf.html"), html)
 
@@ -870,45 +1002,57 @@ class PageBuilder:
         tag_template = self.data_loader.load_template("tag")
 
         tags_index_html = self.build_common(
-            tags_index_template, metadata,
+            tags_index_template,
+            metadata,
             f"Tags - {metadata['title']}",
             "All tags",
             "/tags/",
         )
-        tags_index_html = TemplateRenderer.apply(tags_index_html, {
-            "tagsCount": str(len(sorted_tags)),
-            "tagsList": "".join(
-                f'\n    <a href="/tags/{tag}.html" class="tag">#{_escape_html(tag)} <span class="count">{len(essays)}</span></a>'
-                for tag, essays in sorted_tags
-            ),
-        })
+        tags_index_html = TemplateRenderer.apply(
+            tags_index_html,
+            {
+                "tagsCount": str(len(sorted_tags)),
+                "tagsList": "".join(
+                    f'\n    <a href="/tags/{tag}.html" class="tag">#{_escape_html(tag)} <span class="count">{len(essays)}</span></a>'
+                    for tag, essays in sorted_tags
+                ),
+            },
+        )
 
         FileSystem.ensure_dir(os.path.join(os.getcwd(), "out", "tags"))
-        FileSystem.write(os.path.join(os.getcwd(), "out", "tags", "index.html"), tags_index_html)
+        FileSystem.write(
+            os.path.join(os.getcwd(), "out", "tags", "index.html"), tags_index_html
+        )
 
         for tag, tagged_essays in tag_map.items():
             tag_html = self.build_common(
-                tag_template, metadata,
+                tag_template,
+                metadata,
                 f"#{tag} - {metadata['title']}",
                 f"Essays tagged with {tag}",
                 f"/tags/{tag}.html",
             )
             count_label = "essays" if len(tagged_essays) != 1 else "essay"
-            tag_html = TemplateRenderer.apply(tag_html, {
-                "tag": _escape_html(tag),
-                "taggedEssaysCount": str(len(tagged_essays)),
-                "taggedEssaysCountLabel": count_label,
-                "taggedEssays": "\n".join(
-                    f"""<article>
-  <h2><a href="/essays/{e['slug']}.html">{_escape_html(e['title'])}</a></h2>
-  <p class="meta"><time>{_format_date(e['date'])}</time></p>
-  <p class="summary">{_escape_html(e['summary'])}</p>
+            tag_html = TemplateRenderer.apply(
+                tag_html,
+                {
+                    "tag": _escape_html(tag),
+                    "taggedEssaysCount": str(len(tagged_essays)),
+                    "taggedEssaysCountLabel": count_label,
+                    "taggedEssays": "\n".join(
+                        f"""<article>
+  <h2><a href="/essays/{e["slug"]}.html">{_escape_html(e["title"])}</a></h2>
+  <p class="meta"><time>{_format_date(e["date"])}</time></p>
+  <p class="summary">{_escape_html(e["summary"])}</p>
 </article>"""
-                    for e in tagged_essays
-                ),
-            })
+                        for e in tagged_essays
+                    ),
+                },
+            )
 
-            FileSystem.write(os.path.join(os.getcwd(), "out", "tags", f"{tag}.html"), tag_html)
+            FileSystem.write(
+                os.path.join(os.getcwd(), "out", "tags", f"{tag}.html"), tag_html
+            )
 
 
 class SiteBuilder:
@@ -926,10 +1070,13 @@ class SiteBuilder:
         author = self.data_loader.read_author()
         essays = self.data_loader.get_essays()
         books = self.data_loader.get_books()
+        precept = self.data_loader.get_precept()
         projects = self.data_loader.get_projects()
         leetcode_solutions = self.data_loader.get_leetcode_solutions()
 
-        print(f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions")
+        print(
+            f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions"
+        )
 
         FileSystem.ensure_dir(self.out_dir)
         FileSystem.clear_dir(self.out_dir)
@@ -937,7 +1084,9 @@ class SiteBuilder:
 
         print("Building pages...")
         avatar = f"{BASE_PATH}/static/images/avatar.jpg"
-        self.page_builder.build_home(metadata, essays, books, projects, author, avatar)
+        self.page_builder.build_home(
+            metadata, essays, books, projects, author, avatar, precept
+        )
         self.page_builder.build_essays_list(metadata, essays)
         for essay in essays:
             self.page_builder.build_essay(metadata, essay)
@@ -947,9 +1096,20 @@ class SiteBuilder:
         self.page_builder.build_bookshelf(metadata, books)
 
         print("Generating RSS, sitemap, and robots.txt...")
-        FileSystem.write(os.path.join(self.out_dir, "feed.xml"), FeedGenerator.generate_rss_feed(metadata, essays))
-        FileSystem.write(os.path.join(self.out_dir, "sitemap.xml"), FeedGenerator.generate_sitemap(metadata, essays, projects, leetcode_solutions))
-        FileSystem.write(os.path.join(self.out_dir, "robots.txt"), f"User-agent: *\nAllow: /\n\nSitemap: {metadata['siteUrl']}sitemap.xml")
+        FileSystem.write(
+            os.path.join(self.out_dir, "feed.xml"),
+            FeedGenerator.generate_rss_feed(metadata, essays),
+        )
+        FileSystem.write(
+            os.path.join(self.out_dir, "sitemap.xml"),
+            FeedGenerator.generate_sitemap(
+                metadata, essays, projects, leetcode_solutions
+            ),
+        )
+        FileSystem.write(
+            os.path.join(self.out_dir, "robots.txt"),
+            f"User-agent: *\nAllow: /\n\nSitemap: {metadata['siteUrl']}sitemap.xml",
+        )
 
         print("Done! Static site generated in out/")
 

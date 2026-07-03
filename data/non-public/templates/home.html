@@ -1,34 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-{{head}}
-<body>
-{{header}}
-<div class="layout">
-  <div class="main">
-    <h1>Latest Essays</h1>
-    {{recentEssays}}
-  </div>
+    {{head}}
+    <body>
+        {{header}}
+        <div class="layout">
+            <div class="main">
+                <h1>Latest Essays</h1>
+                {{recentEssays}}
+            </div>
 
-  <div class="sidebar">
-    <div class="sidebar-about">
-      <img src="{{avatar}}" alt="{{metadata.author}}" class="avatar">
-      <p>{{authorPreview}}</p>
-      <p><a href="/about.html">Read more &rarr;</a></p>
-    </div>
+            <div class="sidebar">
+                <div class="sidebar-about">
+                    <img
+                        src="{{avatar}}"
+                        alt="{{metadata.author}}"
+                        class="avatar"
+                    />
+                    <p>{{authorPreview}}</p>
+                    <p><a href="/about.html">Read more &rarr;</a></p>
+                </div>
 
-    <div>
-      <h2>Reading List</h2>
-      <ul class="book-list">
-        {{readingList}}
-      </ul>
-    </div>
-  </div>
-</div>
+                <div>
+                    <h2>Reading List</h2>
+                    <ul class="book-list">
+                        {{readingList}}
+                    </ul>
+                    <h2>Precepts</h2>
+                    <ul class="book-list">
+                        {{preceptList}}
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-<section class="projects-section">
-  <h1>Featured Projects</h1>
-  {{featuredProjects}}
-</section>
-{{footer}}
-</body>
+        <section class="projects-section">
+            <h1>Featured Projects</h1>
+            {{featuredProjects}}
+        </section>
+        {{footer}}
+    </body>
 </html>

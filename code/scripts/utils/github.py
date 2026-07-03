@@ -133,6 +133,52 @@ def write_leetcode_solutions_as_json():
         json.dump(yamldata, f, indent=4)
 
 
+PRECEPT_URL = "https://raw.githubusercontent.com/prakashsellathurai/grimoire/main/precept.txt"
+
+
+def update_precept():
+    try:
+        data, _ = fetch_url(PRECEPT_URL)
+        data = data.replace("\r\n", "\n")
+        entries = []
+        blocks = [b.strip() for b in data.split("\n\n") if b.strip()]
+        for block in blocks:
+            lines = [l.strip() for l in block.split("\n") if l.strip()]
+            if len(lines) < 3:
+                continue
+            title = lines[0]
+            author_line = lines[1]
+            link = lines[2]
+
+            if author_line.startswith("by "):
+                author = author_line[3:]
+                description = None
+            elif " by " in author_line:
+                parts = author_line.split(" by ", 1)
+                description = parts[0].strip()
+                author = parts[1].strip()
+            else:
+                author = author_line
+                description = None
+
+            entry = {
+                "title": title,
+                "author": author,
+                "link": link,
+            }
+            if description:
+                entry["description"] = description
+            entries.append(entry)
+
+        with open("./data/non-public/precept.json", "w") as f:
+            json.dump(entries, f, indent=2)
+        print(f"Updated precept.json with {len(entries)} entries")
+
+    except Exception as e:
+        print(f"Error updating precept: {e}")
+
+
 if __name__ == "__main__":
     fetch_repos()
     write_leetcode_solutions_as_json()
+    update_precept()

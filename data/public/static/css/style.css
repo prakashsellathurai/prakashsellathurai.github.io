@@ -165,7 +165,7 @@ article:last-child {
     font-size: 0.8rem;
 }
 
-.book-list {
+.book-list, .precept-list{
     list-style: none;
 }
 

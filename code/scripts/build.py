@@ -567,7 +567,7 @@ class PageBuilder:
         {"".join(f'<a href="/tags/{t}.html">#{_escape_html(t)}</a>' for t in e["tags"][:3])}
       </div>
     </article>"""
-                for e in essays[:10]
+                for e in essays[:4]
             )
             + '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
         )
@@ -599,7 +599,7 @@ class PageBuilder:
             f"""    <li>
       <a href="{_escape_html(p["link"])}" target="_blank" rel="noopener">{_escape_html(p["title"])}</a>
     </li>"""
-            for p in (precept or [])
+            for p in (precept[:4] or [])
         )
 
         html = TemplateRenderer.apply(

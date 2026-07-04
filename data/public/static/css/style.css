@@ -155,22 +155,41 @@ article:last-child {
     border: 2px solid var(--sidebar-bg);
 }
 
-.sidebar h3 {
-    margin-top: 0;
-    font-size: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.8rem;
-}
 
 .book-list, .precept-list{
     list-style: none;
+    padding-left: 1.25rem;
+    position: relative;
 }
 
-.book-list li {
+.book-list li, .precept-list li {
+    position: relative;
     margin-bottom: 0.75rem;
+    padding-left: 0.75rem;
+}
+
+.book-list li::before, .precept-list li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 1.1em;
+    width: 0.75rem;
+    height: 0;
+    border-top: 1px solid var(--border);
+}
+
+.book-list li::after, .precept-list li::after {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0;
+    bottom: -1rem;
+    border-left: 1px solid var(--border);
+}
+
+.book-list li:last-child::after, .precept-list li:last-child::after {
+    height: 1.1em;
+    bottom: auto;
 }
 
 .book-list a {
@@ -237,6 +256,8 @@ footer {
 .content strong {
     font-weight: 600;
 }
+
+
 
 .tags-cloud {
     display: flex;

@@ -151,26 +151,44 @@ article:last-child {
     margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
     border: 2px solid var(--sidebar-bg);
 }
 
-.sidebar h3 {
-    margin-top: 0;
-    font-size: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.8rem;
-}
 
 .book-list, .precept-list{
     list-style: none;
+    padding-left: 1.25rem;
+    position: relative;
 }
 
-.book-list li {
+.book-list li, .precept-list li {
+    position: relative;
     margin-bottom: 0.75rem;
+    padding-left: 0.75rem;
+}
+
+.book-list li::before, .precept-list li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 1.1em;
+    width: 0.75rem;
+    height: 0;
+    border-top: 1px solid var(--border);
+}
+
+.book-list li::after, .precept-list li::after {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0;
+    bottom: -1rem;
+    border-left: 1px solid var(--border);
+}
+
+.book-list li:last-child::after, .precept-list li:last-child::after {
+    height: 1.1em;
+    bottom: auto;
 }
 
 .book-list a {
@@ -237,6 +255,8 @@ footer {
 .content strong {
     font-weight: 600;
 }
+
+
 
 .tags-cloud {
     display: flex;
@@ -453,271 +473,257 @@ footer {
 }
 
 /* Bookshelf */
-.shelf-section {
-    margin-bottom: 3rem;
-}
-
-.shelf-header {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    color: var(--text-muted);
-}
-
-.shelf-books {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    padding-bottom: 1rem;
-    background-image: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 170px,
-        #ded4c0 170px,
-        #d4c8b4 calc(170px + 14px),
-        transparent calc(170px + 14px),
-        transparent calc(170px + 1rem)
-    );
-}
-
-.book-rating {
-    color: #d4a017;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-}
-
-.spine-stripe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.15) 0%,
-            rgba(255, 255, 255, 0) 40%,
-            rgba(0, 0, 0, 0.12) 100%
-        ),
-        var(--stripe-color);
-    border-radius: 3px 3px 0 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-    z-index: 1;
-}
-
-.shelf-group-header {
-    display: inline-block;
-    font-size: 0.62rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 0.2rem 0.7rem;
-    margin: 0 0 0.75rem 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    color: #8a7a64;
-    background: #e8ddd0;
-    border: 1px solid #d0c4b0;
-    border-radius: 2px;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.5),
-        0 1px 2px rgba(120, 105, 85, 0.12);
-}
-
-.spine-tooltip-label {
-    font-size: 0.7rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 0.15rem;
-}
-
-/* Bookcase (spine display) */
 .bookcase {
-    background:
-        radial-gradient(
-            ellipse 85% 20% at 50% 0%,
-            rgba(180, 165, 140, 0.06),
-            transparent 70%
-        ),
-        repeating-linear-gradient(
-            87deg,
-            transparent 0px,
-            transparent 6px,
-            rgba(160, 145, 125, 0.035) 6px,
-            rgba(160, 145, 125, 0.035) 6.4px,
-            transparent 6.4px,
-            transparent 14px,
-            rgba(255, 255, 255, 0.025) 14px,
-            rgba(255, 255, 255, 0.025) 14.3px,
-            transparent 14.3px,
-            transparent 25px,
-            rgba(160, 145, 125, 0.025) 25px,
-            rgba(160, 145, 125, 0.025) 25.3px,
-            transparent 25.3px,
-            transparent 35px,
-            rgba(255, 255, 255, 0.015) 35px,
-            rgba(255, 255, 255, 0.015) 35.3px,
-            transparent 35.3px,
-            transparent 45px
-        ),
-        linear-gradient(180deg, #f2ecde, #ece4d4);
-    border: 1px solid #d4ccba;
+    max-width: 1100px;
+    margin: 30px auto 90px;
+    padding: 22px;
+    border: 1px solid #c4b8a2;
     border-radius: 6px;
-    padding: 1.5rem 1.5rem 0.75rem;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.5),
-        0 4px 20px rgba(120, 105, 85, 0.1);
+        0 4px 20px rgba(120, 105, 85, 0.1),
+        0 40px 80px -30px rgba(0, 0, 0, 0.15);
+    position: relative;
 }
 
-.bookcase-shelf {
-    margin-bottom: 2.25rem;
+.shelf-section {
+    margin-bottom: 20px;
 }
 
-.bookcase-shelf:last-child {
+.shelf-section:last-child {
     margin-bottom: 0;
 }
 
-.bookend {
-    width: 8px;
-    height: 75px;
-    align-self: flex-end;
-    background: linear-gradient(135deg, #d4c8a8, #bfb08e);
-    border-radius: 2px;
-    box-shadow:
-        1px 0 2px rgba(120, 105, 85, 0.2),
-        inset -1px 0 2px rgba(0, 0, 0, 0.04),
-        inset 1px 1px 0 rgba(255, 255, 255, 0.25);
-    flex-shrink: 0;
-}
-
-.book-spine {
-    position: relative;
+.shelf-label {
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    width: 44px;
-    height: 170px;
-    background: var(--spine-color, hsl(0, 50%, 45%));
-    border-radius: 3px 3px 0 0;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease;
-    flex-shrink: 0;
-    filter: drop-shadow(1px 2px 3px rgba(120, 105, 85, 0.25));
-    transform: rotate(var(--spine-tilt, 0deg));
+    align-items: center;
+    gap: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7a6a58;
+    padding: 0 6px 10px;
 }
 
-.book-spine::before {
+.shelf-label .tag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.tag-curated .tag-dot {
+    background: #b0563c;
+}
+
+.tag-current .tag-dot {
+    background: #7a9770;
+    box-shadow: 0 0 8px #7a9770;
+}
+
+.tag-read .tag-dot {
+    background: #c9a15a;
+}
+
+.shelf-label .n {
+    margin-left: auto;
+    color: #9a8a78;
+    font-size: 11px;
+}
+
+.compartment {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.02) 30%);
+    border-radius: 4px;
+    padding: 18px 16px 0;
+    position: relative;
+    border-bottom: 14px solid #b8a888;
+    box-shadow:
+        inset 0 -18px 14px -12px rgba(120, 105, 85, 0.3),
+        0 10px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.compartment::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.02) 15%,
-        transparent 30%,
-        transparent 65%,
-        rgba(0, 0, 0, 0.06) 85%,
-        rgba(0, 0, 0, 0.1) 100%
-    );
-    border-radius: 3px 3px 0 0;
+    left: 0;
+    right: 0;
+    bottom: -14px;
+    height: 14px;
+    border-radius: 0 0 4px 4px;
     pointer-events: none;
 }
 
-.book-spine:hover {
-    transform: translateY(-5px) rotate(var(--spine-tilt, 0deg));
-    filter: drop-shadow(2px 8px 12px rgba(120, 105, 85, 0.3));
+.shelf-boards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px 8px;
 }
 
-.spine-title {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    color: rgba(255, 255, 255, 0.92);
-    font-size: 0.68rem;
-    font-weight: 500;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    padding: 0.5rem 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 155px;
-    letter-spacing: 0.5px;
-}
-
-.spine-tooltip {
+.book-rating {
     position: absolute;
-    bottom: 105%;
-    left: 50%;
-    transform: translateX(-50%) translateY(8px);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.75rem;
-    width: 180px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    visibility: hidden;
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease,
-        visibility 0.2s;
-    z-index: 10;
-    pointer-events: none;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 4px 5px;
+    font-size: 9px;
+    letter-spacing: 0.02em;
+    color: #d4a017;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    text-align: center;
+    border-radius: 0 0 4px 4px;
 }
 
-.book-spine:hover .spine-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-}
-
-.spine-tooltip-cover {
-    width: 100%;
-    aspect-ratio: 2/3;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-    background: var(--bg-alt);
-}
-
-.spine-tooltip-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+/* Book card */
+.book {
+    position: relative;
+    width: 78px;
+    height: 118px;
+    border-radius: 2px 4px 4px 2px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--accent);
+    box-shadow:
+        2px 4px 10px rgba(0, 0, 0, 0.35),
+        inset -2px 0 0 rgba(0, 0, 0, 0.2),
+        inset 2px 0 0 rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    text-decoration: none;
     display: block;
+    transform-origin: bottom center;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    flex-shrink: 0;
+    margin-bottom: 14px;
 }
 
-.spine-tooltip-fallback {
-    width: 100%;
-    height: 100%;
+.book:nth-child(3n) {
+    transform: rotate(-1.2deg);
+}
+
+.book:nth-child(4n) {
+    transform: rotate(1deg);
+}
+
+.book:nth-child(5n) {
+    transform: rotate(-0.5deg);
+}
+
+.book:hover {
+    transform: translateY(-10px) rotate(0deg) scale(1.04);
+    box-shadow:
+        6px 18px 26px rgba(0, 0, 0, 0.45),
+        inset -2px 0 0 rgba(0, 0, 0, 0.2),
+        inset 2px 0 0 rgba(255, 255, 255, 0.08);
+    z-index: 5;
+}
+
+.book .book-placeholder {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 500;
     text-align: center;
-    padding: 0.5rem;
+    padding: 8px;
+    font-size: 11px;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.92);
+    border-radius: 2px 4px 4px 2px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 500;
 }
 
-.spine-tooltip-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 0.78rem;
+.book .book-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 24%);
+    border-radius: 2px 4px 4px 2px;
+    pointer-events: none;
 }
 
-.spine-tooltip-info strong {
-    font-size: 0.82rem;
+/* Currently reading bookmark */
+.book.current {
+    outline: 1px solid rgba(122, 151, 112, 0.7);
+}
+
+.book.current::before {
+    content: "";
+    position: absolute;
+    top: -16px;
+    right: 14px;
+    width: 10px;
+    height: 26px;
+    background: #7a9770;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Tooltip */
+.book .book-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 9px 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12.5px;
+    line-height: 1.4;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 10;
+    color: var(--text);
+}
+
+.book .book-tooltip b {
+    display: block;
     font-weight: 600;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.book .book-tooltip span {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.book .book-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--bg);
+}
+
+.book:hover .book-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+@media (max-width: 520px) {
+    .book {
+        width: 64px;
+        height: 98px;
+    }
+    .bookcase {
+        padding: 12px;
+    }
+    .compartment {
+        padding: 12px 10px 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .book,
+    .book .book-tooltip {
+        transition: none;
+    }
 }

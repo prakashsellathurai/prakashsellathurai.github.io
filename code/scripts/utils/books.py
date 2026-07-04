@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
+import hashlib
 import json
+import os
 import re
 import urllib.request
+from pathlib import Path
 
 SHELVES = ["currently-reading", "read", "curated"]
+IMAGE_DIR = "./data/public/static/images/bookshelf"
 
 
 def get_books(shelf):
@@ -67,15 +71,51 @@ def parse_books(xml):
     return books
 
 
+def _download_image(url):
+    """Download a book cover image to the local cache. Returns the local URL path or None."""
+    ext = os.path.splitext(url.split("/")[-1].split("?")[0])[1]
+    if not ext or len(ext) > 6:
+        ext = ".jpg"
+    filename = hashlib.md5(url.encode()).hexdigest() + ext
+    filepath = os.path.join(IMAGE_DIR, filename)
+
+    if os.path.exists(filepath):
+        return f"/static/images/bookshelf/{filename}"
+
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = resp.read()
+        with open(filepath, "wb") as f:
+            f.write(data)
+        return f"/static/images/bookshelf/{filename}"
+    except Exception as e:
+        print(f"  Failed to download {url}: {e}")
+        return None
+
+
 def fetch_books():
+    os.makedirs(IMAGE_DIR, exist_ok=True)
     books_data = {}
     for shelf in SHELVES:
         print(f"Fetching books for shelf: {shelf}")
-        books_data[shelf] = get_books(shelf)
+        books = get_books(shelf)
+        for book in books:
+            url = book.get("imageUrl", "")
+            if url and "nophoto" not in url:
+                book["imageUrlRemote"] = url
+                local = _download_image(url)
+                if local:
+                    book["imageUrl"] = local
+                else:
+                    book["imageUrl"] = url
+            else:
+                book["imageUrl"] = ""
+        books_data[shelf] = books
 
-    with open("./data/non-public/books.json", "w") as f:
-        json.dump(books_data, f, indent=2)
-    print("Books data saved to ./data/non-public/books.json")
+    out = Path("./data/non-public/books.json")
+    out.write_text(json.dumps(books_data, indent=2) + "\n")
+    print(f"Books data saved to {out}")
 
 
 if __name__ == "__main__":

@@ -477,15 +477,6 @@ footer {
     max-width: 1100px;
     margin: 30px auto 90px;
     padding: 22px;
-    background:
-        radial-gradient(ellipse 85% 20% at 50% 0%, rgba(180, 165, 140, 0.06), transparent 70%),
-        repeating-linear-gradient(87deg,
-            transparent 0px, transparent 6px, rgba(160, 145, 125, 0.035) 6px, rgba(160, 145, 125, 0.035) 6.4px,
-            transparent 6.4px, transparent 14px, rgba(255, 255, 255, 0.025) 14px, rgba(255, 255, 255, 0.025) 14.3px,
-            transparent 14.3px, transparent 25px, rgba(160, 145, 125, 0.025) 25px, rgba(160, 145, 125, 0.025) 25.3px,
-            transparent 25.3px, transparent 35px, rgba(255, 255, 255, 0.015) 35px, rgba(255, 255, 255, 0.015) 35.3px,
-            transparent 35.3px, transparent 45px),
-        linear-gradient(180deg, #d9ceb8, #cdc1ab);
     border: 1px solid #c4b8a2;
     border-radius: 6px;
     box-shadow:

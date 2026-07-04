@@ -380,7 +380,7 @@ class TemplateRenderer:
         year = datetime.now().year
         return f"""
 <footer>
-  <p>&copy; {year} {_escape_html(metadata["author"])}.</p>
+  <p>&copy; {year} {_escape_html(metadata["author"])}. &middot; <a href="/sitelinks.html">Site Links</a></p>
 </footer>
 """
 
@@ -416,6 +416,7 @@ class FeedGenerator:
             {"loc": "/tags/", "lastmod": today, "priority": "0.8"},
             {"loc": "/projects.html", "lastmod": today, "priority": "0.8"},
             {"loc": "/bookshelf.html", "lastmod": today, "priority": "0.8"},
+            {"loc": "/sitelinks.html", "lastmod": today, "priority": "0.6"},
             {"loc": "/leetcode-solutions/", "lastmod": today, "priority": "0.6"},
             {
                 "loc": "/static/resume/prakash_s_resume.pdf",
@@ -1055,6 +1056,86 @@ class PageBuilder:
             )
 
 
+    def build_sitelinks(self, metadata, essays, projects):
+        template = self.data_loader.load_template("sitelinks")
+        html = self.build_common(
+            template,
+            metadata,
+            f"Site Links - {metadata['title']}",
+            "All internal links on this site",
+            "/sitelinks.html",
+        )
+
+        site_url = metadata["siteUrl"].rstrip("/")
+        site_hostname = site_url.split("://")[1].split("/")[0]
+
+        static_pages = [
+            ("/", "Home"),
+            ("/essays/", "Essays"),
+            ("/about.html", "About"),
+            ("/projects.html", "Projects"),
+            ("/bookshelf.html", "Bookshelf"),
+            ("/tags/", "Tags"),
+            ("/static/resume/prakash_s_resume.pdf", "Resume"),
+        ]
+
+        static_pages_html = "\n".join(
+            f'    <li><a href="{url}">{_escape_html(label)}</a></li>'
+            for url, label in static_pages
+        )
+
+        essay_links_html = "\n".join(
+            f'    <li><a href="/essays/{e["slug"]}.html">{_escape_html(e["title"])}</a> <span class="meta">{_format_date(e["date"])}</span></li>'
+            for e in essays
+        )
+
+        tag_set = set()
+        for e in essays:
+            for t in e["tags"]:
+                tag_set.add(t)
+        tags_sorted = sorted(tag_set)
+        tag_links_html = "\n".join(
+            f'    <li><a href="/tags/{t}.html">#{_escape_html(t)}</a></li>'
+            for t in tags_sorted
+        )
+
+        same_domain_projects = []
+        for p in projects:
+            website = p.get("website")
+            if not website:
+                continue
+            try:
+                hostname = (
+                    website.split("://")[1].split("/")[0]
+                    if "://" in website
+                    else website.split("/")[0]
+                )
+            except Exception:
+                continue
+            if hostname == site_hostname:
+                same_domain_projects.append(p)
+
+        project_links_html = "\n".join(
+            f'    <li><a href="{_escape_html(p["website"])}">{_escape_html(p["title"])}</a></li>'
+            for p in same_domain_projects
+        )
+
+        html = TemplateRenderer.apply(
+            html,
+            {
+                "staticPages": static_pages_html,
+                "essayLinks": essay_links_html,
+                "essayCount": str(len(essays)),
+                "tagLinks": tag_links_html,
+                "tagCount": str(len(tags_sorted)),
+                "projectLinks": project_links_html,
+                "projectCount": str(len(same_domain_projects)),
+            },
+        )
+
+        FileSystem.write(os.path.join(os.getcwd(), "out", "sitelinks.html"), html)
+
+
 class SiteBuilder:
     def __init__(self):
         data_dir = os.path.join(os.getcwd(), "data", "non-public")
@@ -1094,6 +1175,7 @@ class SiteBuilder:
         self.page_builder.build_about(metadata, author, avatar)
         self.page_builder.build_projects(metadata, projects)
         self.page_builder.build_bookshelf(metadata, books)
+        self.page_builder.build_sitelinks(metadata, essays, projects)
 
         print("Generating RSS, sitemap, and robots.txt...")
         FileSystem.write(

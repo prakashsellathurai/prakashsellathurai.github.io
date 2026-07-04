@@ -151,7 +151,6 @@ article:last-child {
     margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
     border: 2px solid var(--sidebar-bg);
 }
 

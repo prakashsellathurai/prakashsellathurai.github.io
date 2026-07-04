@@ -820,18 +820,6 @@ class PageBuilder:
     def build_bookshelf(self, metadata, books):
         template = self.data_loader.load_template("bookshelf")
 
-        def _hash_str(s):
-            h = 0
-            for c in s:
-                h = ord(c) + ((h << 5) - h)
-            return h
-
-        def _title_color(title):
-            return f"hsl({abs(_hash_str(title)) % 360}, 50%, 45%)"
-
-        def _title_tilt(title):
-            return (abs(_hash_str(title)) % 5) - 2
-
         def _render_stars(rating):
             try:
                 n = int(rating)
@@ -841,17 +829,14 @@ class PageBuilder:
                 return ""
             return "★" * n + "☆" * (5 - n)
 
-        def _is_placeholder_cover(url):
-            return not url or "nophoto" in url
-
         category_configs = [
-            {"label": "Curated", "dataKey": "curated", "stripeColor": "#8b7355"},
+            {"label": "Curated", "dataKey": "curated", "tagClass": "tag-curated"},
             {
                 "label": "Currently Reading",
                 "dataKey": "currently-reading",
-                "stripeColor": "#7a9a6a",
+                "tagClass": "tag-current",
             },
-            {"label": "Read", "dataKey": "read", "stripeColor": "#7a8796"},
+            {"label": "Read", "dataKey": "read", "tagClass": "tag-read"},
         ]
 
         curated = books.get("curated", [])
@@ -874,6 +859,16 @@ class PageBuilder:
         ]
         groups = [g for g in groups_data if g["books"]]
 
+        def _resolve_image(book):
+            url = book.get("imageUrl", "")
+            if not url or "nophoto" in url:
+                return ""
+            if url.startswith("/"):
+                local = os.path.join(os.getcwd(), "data", "public", url.lstrip("/"))
+                if not os.path.exists(local):
+                    url = book.get("imageUrlRemote", "")
+            return url if url and "nophoto" not in url else ""
+
         site_url = metadata["siteUrl"].rstrip("/")
         all_books = curated + currently_reading + read_books
         book_list_items = []
@@ -881,8 +876,9 @@ class PageBuilder:
             b_schema = {"@type": "Book", "name": book["title"]}
             b_schema["author"] = book.get("author", "")
             b_schema["url"] = book.get("link", "")
-            if not _is_placeholder_cover(book.get("imageUrl", "")):
-                b_schema["image"] = book["imageUrl"]
+            img = _resolve_image(book)
+            if img:
+                b_schema["image"] = img
             try:
                 rating = int(book.get("rating", 0))
             except ValueError, TypeError:
@@ -919,66 +915,49 @@ class PageBuilder:
             extra_schemas=[collection_schema],
         )
 
-        def _build_spine(book, category):
+        def _build_card(book, category):
             escaped_title = _escape_html(book.get("title", ""))
             escaped_author = _escape_html(book.get("author", ""))
             stars = _render_stars(book.get("rating"))
             href = _escape_html(book.get("link", "#"))
-            color = _title_color(book.get("title", ""))
-            tilt = _title_tilt(book.get("title", ""))
+            img_url = _resolve_image(book)
 
-            cover_html = ""
-            if not _is_placeholder_cover(book.get("imageUrl")):
-                cover_html = f'<img src="{_escape_html(book["imageUrl"])}" alt="{escaped_title}">'
+            has_image = bool(img_url)
+            is_current = category["dataKey"] == "currently-reading"
+
+            style = f' style="background-image:url({_escape_html(img_url)})"' if has_image else ""
+            placeholder = f'<div class="book-placeholder">{escaped_title}</div>' if not has_image else ""
+            stars_html = f'<span class="book-rating">{stars}</span>' if stars else ""
+            current_class = " current" if is_current else ""
 
             return f'''
-    <a href="{href}" class="book-spine" target="_blank" rel="noopener" style="--spine-color:{color};--spine-tilt:{tilt}deg">
-      <div class="spine-stripe" style="--stripe-color:{category["stripeColor"]}"></div>
-      <span class="spine-title">{escaped_title}</span>
-      <div class="spine-tooltip">
-        <div class="spine-tooltip-cover">{cover_html or f'<div class="spine-tooltip-fallback" style="background:{color}">{escaped_title}</div>'}</div>
-        <div class="spine-tooltip-info">
-          <strong>{escaped_title}</strong>
-          <span>{escaped_author}</span>
-          {f'<span class="book-rating">{stars}</span>' if stars else ""}
-          <span class="spine-tooltip-label" style="color:{category["stripeColor"]}">{category["label"]}</span>
-        </div>
+    <a href="{href}" class="book{current_class}" target="_blank" rel="noopener"{style}>
+      {placeholder}
+      <div class="book-shine"></div>
+      {stars_html}
+      <div class="book-tooltip">
+        <b>{escaped_title}</b>
+        <span>{escaped_author}</span>
       </div>
     </a>'''
 
         def _build_unified_bookcase(groups):
-            chunk_size = 12
-            shelves = []
-            for group_idx, group in enumerate(groups):
-                is_last_group = group_idx == len(groups) - 1
-                chunks = []
-                for i in range(0, len(group["books"]), chunk_size):
-                    is_first = i == 0
-                    is_last_chunk = i + chunk_size >= len(group["books"])
-                    books_html = "".join(
-                        _build_spine(b, group)
-                        for b in group["books"][i : i + chunk_size]
-                    )
-                    if is_last_chunk and not is_last_group:
-                        books_html += '<div class="bookend"></div>'
-                    header = (
-                        f'<h3 class="shelf-group-header" style="--group-color:{group["stripeColor"]}">{group["label"]}</h3>'
-                        if is_first
-                        else ""
-                    )
-                    chunks.append(f"""
-    <div class="bookcase-shelf">
-      {header}
-      <div class="shelf-books">{books_html}</div>
-    </div>""")
-                shelves.append("".join(chunks))
-            shelves_html = "".join(shelves)
-            return f"""
-  <section class="shelf-section">
+            shelves_el = []
+            for group in groups:
+                books_html = "".join(_build_card(b, group) for b in group["books"])
+                shelves_el.append(f'''
+    <section class="shelf-section">
+      <div class="shelf-label {group["tagClass"]}">
+        <span class="tag-dot"></span>{group["label"]}<span class="n">{len(group["books"])} book{"s" if len(group["books"]) != 1 else ""}</span>
+      </div>
+      <div class="compartment">
+        <div class="shelf-boards">{books_html}</div>
+      </div>
+    </section>''')
+            return f'''
     <div class="bookcase">
-      {shelves_html}
-    </div>
-  </section>"""
+      {"".join(shelves_el)}
+    </div>'''
 
         html = TemplateRenderer.apply(
             html,

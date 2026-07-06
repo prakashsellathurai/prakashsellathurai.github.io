@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import os
+import re
 import subprocess
 import urllib.request
 
@@ -41,7 +42,7 @@ def fetch_all_repos(url):
         if link_header:
             links = {}
             for part in link_header.split(","):
-                m = __import__("re").match(r"<([^>]+)>;\s*rel=\"([^\"]+)\"", part.strip())
+                m = re.match(r"<([^>]+)>;\s*rel=\"([^\"]+)\"", part.strip())
                 if m:
                     links[m.group(2)] = m.group(1)
             next_url = links.get("next")

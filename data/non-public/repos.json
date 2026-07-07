@@ -48,6 +48,30 @@
         "pinned": true
     },
     {
+        "title": "Grimoire",
+        "href": "https://github.com/prakashsellathurai/Grimoire",
+        "website": "",
+        "description": "scripts, notebooks and computer codes",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "Thoth",
+        "href": "https://github.com/prakashsellathurai/Thoth",
+        "website": null,
+        "description": "RAG Search System using Elastic Search",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "entity",
+        "href": "https://github.com/prakashsellathurai/entity",
+        "website": "https://pypi.org/project/entityagent/",
+        "description": "Entity: The  AI agent that bridges you and your OS seamlessly execute commands and control apps on Windows, macOS, and Linux.",
+        "stars": 0,
+        "pinned": false
+    },
+    {
         "title": "prakashsellathurai.github.io",
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
@@ -80,26 +104,10 @@
         "pinned": false
     },
     {
-        "title": "grimoire",
-        "href": "https://github.com/prakashsellathurai/grimoire",
-        "website": "",
-        "description": "scripts, notebooks and computer codes",
-        "stars": 0,
-        "pinned": false
-    },
-    {
         "title": "ssserve",
         "href": "https://github.com/prakashsellathurai/ssserve",
         "website": "https://pypi.org/project/ssserve/",
         "description": "Python port of [vercel/serve](https://github.com/vercel/serve) \u2014 static file serving and directory listing.",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "entity",
-        "href": "https://github.com/prakashsellathurai/entity",
-        "website": "https://pypi.org/project/entityagent/",
-        "description": "Entity: The  AI agent that bridges you and your OS seamlessly execute commands and control apps on Windows, macOS, and Linux.",
         "stars": 0,
         "pinned": false
     },

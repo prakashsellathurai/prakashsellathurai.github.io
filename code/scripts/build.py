@@ -803,19 +803,10 @@ class PageBuilder:
             extra_schemas=[collection_schema],
         )
 
-        projects_list_html = (
-            '<div class="project-grid">'
-            + "".join(
-                f"""    <div class="project-card">
-      <h3>{f'<a href="{escape_html(p["website"])}">{escape_html(p["title"])}</a>' if p.get("website") else escape_html(p["title"])}</h3>
-      <p class="summary">{escape_html(p.get("description", ""))}</p>
-      {('<div class="tags">' + "".join(f"<span>#{escape_html(t)}</span>" for t in p.get("tags", [])) + "</div>") if p.get("tags") else ""}
-      <p class="meta"><a href="{escape_html(p["href"])}">GitHub</a></p>
-    </div>"""
-                for p in projects
-            )
-            + "\n    </div>"
-        )
+        projects_list_html = '<ul class="project-list">\n' + "\n".join(
+            f"""    <li><a href="{escape_html(p.get("website") or p["href"])}">{escape_html(p["title"])}</a> - <span class="desc">{escape_html(p.get("description", ""))}</span></li>"""
+            for p in projects
+        ) + "\n</ul>"
 
         html = apply_template(html, {"projectsList": projects_list_html})
         _write_file(os.path.join(os.getcwd(), "out", "projects.html"), html)

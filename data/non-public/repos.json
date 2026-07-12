@@ -48,10 +48,26 @@
         "pinned": true
     },
     {
+        "title": "leetcode-solutions",
+        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
+        "description": "My solutions to Leetcode problems",
+        "stars": 0,
+        "pinned": false
+    },
+    {
         "title": "Grimoire",
         "href": "https://github.com/prakashsellathurai/Grimoire",
         "website": "",
         "description": "scripts, notebooks and computer codes",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "prakashsellathurai.github.io",
+        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+        "website": "https://prakashsellathurai.com/",
+        "description": "personal website",
         "stars": 0,
         "pinned": false
     },
@@ -68,22 +84,6 @@
         "href": "https://github.com/prakashsellathurai/entity",
         "website": "https://pypi.org/project/entityagent/",
         "description": "Entity: The  AI agent that bridges you and your OS seamlessly execute commands and control apps on Windows, macOS, and Linux.",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "prakashsellathurai.github.io",
-        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-        "website": "https://prakashsellathurai.com/",
-        "description": "personal website",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "leetcode-solutions",
-        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
-        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
-        "description": "My solutions to Leetcode problems",
         "stars": 0,
         "pinned": false
     },

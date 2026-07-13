@@ -144,7 +144,7 @@ def update_precept():
         entries = []
         blocks = [b.strip() for b in data.split("\n\n") if b.strip()]
         for block in blocks:
-            lines = [l.strip() for l in block.split("\n") if l.strip()]
+            lines = [line.strip() for line in block.split("\n") if line.strip()]
             if len(lines) < 3:
                 continue
             title = lines[0]

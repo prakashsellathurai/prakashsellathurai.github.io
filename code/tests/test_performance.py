@@ -1,6 +1,5 @@
 import time as time_module
 
-from playwright.sync_api import expect
 
 
 class TestCoreWebVitals:

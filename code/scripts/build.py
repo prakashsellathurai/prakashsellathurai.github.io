@@ -4,7 +4,6 @@
 import json
 import os
 import pathlib
-import re
 import shutil
 from datetime import datetime, timezone
 
@@ -750,7 +749,7 @@ class PageBuilder:
 
     def build_projects(self, metadata, projects):
         template = self.data_loader.load_template("projects")
-        site_url = metadata["siteUrl"].rstrip("/")
+        metadata["siteUrl"].rstrip("/")
 
         best_rating = max((r.get("stars", 0) for r in projects), default=0)
         software_items = []

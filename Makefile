@@ -30,6 +30,7 @@ test-ui:
 update-data:
 	uv run python3 code/scripts/utils/books.py
 	uv run python3 code/scripts/utils/github.py
+	uv run python3 code/scripts/utils/quotes.py
 	uv run python3 code/scripts/utils/sync_description.py
 
 install-dev:

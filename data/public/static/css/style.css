@@ -784,6 +784,114 @@ ul.project-list .desc {
     font-size: 0.9rem;
 }
 
+/* Quotes page */
+.quotes-list {
+    list-style: none;
+    counter-reset: quote-counter;
+    padding: 0;
+}
+
+.quotes-list .quote-item {
+    counter-increment: quote-counter;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    /*border-bottom: 1px solid var(--border);*/
+    align-items: flex-start;
+}
+
+.quotes-list .quote-item:last-child {
+    border-bottom: none;
+}
+
+.quote-number {
+    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;*/
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    min-width: 2.5rem;
+    padding-top: 0.1rem;
+}
+
+.quote-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.quote-body-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.quote-body-link:hover {
+    color: var(--accent);
+}
+
+.quote-content q {
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    quotes: "\201c" "\201d" "\2018" "\2019";
+}
+
+.quote-content q::before {
+    content: open-quote;
+}
+
+.quote-content q::after {
+    content: close-quote;
+}
+
+.quote-attribution {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.quote-author {
+    font-weight: 500;
+}
+
+.quote-book {
+    font-style: italic;
+}
+
+.quote-meta {
+    margin-top: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.quote-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.quote-tag {
+    background: var(--bg-alt);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+
+@media (max-width: 699px) {
+    .quotes-list .quote-item {
+        gap: 0.5rem;
+    }
+    .quote-number {
+        min-width: 2rem;
+        font-size: 0.8rem;
+    }
+    .quote-content q {
+        font-size: 0.95rem;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .book,
     .book .book-tooltip {

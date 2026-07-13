@@ -294,6 +294,7 @@ def render_header(metadata):
   <a href="/essays/">Essays</a>
   <a href="/projects.html">Projects</a>
   <a href="/bookshelf.html">Bookshelf</a>
+  <a href="/quotes.html">Quotes</a>
   <a href="/about.html">About</a>
   <a href="/feed.xml" class="rss-link" aria-label="RSS Feed">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -347,6 +348,7 @@ def _generate_sitemap(metadata, essays, projects, leetcode_solutions):
         {"loc": "/tags/", "lastmod": today, "priority": "0.8"},
         {"loc": "/projects.html", "lastmod": today, "priority": "0.8"},
         {"loc": "/bookshelf.html", "lastmod": today, "priority": "0.8"},
+        {"loc": "/quotes.html", "lastmod": today, "priority": "0.7"},
         {"loc": "/sitelinks.html", "lastmod": today, "priority": "0.6"},
         {"loc": "/leetcode-solutions/", "lastmod": today, "priority": "0.6"},
         {
@@ -513,6 +515,9 @@ class DataLoader:
 
     def get_leetcode_solutions(self):
         return self.read_json("leetcode-solutions.json")
+
+    def get_quotes(self):
+        return self.read_json("quotes.json")
 
 
 # ---------------------------------------------------------------------------
@@ -973,6 +978,53 @@ class PageBuilder:
 
         _write_file(os.path.join(os.getcwd(), "out", "bookshelf.html"), html)
 
+    def build_quotes(self, metadata, quotes):
+        template = self.data_loader.load_template("quotes")
+
+        site_url = metadata["siteUrl"].rstrip("/")
+
+        def _render_quote_item(q, idx):
+            escaped_quote = escape_html(q.get("quote", ""))
+            escaped_author = escape_html(q.get("author", ""))
+            escaped_book = escape_html(q.get("book", "")) if q.get("book") else ""
+            url = q.get("url", "")
+
+            author_html = f'<span class="quote-author">{escaped_author}</span>' if escaped_author else ""
+            book_html = f', <span class="quote-book">{escaped_book}</span>' if escaped_book else ""
+
+            quote_url = f'<a href="{escape_html(url)}" class="quote-body-link" target="_blank" rel="noopener">'
+            return f'''    <li class="quote-item">
+      <span class="quote-number">#{idx}</span>
+      <div class="quote-content">
+        {quote_url}<q>{escaped_quote}</q></a>
+        <div class="quote-attribution">
+          {author_html}{book_html}
+        </div>
+      </div>
+    </li>'''
+
+        items_html = "\n".join(
+            _render_quote_item(q, i + 1) for i, q in enumerate(quotes)
+        )
+        quotes_list_html = f'<ol class="quotes-list">\n{items_html}\n</ol>'
+
+        html = self._build_common(
+            template,
+            metadata,
+            f"Quotes - {metadata['title']}",
+            "Quotes I like on Goodreads",
+            "/quotes.html",
+            extra_schemas=[{
+                "@type": "CollectionPage",
+                "name": "Quotes",
+                "description": "Quotes I like on Goodreads",
+                "url": site_url + "/quotes.html",
+            }],
+        )
+
+        html = apply_template(html, {"quotesList": quotes_list_html})
+        _write_file(os.path.join(os.getcwd(), "out", "quotes.html"), html)
+
     def build_tags(self, metadata, essays):
         tag_map = {}
         for essay in essays:
@@ -1056,6 +1108,7 @@ class PageBuilder:
             ("/about.html", "About"),
             ("/projects.html", "Projects"),
             ("/bookshelf.html", "Bookshelf"),
+            ("/quotes.html", "Quotes"),
             ("/tags/", "Tags"),
             ("/static/resume/prakash_s_resume.pdf", "Resume"),
         ]
@@ -1137,9 +1190,10 @@ def build_site():
     precept = data_loader.get_precept()
     projects = data_loader.get_projects()
     leetcode_solutions = data_loader.get_leetcode_solutions()
+    quotes = data_loader.get_quotes()
 
     print(
-        f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions"
+        f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions, {len(quotes)} quotes"
     )
 
     _ensure_dir(out_dir)
@@ -1156,6 +1210,7 @@ def build_site():
     page_builder.build_about(metadata, author, avatar)
     page_builder.build_projects(metadata, projects)
     page_builder.build_bookshelf(metadata, books)
+    page_builder.build_quotes(metadata, quotes)
     page_builder.build_sitelinks(metadata, essays, projects)
 
     print("Generating RSS, sitemap, and robots.txt...")

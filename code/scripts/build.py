@@ -1065,7 +1065,7 @@ class PageBuilder:
 
         site_url = metadata["siteUrl"].rstrip("/")
 
-        def _render_quote_item(q, idx):
+        def _render_quote_item(q):
             escaped_quote = escape_html(q.get("quote", ""))
             escaped_author = escape_html(q.get("author", ""))
             escaped_book = escape_html(q.get("book", "")) if q.get("book") else ""
@@ -1075,8 +1075,7 @@ class PageBuilder:
             book_html = f', <span class="quote-book">{escaped_book}</span>' if escaped_book else ""
 
             quote_url = f'<a href="{escape_html(url)}" class="quote-body-link" target="_blank" rel="noopener">'
-            return f'''    <li class="quote-item">
-      <span class="quote-number">#{idx}</span>
+            return f'''    <li>
       <div class="quote-content">
         {quote_url}<q>{escaped_quote}</q></a>
         <div class="quote-attribution">
@@ -1086,9 +1085,9 @@ class PageBuilder:
     </li>'''
 
         items_html = "\n".join(
-            _render_quote_item(q, i + 1) for i, q in enumerate(quotes)
+            _render_quote_item(q) for q in quotes
         )
-        quotes_list_html = f'<ol class="quotes-list">\n{items_html}\n</ol>'
+        quotes_list_html = f'<ul class="project-list">\n{items_html}\n</ul>'
 
         html = self._build_common(
             template,

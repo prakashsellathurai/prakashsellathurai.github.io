@@ -796,34 +796,6 @@ ul.project-list .desc {
 }
 
 /* Quotes page */
-.quotes-list {
-    list-style: none;
-    counter-reset: quote-counter;
-    padding: 0;
-}
-
-.quotes-list .quote-item {
-    counter-increment: quote-counter;
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-    /*border-bottom: 1px solid var(--border);*/
-    align-items: flex-start;
-}
-
-.quotes-list .quote-item:last-child {
-    border-bottom: none;
-}
-
-.quote-number {
-    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;*/
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    min-width: 2.5rem;
-    padding-top: 0.1rem;
-}
-
 .quote-content {
     flex: 1;
     min-width: 0;
@@ -891,13 +863,6 @@ ul.project-list .desc {
 }
 
 @media (max-width: 699px) {
-    .quotes-list .quote-item {
-        gap: 0.5rem;
-    }
-    .quote-number {
-        min-width: 2rem;
-        font-size: 0.8rem;
-    }
     .quote-content q {
         font-size: 0.95rem;
     }

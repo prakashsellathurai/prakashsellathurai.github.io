@@ -226,12 +226,23 @@ footer {
     margin-bottom: 1.25rem;
 }
 
+.content h1 {
+    margin-top: 3rem;
+    font-size: 1.5rem;
+}
+
 .content h2 {
     margin-top: 2.5rem;
 }
 
 .content h3 {
     margin-top: 2rem;
+}
+
+.content h4,
+.content h5,
+.content h6 {
+    margin-top: 1.5rem;
 }
 
 .content blockquote {

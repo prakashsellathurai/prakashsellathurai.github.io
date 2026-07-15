@@ -134,12 +134,17 @@ def write_leetcode_solutions_as_json():
         json.dump(yamldata, f, indent=4)
 
 
+PRECEPT_PATH = "data/non-public/submodules/Grimoire/precept.txt"
 PRECEPT_URL = "https://raw.githubusercontent.com/prakashsellathurai/grimoire/main/precept.txt"
 
 
 def update_precept():
     try:
-        data, _ = fetch_url(PRECEPT_URL)
+        if os.path.exists(PRECEPT_PATH):
+            with open(PRECEPT_PATH) as f:
+                data = f.read()
+        else:
+            data, _ = fetch_url(PRECEPT_URL)
         data = data.replace("\r\n", "\n")
         entries = []
         blocks = [b.strip() for b in data.split("\n\n") if b.strip()]

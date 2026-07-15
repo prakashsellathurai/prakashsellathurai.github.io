@@ -9,8 +9,10 @@ from datetime import datetime, timezone
 
 from lib.frontmatter import parse_frontmatter
 from lib.markdown import MarkdownRenderer, escape_html
+from lib.slug import slug
 
 BASE_PATH = os.environ.get("BASE_PATH", "")
+NOTES_DIR = os.path.join("data", "non-public", "submodules", "Grimoire", "notes")
 
 # ---------------------------------------------------------------------------
 # Date / schema helpers
@@ -95,6 +97,7 @@ _PAGE_NAMES = {
     "/about.html": "About",
     "/projects.html": "Projects",
     "/bookshelf.html": "Bookshelf",
+    "/notes/": "Notes",
     "/tags/": "Tags",
 }
 
@@ -293,9 +296,10 @@ def render_header(metadata):
   <a href="/static/resume/prakash_s_resume.pdf">Resume</a>
   <a href="/essays/">Essays</a>
   <a href="/projects.html">Projects</a>
-  <a href="/bookshelf.html">Bookshelf</a>
-  <a href="/quotes.html">Quotes</a>
-  <a href="/about.html">About</a>
+    <a href="/bookshelf.html">Bookshelf</a>
+    <a href="/notes/">Notes</a>
+    <a href="/quotes.html">Quotes</a>
+    <a href="/about.html">About</a>
   <a href="/feed.xml" class="rss-link" aria-label="RSS Feed">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4 11a9 9 0 0 1 9 9"/>
@@ -328,7 +332,7 @@ def apply_template(template, data):
 # ---------------------------------------------------------------------------
 
 
-def _generate_sitemap(metadata, essays, projects, leetcode_solutions):
+def _generate_sitemap(metadata, essays, projects, leetcode_solutions, notes):
     site_url = metadata["siteUrl"].rstrip("/")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -348,6 +352,7 @@ def _generate_sitemap(metadata, essays, projects, leetcode_solutions):
         {"loc": "/tags/", "lastmod": today, "priority": "0.8"},
         {"loc": "/projects.html", "lastmod": today, "priority": "0.8"},
         {"loc": "/bookshelf.html", "lastmod": today, "priority": "0.8"},
+        {"loc": "/notes/", "lastmod": today, "priority": "0.8"},
         {"loc": "/quotes.html", "lastmod": today, "priority": "0.7"},
         {"loc": "/sitelinks.html", "lastmod": today, "priority": "0.6"},
         {"loc": "/leetcode-solutions/", "lastmod": today, "priority": "0.6"},
@@ -390,7 +395,12 @@ def _generate_sitemap(metadata, essays, projects, leetcode_solutions):
         for s in leetcode_solutions
     ]
 
-    urls_data = pages + essay_entries + tag_entries + project_entries + leetcode_entries
+    note_entries = [
+        {"loc": f"/notes/{n['slug']}.html", "lastmod": today, "priority": "0.6"}
+        for n in notes
+    ]
+
+    urls_data = pages + essay_entries + tag_entries + project_entries + leetcode_entries + note_entries
     url_lines = []
     for p in urls_data:
         if p["loc"].startswith("http"):
@@ -518,6 +528,31 @@ class DataLoader:
 
     def get_quotes(self):
         return self.read_json("quotes.json")
+
+    def get_notes(self):
+        notes_path = os.path.join(os.getcwd(), NOTES_DIR)
+        if not os.path.isdir(notes_path):
+            return []
+        notes = []
+        for entry in sorted(os.listdir(notes_path)):
+            dir_path = os.path.join(notes_path, entry)
+            if not os.path.isdir(dir_path):
+                continue
+            md_files = sorted(
+                f for f in os.listdir(dir_path) if f.endswith(".md")
+            )
+            if not md_files:
+                continue
+            combined = []
+            for f in md_files:
+                content = _read_file(os.path.join(dir_path, f))
+                combined.append(content.strip())
+            notes.append({
+                "title": entry,
+                "slug": slug(entry),
+                "content": "\n\n".join(combined),
+            })
+        return notes
 
 
 # ---------------------------------------------------------------------------
@@ -695,6 +730,53 @@ class PageBuilder:
 
         _write_file(
             os.path.join(os.getcwd(), "out", "essays", f"{essay['slug']}.html"), html
+        )
+
+    def build_notes_list(self, metadata, notes):
+        template = self.data_loader.load_template("notes")
+        html = self._build_common(
+            template,
+            metadata,
+            f"Notes - {metadata['title']}",
+            "Quick references and notes",
+            "/notes/",
+        )
+
+        notes_list_html = "\n".join(
+            f'    <li><a href="/notes/{n["slug"]}.html">{escape_html(n["title"])}</a></li>'
+            for n in notes
+        )
+
+        html = apply_template(html, {"notesList": notes_list_html})
+
+        _ensure_dir(os.path.join(os.getcwd(), "out", "notes"))
+        _write_file(os.path.join(os.getcwd(), "out", "notes", "index.html"), html)
+
+    def build_note(self, metadata, note):
+        template = self.data_loader.load_template("note")
+        site_url = metadata["siteUrl"].rstrip("/")
+        note_url = f"/notes/{note['slug']}.html"
+
+        note_content = self.markdown_renderer.render(note["content"])
+
+        html = self._build_common(
+            template,
+            metadata,
+            f"{note['title']} - {metadata['title']}",
+            f"Notes on {note['title']}",
+            note_url,
+        )
+
+        html = apply_template(
+            html,
+            {
+                "note.title": escape_html(note["title"]),
+                "note.content": note_content,
+            },
+        )
+
+        _write_file(
+            os.path.join(os.getcwd(), "out", "notes", f"{note['slug']}.html"), html
         )
 
     def build_about(self, metadata, author, avatar):
@@ -1089,7 +1171,7 @@ class PageBuilder:
                 os.path.join(os.getcwd(), "out", "tags", f"{tag}.html"), tag_html
             )
 
-    def build_sitelinks(self, metadata, essays, projects):
+    def build_sitelinks(self, metadata, essays, projects, notes):
         template = self.data_loader.load_template("sitelinks")
         html = self._build_common(
             template,
@@ -1108,6 +1190,7 @@ class PageBuilder:
             ("/about.html", "About"),
             ("/projects.html", "Projects"),
             ("/bookshelf.html", "Bookshelf"),
+            ("/notes/", "Notes"),
             ("/quotes.html", "Quotes"),
             ("/tags/", "Tags"),
             ("/static/resume/prakash_s_resume.pdf", "Resume"),
@@ -1153,6 +1236,11 @@ class PageBuilder:
             for p in same_domain_projects
         )
 
+        notes_links_html = "\n".join(
+            f'    <li><a href="/notes/{n["slug"]}.html">{escape_html(n["title"])}</a></li>'
+            for n in notes
+        )
+
         html = apply_template(
             html,
             {
@@ -1163,6 +1251,8 @@ class PageBuilder:
                 "tagCount": str(len(tags_sorted)),
                 "projectLinks": project_links_html,
                 "projectCount": str(len(same_domain_projects)),
+                "notesLinks": notes_links_html,
+                "notesCount": str(len(notes)),
             },
         )
 
@@ -1191,9 +1281,10 @@ def build_site():
     projects = data_loader.get_projects()
     leetcode_solutions = data_loader.get_leetcode_solutions()
     quotes = data_loader.get_quotes()
+    notes = data_loader.get_notes()
 
     print(
-        f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions, {len(quotes)} quotes"
+        f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions, {len(quotes)} quotes, {len(notes)} notes"
     )
 
     _ensure_dir(out_dir)
@@ -1211,7 +1302,10 @@ def build_site():
     page_builder.build_projects(metadata, projects)
     page_builder.build_bookshelf(metadata, books)
     page_builder.build_quotes(metadata, quotes)
-    page_builder.build_sitelinks(metadata, essays, projects)
+    page_builder.build_notes_list(metadata, notes)
+    for note in notes:
+        page_builder.build_note(metadata, note)
+    page_builder.build_sitelinks(metadata, essays, projects, notes)
 
     print("Generating RSS, sitemap, and robots.txt...")
     _write_file(
@@ -1220,7 +1314,7 @@ def build_site():
     )
     _write_file(
         os.path.join(out_dir, "sitemap.xml"),
-        _generate_sitemap(metadata, essays, projects, leetcode_solutions),
+        _generate_sitemap(metadata, essays, projects, leetcode_solutions, notes),
     )
     _write_file(
         os.path.join(out_dir, "robots.txt"),

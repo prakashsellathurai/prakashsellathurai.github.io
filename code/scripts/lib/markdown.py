@@ -67,6 +67,30 @@ class MarkdownRenderer:
             if line.strip() == "":
                 i += 1
                 continue
+
+            m = re.match(r"^(#{1,6})\s+(.+)$", line)
+            if m:
+                level = len(m.group(1))
+                blocks.append({"type": "heading", "level": level, "content": m.group(2)})
+                i += 1
+                continue
+
+            m = re.match(r"^(`{3,})\s*(\w*)\s*$", line)
+            if m:
+                fence = m.group(1)
+                lang = m.group(2)
+                code_lines = []
+                i += 1
+                while i < len(lines):
+                    if re.match(r"^`{3,}\s*$", lines[i]):
+                        i += 1
+                        break
+                    code_lines.append(lines[i])
+                    i += 1
+                code_content = "\n".join(code_lines)
+                blocks.append({"type": "code", "lang": lang, "content": code_content})
+                continue
+
             if line.lstrip().startswith(">"):
                 quote_lines = []
                 while i < len(lines) and lines[i].lstrip().startswith(">"):
@@ -83,6 +107,15 @@ class MarkdownRenderer:
 
     def _render_block(self, block, defs):
         t = block["type"]
+        if t == "heading":
+            level = block["level"]
+            return f"<h{level}>{self._render_inline(block['content'], defs)}</h{level}>"
+        if t == "code":
+            lang = block.get("lang", "")
+            code = escape_html(block["content"])
+            if lang:
+                return f'<pre><code class="language-{escape_html(lang)}">\n{code}\n</code></pre>'
+            return f"<pre><code>\n{code}\n</code></pre>"
         if t == "blockquote":
             return f"<blockquote>\n{self._render_blocks(block['content'], defs)}\n</blockquote>"
         if t == "paragraph":

@@ -8,12 +8,14 @@
     "url": "https://www.goodreads.com/quotes/9164920-if-you-don-t-work-on-important-problems-it-s-not-likely"
   },
   {
-    "quote": "Nobody ever figures out what life is all about, and it doesn't matter. Explore the world. Nearly everything is really interesting if you go into it deeply enough.",
-    "author": "Richard P. Feynman",
-    "book": "",
-    "tags": [],
-    "likes": 4514,
-    "url": "https://www.goodreads.com/quotes/797873-nobody-ever-figures-out-what-life-is-all-about-and"
+    "quote": "The mystery of life isn't a problem to solve, but a reality to experience.",
+    "author": "Frank Herbert",
+    "book": "Dune",
+    "tags": [
+      "dune"
+    ],
+    "likes": 2603,
+    "url": "https://www.goodreads.com/quotes/100768-the-mystery-of-life-isn-t-a-problem-to-solve-but"
   },
   {
     "quote": "Scars signal skin in the game.",
@@ -49,7 +51,7 @@
     "tags": [
       "science"
     ],
-    "likes": 1024,
+    "likes": 1025,
     "url": "https://www.goodreads.com/quotes/193533-the-first-principle-is-that-you-must-not-fool-yourself"
   },
   {
@@ -176,22 +178,20 @@
     "url": "https://www.goodreads.com/quotes/962527-be-alone-that-is-the-secret-of-invention-be-alone"
   },
   {
-    "quote": "The mystery of life isn't a problem to solve, but a reality to experience.",
-    "author": "Frank Herbert",
-    "book": "Dune",
-    "tags": [
-      "dune"
-    ],
-    "likes": 2603,
-    "url": "https://www.goodreads.com/quotes/100768-the-mystery-of-life-isn-t-a-problem-to-solve-but"
-  },
-  {
     "quote": "Intelligence is not only the ability to reason; it is also the ability to find relevant material in memory and to deploy attention when needed.",
     "author": "Daniel Kahneman",
     "book": "Thinking, Fast and Slow",
     "tags": [],
     "likes": 277,
     "url": "https://www.goodreads.com/quotes/669965-intelligence-is-not-only-the-ability-to-reason-it-is"
+  },
+  {
+    "quote": "Nobody ever figures out what life is all about, and it doesn't matter. Explore the world. Nearly everything is really interesting if you go into it deeply enough.",
+    "author": "Richard P. Feynman",
+    "book": "",
+    "tags": [],
+    "likes": 4514,
+    "url": "https://www.goodreads.com/quotes/797873-nobody-ever-figures-out-what-life-is-all-about-and"
   },
   {
     "quote": "If you care about being thought credible and intelligent, do not use complex language where simpler language will do.",
@@ -1494,7 +1494,7 @@
     "author": "Oscar Wilde",
     "book": "",
     "tags": [],
-    "likes": 178462,
+    "likes": 178463,
     "url": "https://www.goodreads.com/quotes/19884-be-yourself-everyone-else-is-already-taken"
   },
   {
@@ -1593,7 +1593,7 @@
       "curiosity",
       "mystery"
     ],
-    "likes": 6839,
+    "likes": 6840,
     "url": "https://www.goodreads.com/quotes/20604-the-important-thing-is-not-to-stop-questioning-curiosity-has"
   },
   {

@@ -889,7 +889,7 @@ class PageBuilder:
             extra_schemas=[collection_schema],
         )
 
-        projects_list_html = '<ul class="project-list">\n' + "\n".join(
+        projects_list_html = '<ul>\n' + "\n".join(
             f"""    <li><a href="{escape_html(p.get("website") or p["href"])}">{escape_html(p["title"])}</a> - <span class="desc">{escape_html(p.get("description", ""))}</span></li>"""
             for p in projects
         ) + "\n</ul>"
@@ -1087,7 +1087,7 @@ class PageBuilder:
         items_html = "\n".join(
             _render_quote_item(q) for q in quotes
         )
-        quotes_list_html = f'<ul class="project-list">\n{items_html}\n</ul>'
+        quotes_list_html = f'<ul>\n{items_html}\n</ul>'
 
         html = self._build_common(
             template,

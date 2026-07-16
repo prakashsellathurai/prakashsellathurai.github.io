@@ -753,18 +753,18 @@ footer {
     }
 }
 
-ul.project-list {
+ul {
     list-style: none;
     padding: 0;
 }
 
-ul.project-list li {
+ul li {
     position: relative;
     padding-left: 1.5rem;
     margin-bottom: 0.6rem;
 }
 
-ul.project-list li::before {
+ul li::before {
     content: "";
     position: absolute;
     left: 0.15rem;
@@ -776,21 +776,21 @@ ul.project-list li::before {
     opacity: 0.5;
 }
 
-ul.project-list li:nth-child(3n)::before {
+ul li:nth-child(3n)::before {
     border-radius: 60% 30% 50% 70% / 50% 60% 30% 60%;
     width: 7px;
     height: 9px;
     left: 0.2rem;
 }
 
-ul.project-list li:nth-child(5n)::before {
+ul li:nth-child(5n)::before {
     border-radius: 50% 40% 60% 50% / 50% 40% 60% 40%;
     width: 9px;
     height: 7px;
     opacity: 0.4;
 }
 
-ul.project-list .desc {
+ul .desc {
     color: var(--text-muted);
     font-size: 0.9rem;
 }

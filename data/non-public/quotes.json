@@ -1,59 +1,19 @@
 [
   {
-    "quote": "One must be sane to think clearly, but one can think deeply and be quite insane.",
-    "author": "Nikola Tesla",
-    "book": "",
-    "tags": [
-      "insanity",
-      "sanity"
-    ],
-    "likes": 395,
-    "url": "https://www.goodreads.com/quotes/237760-one-must-be-sane-to-think-clearly-but-one-can"
-  },
-  {
     "quote": "Nobody ever figures out what life is all about, and it doesn't matter. Explore the world. Nearly everything is really interesting if you go into it deeply enough.",
     "author": "Richard P. Feynman",
     "book": "",
     "tags": [],
-    "likes": 4513,
+    "likes": 4514,
     "url": "https://www.goodreads.com/quotes/797873-nobody-ever-figures-out-what-life-is-all-about-and"
   },
   {
-    "quote": "The first principle is that you must not fool yourself and you are the easiest person to fool.",
-    "author": "Richard P. Feynman",
-    "book": "",
-    "tags": [
-      "science"
-    ],
-    "likes": 1024,
-    "url": "https://www.goodreads.com/quotes/193533-the-first-principle-is-that-you-must-not-fool-yourself"
-  },
-  {
-    "quote": "Be alone, that is the secret of invention; be alone, that is when ideas are born.",
-    "author": "Nikola Tesla",
-    "book": "",
+    "quote": "Elite students climb confidently until they reach a level of competition sufficiently intense to beat their dreams out of them. Higher education is the place where people who had big plans in high school get stuck in fierce rivalries with equally smart peers over conventional careers like management consulting and investment banking. For the privilege of being turned into conformists, students (or their families) pay hundreds of thousands of dollars in skyrocketing tuition that continues to outpace inflation. Why are we doing this to ourselves?",
+    "author": "Peter  Thiel",
+    "book": "Zero to One: Notes on Startups, or How to Build the Future",
     "tags": [],
-    "likes": 805,
-    "url": "https://www.goodreads.com/quotes/962527-be-alone-that-is-the-secret-of-invention-be-alone"
-  },
-  {
-    "quote": "All we have to decide is what to do with the time that is given us.",
-    "author": "J.R.R. Tolkien",
-    "book": "The Fellowship of the Ring",
-    "tags": [
-      "encouragement",
-      "gandalf"
-    ],
-    "likes": 11397,
-    "url": "https://www.goodreads.com/quotes/266254-all-we-have-to-decide-is-what-to-do-with"
-  },
-  {
-    "quote": "It is amazing how often the reason you can't find a convincing explanation for something is because your conclusion is wrong.",
-    "author": "Steven S. Skiena",
-    "book": "",
-    "tags": [],
-    "likes": 5,
-    "url": "https://www.goodreads.com/quotes/5252221-it-is-amazing-how-often-the-reason-you-can-t-find"
+    "likes": 86,
+    "url": "https://www.goodreads.com/quotes/4907872-elite-students-climb-confidently-until-they-reach-a-level-of"
   },
   {
     "quote": "Premature optimization is the root of all evil.",
@@ -67,14 +27,33 @@
     "url": "https://www.goodreads.com/quotes/1194913-premature-optimization-is-the-root-of-all-evil"
   },
   {
-    "quote": "Do I contradict myself?Very well then I contradict myself,(I am large, I contain multitudes.)",
-    "author": "Walt Whitman",
-    "book": "Leaves of Grass",
+    "quote": "The first principle is that you must not fool yourself and you are the easiest person to fool.",
+    "author": "Richard P. Feynman",
+    "book": "",
     "tags": [
-      "change"
+      "science"
     ],
-    "likes": 3894,
-    "url": "https://www.goodreads.com/quotes/8206-do-i-contradict-myself-very-well-then-i-contradict-myself"
+    "likes": 1024,
+    "url": "https://www.goodreads.com/quotes/193533-the-first-principle-is-that-you-must-not-fool-yourself"
+  },
+  {
+    "quote": "All we have to decide is what to do with the time that is given us.",
+    "author": "J.R.R. Tolkien",
+    "book": "The Fellowship of the Ring",
+    "tags": [
+      "encouragement",
+      "gandalf"
+    ],
+    "likes": 11398,
+    "url": "https://www.goodreads.com/quotes/266254-all-we-have-to-decide-is-what-to-do-with"
+  },
+  {
+    "quote": "It is amazing how often the reason you can't find a convincing explanation for something is because your conclusion is wrong.",
+    "author": "Steven S. Skiena",
+    "book": "",
+    "tags": [],
+    "likes": 5,
+    "url": "https://www.goodreads.com/quotes/5252221-it-is-amazing-how-often-the-reason-you-can-t-find"
   },
   {
     "quote": "Nothing thicker than a knife's blade separates happiness from melancholy.",
@@ -83,8 +62,18 @@
     "tags": [
       "sadness"
     ],
-    "likes": 1667,
+    "likes": 1666,
     "url": "https://www.goodreads.com/quotes/11475-nothing-thicker-than-a-knife-s-blade-separates-happiness-from-melancholy"
+  },
+  {
+    "quote": "Do I contradict myself?Very well then I contradict myself,(I am large, I contain multitudes.)",
+    "author": "Walt Whitman",
+    "book": "Leaves of Grass",
+    "tags": [
+      "change"
+    ],
+    "likes": 3896,
+    "url": "https://www.goodreads.com/quotes/8206-do-i-contradict-myself-very-well-then-i-contradict-myself"
   },
   {
     "quote": "Any sufficiently advanced technology is indistinguishable from magic.",
@@ -108,7 +97,7 @@
       "humor",
       "scifi"
     ],
-    "likes": 23501,
+    "likes": 23503,
     "url": "https://www.goodreads.com/quotes/1-the-story-so-far-in-the-beginning-the-universe-was"
   },
   {
@@ -118,7 +107,7 @@
     "tags": [
       "humour"
     ],
-    "likes": 10148,
+    "likes": 10147,
     "url": "https://www.goodreads.com/quotes/811-for-instance-on-the-planet-earth-man-had-always-assumed"
   },
   {
@@ -167,8 +156,16 @@
     "tags": [
       "paradox"
     ],
-    "likes": 2478,
+    "likes": 2479,
     "url": "https://www.goodreads.com/quotes/222643-seek-freedom-and-become-captive-of-your-desires-seek-discipline"
+  },
+  {
+    "quote": "Be alone, that is the secret of invention; be alone, that is when ideas are born.",
+    "author": "Nikola Tesla",
+    "book": "",
+    "tags": [],
+    "likes": 805,
+    "url": "https://www.goodreads.com/quotes/962527-be-alone-that-is-the-secret-of-invention-be-alone"
   },
   {
     "quote": "The mystery of life isn't a problem to solve, but a reality to experience.",
@@ -229,6 +226,17 @@
     "url": "https://www.goodreads.com/quotes/8909368-some-could-say-it-is-the-external-world-which-has"
   },
   {
+    "quote": "One must be sane to think clearly, but one can think deeply and be quite insane.",
+    "author": "Nikola Tesla",
+    "book": "",
+    "tags": [
+      "insanity",
+      "sanity"
+    ],
+    "likes": 395,
+    "url": "https://www.goodreads.com/quotes/237760-one-must-be-sane-to-think-clearly-but-one-can"
+  },
+  {
     "quote": "Being strong-willed is not enough, however. You also have to be hard on yourself. Someone who was strong-willed but self-indulgent would not be called determined. Determination implies your willfulness is balanced by discipline.",
     "author": "Paul Graham",
     "book": "",
@@ -243,7 +251,7 @@
     "tags": [
       "inspirational"
     ],
-    "likes": 11090,
+    "likes": 11096,
     "url": "https://www.goodreads.com/quotes/6145-who-controls-the-past-controls-the-future-who-controls-the"
   },
   {
@@ -251,7 +259,7 @@
     "author": "George Orwell",
     "book": "",
     "tags": [],
-    "likes": 4338,
+    "likes": 4339,
     "url": "https://www.goodreads.com/quotes/14793-every-generation-imagines-itself-to-be-more-intelligent-than-the"
   },
   {
@@ -265,7 +273,7 @@
       "propaganda",
       "thought"
     ],
-    "likes": 2902,
+    "likes": 2901,
     "url": "https://www.goodreads.com/quotes/72144-but-if-thought-corrupts-language-language-can-also-corrupt-thought"
   },
   {
@@ -451,14 +459,6 @@
     "tags": [],
     "likes": 101,
     "url": "https://www.goodreads.com/quotes/1478492-what-important-truth-do-very-few-people-agree-with-you"
-  },
-  {
-    "quote": "Elite students climb confidently until they reach a level of competition sufficiently intense to beat their dreams out of them. Higher education is the place where people who had big plans in high school get stuck in fierce rivalries with equally smart peers over conventional careers like management consulting and investment banking. For the privilege of being turned into conformists, students (or their families) pay hundreds of thousands of dollars in skyrocketing tuition that continues to outpace inflation. Why are we doing this to ourselves?",
-    "author": "Peter  Thiel",
-    "book": "Zero to One: Notes on Startups, or How to Build the Future",
-    "tags": [],
-    "likes": 85,
-    "url": "https://www.goodreads.com/quotes/4907872-elite-students-climb-confidently-until-they-reach-a-level-of"
   },
   {
     "quote": "We wanted flying cars, instead we got 140 characters.",
@@ -909,7 +909,7 @@
     "author": "Peter Thiel",
     "book": "",
     "tags": [],
-    "likes": 17,
+    "likes": 18,
     "url": "https://www.goodreads.com/quotes/8670225-if-you-have-a-10-year-plan-of-how-to-get"
   },
   {
@@ -1037,7 +1037,7 @@
       "science",
       "writer"
     ],
-    "likes": 8099,
+    "likes": 8098,
     "url": "https://www.goodreads.com/quotes/27726-somewhere-something-incredible-is-waiting-to-be-known"
   },
   {
@@ -1213,7 +1213,7 @@
     "tags": [
       "science"
     ],
-    "likes": 2123,
+    "likes": 2124,
     "url": "https://www.goodreads.com/quotes/32952-if-you-wish-to-make-an-apple-pie-from-scratch"
   },
   {
@@ -1255,7 +1255,7 @@
     "tags": [
       "imagination"
     ],
-    "likes": 1162,
+    "likes": 1161,
     "url": "https://www.goodreads.com/quotes/9812-imagination-will-often-carry-us-to-worlds-that-never-were"
   },
   {
@@ -1284,7 +1284,7 @@
       "religion",
       "science"
     ],
-    "likes": 825,
+    "likes": 826,
     "url": "https://www.goodreads.com/quotes/564056-i-don-t-want-to-believe-i-want-to-know"
   },
   {
@@ -1467,7 +1467,7 @@
       "dumbledore",
       "power-of-words"
     ],
-    "likes": 2108,
+    "likes": 2107,
     "url": "https://www.goodreads.com/quotes/723814-words-are-in-my-not-so-humble-opinion-our-most-inexhaustible-source"
   },
   {
@@ -1486,7 +1486,7 @@
     "author": "Oscar Wilde",
     "book": "",
     "tags": [],
-    "likes": 178456,
+    "likes": 178462,
     "url": "https://www.goodreads.com/quotes/19884-be-yourself-everyone-else-is-already-taken"
   },
   {
@@ -1503,7 +1503,7 @@
       "stupidity",
       "universe"
     ],
-    "likes": 149010,
+    "likes": 149022,
     "url": "https://www.goodreads.com/quotes/942-two-things-are-infinite-the-universe-and-human-stupidity-and"
   },
   {
@@ -1513,7 +1513,7 @@
     "tags": [
       "life"
     ],
-    "likes": 109642,
+    "likes": 109650,
     "url": "https://www.goodreads.com/quotes/258-in-three-words-i-can-sum-up-everything-i-ve-learned"
   },
   {
@@ -1525,7 +1525,7 @@
       "science",
       "wisdom"
     ],
-    "likes": 14045,
+    "likes": 14046,
     "url": "https://www.goodreads.com/quotes/4078-the-saddest-aspect-of-life-right-now-is-that-science"
   },
   {
@@ -1536,7 +1536,7 @@
       "dragons",
       "wisdom"
     ],
-    "likes": 8737,
+    "likes": 8738,
     "url": "https://www.goodreads.com/quotes/27809-never-laugh-at-live-dragons"
   },
   {
@@ -1585,7 +1585,7 @@
       "curiosity",
       "mystery"
     ],
-    "likes": 6838,
+    "likes": 6839,
     "url": "https://www.goodreads.com/quotes/20604-the-important-thing-is-not-to-stop-questioning-curiosity-has"
   },
   {
@@ -1668,7 +1668,7 @@
     "author": "Alan Turing",
     "book": "",
     "tags": [],
-    "likes": 699,
+    "likes": 700,
     "url": "https://www.goodreads.com/quotes/6150884-sometimes-it-is-the-people-no-one-can-imagine-anything"
   },
   {
@@ -1684,7 +1684,7 @@
       "vision",
       "work"
     ],
-    "likes": 282,
+    "likes": 283,
     "url": "https://www.goodreads.com/quotes/176894-we-can-only-see-a-short-distance-ahead-but-we"
   },
   {
@@ -1835,7 +1835,7 @@
       "success",
       "war"
     ],
-    "likes": 1355,
+    "likes": 1356,
     "url": "https://www.goodreads.com/quotes/48711-supreme-excellence-consists-of-breaking-the-enemy-s-resistance-without-fighting"
   },
   {
@@ -1852,7 +1852,7 @@
       "war",
       "wisdom"
     ],
-    "likes": 918,
+    "likes": 919,
     "url": "https://www.goodreads.com/quotes/20739-a-wise-man-gets-more-use-from-his-enemies-than"
   },
   {
@@ -2200,7 +2200,7 @@
     "author": "J. Robert Oppenheimer",
     "book": "",
     "tags": [],
-    "likes": 160,
+    "likes": 161,
     "url": "https://www.goodreads.com/quotes/49807-the-optimist-thinks-this-is-the-best-of-all-possible"
   },
   {
@@ -2272,7 +2272,7 @@
       "inspirational",
       "paraphrased"
     ],
-    "likes": 42388,
+    "likes": 42387,
     "url": "https://www.goodreads.com/quotes/8287-i-have-not-failed-i-ve-just-found-10-000-ways-that"
   },
   {
@@ -2557,7 +2557,7 @@
       "religion",
       "truth"
     ],
-    "likes": 3800,
+    "likes": 3799,
     "url": "https://www.goodreads.com/quotes/26157-a-truth-that-s-told-with-bad-intent-beats-all-the"
   },
   {
@@ -2651,7 +2651,7 @@
     "author": "William Blake",
     "book": "The Marriage of Heaven and Hell",
     "tags": [],
-    "likes": 538,
+    "likes": 537,
     "url": "https://www.goodreads.com/quotes/386-the-road-of-excess-leads-to-the-palace-of-wisdom"
   },
   {
@@ -2806,7 +2806,7 @@
     "author": "Frank Herbert",
     "book": "Dune",
     "tags": [],
-    "likes": 795,
+    "likes": 801,
     "url": "https://www.goodreads.com/quotes/842526-once-men-turned-their-thinking-over-to-machines-in-the"
   },
   {
@@ -2824,7 +2824,7 @@
     "tags": [
       "animal-farm"
     ],
-    "likes": 7844,
+    "likes": 7847,
     "url": "https://www.goodreads.com/quotes/6466-all-animals-are-equal-but-some-animals-are-more-equal"
   },
   {
@@ -2836,5 +2836,201 @@
     ],
     "likes": 447,
     "url": "https://www.goodreads.com/quotes/321226-if-people-cannot-write-well-they-cannot-think-well-and"
+  },
+  {
+    "quote": "The three most harmful addictions are heroin, carbohydrates, and a monthly salary.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "",
+    "tags": [
+      "addiction",
+      "carbohydrates",
+      "diabesity",
+      "dr-hyman",
+      "dr-robert-lustig",
+      "labor",
+      "laboring-class",
+      "sugar",
+      "sugar-addiction",
+      "sugar-the-bitter-truth",
+      "wage",
+      "wage-slavery"
+    ],
+    "likes": 684,
+    "url": "https://www.goodreads.com/quotes/612389-the-three-most-harmful-addictions-are-heroin-carbohydrates-and-a"
+  },
+  {
+    "quote": "Charm is the ability to insult people without offending them; nerdiness the reverse",
+    "author": "Nassim Nicholas Taleb",
+    "book": "",
+    "tags": [
+      "charm",
+      "enfp-vs-intj",
+      "flirting",
+      "game",
+      "nerd",
+      "nerdiness",
+      "nerds",
+      "seduction"
+    ],
+    "likes": 316,
+    "url": "https://www.goodreads.com/quotes/610825-charm-is-the-ability-to-insult-people-without-offending-them"
+  },
+  {
+    "quote": "Things always become obvious after the fact",
+    "author": "Nassim Nicholas Taleb",
+    "book": "",
+    "tags": [
+      "philosophy"
+    ],
+    "likes": 166,
+    "url": "https://www.goodreads.com/quotes/178679-things-always-become-obvious-after-the-fact"
+  },
+  {
+    "quote": "Wit seduces by signaling intelligence without nerdiness.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "The Bed of Procrustes: Philosophical and Practical Aphorisms",
+    "tags": [
+      "art",
+      "autism",
+      "humor",
+      "intelligence",
+      "nerd",
+      "nerds",
+      "sense-of-humor",
+      "wisdom",
+      "wisdom-vs-nerdiness",
+      "wit"
+    ],
+    "likes": 164,
+    "url": "https://www.goodreads.com/quotes/616477-wit-seduces-by-signaling-intelligence-without-nerdiness"
+  },
+  {
+    "quote": "Antifragility is beyond resilience or robustness. The resilient resists shocks and stays the same; the antifragile gets better.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Antifragile: Things That Gain from Disorder",
+    "tags": [],
+    "likes": 136,
+    "url": "https://www.goodreads.com/quotes/897104-antifragility-is-beyond-resilience-or-robustness-the-resilient-resists-shocks"
+  },
+  {
+    "quote": "You may never know what type of person someone is unless they are given opportunities to violate moral or ethical codes.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Antifragile: Things That Gain From Disorder",
+    "tags": [],
+    "likes": 137,
+    "url": "https://www.goodreads.com/quotes/1238270-you-may-never-know-what-type-of-person-someone-is"
+  },
+  {
+    "quote": "Suckers try to win arguments, nonsuckers try to win.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Antifragile: Things That Gain From Disorder",
+    "tags": [],
+    "likes": 113,
+    "url": "https://www.goodreads.com/quotes/1280126-suckers-try-to-win-arguments-nonsuckers-try-to-win"
+  },
+  {
+    "quote": "The problem with experts is that they do not know what they do not know",
+    "author": "Nassim Nicholas Taleb",
+    "book": "The Black Swan: The Impact of the Highly Improbable",
+    "tags": [],
+    "likes": 123,
+    "url": "https://www.goodreads.com/quotes/1177683-the-problem-with-experts-is-that-they-do-not-know"
+  },
+  {
+    "quote": "When things go our way we reject the lack of certainty.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Fooled by Randomness: The Hidden Role of Chance in Life and in the Markets",
+    "tags": [],
+    "likes": 32,
+    "url": "https://www.goodreads.com/quotes/959524-when-things-go-our-way-we-reject-the-lack-of"
+  },
+  {
+    "quote": "Avoid taking advice from someone who gives advice for a living, unless there is a penalty for their advice.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Skin in the Game: Hidden Asymmetries in Daily Life",
+    "tags": [],
+    "likes": 31,
+    "url": "https://www.goodreads.com/quotes/9515372-avoid-taking-advice-from-someone-who-gives-advice-for-a"
+  },
+  {
+    "quote": "Scars signal skin in the game.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Skin in the Game: Hidden Asymmetries in Daily Life",
+    "tags": [],
+    "likes": 29,
+    "url": "https://www.goodreads.com/quotes/9113961-scars-signal-skin-in-the-game"
+  },
+  {
+    "quote": "You can tell how uninteresting a person is by asking him whom he finds interesting.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "The Bed of Procrustes: Philosophical and Practical Aphorisms",
+    "tags": [],
+    "likes": 25,
+    "url": "https://www.goodreads.com/quotes/7446155-you-can-tell-how-uninteresting-a-person-is-by-asking"
+  },
+  {
+    "quote": "the best horses lose when they compete with slower ones, and win against better rivals.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Antifragile: Things That Gain From Disorder",
+    "tags": [],
+    "likes": 23,
+    "url": "https://www.goodreads.com/quotes/1051383-the-best-horses-lose-when-they-compete-with-slower-ones"
+  },
+  {
+    "quote": "But never engage in detailed overexplanations of why something is important: one debases a principle by endlessly justifying it.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Skin in the Game: The Hidden Asymmetries in Daily Life",
+    "tags": [
+      "discussion",
+      "importance",
+      "principle"
+    ],
+    "likes": 23,
+    "url": "https://www.goodreads.com/quotes/9325430-but-never-engage-in-detailed-overexplanations-of-why-something-is"
+  },
+  {
+    "quote": "A life saved is a statistic; a person hurt is an anecdote. Statistics are invisible; anecdotes are salient.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "The Black Swan: The Impact of the Highly Improbable",
+    "tags": [
+      "anecdote",
+      "life-saved",
+      "person-hurt",
+      "statistic"
+    ],
+    "likes": 22,
+    "url": "https://www.goodreads.com/quotes/7223321-a-life-saved-is-a-statistic-a-person-hurt-is"
+  },
+  {
+    "quote": "he tends to mistake the unknown for the nonexistent.",
+    "author": "Nassim Nicholas Taleb",
+    "book": "Antifragile: Things That Gain From Disorder",
+    "tags": [],
+    "likes": 21,
+    "url": "https://www.goodreads.com/quotes/2625488-he-tends-to-mistake-the-unknown-for-the-nonexistent"
+  },
+  {
+    "quote": "It's natural to think that living things must be the handiwork of a designer. But it was also natural to think that the sun went around the earth. Overcoming naive impressions to figure out how things really work is one of humanity's highest callings.[<i><i>Can You Believe in God and Evolution?</i> Time Magazine, August 7, 2005</i>]",
+    "author": "Steven Pinker",
+    "book": "",
+    "tags": [
+      "design",
+      "evidence",
+      "intuition",
+      "natural",
+      "science",
+      "skepticism",
+      "superstition"
+    ],
+    "likes": 214,
+    "url": "https://www.goodreads.com/quotes/153820-it-s-natural-to-think-that-living-things-must-be-the"
+  },
+  {
+    "quote": "Thanks to the redundancy of language, yxx cxn xndxrstxnd whxt x xm wrxtxng xvxn xf x rxplxcx xll thx vxwxls wxth xn \"x\" (t gts lttl hrdr f y dn't vn kn whr th vwls r)",
+    "author": "steven pinker",
+    "book": "",
+    "tags": [],
+    "likes": 65,
+    "url": "https://www.goodreads.com/quotes/324871-thanks-to-the-redundancy-of-language-yxx-cxn-xndxrstxnd-whxt"
   }
 ]

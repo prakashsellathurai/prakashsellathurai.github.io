@@ -48,10 +48,10 @@
         "pinned": true
     },
     {
-        "title": "leetcode-solutions",
-        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
-        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
-        "description": "My solutions to Leetcode problems",
+        "title": "prakashsellathurai.github.io",
+        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+        "website": "https://prakashsellathurai.com/",
+        "description": "personal website",
         "stars": 0,
         "pinned": false
     },
@@ -64,10 +64,18 @@
         "pinned": false
     },
     {
-        "title": "prakashsellathurai.github.io",
-        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-        "website": "https://prakashsellathurai.com/",
-        "description": "personal website",
+        "title": "leetcode-solutions",
+        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
+        "description": "My solutions to Leetcode problems",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "submit-site-to-marginalia-search",
+        "href": "https://github.com/prakashsellathurai/submit-site-to-marginalia-search",
+        "website": null,
+        "description": "Submit websites to be crawled by Marginalia Search here",
         "stars": 0,
         "pinned": false
     },

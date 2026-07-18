@@ -6,10 +6,10 @@
 
 :root {
     --bg: #f5f2eb;
-    --bg-alt: #ebe6db;
-    --text: #3d3a35;
+    --bg-alt: #ebe6dbde;
+    --text: #000000;
     --text-muted: #6b6560;
-    --accent: #8b7355;
+    --accent: #D97706;
     --accent-light: #a69478;
     --border: #d4cfc4;
     --sidebar-bg: #ebe6db;
@@ -34,9 +34,7 @@ body {
     line-height: 1.8;
     color: var(--text);
     background: var(--bg);
-    background-image:
-        linear-gradient(rgba(245, 242, 235, 0.3), rgba(245, 242, 235, 0.3)),
-        url("/static/images/wabi-sabi-bg.webp");
+    background-image: linear-gradient(rgb(255 178 0 / 24%), #0066cc3d), url(/static/images/wabi-sabi-bg.webp);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -159,6 +157,7 @@ article:last-child {
         0 4px 20px rgba(120, 105, 85, 0.1),
         0 40px 80px -30px rgba(0, 0, 0, 0.15);
     position: relative;
+    background: var(--bg-alt);
 }
 
 .book-list,
@@ -436,6 +435,7 @@ footer {
         padding-left: 0.75rem;
         font-size: 0.8rem;
         line-height: 1.5;
+        background: var(--bg-alt);
     }
 }
 

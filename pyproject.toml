@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "nbconvert[execute,serve,test,webpdf]>=7.17.1",
+    "nbformat>=5.10.4",
+]
 
 [dependency-groups]
 dev = [

@@ -507,24 +507,7 @@ _ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
 
 
 def _render_markdown(file_data, markdown_renderer):
-    from nbconvert import HTMLExporter
-    from nbformat import v4 as nbf
-    content = file_data["content"]
-    try:
-        nb = nbf.new_notebook()
-        nb.metadata.kernelspec = {
-            "display_name": "Python 3",
-            "language": "python",
-            "name": "python3",
-        }
-        nb.metadata.language_info = {"name": "python", "version": "3.14.0"}
-        nb.cells = [nbf.new_markdown_cell(content)]
-        exporter = HTMLExporter(template_name="classic")
-        full_html, _resources = exporter.from_notebook_node(nb)
-        return full_html
-    except Exception:
-        pass
-    return markdown_renderer.render(content)
+    return markdown_renderer.render(file_data["content"])
 
 
 def _render_notebook(file_data, markdown_renderer):
@@ -545,34 +528,8 @@ def _render_notebook(file_data, markdown_renderer):
     return f"<pre><code>{escape_html(content)}</code></pre>"
 
 
-_EXT_LANG_MAP = {
-    "py": {"name": "python", "version": "3.14.0"},
-    "c": {"name": "c", "version": "C11"},
-    "txt": {"name": "text", "version": None},
-}
-
-
 def _render_code_as_notebook(file_data, markdown_renderer):
-    from nbconvert import HTMLExporter
-    from nbformat import v4 as nbf
-
-    content = file_data["content"]
-    try:
-        nb = nbf.new_notebook()
-        lang = _EXT_LANG_MAP.get(file_data["ext"], {"name": "python", "version": "3.14.0"})
-        nb.metadata.kernelspec = {
-            "display_name": lang["name"].title(),
-            "language": lang["name"],
-            "name": lang["name"],
-        }
-        nb.metadata.language_info = lang
-        nb.cells = [nbf.new_code_cell(content)]
-        exporter = HTMLExporter(template_name="classic")
-        full_html, _resources = exporter.from_notebook_node(nb)
-        return full_html
-    except Exception:
-        pass
-    escaped = escape_html(content)
+    escaped = escape_html(file_data["content"])
     return f'<pre><code class="language-{file_data["ext"]}">{escaped}</code></pre>'
 
 

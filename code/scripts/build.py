@@ -507,7 +507,24 @@ _ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
 
 
 def _render_markdown(file_data, markdown_renderer):
-    return markdown_renderer.render(file_data["content"])
+    from nbconvert import HTMLExporter
+    from nbformat import v4 as nbf
+    content = file_data["content"]
+    try:
+        nb = nbf.new_notebook()
+        nb.metadata.kernelspec = {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3",
+        }
+        nb.metadata.language_info = {"name": "python", "version": "3.14.0"}
+        nb.cells = [nbf.new_markdown_cell(content)]
+        exporter = HTMLExporter(template_name="classic")
+        full_html, _resources = exporter.from_notebook_node(nb)
+        return full_html
+    except Exception:
+        pass
+    return markdown_renderer.render(content)
 
 
 def _render_notebook(file_data, markdown_renderer):

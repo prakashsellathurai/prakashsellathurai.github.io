@@ -507,7 +507,24 @@ _ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
 
 
 def _render_markdown(file_data, markdown_renderer):
-    return markdown_renderer.render(file_data["content"])
+    from nbconvert import HTMLExporter
+    from nbformat import v4 as nbf
+    content = file_data["content"]
+    try:
+        nb = nbf.new_notebook()
+        nb.metadata.kernelspec = {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3",
+        }
+        nb.metadata.language_info = {"name": "python", "version": "3.14.0"}
+        nb.cells = [nbf.new_markdown_cell(content)]
+        exporter = HTMLExporter(template_name="classic")
+        full_html, _resources = exporter.from_notebook_node(nb)
+        return full_html
+    except Exception:
+        pass
+    return markdown_renderer.render(content)
 
 
 def _render_notebook(file_data, markdown_renderer):
@@ -1095,32 +1112,7 @@ class PageBuilder:
 
     def build_experiment(self, metadata, topic, file_data, subtopic_path=None):
         rendered = _render_experiment_content(file_data, self.markdown_renderer)
-        if file_data["ext"] != "md":
-            html = rendered
-        else:
-            template = self.data_loader.load_template("experiment")
-            if subtopic_path:
-                file_url = f'/experiments/{topic["topic_slug"]}/{subtopic_path}/{file_data["slug"]}.html'
-            else:
-                file_url = f'/experiments/{topic["topic_slug"]}/{file_data["slug"]}.html'
-            page_title = f'{file_data["title"]} - {topic["topic_title"]} - Experiments'
-            html = self._build_common(
-                template,
-                metadata,
-                f"{page_title} - {metadata['title']}",
-                f"{file_data['title']} ({file_data['ext']})",
-                file_url,
-            )
-            html = apply_template(
-                html,
-                {
-                    "experiment.title": escape_html(
-                        f'{file_data["title"]}.{file_data["ext"]}'
-                    ),
-                    "experiment.content": rendered,
-                    "experiment.article_attrs": ' style="max-width:none"',
-                },
-            )
+        html = rendered
         if subtopic_path:
             self._ensure_experiment_dirs(
                 topic["topic_slug"], subtopic_path

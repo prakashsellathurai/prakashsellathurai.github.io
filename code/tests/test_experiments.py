@@ -57,8 +57,10 @@ class TestExperimentsListPage:
 class TestExperimentsTopicPage:
     def test_should_load_and_list_content(self, page):
         page.goto("/experiments/")
-        first_topic = page.locator('a[href^="/experiments/"]').first
-        href = first_topic.get_attribute("href")
+        topic_links = page.locator('section a[href^="/experiments/"][href*="/"][href$="/"]')
+        topic_count = topic_links.count()
+        assert topic_count >= 1
+        href = topic_links.first.get_attribute("href")
         page.goto(href)
         expect(page).to_have_title(re.compile("Experiments"))
         assert page.locator("section a").count() >= 1

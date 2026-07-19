@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "nbconvert[execute,serve,test,webpdf]>=7.17.1",
     "nbformat>=5.10.4",
+    "ssserve>=0.3.1",
 ]
 
 [dependency-groups]

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   {{head}}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
   <body>
     {{header}}
     <article class="centered-layout"{{experiment.article_attrs}}>
@@ -8,5 +9,7 @@
       <div class="content">{{experiment.content}}</div>
     </article>
     {{footer}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
   </body>
 </html>

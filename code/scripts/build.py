@@ -528,19 +528,48 @@ def _render_notebook(file_data, markdown_renderer):
     return f"<pre><code>{escape_html(content)}</code></pre>"
 
 
-def _render_code(file_data, markdown_renderer):
-    escaped = escape_html(file_data["content"])
+_EXT_LANG_MAP = {
+    "py": {"name": "python", "version": "3.14.0"},
+    "c": {"name": "c", "version": "C11"},
+    "txt": {"name": "text", "version": None},
+}
+
+
+def _render_code_as_notebook(file_data, markdown_renderer):
+    from nbconvert import HTMLExporter
+    from nbformat import v4 as nbf
+
+    content = file_data["content"]
+    try:
+        nb = nbf.new_notebook()
+        lang = _EXT_LANG_MAP.get(file_data["ext"], {"name": "python", "version": "3.14.0"})
+        nb.metadata.kernelspec = {
+            "display_name": lang["name"].title(),
+            "language": lang["name"],
+            "name": lang["name"],
+        }
+        nb.metadata.language_info = lang
+        nb.cells = [nbf.new_code_cell(content)]
+        exporter = HTMLExporter(template_name="classic")
+        full_html, _resources = exporter.from_notebook_node(nb)
+        return full_html
+    except Exception:
+        pass
+    escaped = escape_html(content)
     return f'<pre><code class="language-{file_data["ext"]}">{escaped}</code></pre>'
 
 
 _RENDER_STRATEGIES = {
     "md": _render_markdown,
     "ipynb": _render_notebook,
+    "py": _render_code_as_notebook,
+    "c": _render_code_as_notebook,
+    "txt": _render_code_as_notebook,
 }
 
 
 def _render_experiment_content(file_data, markdown_renderer):
-    strategy = _RENDER_STRATEGIES.get(file_data["ext"], _render_code)
+    strategy = _RENDER_STRATEGIES.get(file_data["ext"], _render_code_as_notebook)
     return strategy(file_data, markdown_renderer)
 
 
@@ -1066,7 +1095,7 @@ class PageBuilder:
 
     def build_experiment(self, metadata, topic, file_data, subtopic_path=None):
         rendered = _render_experiment_content(file_data, self.markdown_renderer)
-        if file_data["ext"] == "ipynb":
+        if file_data["ext"] != "md":
             html = rendered
         else:
             template = self.data_loader.load_template("experiment")

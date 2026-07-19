@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Static site generator for prakashsellathurai.com."""
 
+# ---------------------------------------------------------------------------
+# Imports
+# ---------------------------------------------------------------------------
+
 import json
 import os
 import pathlib
@@ -11,45 +15,28 @@ from lib.frontmatter import parse_frontmatter
 from lib.markdown import MarkdownRenderer, escape_html
 from lib.slug import slug
 
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
 BASE_PATH = os.environ.get("BASE_PATH", "")
 NOTES_DIR = os.path.join("data", "non-public", "submodules", "Grimoire", "notes")
 EXPERIMENTS_DIR = os.path.join(
     "data", "non-public", "submodules", "Grimoire", "experiments"
 )
+_ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
+_PAGE_NAMES = {
+    "/essays/": "Essays",
+    "/about.html": "About",
+    "/projects.html": "Projects",
+    "/bookshelf.html": "Bookshelf",
+    "/notes/": "Notes",
+    "/tags/": "Tags",
+    "/experiments/": "Experiments",
+}
 
 # ---------------------------------------------------------------------------
-# Date / schema helpers
-# ---------------------------------------------------------------------------
-
-
-def _format_date_iso(date_str):
-    return datetime.fromisoformat(date_str.replace("Z", "+00:00")).isoformat()
-
-
-def _format_date(date_str):
-    return datetime.fromisoformat(date_str.replace("Z", "+00:00")).strftime(
-        "%b %d, %Y"
-    )
-
-
-def _build_author_schema(metadata):
-    details = metadata.get("authorDetails", {})
-    author = {"@type": "Person", "name": metadata["author"]}
-    for key in ("url", "sameAs", "email", "jobTitle", "image"):
-        if key in details:
-            author[key] = details[key]
-    return author
-
-
-def _read_site_metadata(filepath):
-    with open(filepath) as f:
-        content = f.read()
-    content = content.replace("__BASE_PATH__", os.environ.get("BASE_PATH", ""))
-    return json.loads(content)
-
-
-# ---------------------------------------------------------------------------
-# File-system helpers
+# Filesystem helpers
 # ---------------------------------------------------------------------------
 
 
@@ -92,18 +79,39 @@ def _write_file(filepath, content):
 
 
 # ---------------------------------------------------------------------------
-# Template rendering
+# Date / schema helpers
 # ---------------------------------------------------------------------------
 
-_PAGE_NAMES = {
-    "/essays/": "Essays",
-    "/about.html": "About",
-    "/projects.html": "Projects",
-    "/bookshelf.html": "Bookshelf",
-    "/notes/": "Notes",
-    "/tags/": "Tags",
-    "/experiments/": "Experiments",
-}
+
+def _format_date_iso(date_str):
+    return datetime.fromisoformat(date_str.replace("Z", "+00:00")).isoformat()
+
+
+def _format_date(date_str):
+    return datetime.fromisoformat(date_str.replace("Z", "+00:00")).strftime(
+        "%b %d, %Y"
+    )
+
+
+def _build_author_schema(metadata):
+    details = metadata.get("authorDetails", {})
+    author = {"@type": "Person", "name": metadata["author"]}
+    for key in ("url", "sameAs", "email", "jobTitle", "image"):
+        if key in details:
+            author[key] = details[key]
+    return author
+
+
+def _read_site_metadata(filepath):
+    with open(filepath) as f:
+        content = f.read()
+    content = content.replace("__BASE_PATH__", os.environ.get("BASE_PATH", ""))
+    return json.loads(content)
+
+
+# ---------------------------------------------------------------------------
+# Template rendering
+# ---------------------------------------------------------------------------
 
 
 def _breadcrumbs_for_url(url, site_url):
@@ -501,9 +509,6 @@ def _generate_rss_feed(metadata, essays):
 # ---------------------------------------------------------------------------
 # Experiment content rendering
 # ---------------------------------------------------------------------------
-
-
-_ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
 
 
 def _render_markdown(file_data, markdown_renderer):

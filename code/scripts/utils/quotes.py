@@ -78,7 +78,7 @@ def parse_quotes(html):
             footer_html = ""
 
         tags = extract_tags(footer_html)
-        likes, quote_url = extract_likes(footer_html)
+        quote_url = extract_quote_url(footer_html)
 
         quotes.append(
             {
@@ -86,7 +86,6 @@ def parse_quotes(html):
                 "author": author,
                 "book": book,
                 "tags": tags,
-                "likes": likes,
                 "url": quote_url,
             }
         )
@@ -136,15 +135,15 @@ def extract_tags(footer_html):
     )
 
 
-def extract_likes(footer_html):
+def extract_quote_url(footer_html):
     m = re.search(
-        r'<a\s+class="smallText"[^>]*href="/quotes/([^"]*)"[^>]*>\s*(\d+)\s+likes?\s*</a>',
+        r'<a\s+class="smallText"[^>]*href="/quotes/([^"]*)"[^>]*>',
         footer_html,
         re.DOTALL,
     )
     if m:
-        return int(m.group(2)), f"https://www.goodreads.com/quotes/{m.group(1)}"
-    return 0, ""
+        return f"https://www.goodreads.com/quotes/{m.group(1)}"
+    return ""
 
 
 def get_total_quotes(html):

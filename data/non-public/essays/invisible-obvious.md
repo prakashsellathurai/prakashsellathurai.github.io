@@ -32,7 +32,7 @@ It's never easy to take the path that is less travelled. There is always a thin 
 
 If one wants to excel, one must start looking for the Invisible Obvious hiding in plain sight.
 
-[^1]: [wiki](https://en.wikipedia.org/wiki/ Nicolaus_Copernicus#Heliocentrism) on Heliocentrism
+[^1]: [wiki]("https://en.wikipedia.org/wiki/ Nicolaus_Copernicus#Heliocentrism") on Heliocentrism
 
 [^2]: Max Planck: Ways to physical knowledge. Speeches and Lectures, Volume 1. Leipzig 1943. [wiki](https://de.wikipedia.org/wiki/Philipp_von_Jolly#cite_ref-5)
 

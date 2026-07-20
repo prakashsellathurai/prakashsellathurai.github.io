@@ -5,8 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "jinja2>=3.1.6",
     "nbconvert[execute,serve,test,webpdf]>=7.17.1",
     "nbformat>=5.10.4",
+    "pyyaml>=6.0.3",
     "ssserve>=0.3.1",
 ]
 

@@ -16,6 +16,6 @@ latter way is to start from the bottommost source and slowly build our intuition
 
 with raise of LLM accelerated coding agent tools, i believe this will boost the rise of surface level knowledge type programmers in future. we are already seeing AI slop started affecting software industry [^2]. The bottom up builds depth and develops a knack for seeing the nuances something that is hard to explain to an outsider, so far LLM systems (Mainstream's AI) couldn't replicate that. it could be our only edge against AI slop, I hope. I found one way to acquire true depth is to read from original source, for example if one want to learn c++ read directly from Bjarne Stroustrup books, cut the middle men (content creators), and any anything that looks like learn x in y minutes. other way is by actually doing the thing, nothing fancy only the good old fashioned grind.
 
-[^1]: https://youtu.be/ltLUadnCyi0?si=S2JxJo7Se2t4_xJa the 3blue1brown's video titled tale of two problem solvers where he is done good job at explaining top down vs bottom up approach in solving math problem
+[^1]: [https://youtu.be/ltLUadnCyi0?si=S2JxJo7Se2t4_xJa](https://youtu.be/ltLUadnCyi0?si=S2JxJo7Se2t4_xJa) the 3blue1brown's video titled tale of two problem solvers where he is done good job at explaining top down vs bottom up approach in solving math problem
 
-[^2]: https://curl.se/docs/bugbounty.html The curl bug bounty program is a good example of how AI slop started affecting software industry
+[^2]: [https://curl.se/docs/bugbounty.html](https://curl.se/docs/bugbounty.html) The curl bug bounty program is a good example of how AI slop started affecting software industry

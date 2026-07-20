@@ -11,6 +11,9 @@ import pathlib
 import shutil
 from datetime import datetime, timezone
 
+from nbconvert import HTMLExporter
+from nbformat import v4 as nbf, reads, NO_CONVERT
+
 from lib.frontmatter import parse_frontmatter
 from lib.markdown import MarkdownRenderer, escape_html
 from lib.slug import slug
@@ -20,6 +23,7 @@ from lib.slug import slug
 # ---------------------------------------------------------------------------
 
 BASE_PATH = os.environ.get("BASE_PATH", "")
+OUT_DIR = os.path.join(os.getcwd(), "out")
 NOTES_DIR = os.path.join("data", "non-public", "submodules", "Grimoire", "notes")
 EXPERIMENTS_DIR = os.path.join(
     "data", "non-public", "submodules", "Grimoire", "experiments"
@@ -45,27 +49,13 @@ def _ensure_dir(dir_path):
 
 
 def _clear_dir(dir_path):
-    p = pathlib.Path(dir_path)
-    if not p.exists():
-        return
-    for entry in p.iterdir():
-        if entry.is_dir():
-            shutil.rmtree(entry)
-        else:
-            entry.unlink()
+    if os.path.exists(dir_path):
+        shutil.rmtree(dir_path)
 
 
 def _copy_dir(src, dest):
-    src_p = pathlib.Path(src)
-    if not src_p.exists():
-        return
-    _ensure_dir(dest)
-    for entry in src_p.iterdir():
-        d = pathlib.Path(dest) / entry.name
-        if entry.is_dir():
-            _copy_dir(str(entry), str(d))
-        else:
-            shutil.copy2(entry, d)
+    if pathlib.Path(src).exists():
+        shutil.copytree(src, dest, dirs_exist_ok=True)
 
 
 def _read_file(filepath):
@@ -340,6 +330,20 @@ def apply_template(template, data):
     return result
 
 
+def _essay_article_html(e, indent=0, tags=True):
+    p = " " * indent
+    i = p + "  "
+    t = ""
+    if tags:
+        t = "".join(f'<a href="/tags/{tag}.html">#{escape_html(tag)}</a>' for tag in e["tags"][:3])
+        t = f'{i}<div class="tags">\n{i}  {t}\n{i}</div>\n'
+    return (f'{p}<article>\n'
+            f'{i}<h2><a href="/essays/{e["slug"]}.html">{escape_html(e["title"])}</a></h2>\n'
+            f'{i}<p class="meta"><time>{_format_date(e["date"])}</time></p>\n'
+            f'{i}<p class="summary">{escape_html(e["summary"])}</p>\n'
+            f'{t}{p}</article>')
+
+
 # ---------------------------------------------------------------------------
 # Feed / sitemap generation
 # ---------------------------------------------------------------------------
@@ -512,8 +516,6 @@ def _generate_rss_feed(metadata, essays):
 
 
 def _render_markdown(file_data, markdown_renderer):
-    from nbconvert import HTMLExporter
-    from nbformat import v4 as nbf
     content = file_data["content"]
     try:
         nb = nbf.new_notebook()
@@ -533,9 +535,6 @@ def _render_markdown(file_data, markdown_renderer):
 
 
 def _render_notebook(file_data, markdown_renderer):
-    from nbconvert import HTMLExporter
-    from nbformat import reads
-    from nbformat import NO_CONVERT
     content = file_data["content"]
     try:
         nb = reads(content, NO_CONVERT)
@@ -777,20 +776,8 @@ class PageBuilder:
             template, metadata, metadata["title"], metadata["description"], "/"
         )
 
-        recent_essays_html = (
-            "\n".join(
-                f"""    <article>
-      <h2><a href="/essays/{e["slug"]}.html">{escape_html(e["title"])}</a></h2>
-      <p class="meta"><time>{_format_date(e["date"])}</time></p>
-      <p class="summary">{escape_html(e["summary"])}</p>
-      <div class="tags">
-        {"".join(f'<a href="/tags/{t}.html">#{escape_html(t)}</a>' for t in e["tags"][:3])}
-      </div>
-    </article>"""
-                for e in essays[:4]
-            )
-            + '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
-        )
+        recent_essays_html = "\n".join(_essay_article_html(e, indent=4) for e in essays[:4])
+        recent_essays_html += '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
 
         featured_projects_html = (
             '<div class="project-grid">'
@@ -835,7 +822,7 @@ class PageBuilder:
             },
         )
 
-        _write_file(os.path.join(os.getcwd(), "out", "index.html"), html)
+        _write_file(os.path.join(OUT_DIR, "index.html"), html)
 
     def build_essays_list(self, metadata, essays):
         template = self.data_loader.load_template("essays-list")
@@ -847,22 +834,12 @@ class PageBuilder:
             "/essays/",
         )
 
-        essays_list_html = "\n".join(
-            f"""<article>
-  <h2><a href="/essays/{e["slug"]}.html">{escape_html(e["title"])}</a></h2>
-  <p class="meta"><time>{_format_date(e["date"])}</time></p>
-  <p class="summary">{escape_html(e["summary"])}</p>
-  <div class="tags">
-    {"".join(f'<a href="/tags/{t}.html">#{escape_html(t)}</a>' for t in e["tags"][:3])}
-  </div>
-</article>"""
-            for e in essays
-        )
+        essays_list_html = "\n".join(_essay_article_html(e) for e in essays)
 
         html = apply_template(html, {"essaysList": essays_list_html})
 
-        _ensure_dir(os.path.join(os.getcwd(), "out", "essays"))
-        _write_file(os.path.join(os.getcwd(), "out", "essays", "index.html"), html)
+        _ensure_dir(os.path.join(OUT_DIR, "essays"))
+        _write_file(os.path.join(OUT_DIR, "essays", "index.html"), html)
 
     def build_essay(self, metadata, essay):
         template = self.data_loader.load_template("essay")
@@ -907,7 +884,7 @@ class PageBuilder:
         )
 
         _write_file(
-            os.path.join(os.getcwd(), "out", "essays", f"{essay['slug']}.html"), html
+            os.path.join(OUT_DIR, "essays", f"{essay['slug']}.html"), html
         )
 
     def build_notes_list(self, metadata, notes):
@@ -927,8 +904,8 @@ class PageBuilder:
 
         html = apply_template(html, {"notesList": notes_list_html})
 
-        _ensure_dir(os.path.join(os.getcwd(), "out", "notes"))
-        _write_file(os.path.join(os.getcwd(), "out", "notes", "index.html"), html)
+        _ensure_dir(os.path.join(OUT_DIR, "notes"))
+        _write_file(os.path.join(OUT_DIR, "notes", "index.html"), html)
 
     def build_note(self, metadata, note):
         template = self.data_loader.load_template("note")
@@ -954,7 +931,7 @@ class PageBuilder:
         )
 
         _write_file(
-            os.path.join(os.getcwd(), "out", "notes", f"{note['slug']}.html"), html
+            os.path.join(OUT_DIR, "notes", f"{note['slug']}.html"), html
         )
 
     def build_experiments_list(self, metadata, experiments):
@@ -994,16 +971,16 @@ class PageBuilder:
         html = apply_template(
             html, {"experimentsList": "\n".join(sections)}
         )
-        _ensure_dir(os.path.join(os.getcwd(), "out", "experiments"))
+        _ensure_dir(os.path.join(OUT_DIR, "experiments"))
         _write_file(
-            os.path.join(os.getcwd(), "out", "experiments", "index.html"), html
+            os.path.join(OUT_DIR, "experiments", "index.html"), html
         )
 
     def _ensure_experiment_dirs(self, topic_slug, subtopic_path=None):
-        parts = ["out", "experiments", topic_slug]
+        parts = [OUT_DIR, "experiments", topic_slug]
         if subtopic_path:
             parts.extend(subtopic_path.split("/"))
-        _ensure_dir(os.path.join(os.getcwd(), *parts))
+        _ensure_dir(os.path.join(*parts))
 
     def build_topic_index(self, metadata, topic):
         template = self.data_loader.load_template("experiments")
@@ -1045,9 +1022,7 @@ class PageBuilder:
         )
         self._ensure_experiment_dirs(topic["topic_slug"])
         _write_file(
-            os.path.join(
-                os.getcwd(), "out", "experiments", topic["topic_slug"], "index.html"
-            ),
+            os.path.join(OUT_DIR, "experiments", topic["topic_slug"], "index.html"),
             html,
         )
 
@@ -1074,51 +1049,20 @@ class PageBuilder:
 </section>"""
             },
         )
-        self._ensure_experiment_dirs(
-            topic["topic_slug"], subtopic["subtopic_path"]
-        )
+        self._ensure_experiment_dirs(topic["topic_slug"], subtopic["subtopic_path"])
         _write_file(
-            os.path.join(
-                os.getcwd(),
-                "out",
-                "experiments",
-                topic["topic_slug"],
-                subtopic["subtopic_path"],
-                "index.html",
-            ),
+            os.path.join(OUT_DIR, "experiments", topic["topic_slug"], subtopic["subtopic_path"], "index.html"),
             html,
         )
 
     def build_experiment(self, metadata, topic, file_data, subtopic_path=None):
         rendered = _render_experiment_content(file_data, self.markdown_renderer)
-        html = rendered
+        self._ensure_experiment_dirs(topic["topic_slug"], subtopic_path)
+        parts = [OUT_DIR, "experiments", topic["topic_slug"]]
         if subtopic_path:
-            self._ensure_experiment_dirs(
-                topic["topic_slug"], subtopic_path
-            )
-            _write_file(
-                os.path.join(
-                    os.getcwd(),
-                    "out",
-                    "experiments",
-                    topic["topic_slug"],
-                    subtopic_path,
-                    f'{file_data["slug"]}.html',
-                ),
-                html,
-            )
-        else:
-            self._ensure_experiment_dirs(topic["topic_slug"])
-            _write_file(
-                os.path.join(
-                    os.getcwd(),
-                    "out",
-                    "experiments",
-                    topic["topic_slug"],
-                    f'{file_data["slug"]}.html',
-                ),
-                html,
-            )
+            parts.append(subtopic_path)
+        parts.append(f'{file_data["slug"]}.html')
+        _write_file(os.path.join(*parts), rendered)
 
     def build_about(self, metadata, author, avatar):
         template = self.data_loader.load_template("about")
@@ -1173,7 +1117,7 @@ class PageBuilder:
             },
         )
 
-        _write_file(os.path.join(os.getcwd(), "out", "about.html"), html)
+        _write_file(os.path.join(OUT_DIR, "about.html"), html)
 
     def build_projects(self, metadata, projects):
         template = self.data_loader.load_template("projects")
@@ -1236,7 +1180,7 @@ class PageBuilder:
         ) + "\n</ul>"
 
         html = apply_template(html, {"projectsList": projects_list_html})
-        _write_file(os.path.join(os.getcwd(), "out", "projects.html"), html)
+        _write_file(os.path.join(OUT_DIR, "projects.html"), html)
 
     def build_bookshelf(self, metadata, books):
         template = self.data_loader.load_template("bookshelf")
@@ -1399,7 +1343,7 @@ class PageBuilder:
             },
         )
 
-        _write_file(os.path.join(os.getcwd(), "out", "bookshelf.html"), html)
+        _write_file(os.path.join(OUT_DIR, "bookshelf.html"), html)
 
     def build_quotes(self, metadata, quotes):
         template = self.data_loader.load_template("quotes")
@@ -1445,7 +1389,7 @@ class PageBuilder:
         )
 
         html = apply_template(html, {"quotesList": quotes_list_html})
-        _write_file(os.path.join(os.getcwd(), "out", "quotes.html"), html)
+        _write_file(os.path.join(OUT_DIR, "quotes.html"), html)
 
     def build_tags(self, metadata, essays):
         tag_map = {}
@@ -1476,9 +1420,9 @@ class PageBuilder:
             },
         )
 
-        _ensure_dir(os.path.join(os.getcwd(), "out", "tags"))
+        _ensure_dir(os.path.join(OUT_DIR, "tags"))
         _write_file(
-            os.path.join(os.getcwd(), "out", "tags", "index.html"), tags_index_html
+            os.path.join(OUT_DIR, "tags", "index.html"), tags_index_html
         )
 
         for tag, tagged_essays in tag_map.items():
@@ -1496,19 +1440,12 @@ class PageBuilder:
                     "tag": escape_html(tag),
                     "taggedEssaysCount": str(len(tagged_essays)),
                     "taggedEssaysCountLabel": count_label,
-                    "taggedEssays": "\n".join(
-                        f"""<article>
-  <h2><a href="/essays/{e["slug"]}.html">{escape_html(e["title"])}</a></h2>
-  <p class="meta"><time>{_format_date(e["date"])}</time></p>
-  <p class="summary">{escape_html(e["summary"])}</p>
-</article>"""
-                        for e in tagged_essays
-                    ),
+                    "taggedEssays": "\n".join(_essay_article_html(e, tags=False) for e in tagged_essays),
                 },
             )
 
             _write_file(
-                os.path.join(os.getcwd(), "out", "tags", f"{tag}.html"), tag_html
+                os.path.join(OUT_DIR, "tags", f"{tag}.html"), tag_html
             )
 
     def build_sitelinks(self, metadata, essays, projects, notes, experiments):
@@ -1606,7 +1543,7 @@ class PageBuilder:
             },
         )
 
-        _write_file(os.path.join(os.getcwd(), "out", "sitelinks.html"), html)
+        _write_file(os.path.join(OUT_DIR, "sitelinks.html"), html)
 
 
 # ---------------------------------------------------------------------------
@@ -1619,7 +1556,6 @@ def build_site():
     data_loader = DataLoader(data_dir)
     markdown_renderer = MarkdownRenderer()
     page_builder = PageBuilder(data_loader, markdown_renderer)
-    out_dir = os.path.join(os.getcwd(), "out")
     public_dir = os.path.join(os.getcwd(), "data", "public")
 
     print("Reading data...")
@@ -1638,9 +1574,9 @@ def build_site():
         f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions, {len(quotes)} quotes, {len(notes)} notes, {len(experiments)} experiment topics"
     )
 
-    _ensure_dir(out_dir)
-    _clear_dir(out_dir)
-    _copy_dir(public_dir, out_dir)
+    _ensure_dir(OUT_DIR)
+    _clear_dir(OUT_DIR)
+    _copy_dir(public_dir, OUT_DIR)
 
     print("Building pages...")
     avatar = f"{BASE_PATH}/static/images/avatar.jpg"
@@ -1671,15 +1607,15 @@ def build_site():
 
     print("Generating RSS, sitemap, and robots.txt...")
     _write_file(
-        os.path.join(out_dir, "feed.xml"),
+        os.path.join(OUT_DIR, "feed.xml"),
         _generate_rss_feed(metadata, essays),
     )
     _write_file(
-        os.path.join(out_dir, "sitemap.xml"),
+        os.path.join(OUT_DIR, "sitemap.xml"),
         _generate_sitemap(metadata, essays, projects, leetcode_solutions, notes, experiments),
     )
     _write_file(
-        os.path.join(out_dir, "robots.txt"),
+        os.path.join(OUT_DIR, "robots.txt"),
         f"User-agent: *\nAllow: /\n\nSitemap: {metadata['siteUrl']}sitemap.xml",
     )
 

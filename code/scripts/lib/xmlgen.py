@@ -16,7 +16,16 @@ def _xml_str(root: ET.Element) -> str:
     return ET.tostring(root, encoding="unicode", xml_declaration=True)
 
 
-def _add_url(urlset: ET.Element, loc: str, lastmod: str, priority: str) -> None:
+def _add_url(
+    urlset: ET.Element,
+    seen: set[str],
+    loc: str,
+    lastmod: str,
+    priority: str,
+) -> None:
+    if loc in seen:
+        return
+    seen.add(loc)
     url = ET.SubElement(urlset, "url")
     ET.SubElement(url, "loc").text = loc
     ET.SubElement(url, "lastmod").text = lastmod
@@ -39,26 +48,28 @@ def generate_sitemap(
         tag_set.update(e["tags"])
 
     urlset = ET.Element("urlset", xmlns=_SITEMAP_NS)
+    seen: set[str] = set()
 
-    _add_url(urlset, f"{site_url}/", today, "1.0")
-    _add_url(urlset, f"{site_url}/essays/", today, "0.9")
-    _add_url(urlset, f"{site_url}/about.html", today, "0.9")
-    _add_url(urlset, f"{site_url}/tags/", today, "0.8")
-    _add_url(urlset, f"{site_url}/projects.html", today, "0.8")
-    _add_url(urlset, f"{site_url}/bookshelf.html", today, "0.8")
-    _add_url(urlset, f"{site_url}/notes/", today, "0.8")
-    _add_url(urlset, f"{site_url}/experiments/", today, "0.7")
-    _add_url(urlset, f"{site_url}/quotes.html", today, "0.7")
-    _add_url(urlset, f"{site_url}/sitelinks.html", today, "0.6")
-    _add_url(urlset, f"{site_url}/leetcode-solutions/", today, "0.6")
-    _add_url(urlset, f"{site_url}/static/resume/prakash_s_resume.pdf", today, "0.7")
+    _add_url(urlset, seen, f"{site_url}/", today, "1.0")
+    _add_url(urlset, seen, f"{site_url}/essays/", today, "0.9")
+    _add_url(urlset, seen, f"{site_url}/about.html", today, "0.9")
+    _add_url(urlset, seen, f"{site_url}/tags/", today, "0.8")
+    _add_url(urlset, seen, f"{site_url}/projects.html", today, "0.8")
+    _add_url(urlset, seen, f"{site_url}/bookshelf.html", today, "0.8")
+    _add_url(urlset, seen, f"{site_url}/notes/", today, "0.8")
+    _add_url(urlset, seen, f"{site_url}/experiments/", today, "0.7")
+    _add_url(urlset, seen, f"{site_url}/quotes.html", today, "0.7")
+    _add_url(urlset, seen, f"{site_url}/sitelinks.html", today, "0.6")
+    _add_url(urlset, seen, f"{site_url}/leetcode-solutions/", today, "0.6")
+    _add_url(urlset, seen, f"{site_url}/static/resume/prakash_s_resume.pdf", today, "0.7")
 
     for t in sorted(tag_set):
-        _add_url(urlset, f"{site_url}/tags/{t}.html", today, "0.6")
+        _add_url(urlset, seen, f"{site_url}/tags/{t}.html", today, "0.6")
 
     for e in essays:
         _add_url(
             urlset,
+            seen,
             f"{site_url}/essays/{e['slug']}.html",
             datetime.fromisoformat(e["date"].replace("Z", "+00:00")).isoformat(),
             "0.7",
@@ -72,21 +83,24 @@ def generate_sitemap(
         hostname = urlparse(website).hostname
         if hostname == site_hostname:
             loc = website.replace("http://", "https://")
-            _add_url(urlset, loc, today, "0.6")
+            _add_url(urlset, seen, loc, today, "0.6")
 
     for s in leetcode_solutions:
-        _add_url(urlset, s["href"], today, "0.5")
+        _add_url(urlset, seen, f"{site_url}/{s['href']}", today, "0.5")
 
     for n in notes:
-        _add_url(urlset, f"{site_url}/notes/{n['slug']}.html", today, "0.6")
+        _add_url(urlset, seen, f"{site_url}/notes/{n['slug']}.html", today, "0.6")
 
     for exp in experiments:
         _add_url(
-            urlset, f"{site_url}/experiments/{exp['topic_slug']}/", today, "0.6"
+            urlset,
+            seen,
+            f"{site_url}/experiments/{exp['topic_slug']}/", today, "0.6"
         )
         for f in exp["files"]:
             _add_url(
                 urlset,
+                seen,
                 f'{site_url}/experiments/{exp["topic_slug"]}/{f["slug"]}.html',
                 today,
                 "0.5",
@@ -94,6 +108,7 @@ def generate_sitemap(
         for st in exp["subtopics"]:
             _add_url(
                 urlset,
+                seen,
                 f'{site_url}/experiments/{exp["topic_slug"]}/{st["subtopic_path"]}/',
                 today,
                 "0.6",
@@ -101,6 +116,7 @@ def generate_sitemap(
             for f in st["files"]:
                 _add_url(
                     urlset,
+                    seen,
                     f'{site_url}/experiments/{exp["topic_slug"]}/{st["subtopic_path"]}/{f["slug"]}.html',
                     today,
                     "0.5",

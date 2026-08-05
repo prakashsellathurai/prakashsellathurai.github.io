@@ -93,6 +93,11 @@ class TestHomepageSEO:
         assert "<urlset" in text
         assert "<loc>" in text
 
+    def test_sitemap_should_not_have_duplicate_urls(self, page):
+        response = page.request.get("/sitemap.xml")
+        assert response.ok
+        locs = re.findall(r"<loc>([^<]+)</loc>", response.text())
+        assert len(locs) == len(set(locs)), f"duplicate URLs: {set(x for x in locs if locs.count(x) > 1)}"
     def test_should_have_rss_feed(self, page):
         response = page.request.get("/feed.xml")
         assert response.ok

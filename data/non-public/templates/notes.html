@@ -1,17 +1,21 @@
 <!doctype html>
 <html lang="en">
 {{head}}
-<body>
-{{header}}
-<h1>Notes</h1>
-<p class="meta">Quick references and notes on various topics</p>
-
-<section>
-<ul>
-{{notesList}}
-</ul>
-</section>
-
-{{footer}}
+<body class="gb-notes">
+  {{notesSidebar}}
+  <div class="gb-main">
+    <nav class="gb-topbar">
+      <a href="/notes/">Notes</a>
+    </nav>
+    <div class="gb-scroll">
+      <article class="gb-content">
+        <h1>Notes</h1>
+        <p class="gb-lead">Quick references and notes on various topics</p>
+        <div class="gb-note-list">
+        {{notesList}}
+        </div>
+      </article>
+    </div>
+  </div>
 </body>
 </html>

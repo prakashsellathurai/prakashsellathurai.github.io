@@ -4,6 +4,7 @@
 import json
 import os
 import pathlib
+import re
 import shutil
 from datetime import datetime, timezone
 from urllib.parse import urlparse
@@ -129,7 +130,7 @@ def _apply_template(template_str, data):
     return result
 
 
-def render_head(metadata, page_info, extra_schemas=None):
+def render_head(metadata, page_info, extra_schemas=None, extra_css=None):
     site_url = metadata["siteUrl"].rstrip("/")
     full_url = f"{site_url}{page_info['url']}" if page_info["url"] else site_url
     og_image = (
@@ -223,6 +224,8 @@ def render_head(metadata, page_info, extra_schemas=None):
   </script>"""
 
     css_link = '<link rel="stylesheet" href="/static/css/style.css">'
+    if extra_css:
+        css_link += f'\n  <link rel="stylesheet" href="{extra_css}">'
     favicon = """
   <link rel="apple-touch-icon" sizes="180x180" href="/static/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png">
@@ -281,6 +284,68 @@ def render_footer(metadata):
   <p>&copy; {year} {escape_html(metadata["author"])}. &middot; <a href="/sitelinks.html">Site Links</a></p>
 </footer>
 """
+
+
+_LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
+
+
+def _note_description(note, limit=160):
+    text = _LINK_RE.sub(r"\1", note["content"])
+    for token in ("#", "`", "*", "_", ">", "[", "]"):
+        text = text.replace(token, " ")
+    text = " ".join(text.split())
+    if len(text) > limit:
+        text = text[:limit].rsplit(" ", 1)[0] + "\u2026"
+    return text
+
+
+def _notes_sidebar_html(notes, current_slug=None):
+    items = []
+    for n in notes:
+        active = n["slug"] == current_slug
+        cls = ' class="gb-nav-link active"' if active else ' class="gb-nav-link"'
+        aria = ' aria-current="page"' if active else ""
+        items.append(
+            f'<a{cls} href="/notes/{n["slug"]}.html"{aria}>{escape_html(n["title"])}</a>'
+        )
+    nav = "\n    ".join(items)
+    return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
+<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle notes navigation">Menu</label>
+<aside class="gb-sidebar">
+  <a class="gb-brand" href="/notes/">Notes</a>
+  <nav class="gb-nav">
+    {nav}
+  </nav>
+  <a class="gb-back" href="/">&larr; prakashsellathurai.com</a>
+</aside>"""
+
+
+def _notes_pager_html(notes, current_slug):
+    idx = next((i for i, n in enumerate(notes) if n["slug"] == current_slug), None)
+    if idx is None:
+        return ""
+    prev_note = notes[idx - 1] if idx > 0 else None
+    next_note = notes[idx + 1] if idx < len(notes) - 1 else None
+
+    def cell(direction, note):
+        label = "Previous" if direction == "prev" else "Next"
+        arrow = "&larr;" if direction == "prev" else "&rarr;"
+        if note is None:
+            return (
+                f'<a class="gb-pager-{direction} disabled" href="#" tabindex="-1">'
+                f'<span class="gb-pager-label">{arrow} {label}</span>'
+                f'<span class="gb-pager-title"></span></a>'
+            )
+        return (
+            f'<a class="gb-pager-{direction}" href="/notes/{note["slug"]}.html">'
+            f'<span class="gb-pager-label">{arrow} {label}</span>'
+            f'<span class="gb-pager-title">{escape_html(note["title"])}</span></a>'
+        )
+
+    return f"""<nav class="gb-pager" aria-label="Note navigation">
+  {cell("prev", prev_note)}
+  {cell("next", next_note)}
+</nav>"""
 
 
 def _essay_article_html(e, indent=0, tags=True):
@@ -526,6 +591,7 @@ class PageBuilder:
         url="",
         image="",
         extra_schemas=None,
+        extra_css=None,
     ):
         return _apply_template(
             template,
@@ -539,6 +605,7 @@ class PageBuilder:
                         "image": image,
                     },
                     extra_schemas=extra_schemas,
+                    extra_css=extra_css,
                 ),
                 "header": render_header(metadata),
                 "footer": render_footer(metadata),
@@ -670,19 +737,29 @@ class PageBuilder:
             f"Notes - {metadata['title']}",
             "Quick references and notes",
             "/notes/",
+            extra_css="/static/css/notes.css",
         )
 
         notes_list_html = "\n".join(
-            f'    <li><a href="/notes/{n["slug"]}.html">{escape_html(n["title"])}</a></li>'
+            f"""    <a class="gb-note-card" href="/notes/{n['slug']}.html">
+      <h2>{escape_html(n['title'])}</h2>
+      <p>{escape_html(_note_description(n))}</p>
+    </a>"""
             for n in notes
         )
 
-        html = _apply_template(html, {"notesList": notes_list_html})
+        html = _apply_template(
+            html,
+            {
+                "notesSidebar": _notes_sidebar_html(notes),
+                "notesList": notes_list_html,
+            },
+        )
 
         (OUT_DIR / "notes").mkdir(parents=True, exist_ok=True)
         (OUT_DIR / "notes" / "index.html").write_text(html)
 
-    def build_note(self, metadata, note):
+    def build_note(self, metadata, note, notes):
         template = self.data_loader.load_template("note")
         site_url = metadata["siteUrl"].rstrip("/")
         note_url = f"/notes/{note['slug']}.html"
@@ -695,13 +772,16 @@ class PageBuilder:
             f"{note['title']} - {metadata['title']}",
             f"Notes on {note['title']}",
             note_url,
+            extra_css="/static/css/notes.css",
         )
 
         html = _apply_template(
             html,
             {
+                "notesSidebar": _notes_sidebar_html(notes, note["slug"]),
                 "note.title": escape_html(note["title"]),
                 "note.content": note_content,
+                "notesPager": _notes_pager_html(notes, note["slug"]),
             },
         )
 
@@ -1361,7 +1441,7 @@ def build_site():
     page_builder.build_quotes(metadata, quotes)
     page_builder.build_notes_list(metadata, notes)
     for note in notes:
-        page_builder.build_note(metadata, note)
+        page_builder.build_note(metadata, note, notes)
     page_builder.build_experiments_list(metadata, experiments)
     for exp in experiments:
         page_builder.build_topic_index(metadata, exp)

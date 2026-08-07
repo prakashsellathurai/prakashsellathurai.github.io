@@ -63,3 +63,10 @@ class TestExperimentsIntegration:
         entries = re.findall(r"<loc>[^<]+</loc>", text)
         exp_entries = [e for e in entries if "/experiments/" in e]
         assert len(exp_entries) >= 1
+
+
+class TestMermaidRendering:
+    def test_mermaid_diagram_renders_as_svg(self, page):
+        page.goto("/experiments/biology/dna-sequencing/readme.html")
+        svg = page.locator(".gitbook-markdown-body svg[id^='mermaid']")
+        expect(svg.first).to_be_visible(timeout=15000)

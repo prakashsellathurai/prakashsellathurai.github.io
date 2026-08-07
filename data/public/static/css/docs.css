@@ -333,7 +333,7 @@ body.gb-notes .gitbook-markdown-body .hljs {
     gap: 4px;
     padding: 14px 16px;
     border: 1px solid #e2e6ea;
-    border-radius: 4px;
+    border-radius: 16px;
     text-decoration: none;
     color: #1c1d1e;
 }

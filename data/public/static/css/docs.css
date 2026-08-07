@@ -1,7 +1,4 @@
-/* GitBook-style skin for the /notes section (index + note detail pages).
 
-Loaded after style.css and scoped override the paper/serif site skin.
-*/
 
 body.gb-notes {
     margin: 0;
@@ -10,7 +7,7 @@ body.gb-notes {
     display: flex;
     min-height: 100vh;
     background: #ffffff;
-    color: #24292f;
+    color: #1c1d1e;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         "Helvetica Neue", Arial, sans-serif;
     line-height: 1.7;
@@ -28,11 +25,11 @@ body.gb-notes {
 
 /* Sidebar */
 .gb-sidebar {
-    width: 300px;
+    width: 288px;
     flex-shrink: 0;
     background: #ffffff;
-    border-right: 1px solid #ececec;
-    padding: 24px 20px 40px;
+    border-right: 1px solid #e2e6ea;
+    padding: 16px 12px 40px;
     position: sticky;
     top: 0;
     height: 100vh;
@@ -44,41 +41,54 @@ body.gb-notes {
     display: block;
     font-size: 18px;
     font-weight: 700;
-    color: #24292f;
+    color: #1c1d1e;
     padding: 4px 12px 20px;
     letter-spacing: -0.01em;
 }
 
 .gb-brand:hover {
-    color: #2563eb;
+    color: #0464ac;
 }
 
 .gb-nav {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
 .gb-nav-link {
+    position: relative;
     display: block;
-    padding: 8px 12px;
-    margin-bottom: 2px;
-    font-size: 15px;
-    color: #424242;
+    padding: 6px 10px 6px 16px;
+    font-size: 13.5px;
+    color: #3f4650;
     border-radius: 6px;
-    border-left: 3px solid transparent;
-    line-height: 1.4;
+    line-height: 1.6;
+}
+
+.gb-nav-link::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: transparent;
 }
 
 .gb-nav-link:hover {
-    background: #f3f3f3;
-    color: #24292f;
+    background: #f6f7f9;
+    color: #1c1d1e;
 }
 
 .gb-nav-link.active {
-    background: #f0f6ff;
-    color: #2563eb;
-    border-left-color: #2563eb;
-    font-weight: 500;
+    background: #eef6ff;
+    color: #0464ac;
+    font-weight: 600;
+}
+
+.gb-nav-link.active::before {
+    background: #0464ac;
 }
 
 .gb-back {
@@ -90,7 +100,7 @@ body.gb-notes {
 }
 
 .gb-back:hover {
-    color: #2563eb;
+    color: #0464ac;
 }
 
 /* Main column */
@@ -109,24 +119,26 @@ body.gb-notes {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 24px;
-    font-size: 14px;
-    color: #57606a;
+    height: 48px;
+    padding: 0 24px;
+    font-size: 13.5px;
+    color: #6a6f75;
     background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid #ececec;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e6e8ea;
 }
 
 .gb-topbar a {
-    color: #57606a;
+    color: #6a6f75;
 }
 
 .gb-topbar a:hover {
-    color: #2563eb;
+    color: #0464ac;
 }
 
 .gb-crumb-sep {
-    color: #c1c1c1;
+    color: #c8cdd3;
 }
 
 .gb-scroll {
@@ -134,25 +146,25 @@ body.gb-notes {
 }
 
 .gb-content {
-    max-width: 780px;
+    max-width: 768px;
     margin: 0 auto;
-    padding: 56px 40px 72px;
+    padding: 40px 40px 72px;
 }
 
 .gb-content > h1 {
-    font-size: 40px;
+    font-size: 36px;
     font-weight: 700;
     letter-spacing: -0.02em;
-    line-height: 1.25;
-    color: #1f2328;
+    line-height: 1.2;
+    color: #1c1d1e;
     margin: 0 0 8px;
     border-bottom: none;
 }
 
 .gb-lead {
     color: #57606a;
-    font-size: 16px;
-    margin: 0 0 40px;
+    font-size: 17px;
+    margin: 0 0 32px;
 }
 
 /* Rendered markdown uses the official gitbook-markdown-body stylesheet.
@@ -191,39 +203,40 @@ body.gb-notes .gitbook-markdown-body .hljs {
     border-radius: 6px;
 }
 
-/* Note cards on the index page */
+/* Note list on the index page (flat, Git-style rows) */
 .gb-note-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    border-top: 1px solid #ececf0;
     margin-top: 8px;
 }
 
 .gb-note-card {
     display: block;
-    padding: 18px 22px;
-    border: 1px solid #ececec;
-    border-radius: 8px;
-    color: #1f2328;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    padding: 14px 4px;
+    border-bottom: 1px solid #ececf0;
+    color: #1c1d1e;
+    transition: color 0.1s ease;
 }
 
 .gb-note-card:hover {
-    border-color: #c8d3f5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    color: #1f2328;
+    color: #0464ac;
 }
 
 .gb-note-card h2 {
-    font-size: 17px;
+    font-size: 16.5px;
     font-weight: 600;
     margin: 0 0 4px;
-    color: #1f2328;
+    color: #1c1d1e;
+}
+
+.gb-note-card:hover h2 {
+    color: #0464ac;
 }
 
 .gb-note-card p {
     margin: 0;
-    font-size: 14.5px;
+    font-size: 14px;
     color: #57606a;
     line-height: 1.5;
 }
@@ -233,10 +246,10 @@ body.gb-notes .gitbook-markdown-body .hljs {
     display: flex;
     justify-content: space-between;
     gap: 16px;
-    max-width: 780px;
+    max-width: 768px;
     margin: 0 auto;
-    padding: 24px 40px 56px;
-    border-top: 1px solid #ececec;
+    padding: 16px 40px 56px;
+    border-top: 1px solid #ececf0;
 }
 
 .gb-pager a,
@@ -245,11 +258,11 @@ body.gb-notes .gitbook-markdown-body .hljs {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 16px 18px;
-    border: 1px solid #ececec;
-    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid #e2e6ea;
+    border-radius: 4px;
     text-decoration: none;
-    color: #1f2328;
+    color: #1c1d1e;
 }
 
 .gb-pager-next {
@@ -258,16 +271,17 @@ body.gb-notes .gitbook-markdown-body .hljs {
 }
 
 .gb-pager a:hover {
-    border-color: #c8d9f5;
+    border-color: #0464ac;
 }
 
 .gb-pager a.disabled {
     color: #b6bcc4;
     pointer-events: none;
+    border-color: #f0f0f2;
 }
 
 .gb-pager-label {
-    font-size: 12.5px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: #8b949e;
@@ -275,8 +289,8 @@ body.gb-notes .gitbook-markdown-body .hljs {
 
 .gb-pager-title {
     font-size: 15.5px;
-    font-weight: 500;
-    color: #1f2328;
+    font-weight: 600;
+    color: #1c1d1e;
 }
 
 .gb-pager a.disabled .gb-pager-label,
@@ -298,10 +312,10 @@ body.gb-notes .gitbook-markdown-body .hljs {
         top: 10px;
         left: 14px;
         z-index: 20;
-        font-size: 14px;
+        font-size: 13.5px;
         font-weight: 600;
         color: #fff;
-        background: #2563eb;
+        background: #0464ac;
         border-radius: 6px;
         padding: 6px 12px;
         cursor: pointer;
@@ -329,11 +343,11 @@ body.gb-notes .gitbook-markdown-body .hljs {
     }
 
     .gb-topbar {
-        padding: 14px 16px;
+        padding: 0 16px;
     }
 
     .gb-content {
-        padding: 32px 20px 48px;
+        padding: 28px 20px 48px;
     }
 
     .gb-content > h1 {
@@ -341,7 +355,7 @@ body.gb-notes .gitbook-markdown-body .hljs {
     }
 
     .gb-pager {
-        padding: 20px 20px 48px;
+        padding: 16px 20px 48px;
     }
 }
 
@@ -378,12 +392,11 @@ body.gb-notes .gitbook-markdown-body .hljs {
     cursor: pointer;
     user-select: none;
     position: relative;
-    padding: 8px 12px 8px 24px;
-    font-size: 15px;
+    padding: 6px 12px 6px 16px;
+    font-size: 14px;
     font-weight: 600;
-    color: #24292f;
+    color: #1c1d1e;
     border-radius: 6px;
-    border-left: 3px solid transparent;
 }
 
 .gb-tree-dir > summary::-webkit-details-marker {
@@ -393,7 +406,7 @@ body.gb-notes .gitbook-markdown-body .hljs {
 .gb-tree-dir > summary::before {
     content: "";
     position: absolute;
-    left: 8px;
+    left: 5px;
     top: 50%;
     width: 7px;
     height: 7px;
@@ -408,19 +421,18 @@ body.gb-notes .gitbook-markdown-body .hljs {
 }
 
 .gb-tree-dir > summary:hover {
-    background: #f3f3f3;
+    background: #f6f7f9;
 }
 
 .gb-tree-dir > summary.topic-active {
-    background: #f0f6ff;
-    color: #2563eb;
-    border-left-color: #2563eb;
+    background: #eef6ff;
+    color: #0464ac;
 }
 
 .gb-tree-dir > .gb-tree-inner {
     padding: 2px 0 6px 12px;
-    border-left: 1px solid #ececec;
-    margin: 0 0 0 15px;
+    border-left: 1px solid #e6e8ea;
+    margin: 0 0 0 14px;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -435,10 +447,10 @@ body.gb-notes .gitbook-markdown-body .hljs {
 .gb-tree-sub > summary {
     list-style: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 500;
     color: #57606a;
-    padding: 6px 10px 6px 14px;
+    padding: 5px 10px 5px 14px;
     border-radius: 6px;
     position: relative;
 }
@@ -467,7 +479,7 @@ body.gb-notes .gitbook-markdown-body .hljs {
 
 .gb-tree-sub > .gb-tree-inner {
     padding: 2px 0 4px 12px;
-    border-left: 1px solid #ececec;
+    border-left: 1px solid #e6e8ea;
     margin: 0 0 0 12px;
     display: flex;
     flex-direction: column;
@@ -476,53 +488,68 @@ body.gb-notes .gitbook-markdown-body .hljs {
 
 /* Tree leaf links */
 .gb-tree-file {
+    position: relative;
     display: block;
-    padding: 6px 10px 6px 14px;
-    font-size: 14px;
-    color: #424242;
+    padding: 5px 10px 5px 16px;
+    font-size: 13.5px;
+    color: #3f4650;
     border-radius: 6px;
-    line-height: 1.4;
-    border-left: 3px solid transparent;
+    line-height: 1.6;
+}
+
+.gb-tree-file::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: transparent;
 }
 
 .gb-tree-file:hover {
-    background: #f3f3f3;
-    color: #24292f;
+    background: #f6f7f9;
+    color: #1c1d1e;
 }
 
 .gb-tree-file.active {
-    background: #f0f6ff;
-    color: #2563eb;
-    border-left-color: #2563eb;
-    font-weight: 500;
+    background: #eef6ff;
+    color: #0464ac;
+    font-weight: 600;
+}
+
+.gb-tree-file.active::before {
+    background: #0464ac;
 }
 
 /* Index content: topic cards */
 .gb-topic-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    border-top: 1px solid #ececf0;
     margin-top: 8px;
 }
 
 .gb-topic-card {
     display: block;
-    padding: 18px 22px;
-    border: 1px solid #ececec;
-    border-radius: 8px;
-    color: #1f2328;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    padding: 14px 4px;
+    border-bottom: 1px solid #ececf0;
+    color: #1c1d1e;
+    transition: color 0.1s ease;
 }
 
 .gb-topic-card:hover {
-    border-color: #c8d3f5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    color: #0464ac;
 }
 
 .gb-topic-card .gb-topic-title {
-    font-size: 17px;
+    font-size: 16.5px;
     font-weight: 600;
-    color: #1f2328;
+    color: #1c1d1e;
+}
+
+.gb-topic-card:hover .gb-topic-title {
+    color: #0464ac;
 }
 
 .gb-topic-card .gb-topic-count {
@@ -545,15 +572,15 @@ body.gb-notes .gitbook-markdown-body .hljs {
     font-size: 12.5px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: #57606a;
-    background: #f6f6f6;
-    border: 1px solid #ececec;
+    background: #f6f7f9;
+    border: 1px solid #ececf0;
     padding: 3px 9px;
     border-radius: 20px;
 }
 
 .gb-topic-card .gb-topic-files a:hover {
-    color: #2563eb;
-    border-color: #c3d3f5;
+    color: #0464ac;
+    border-color: #c3dcf5;
 }
 
 /* Index page file list (topic / subtopic index) */
@@ -567,15 +594,15 @@ body.gb-notes .gitbook-markdown-body .hljs {
 .gb-file-link {
     display: block;
     padding: 10px 16px;
-    border: 1px solid #ececec;
-    border-radius: 8px;
+    border: 1px solid #ececf0;
+    border-radius: 6px;
     font-size: 15px;
     color: #24292f;
 }
 
 .gb-file-link:hover {
-    border-color: #c3d3f5;
-    color: #2563eb;
+    border-color: #0464ac;
+    color: #0464ac;
 }
 
 .gb-file-meta {

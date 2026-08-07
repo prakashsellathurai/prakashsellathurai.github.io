@@ -4,6 +4,7 @@ sys.path.insert(0, "code/scripts")
 from lib.markdown import MarkdownRenderer
 
 renderer = MarkdownRenderer()
+gfm_renderer = MarkdownRenderer(gfm=True)
 
 
 class TestHeadings:
@@ -187,3 +188,50 @@ class TestEdgeCases:
     def test_special_chars_escaped(self):
         result = renderer.render("a & b < c > d")
         assert "a &amp; b &lt; c &gt; d" in result
+
+
+class TestGfmTables:
+    def test_table_renders(self):
+        md = "| a | b |\n|---|---|\n| 1 | 2 |"
+        result = gfm_renderer.render(md)
+        assert "<table>" in result
+        assert "<th>a</th>" in result
+        assert "<td>1</td>" in result
+
+    def test_standard_renderer_does_not_render_table(self):
+        md = "| a | b |\n|---|---|\n| 1 | 2 |"
+        result = renderer.render(md)
+        assert "<table>" not in result
+
+
+class TestGfmStrikethrough:
+    def test_strikethrough_renders(self):
+        result = gfm_renderer.render("~~gone~~")
+        assert "<del>gone</del>" in result
+
+    def test_standard_renderer_does_not_render_strikethrough(self):
+        result = renderer.render("~~gone~~")
+        assert "<del>" not in result
+
+
+class TestGfmTaskLists:
+    def test_task_list_renders(self):
+        md = "- [x] done\n- [ ] todo"
+        result = gfm_renderer.render(md)
+        assert 'type="checkbox"' in result
+        assert "checked" in result
+
+    def test_standard_renderer_does_not_render_task_list(self):
+        md = "- [x] done"
+        result = renderer.render(md)
+        assert "checkbox" not in result
+
+
+class TestGfmAutolinks:
+    def test_bare_url_renders_as_link(self):
+        result = gfm_renderer.render("see https://example.com now")
+        assert '<a href="https://example.com">https://example.com</a>' in result
+
+    def test_standard_renderer_does_not_autolink_bare_url(self):
+        result = renderer.render("see https://example.com now")
+        assert "<a href=" not in result

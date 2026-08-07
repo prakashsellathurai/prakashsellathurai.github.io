@@ -22,13 +22,20 @@ _PAT_FN_REF = re.compile(r"\[\^([\w-]+)\]")
 _PLACEHOLDER = "\x00FN:{}\x00"
 
 _md = mistune.create_markdown(escape=False)
+_md_gfm = mistune.create_markdown(
+    escape=False,
+    plugins=["table", "strikethrough", "task_lists", "url"],
+)
 
 
 class MarkdownRenderer:
+    def __init__(self, gfm=False):
+        self._md = _md_gfm if gfm else _md
+
     def render(self, content):
         defs, body = self._extract_footnotes(content)
         body = _PAT_FN_REF.sub(lambda m: _PLACEHOLDER.format(m.group(1)), body)
-        html = _md(body)
+        html = self._md(body)
         for fn_id, fn_content in defs.items():
             rendered = _md(fn_content).strip()
             if rendered.startswith("<p>") and rendered.endswith("</p>"):

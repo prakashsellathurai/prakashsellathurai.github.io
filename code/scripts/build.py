@@ -1008,9 +1008,10 @@ class DataLoader:
 class PageBuilder:
     """Renders every page of the site and writes HTML to the output dir."""
 
-    def __init__(self, data_loader: DataLoader, markdown_renderer: MarkdownRenderer):
+    def __init__(self, data_loader: DataLoader, markdown_renderer: MarkdownRenderer, gfm_renderer: MarkdownRenderer):
         self.data_loader = data_loader
         self.markdown_renderer = markdown_renderer
+        self.gfm_renderer = gfm_renderer
 
     def _build_common(
         self,
@@ -1191,7 +1192,7 @@ class PageBuilder:
         site_url = metadata["siteUrl"].rstrip("/")
         note_url = _note_url(note["slug"])
 
-        note_content = self.markdown_renderer.render(note["content"])
+        note_content = self.gfm_renderer.render(note["content"])
 
         html = self._build_common(
             template,
@@ -1354,7 +1355,7 @@ class PageBuilder:
         self, metadata: SiteMetadata, topic: ExperimentTopic, file_data: FileData, experiments: list[ExperimentTopic], subtopic_path: str | None = None
     ) -> None:
         """Build a single experiment file page."""
-        rendered = _render_experiment_content(file_data, self.markdown_renderer)
+        rendered = _render_experiment_content(file_data, self.gfm_renderer)
         exp_url = _exp_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
         template = self.data_loader.load_template("experiment")
         html = self._build_common(
@@ -1713,7 +1714,8 @@ def build_site() -> None:
     data_dir = pathlib.Path.cwd() / "data" / "non-public"
     data_loader = DataLoader(data_dir)
     markdown_renderer = MarkdownRenderer()
-    page_builder = PageBuilder(data_loader, markdown_renderer)
+    gfm_renderer = MarkdownRenderer(gfm=True)
+    page_builder = PageBuilder(data_loader, markdown_renderer, gfm_renderer)
     public_dir = pathlib.Path.cwd() / "data" / "public"
 
     _logger.info("Reading data...")

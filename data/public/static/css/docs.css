@@ -155,60 +155,40 @@ body.gb-notes {
     margin: 0 0 40px;
 }
 
-/* Reuse shared markdown .content styles but keep GitBook reading look */
+/* Rendered markdown uses the official gitbook-markdown-body stylesheet.
+   Keep only top spacing here and let gitbook-markdown.css drive typography. */
 .gb-content .content {
-    font-size: 16.5px;
-    color: #2b3137;
     margin-top: 24px;
 }
 
-.gb-content .content p {
-    margin-bottom: 1.25em;
+/* The site's base stylesheet turns ul/ol into decorative list markers;
+   inside the GitBook markdown body restore ordinary list styling. */
+body.gb-notes .gitbook-markdown-body ul {
+    list-style-type: disc;
 }
 
-.gb-content .content h1 {
-    font-size: 28px;
-    margin-top: 2em;
-    border-bottom: 1px solid #ececec;
-    padding-bottom: 8px;
+body.gb-notes .gitbook-markdown-body ol {
+    list-style-type: decimal;
 }
 
-.gb-content .content h2 {
-    font-size: 23px;
-    margin-top: 2em;
+body.gb-notes .gitbook-markdown-body ul,
+body.gb-notes .gitbook-markdown-body ol {
+    padding-left: 2em;
 }
 
-.gb-content .content h3 {
-    font-size: 19px;
-    margin-top: 1.6em;
+body.gb-notes .gitbook-markdown-body li {
+    position: static;
+    padding-left: 0;
+    margin-bottom: 0;
 }
 
-.gb-content .content a {
-    color: #2563eb;
+body.gb-notes .gitbook-markdown-body li::before,
+body.gb-notes .gitbook-markdown-body li::after {
+    content: none;
 }
 
-.gb-content .content a:hover {
-    text-decoration: underline;
-}
-
-.gb-content .content blockquote {
-    border-left: 3px solid #d0d7de;
-    color: #57606a;
-}
-
-.gb-content .content code {
-    background: #f6f6f6;
-    color: #476582;
-}
-
-.gb-content .content pre {
-    background: #f6f6f6;
-    border: 1px solid #ececec;
+body.gb-notes .gitbook-markdown-body .hljs {
     border-radius: 6px;
-}
-
-.gb-content .content pre code {
-    background: none;
 }
 
 /* Note cards on the index page */

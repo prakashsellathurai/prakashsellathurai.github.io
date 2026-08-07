@@ -225,7 +225,7 @@ def render_head(metadata, page_info, extra_schemas=None, extra_css=None):
 
     css_link = '<link rel="stylesheet" href="/static/css/style.css">'
     if extra_css:
-        css_link += f'\n  <link rel="stylesheet" href="{extra_css}">'
+        css_link += f"\n  {extra_css}"
     favicon = """
   <link rel="apple-touch-icon" sizes="180x180" href="/static/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png">
@@ -864,7 +864,7 @@ class PageBuilder:
             f"Notes - {metadata['title']}",
             "Quick references and notes",
             "/notes/",
-            extra_css="/static/css/docs.css",
+            extra_css='<link rel="stylesheet" href="/static/css/docs.css">',
         )
 
         notes_list_html = "\n".join(
@@ -899,7 +899,7 @@ class PageBuilder:
             f"{note['title']} - {metadata['title']}",
             f"Notes on {note['title']}",
             note_url,
-            extra_css="/static/css/docs.css",
+            extra_css='<link rel="stylesheet" href="/static/css/docs.css">\n  <link rel="stylesheet" href="/static/css/gitbook-markdown.css">',
         )
 
         html = _apply_template(
@@ -922,7 +922,7 @@ class PageBuilder:
             f"Experiments - {metadata['title']}",
             "Document explorations and experiments",
             "/experiments/",
-            extra_css="/static/css/docs.css",
+            extra_css='<link rel="stylesheet" href="/static/css/docs.css">',
         )
         cards = []
         for exp in experiments:
@@ -973,7 +973,7 @@ class PageBuilder:
             f'{topic["topic_title"]} - Experiments - {metadata["title"]}',
             f'Experiments in {topic["topic_title"]}',
             topic_url,
-            extra_css="/static/css/docs.css",
+            extra_css='<link rel="stylesheet" href="/static/css/docs.css">',
         )
         sections = []
         for st in topic["subtopics"]:
@@ -1021,7 +1021,7 @@ class PageBuilder:
             f'{subtopic["subtopic_title"]} - {topic["topic_title"]} - Experiments - {metadata["title"]}',
             f'Experiments in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
             st_url,
-            extra_css="/static/css/docs.css",
+            extra_css='<link rel="stylesheet" href="/static/css/docs.css">',
         )
         file_links = "\n".join(
             f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
@@ -1066,7 +1066,7 @@ class PageBuilder:
             f'{file_data["title"]} - {metadata["title"]}',
             f'Experiment: {file_data["title"]}',
             exp_url,
-            extra_css="/static/css/docs.css",
+            extra_css='<link rel="stylesheet" href="/static/css/docs.css">\n  <link rel="stylesheet" href="/static/css/gitbook-markdown.css">',
         )
         html = _apply_template(
             html,

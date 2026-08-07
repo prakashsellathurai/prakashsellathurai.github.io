@@ -1,15 +1,20 @@
 <!doctype html>
 <html lang="en">
 {{head}}
-<body>
-{{header}}
-<h1>Experiments</h1>
-<p class="meta">Code experiments and explorations</p>
-
-<section>
-{{experimentsList}}
-</section>
-
-{{footer}}
+<body class="gb-notes">
+  {{experimentsSidebar}}
+  <div class="gb-main">
+    <nav class="gb-topbar">
+      <a href="/experiments/">Experiments</a>
+    </nav>
+    <div class="gb-scroll">
+      <div class="gb-content">
+        <h1>{{experimentsTitle}}</h1>
+        <p class="gb-lead">{{experimentsLead}}</p>
+        {{experimentsContent}}
+        {{experimentsPager}}
+      </div>
+    </div>
+  </div>
 </body>
 </html>

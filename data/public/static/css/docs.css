@@ -376,3 +376,238 @@ body.gb-notes {
         text-align: left;
     }
 }
+
+/* ------------------------------------------------------------------
+   Experiments tree navigation (same GitBook chrome)
+   ------------------------------------------------------------------ */
+
+/* Topic group: a <details>/<summary> node */
+.gb-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.gb-tree-dir {
+    border: none;
+    margin: 0;
+}
+
+.gb-tree-dir > summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding: 8px 12px 8px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #24292f;
+    border-radius: 6px;
+    border-left: 3px solid transparent;
+}
+
+.gb-tree-dir > summary::-webkit-details-marker {
+    display: none;
+}
+
+.gb-tree-dir > summary::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid #9aa4af;
+    border-bottom: 2px solid #9aa4af;
+    transform: translateY(-55%) rotate(-45deg);
+    transition: transform 0.15s ease;
+}
+
+.gb-tree-dir[open] > summary::before {
+    transform: translateY(-30%) rotate(45deg);
+}
+
+.gb-tree-dir > summary:hover {
+    background: #f3f3f3;
+}
+
+.gb-tree-dir > summary.topic-active {
+    background: #f0f6ff;
+    color: #2563eb;
+    border-left-color: #2563eb;
+}
+
+.gb-tree-dir > .gb-tree-inner {
+    padding: 2px 0 6px 12px;
+    border-left: 1px solid #ececec;
+    margin: 0 0 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Directory node (subtopic) */
+.gb-tree-sub {
+    border: none;
+    margin: 0;
+}
+
+.gb-tree-sub > summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #57606a;
+    padding: 6px 10px 6px 14px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.gb-tree-sub > summary::-webkit-details-marker {
+    display: none;
+}
+
+.gb-tree-sub > summary::before {
+    content: "\203A";
+    position: absolute;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 0.15s ease;
+    color: #9aa4af;
+}
+
+.gb-tree-sub[open] > summary::before {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.gb-tree-sub > summary:hover {
+    background: #f6f6f6;
+}
+
+.gb-tree-sub > .gb-tree-inner {
+    padding: 2px 0 4px 12px;
+    border-left: 1px solid #ececec;
+    margin: 0 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Tree leaf links */
+.gb-tree-file {
+    display: block;
+    padding: 6px 10px 6px 14px;
+    font-size: 14px;
+    color: #424242;
+    border-radius: 6px;
+    line-height: 1.4;
+    border-left: 3px solid transparent;
+}
+
+.gb-tree-file:hover {
+    background: #f3f3f3;
+    color: #24292f;
+}
+
+.gb-tree-file.active {
+    background: #f0f6ff;
+    color: #2563eb;
+    border-left-color: #2563eb;
+    font-weight: 500;
+}
+
+/* Index content: topic cards */
+.gb-topic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.gb-topic-card {
+    display: block;
+    padding: 18px 22px;
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    color: #1f2328;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gb-topic-card:hover {
+    border-color: #c8d3f5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.gb-topic-card .gb-topic-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1f2328;
+}
+
+.gb-topic-card .gb-topic-count {
+    float: right;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8b949e;
+}
+
+.gb-topic-card .gb-topic-files {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f1f1f1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.gb-topic-card .gb-topic-files a {
+    font-size: 12.5px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #57606a;
+    background: #f6f6f6;
+    border: 1px solid #ececec;
+    padding: 3px 9px;
+    border-radius: 20px;
+}
+
+.gb-topic-card .gb-topic-files a:hover {
+    color: #2563eb;
+    border-color: #c3d3f5;
+}
+
+/* Index page file list (topic / subtopic index) */
+.gb-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.gb-file-link {
+    display: block;
+    padding: 10px 16px;
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #24292f;
+}
+
+.gb-file-link:hover {
+    border-color: #c3d3f5;
+    color: #2563eb;
+}
+
+.gb-file-meta {
+    display: block;
+    margin-top: 2px;
+    font-size: 12.5px;
+    color: #8b949e;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.gb-content .hljs,
+.gb-content pre,
+.gb-content .content > pre {
+    border-radius: 6px;
+}

@@ -50,6 +50,80 @@ body.gb-notes {
     color: #0464ac;
 }
 
+/* Search box (GitBook-style) */
+.gb-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 4px 12px;
+    padding: 6px 10px;
+    border: 1px solid #d7dbe0;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #6a6f75;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gb-search:focus-within {
+    border-color: #0464ac;
+    box-shadow: 0 0 0 3px rgba(4, 100, 172, 0.12);
+}
+
+.gb-search-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: #8b949e;
+}
+
+.gb-search input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    padding: 0;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: #1c1d1e;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.gb-search input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+.gb-search input::placeholder {
+    color: #8b949e;
+}
+
+.gb-search-kbd {
+    flex-shrink: 0;
+    font-family: inherit;
+    font-size: 11px;
+    line-height: 1;
+    color: #6a6f75;
+    background: #f6f7f9;
+    border: 1px solid #e2e6ea;
+    border-radius: 4px;
+    padding: 3px 5px;
+    white-space: nowrap;
+}
+
+/* Search-hide state */
+.gb-search-hidden {
+    display: none !important;
+}
+
+.gb-sidebar[data-gb-search-active="1"][data-gb-has-results="0"]::after {
+    content: "No results";
+    display: block;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #8b949e;
+}
+
 .gb-nav {
     display: flex;
     flex-direction: column;
@@ -393,9 +467,11 @@ body.gb-notes .gitbook-markdown-body .hljs {
     user-select: none;
     position: relative;
     padding: 6px 12px 6px 16px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
-    color: #1c1d1e;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #57606a;
     border-radius: 6px;
 }
 

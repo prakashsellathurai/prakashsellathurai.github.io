@@ -299,11 +299,19 @@ def _note_description(note, limit=160):
     return text
 
 
+def _gb_search_html():
+    return f"""<div class="gb-search">
+  <svg class="gb-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+  <input type="search" placeholder="Search&hellip;" aria-label="Search" data-gb-search>
+  <kbd class="gb-search-kbd">Ctrl K</kbd>
+</div>"""
+
+
 def _notes_sidebar_html(notes, current_slug=None):
     items = []
     for n in notes:
         active = n["slug"] == current_slug
-        cls = ' class="gb-nav-link active"' if active else ' class="gb-nav-link"'
+        cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
         aria = ' aria-current="page"' if active else ""
         items.append(
             f'<a{cls} href="/notes/{n["slug"]}.html"{aria}>{escape_html(n["title"])}</a>'
@@ -313,8 +321,14 @@ def _notes_sidebar_html(notes, current_slug=None):
 <label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle notes navigation">Menu</label>
 <aside class="gb-sidebar">
   <a class="gb-brand" href="/notes/">Notes</a>
-  <nav class="gb-nav">
-    {nav}
+  {_gb_search_html()}
+  <nav class="gb-tree">
+    <details class="gb-tree-dir" open>
+      <summary>Notes</summary>
+      <div class="gb-tree-inner">
+        {nav}
+      </div>
+    </details>
   </nav>
   <a class="gb-back" href="/">&larr; prakashsellathurai.com</a>
 </aside>"""
@@ -468,6 +482,7 @@ def _experiments_sidebar_html(experiments, current=None):
 <label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle experiments navigation">Menu</label>
 <aside class="gb-sidebar">
   <a class="gb-brand" href="/experiments/">Experiments</a>
+  {_gb_search_html()}
   <nav class="gb-tree">
     {tree}
   </nav>

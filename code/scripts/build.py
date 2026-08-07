@@ -2,25 +2,53 @@
 """Static site generator for prakashsellathurai.com."""
 
 import json
+import logging
 import os
 import pathlib
+import re
 import shutil
-from datetime import datetime, timezone
+from datetime import datetime
 from urllib.parse import urlparse
 
 from nbconvert import HTMLExporter
 from nbformat import v4 as nbf, reads, NO_CONVERT
 
+from lib.datatypes import (
+    Book,
+    Essay,
+    ExperimentTopic,
+    FileData,
+    Note,
+    Project,
+    Quote,
+    SiteMetadata,
+)
 from lib.frontmatter import parse_frontmatter
 from lib.markdown import MarkdownRenderer, escape_html
 from lib.slug import slug
 from lib.xmlgen import generate_rss_feed, generate_sitemap
+
+_logger = logging.getLogger(__name__)
 
 BASE_PATH = os.environ.get("BASE_PATH", "")
 OUT_DIR = pathlib.Path("out")
 NOTES_DIR = pathlib.Path("data/non-public/submodules/Grimoire/notes")
 EXPERIMENTS_DIR = pathlib.Path("data/non-public/submodules/Grimoire/experiments")
 _ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
+
+_DOCS_EXTRA_CSS = (
+    '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+    '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+    '  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">\n'
+    '  <link rel="stylesheet" href="/static/css/docs.css">'
+)
+_DOCS_GITBOOK_EXTRA_CSS = (
+    '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+    '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+    '<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">\n'
+    '  <link rel="stylesheet" href="/static/css/docs.css">\n'
+    '  <link rel="stylesheet" href="/static/css/gitbook-markdown.css">'
+)
 _PAGE_NAMES = {
     "/essays/": "Essays",
     "/about.html": "About",
@@ -32,17 +60,22 @@ _PAGE_NAMES = {
 }
 
 
-def _format_date_iso(date_str):
-    return datetime.fromisoformat(date_str.replace("Z", "+00:00")).isoformat()
+def _parse_date(date_str: str) -> datetime:
+    """Parse an ISO date string (with optional trailing 'Z') to datetime."""
+    return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
 
 
-def _format_date(date_str):
-    return datetime.fromisoformat(date_str.replace("Z", "+00:00")).strftime(
-        "%b %d, %Y"
-    )
+def _format_date_iso(date_str: str) -> str:
+    """Format a date string as ISO 8601 for structured data."""
+    return _parse_date(date_str).isoformat()
 
 
-def _build_author_schema(metadata):
+def _format_date(date_str: str) -> str:
+    """Format a date string for human display (e.g. 'Aug 07, 2026')."""
+    return _parse_date(date_str).strftime("%b %d, %Y")
+
+
+def _build_author_schema(metadata: SiteMetadata) -> dict:
     details = metadata.get("authorDetails", {})
     author = {"@type": "Person", "name": metadata["author"]}
     for key in ("url", "sameAs", "email", "jobTitle", "image"):
@@ -51,13 +84,164 @@ def _build_author_schema(metadata):
     return author
 
 
-def _read_site_metadata(filepath):
+def _website_schema(site_url: str, site_title: str) -> dict:
+    """Build the WebSite structured-data entry for a page's JSON-LD graph."""
+    return {
+        "@type": "WebSite",
+        "url": site_url + "/",
+        "name": site_title,
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": site_url + "/?q={search_term_string}",
+            },
+            "query-input": "required name=search_term_string",
+        },
+    }
+
+
+def _person_schema(metadata: SiteMetadata, site_url: str) -> dict:
+    """Build the Person structured-data entry for a page's JSON-LD graph."""
+    details = metadata.get("authorDetails", {})
+    person = {
+        "@type": "Person",
+        "name": metadata.get("author", ""),
+        "url": site_url,
+        "sameAs": details.get("sameAs", []),
+        "jobTitle": details.get("jobTitle", "Software Engineer"),
+        "description": metadata.get("description", ""),
+    }
+    author_img = details.get("image") or metadata.get("siteLogo", "")
+    if author_img:
+        person["image"] = site_url + author_img
+    email = metadata.get("email")
+    if email:
+        person["email"] = email
+    knows_about = details.get("knowsAbout")
+    if knows_about:
+        person["knowsAbout"] = knows_about
+    return person
+
+
+def _blog_posting_schema(metadata: SiteMetadata, essay: Essay, site_url: str, essay_url: str) -> dict:
+    """Build the BlogPosting structured-data entry for an essay page."""
+    return {
+        "@type": "BlogPosting",
+        "headline": essay["title"],
+        "description": essay.get("summary", ""),
+        "datePublished": _format_date_iso(essay["date"]),
+        "dateModified": _format_date_iso(essay["date"]),
+        "author": _build_author_schema(metadata),
+        "url": site_url + essay_url,
+        "image": site_url
+        + (metadata.get("socialBanner") or metadata.get("siteLogo", "")),
+        "mainEntityOfPage": {"@type": "WebPage", "@id": site_url + essay_url},
+    }
+
+
+def _main_entity_schema(metadata: SiteMetadata, site_url: str) -> dict:
+    """Build the Person entity used as mainEntity in the About page schema."""
+    author_details = metadata.get("authorDetails", {})
+    main_entity = {
+        "@type": "Person",
+        "name": metadata["author"],
+        "url": site_url,
+        "description": author_details.get("description")
+        or metadata.get("description", ""),
+        "sameAs": author_details.get("sameAs", []),
+        "jobTitle": author_details.get("jobTitle", "Software Engineer"),
+    }
+    img = author_details.get("image") or metadata.get("siteLogo", "")
+    if img:
+        main_entity["image"] = site_url + img.replace("__BASE_PATH__", "")
+    email = metadata.get("email")
+    if email:
+        main_entity["email"] = email
+    knows_about = author_details.get("knowsAbout")
+    if knows_about:
+        main_entity["knowsAbout"] = knows_about
+    return main_entity
+
+
+def _collection_schema(item_list: list[dict], name=None, description=None, url=None) -> dict:
+    """Build a CollectionPage schema with the given ItemList.
+
+    Args:
+        item_list: list of ListItem schema entries.
+        name: Optional collection name.
+        description: Optional collection description.
+        url: Optional collection URL.
+    """
+    schema = {"@type": "CollectionPage"}
+    if name is not None:
+        schema["name"] = name
+    if description is not None:
+        schema["description"] = description
+    if url is not None:
+        schema["url"] = url
+    schema["mainEntity"] = {"@type": "ItemList", "itemListElement": item_list}
+    return schema
+
+
+def _software_application_item(metadata: SiteMetadata, project: Project, position: int, best_rating: int) -> dict:
+    """Build a ListItem schema wrapping a SoftwareApplication for a project."""
+    app_url = project.get("website") or project["href"]
+    app = {
+        "@type": "SoftwareApplication",
+        "name": project["title"],
+        "description": project.get("description", ""),
+        "url": app_url,
+        "codeRepository": project["href"],
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "author": _build_author_schema(metadata),
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": project.get("stars", 0),
+            "bestRating": best_rating,
+            "worstRating": 0,
+            "ratingCount": 1,
+        },
+    }
+    return {"@type": "ListItem", "position": position, "item": app}
+
+
+def _book_item(book: Book, position: int, resolve_image) -> dict:
+    """Build a ListItem schema wrapping a Book for the bookshelf."""
+    b_schema = {"@type": "Book", "name": book["title"]}
+    b_schema["author"] = book.get("author", "")
+    b_schema["url"] = book.get("link", "")
+    img = resolve_image(book)
+    if img:
+        b_schema["image"] = img
+    try:
+        rating = int(book.get("rating", 0))
+    except (ValueError, TypeError):
+        rating = 0
+    if rating > 0:
+        b_schema["aggregateRating"] = {
+            "@type": "AggregateRating",
+            "ratingValue": rating,
+            "ratingCount": 1,
+            "bestRating": 5,
+            "worstRating": 1,
+        }
+    return {"@type": "ListItem", "position": position, "item": b_schema}
+
+
+def _read_site_metadata(filepath) -> dict:
     content = pathlib.Path(filepath).read_text()
     content = content.replace("__BASE_PATH__", BASE_PATH)
     return json.loads(content)
 
 
-def _breadcrumbs_for_url(url, site_url):
+def _breadcrumbs_for_url(url: str, site_url: str) -> dict | None:
     if not url or url == "/":
         return None
 
@@ -121,7 +305,7 @@ def _breadcrumbs_for_url(url, site_url):
     return {"@type": "BreadcrumbList", "itemListElement": items}
 
 
-def _apply_template(template_str, data):
+def _apply_template(template_str: str, data: dict) -> str:
     result = template_str
     for key, value in data.items():
         if value is not None:
@@ -129,7 +313,78 @@ def _apply_template(template_str, data):
     return result
 
 
-def render_head(metadata, page_info, extra_schemas=None):
+def _write_page(out_dir: pathlib.Path, rel_path: str, html: str) -> None:
+    """Write rendered HTML to out_dir/rel_path, creating parents as needed."""
+    target = out_dir / rel_path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(html)
+
+
+def _render_keywords_meta(metadata: SiteMetadata) -> str:
+    keywords = ", ".join(metadata.get("keywords", []))
+    if not keywords:
+        return ""
+    return f'<meta name="keywords" content="{escape_html(keywords)}">'
+
+
+def _render_open_graph(page_info: dict, site_url: str, full_url: str, og_image: str, site_title: str) -> str:
+    return f"""
+  <meta property="og:title" content="{escape_html(page_info["title"])}">
+  <meta property="og:description" content="{escape_html(page_info["description"])}">
+  <meta property="og:url" content="{full_url}">
+  <meta property="og:image" content="{site_url}{og_image}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{escape_html(site_title)}">"""
+
+
+def _render_twitter_card(page_info: dict, site_url: str, og_image: str) -> str:
+    return f"""
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{escape_html(page_info["title"])}">
+  <meta name="twitter:description" content="{escape_html(page_info["description"])}">
+  <meta name="twitter:image" content="{site_url}{og_image}">"""
+
+
+def _render_json_ld(schemas: list[dict]) -> str:
+    if len(schemas) == 1:
+        schemas[0]["@context"] = "https://schema.org"
+        json_ld_obj = schemas[0]
+    else:
+        json_ld_obj = {"@context": "https://schema.org", "@graph": schemas}
+    json_ld_str = json.dumps(json_ld_obj, indent=2)
+    return f"""
+  <script type="application/ld+json">
+  {json_ld_str}
+  </script>"""
+
+
+_FAVICON_LINKS = """
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/static/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#8b7355">"""
+
+
+def _render_css_link(extra_css):
+    css_link = '<link rel="stylesheet" href="/static/css/style.css">'
+    if extra_css:
+        css_link += f"\n  {extra_css}"
+    return css_link
+
+
+def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, extra_css=None) -> str:
+    """Render the <head> HTML for a page.
+
+    Args:
+        metadata: Site-wide metadata.
+        page_info: Dict with title, description, url, and optional image.
+        extra_schemas: Optional list of JSON-LD schema dicts to include.
+        extra_css: Optional extra CSS link tags.
+
+    Returns:
+        The complete <head> element HTML.
+    """
     site_url = metadata["siteUrl"].rstrip("/")
     full_url = f"{site_url}{page_info['url']}" if page_info["url"] else site_url
     og_image = (
@@ -137,98 +392,18 @@ def render_head(metadata, page_info, extra_schemas=None):
         or metadata.get("socialBanner")
         or metadata.get("siteLogo", "")
     )
-    keywords = ", ".join(metadata.get("keywords", []))
 
     canonical = f'<link rel="canonical" href="{full_url}">'
-    keywords_meta = (
-        f'<meta name="keywords" content="{escape_html(keywords)}">'
-        if keywords
-        else ""
-    )
 
-    open_graph = f"""
-  <meta property="og:title" content="{escape_html(page_info["title"])}">
-  <meta property="og:description" content="{escape_html(page_info["description"])}">
-  <meta property="og:url" content="{full_url}">
-  <meta property="og:image" content="{site_url}{og_image}">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="{escape_html(metadata["title"])}">"""
-
-    twitter_card = f"""
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{escape_html(page_info["title"])}">
-  <meta name="twitter:description" content="{escape_html(page_info["description"])}">
-  <meta name="twitter:image" content="{site_url}{og_image}">"""
-
-    author_details = metadata.get("authorDetails", {})
-    same_as = author_details.get("sameAs", [])
-    author_name = metadata.get("author", "")
-    job_title = author_details.get("jobTitle", "Software Engineer")
-    author_desc = metadata.get("description", "")
-
-    schemas = []
-
-    schemas.append(
-        {
-            "@type": "WebSite",
-            "url": site_url + "/",
-            "name": metadata["title"],
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": {
-                    "@type": "EntryPoint",
-                    "urlTemplate": site_url + "/?q={search_term_string}",
-                },
-                "query-input": "required name=search_term_string",
-            },
-        }
-    )
-
-    person_schema = {
-        "@type": "Person",
-        "name": author_name,
-        "url": site_url,
-        "sameAs": same_as,
-        "jobTitle": job_title,
-        "description": author_desc,
-    }
-    author_img = author_details.get("image") or metadata.get("siteLogo", "")
-    if author_img:
-        person_schema["image"] = site_url + author_img
-    email = metadata.get("email")
-    if email:
-        person_schema["email"] = email
-    knows_about = author_details.get("knowsAbout")
-    if knows_about:
-        person_schema["knowsAbout"] = knows_about
-    schemas.append(person_schema)
-
+    schemas = [
+        _website_schema(site_url, metadata["title"]),
+        _person_schema(metadata, site_url),
+    ]
     breadcrumbs = _breadcrumbs_for_url(page_info.get("url", ""), site_url)
     if breadcrumbs:
         schemas.append(breadcrumbs)
-
     if extra_schemas:
         schemas.extend(extra_schemas)
-
-    if len(schemas) == 1:
-        schemas[0]["@context"] = "https://schema.org"
-        json_ld_obj = schemas[0]
-    else:
-        json_ld_obj = {"@context": "https://schema.org", "@graph": schemas}
-
-    json_ld_str = json.dumps(json_ld_obj, indent=2)
-    json_ld = f"""
-  <script type="application/ld+json">
-  {json_ld_str}
-  </script>"""
-
-    css_link = '<link rel="stylesheet" href="/static/css/style.css">'
-    favicon = """
-  <link rel="apple-touch-icon" sizes="180x180" href="/static/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png">
-  <link rel="manifest" href="/static/favicons/site.webmanifest">
-  <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#8b7355">"""
 
     rss_link = f'<link rel="alternate" type="application/rss+xml" title="{escape_html(metadata["title"])}" href="{site_url}/feed.xml">'
 
@@ -238,22 +413,22 @@ def render_head(metadata, page_info, extra_schemas=None):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{escape_html(page_info["title"])}</title>
   <meta name="description" content="{escape_html(page_info["description"])}">
-  {keywords_meta}
+  {_render_keywords_meta(metadata)}
   {canonical}
-  {open_graph}
-  {twitter_card}
-  {json_ld}
+  {_render_open_graph(page_info, site_url, full_url, og_image, metadata["title"])}
+  {_render_twitter_card(page_info, site_url, og_image)}
+  {_render_json_ld(schemas)}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
   {rss_link}
-  {favicon}
-  {css_link}
+  {_FAVICON_LINKS}
+  {_render_css_link(extra_css)}
 </head>
 """
 
 
-def render_header(metadata):
+def render_header(metadata: SiteMetadata) -> str:
     return """<header>
   <a href="/">Home</a>
   <a href="/static/resume/prakash_s_resume.pdf">Resume</a>
@@ -275,7 +450,7 @@ def render_header(metadata):
 """
 
 
-def render_footer(metadata):
+def render_footer(metadata: SiteMetadata) -> str:
     year = datetime.now().year
     return f"""<footer>
   <p>&copy; {year} {escape_html(metadata["author"])}. &middot; <a href="/sitelinks.html">Site Links</a></p>
@@ -283,26 +458,340 @@ def render_footer(metadata):
 """
 
 
-def _essay_article_html(e, indent=0, tags=True):
+_LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
+
+
+def _note_description(note: Note, limit: int = 160) -> str:
+    text = _LINK_RE.sub(r"\1", note["content"])
+    for token in ("#", "`", "*", "_", ">", "[", "]"):
+        text = text.replace(token, " ")
+    text = " ".join(text.split())
+    if len(text) > limit:
+        text = text[:limit].rsplit(" ", 1)[0] + "\u2026"
+    return text
+
+
+def _gb_search_html() -> str:
+    return f"""<div class="gb-search">
+  <svg class="gb-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+  <input type="search" placeholder="Search&hellip;" aria-label="Search" data-gb-search>
+  <kbd class="gb-search-kbd">Ctrl K</kbd>
+</div>"""
+
+
+def _notes_sidebar_html(notes: list[Note], current_slug: str | None = None) -> str:
+    items = []
+    for n in notes:
+        active = n["slug"] == current_slug
+        cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
+        aria = ' aria-current="page"' if active else ""
+        items.append(
+            f'<a{cls} href="{_note_url(n["slug"])}"{aria}>{escape_html(n["title"])}</a>'
+        )
+    nav = "\n    ".join(items)
+    return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
+<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle notes navigation">Menu</label>
+<aside class="gb-sidebar">
+  <a class="gb-brand" href="/notes/">Notes</a>
+  {_gb_search_html()}
+  <nav class="gb-tree">
+    <details class="gb-tree-dir" open>
+      <summary>Notes</summary>
+      <div class="gb-tree-inner">
+        {nav}
+      </div>
+    </details>
+  </nav>
+  <a class="gb-back" href="/">&larr; prakashsellathurai.com</a>
+</aside>"""
+
+
+def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: str) -> str:
+    idx = next((i for i, it in enumerate(items) if get_id(it) == current), None)
+    if idx is None:
+        return ""
+    prev_item = items[idx - 1] if idx > 0 else None
+    next_item = items[idx + 1] if idx < len(items) - 1 else None
+
+    def cell(direction: str, item: dict | None) -> str:
+        label = "Previous" if direction == "prev" else "Next"
+        arrow = "&larr;" if direction == "prev" else "&rarr;"
+        if item is None:
+            return (
+                f'<a class="gb-pager-{direction} disabled" href="#" tabindex="-1">'
+                f'<span class="gb-pager-label">{arrow} {label}</span>'
+                f'<span class="gb-pager-title"></span></a>'
+            )
+        return (
+            f'<a class="gb-pager-{direction}" href="{get_href(item)}">'
+            f'<span class="gb-pager-label">{arrow} {label}</span>'
+            f'<span class="gb-pager-title">{escape_html(item["title"])}</span></a>'
+        )
+
+    return f"""<nav class="gb-pager" aria-label="{aria_label}">
+  {cell("prev", prev_item)}
+  {cell("next", next_item)}
+</nav>"""
+
+
+def _notes_pager_html(notes: list[Note], current_slug: str) -> str:
+    return _pager_html(
+        notes, current_slug, lambda n: n["slug"], lambda n: _note_url(n["slug"]),
+        "Note navigation",
+    )
+
+
+def _docs_pager(items: list[dict], current_url: str) -> str:
+    return _pager_html(
+        items, current_url, lambda i: i["url"], lambda i: i["url"],
+        "Documents navigation",
+    )
+
+
+def _extract_body(full_html: str) -> str:
+    match = re.search(r"<body[^>]*>(.*)</body>", full_html, re.S)
+    return match.group(1).strip() if match else full_html
+
+
+def _flatten_experiment_pages(experiments: list[ExperimentTopic]) -> list[dict]:
+    pages = []
+    for exp in experiments:
+        base = _topic_url(exp["topic_slug"])
+        for st in exp["subtopics"]:
+            st_base = f'{base}{st["subtopic_path"]}/'
+            for f in st["files"]:
+                pages.append(
+                    {
+                        "url": f'{st_base}{f["slug"]}.html',
+                        "title": f'{f["title"]} \u00b7 {exp["topic_title"]}',
+                    }
+                )
+        for f in exp["files"]:
+            pages.append({"url": f'{base}{f["slug"]}.html', "title": f["title"]})
+    return pages
+
+
+def _essay_url(slug: str) -> str:
+    """Return the URL path for an essay slug."""
+    return f"/essays/{slug}.html"
+
+
+def _note_url(slug: str) -> str:
+    """Return the URL path for a note slug."""
+    return f"/notes/{slug}.html"
+
+
+def _tag_url(tag: str) -> str:
+    """Return the URL path for a tag page."""
+    return f"/tags/{tag}.html"
+
+
+def _topic_url(topic_slug: str) -> str:
+    """Return the URL path for an experiment topic index."""
+    return f"/experiments/{topic_slug}/"
+
+
+def _exp_file_url(topic_slug: str, subtopic_path: str | None, file_slug: str) -> str:
+    base = f"/experiments/{topic_slug}"
+    if subtopic_path:
+        base += "/" + subtopic_path
+    return f"{base}/{file_slug}.html"
+
+
+def _experiments_sidebar_html(experiments: list[ExperimentTopic], current: dict | None = None) -> str:
+    current = current or {}
+
+    parts_html = []
+    for exp in experiments:
+        topic_slug = exp["topic_slug"]
+        root = {"dirs": {}, "files": list(exp["files"])}
+        for st in exp["subtopics"]:
+            node = root
+            for part in st["subtopic_path"].split("/"):
+                if part not in node["dirs"]:
+                    node["dirs"][part] = {"dirs": {}, "files": []}
+                node = node["dirs"][part]
+            node["files"] = list(st["files"])
+
+        def files_html(node, path_parts):
+            cur_sub = "/".join(path_parts) if path_parts else None
+            out = []
+            for f in node["files"]:
+                href = _exp_file_url(topic_slug, cur_sub, f["slug"])
+                active = (
+                    current.get("topic_slug") == topic_slug
+                    and current.get("subtopic_path") == cur_sub
+                    and current.get("file_slug") == f["slug"]
+                )
+                cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
+                out.append(f'<a{cls} href="{href}">{escape_html(f["title"])}</a>')
+            return "\n".join(out)
+
+        def dirs_html(dirs, path_parts):
+            out = []
+            for name, sub in sorted(dirs.items()):
+                child_path = "/".join(path_parts + [name])
+                current_path = current.get("subtopic_path") or ""
+                expanded = current.get("topic_slug") == topic_slug and (
+                    current_path == child_path
+                    or current_path.startswith(child_path + "/")
+                )
+                inner = files_html(sub, path_parts + [name]) + dirs_html(
+                    sub["dirs"], path_parts + [name]
+                )
+                open_attr = " open" if expanded else ""
+                out.append(
+                    f'<details class="gb-tree-sub"{open_attr}><summary>{escape_html(name)}</summary>'
+                    f'<div class="gb-tree-inner">{inner}</div></details>'
+                )
+            return "\n".join(out)
+
+        topic_active = current.get("topic_slug") == topic_slug
+        summary_cls = ' class="topic-active"' if topic_active else ""
+        inner = files_html(root, []) + dirs_html(root["dirs"], [])
+        open_attr = " open" if topic_active else ""
+        parts_html.append(
+            f'<details class="gb-tree-dir"{open_attr}><summary{summary_cls}>{escape_html(exp["topic_title"])}</summary>'
+            f'<div class="gb-tree-inner">{inner}</div></details>'
+        )
+
+    tree = "\n".join(parts_html)
+    return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
+<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle experiments navigation">Menu</label>
+<aside class="gb-sidebar">
+  <a class="gb-brand" href="/experiments/">Experiments</a>
+  {_gb_search_html()}
+  <nav class="gb-tree">
+    {tree}
+  </nav>
+  <a class="gb-back" href="/">&larr; prakashsellathurai.com</a>
+</aside>"""
+
+
+def _essay_article_html(e: Essay, indent: int = 0, tags: bool = True) -> str:
     p = " " * indent
     i = p + "  "
     t = ""
     if tags:
         t = "".join(
-            f'<a href="/tags/{tag}.html">#{escape_html(tag)}</a>'
+            f'<a href="{_tag_url(tag)}">#{escape_html(tag)}</a>'
             for tag in e["tags"][:3]
         )
         t = f'{i}<div class="tags">\n{i}  {t}\n{i}</div>\n'
     return (
         f'{p}<article>\n'
-        f'{i}<h2><a href="/essays/{e["slug"]}.html">{escape_html(e["title"])}</a></h2>\n'
+        f'{i}<h2><a href="{_essay_url(e["slug"])}">{escape_html(e["title"])}</a></h2>\n'
         f'{i}<p class="meta"><time>{_format_date(e["date"])}</time></p>\n'
         f'{i}<p class="summary">{escape_html(e["summary"])}</p>\n'
         f'{t}{p}</article>'
     )
 
 
-def _render_markdown(file_data, markdown_renderer):
+def _render_stars(rating) -> str:
+    """Render a numeric rating as star characters, or empty string."""
+    try:
+        n = int(rating)
+    except (ValueError, TypeError):
+        return ""
+    if not n:
+        return ""
+    return "★" * n + "☆" * (5 - n)
+
+
+def _resolve_book_image(book: Book) -> str:
+    """Resolve a book's cover image URL, preferring local assets."""
+    url = book.get("imageUrl", "")
+    if not url or "nophoto" in url:
+        return ""
+    if url.startswith("/"):
+        local = pathlib.Path.cwd() / "data" / "public" / url.lstrip("/")
+        if not local.exists():
+            url = book.get("imageUrlRemote", "")
+    return url if url and "nophoto" not in url else ""
+
+
+def _build_book_card(book: Book, category: dict, resolve_image) -> str:
+    """Build the HTML for a single book in the bookshelf."""
+    escaped_title = escape_html(book.get("title", ""))
+    escaped_author = escape_html(book.get("author", ""))
+    stars = _render_stars(book.get("rating"))
+    href = escape_html(book.get("link", "#"))
+    img_url = resolve_image(book)
+
+    has_image = bool(img_url)
+    is_current = category["dataKey"] == "currently-reading"
+
+    style = f' style="background-image:url({escape_html(img_url)})"' if has_image else ""
+    placeholder = (
+        f'<div class="book-placeholder">{escaped_title}</div>' if not has_image else ""
+    )
+    stars_html = f'<span class="book-rating">{stars}</span>' if stars else ""
+    current_class = " current" if is_current else ""
+
+    return f'''
+    <a href="{href}" class="book{current_class}" target="_blank" rel="noopener"{style}>
+      {placeholder}
+      <div class="book-shine"></div>
+      {stars_html}
+      <div class="book-tooltip">
+        <b>{escaped_title}</b>
+        <span>{escaped_author}</span>
+      </div>
+    </a>'''
+
+
+def _build_unified_bookcase(groups: list[dict]) -> str:
+    """Build the full bookshelf HTML from grouped book lists."""
+    shelves_el = []
+    for group in groups:
+        books_html = "".join(
+            _build_book_card(b, group, _resolve_book_image) for b in group["books"]
+        )
+        shelves_el.append(
+            f'''
+    <section class="shelf-section">
+      <div class="shelf-label {group["tagClass"]}">
+        <span class="tag-dot"></span>{group["label"]}<span class="n">{len(group["books"])} book{"s" if len(group["books"]) != 1 else ""}</span>
+      </div>
+      <div class="compartment">
+        <div class="shelf-boards">{books_html}</div>
+      </div>
+    </section>'''
+        )
+    return f'''
+    <div class="bookcase">
+      {"".join(shelves_el)}
+    </div>'''
+
+
+def _render_quote_item(q: Quote) -> str:
+    """Build the HTML for a single quote item."""
+    escaped_quote = escape_html(q.get("quote", ""))
+    escaped_author = escape_html(q.get("author", ""))
+    escaped_book = escape_html(q.get("book", "")) if q.get("book") else ""
+    url = q.get("url", "")
+
+    author_html = (
+        f'<span class="quote-author">{escaped_author}</span>' if escaped_author else ""
+    )
+    book_html = (
+        f', <span class="quote-book">{escaped_book}</span>' if escaped_book else ""
+    )
+
+    quote_url = (
+        f'<a href="{escape_html(url)}" class="quote-body-link" target="_blank" rel="noopener">'
+    )
+    return f'''    <li>
+      <div class="quote-content">
+        {quote_url}<q>{escaped_quote}</q></a>
+        <div class="quote-attribution">
+          {author_html}{book_html}
+        </div>
+      </div>
+    </li>'''
+
+
+def _render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
     content = file_data["content"]
     try:
         nb = nbf.new_notebook()
@@ -315,28 +804,29 @@ def _render_markdown(file_data, markdown_renderer):
         nb.cells = [nbf.new_markdown_cell(content)]
         exporter = HTMLExporter(template_name="classic")
         full_html, _resources = exporter.from_notebook_node(nb)
-        return full_html
-    except Exception:
-        pass
+        return _extract_body(full_html)
+    except Exception as exc:
+        _logger.warning("nbconvert failed for markdown, falling back to renderer: %s", exc)
     return markdown_renderer.render(content)
 
 
-def _render_notebook(file_data, markdown_renderer):
+def _render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
     content = file_data["content"]
     try:
         nb = reads(content, NO_CONVERT)
-    except Exception:
+    except Exception as exc:
+        _logger.warning("Invalid notebook, rendering as code: %s", exc)
         return f"<pre><code>{escape_html(content)}</code></pre>"
     try:
         exporter = HTMLExporter(template_name="classic")
         full_html, _resources = exporter.from_notebook_node(nb)
-        return full_html
-    except Exception:
-        pass
+        return _extract_body(full_html)
+    except Exception as exc:
+        _logger.warning("Notebook export failed, rendering as code: %s", exc)
     return f"<pre><code>{escape_html(content)}</code></pre>"
 
 
-def _render_code_as_notebook(file_data, markdown_renderer):
+def _render_code_as_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
     escaped = escape_html(file_data["content"])
     return f'<pre><code class="language-{file_data["ext"]}">{escaped}</code></pre>'
 
@@ -350,40 +840,42 @@ _RENDER_STRATEGIES = {
 }
 
 
-def _render_experiment_content(file_data, markdown_renderer):
+def _render_experiment_content(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
     strategy = _RENDER_STRATEGIES.get(file_data["ext"], _render_code_as_notebook)
     return strategy(file_data, markdown_renderer)
 
 
 class DataLoader:
+    """Loads raw site data (JSON, markdown, templates, submodule content)."""
+
     def __init__(self, data_dir):
         self.data_dir = pathlib.Path(data_dir)
 
-    def read_json(self, filepath):
+    def read_json(self, filepath) -> dict:
         return json.loads((self.data_dir / filepath).read_text())
 
-    def read_md(self, filepath):
+    def read_md(self, filepath) -> dict:
         return parse_frontmatter(pathlib.Path(filepath).read_text())
 
-    def load_template(self, template_name):
+    def load_template(self, template_name: str) -> str:
         template_path = self.data_dir / "templates" / f"{template_name}.html"
         if not template_path.exists():
             raise FileNotFoundError(f"Template not found: {template_path}")
         return template_path.read_text()
 
-    def read_author(self):
+    def read_author(self) -> dict:
         content = (
             self.data_dir / "authors" / "default.mdx"
         ).read_text()
         parsed = parse_frontmatter(content)
         return {**parsed["data"], "body": parsed["content"]}
 
-    def read_site_metadata(self):
+    def read_site_metadata(self) -> SiteMetadata:
         return _read_site_metadata(
             self.data_dir / "siteMetadata.json"
         )
 
-    def get_essays(self):
+    def get_essays(self) -> list[Essay]:
         essays_dir = self.data_dir / "essays"
         files = [f for f in essays_dir.iterdir() if f.suffix == ".md"]
         result = []
@@ -405,22 +897,22 @@ class DataLoader:
         result.sort(key=lambda x: x["date"], reverse=True)
         return result
 
-    def get_books(self):
+    def get_books(self) -> dict:
         return self.read_json("books.json")
 
-    def get_precept(self):
+    def get_precept(self) -> dict:
         return self.read_json("precept.json")
 
-    def get_projects(self):
+    def get_projects(self) -> list[Project]:
         return self.read_json("repos.json")
 
-    def get_leetcode_solutions(self):
+    def get_leetcode_solutions(self) -> list[dict]:
         return self.read_json("leetcode-solutions.json")
 
-    def get_quotes(self):
+    def get_quotes(self) -> list[Quote]:
         return self.read_json("quotes.json")
 
-    def get_notes(self):
+    def get_notes(self) -> list[Note]:
         notes_path = NOTES_DIR
         if not notes_path.is_dir():
             return []
@@ -443,7 +935,7 @@ class DataLoader:
             )
         return notes
 
-    def get_experiments(self):
+    def get_experiments(self) -> list[ExperimentTopic]:
         experiments_path = EXPERIMENTS_DIR
         if not experiments_path.is_dir():
             return []
@@ -478,7 +970,8 @@ class DataLoader:
                         rel_dir = None
                     try:
                         content = full_path.read_text()
-                    except Exception:
+                    except OSError as exc:
+                        _logger.warning("Skipping unreadable file %s: %s", full_path, exc)
                         continue
                     name = full_path.stem
                     file_data = {
@@ -513,20 +1006,28 @@ class DataLoader:
 
 
 class PageBuilder:
-    def __init__(self, data_loader, markdown_renderer):
+    """Renders every page of the site and writes HTML to the output dir."""
+
+    def __init__(self, data_loader: DataLoader, markdown_renderer: MarkdownRenderer):
         self.data_loader = data_loader
         self.markdown_renderer = markdown_renderer
 
     def _build_common(
         self,
-        template,
-        metadata,
-        page_title,
-        page_description,
-        url="",
-        image="",
-        extra_schemas=None,
-    ):
+        template: str,
+        metadata: SiteMetadata,
+        page_title: str,
+        page_description: str,
+        url: str = "",
+        image: str = "",
+        extra_schemas: list[dict] | None = None,
+        extra_css: str | None = None,
+    ) -> str:
+        """Fill a template's head/header/footer with site-wide HTML.
+
+        Returns:
+            The fully rendered page HTML with page content still to be filled.
+        """
         return _apply_template(
             template,
             {
@@ -539,13 +1040,15 @@ class PageBuilder:
                         "image": image,
                     },
                     extra_schemas=extra_schemas,
+                    extra_css=extra_css,
                 ),
                 "header": render_header(metadata),
                 "footer": render_footer(metadata),
             },
         )
 
-    def build_home(self, metadata, essays, books, projects, author, avatar, precept):
+    def build_home(self, metadata: SiteMetadata, essays: list[Essay], books: dict, projects: list[Project], author: dict, avatar: str, precept: dict) -> None:
+        """Build the homepage (index.html)."""
         template = self.data_loader.load_template("home")
         html = self._build_common(
             template, metadata, metadata["title"], metadata["description"], "/"
@@ -599,9 +1102,10 @@ class PageBuilder:
             },
         )
 
-        (OUT_DIR / "index.html").write_text(html)
+        _write_page(OUT_DIR, "index.html", html)
 
-    def build_essays_list(self, metadata, essays):
+    def build_essays_list(self, metadata: SiteMetadata, essays: list[Essay]) -> None:
+        """Build the essays index page."""
         template = self.data_loader.load_template("essays-list")
         html = self._build_common(
             template,
@@ -615,26 +1119,15 @@ class PageBuilder:
 
         html = _apply_template(html, {"essaysList": essays_list_html})
 
-        (OUT_DIR / "essays").mkdir(parents=True, exist_ok=True)
-        (OUT_DIR / "essays" / "index.html").write_text(html)
+        _write_page(OUT_DIR, "essays/index.html", html)
 
-    def build_essay(self, metadata, essay):
+    def build_essay(self, metadata: SiteMetadata, essay: Essay) -> None:
+        """Build a single essay page."""
         template = self.data_loader.load_template("essay")
         site_url = metadata["siteUrl"].rstrip("/")
-        essay_url = f"/essays/{essay['slug']}.html"
+        essay_url = _essay_url(essay["slug"])
 
-        blog_posting = {
-            "@type": "BlogPosting",
-            "headline": essay["title"],
-            "description": essay.get("summary", ""),
-            "datePublished": _format_date_iso(essay["date"]),
-            "dateModified": _format_date_iso(essay["date"]),
-            "author": _build_author_schema(metadata),
-            "url": site_url + essay_url,
-            "image": site_url
-            + (metadata.get("socialBanner") or metadata.get("siteLogo", "")),
-            "mainEntityOfPage": {"@type": "WebPage", "@id": site_url + essay_url},
-        }
+        blog_posting = _blog_posting_schema(metadata, essay, site_url, essay_url)
 
         html = self._build_common(
             template,
@@ -653,16 +1146,17 @@ class PageBuilder:
                 "essay.title": escape_html(essay["title"]),
                 "essay.date": _format_date(essay["date"]),
                 "essay.tags": " ".join(
-                    f'<a href="/tags/{t}.html">#{escape_html(t)}</a>'
+                    f'<a href="{_tag_url(t)}">#{escape_html(t)}</a>'
                     for t in essay["tags"]
                 ),
                 "essay.content": essay_content,
             },
         )
 
-        (OUT_DIR / "essays" / f"{essay['slug']}.html").write_text(html)
+        _write_page(OUT_DIR, f"essays/{essay['slug']}.html", html)
 
-    def build_notes_list(self, metadata, notes):
+    def build_notes_list(self, metadata: SiteMetadata, notes: list[Note]) -> None:
+        """Build the notes index page."""
         template = self.data_loader.load_template("notes")
         html = self._build_common(
             template,
@@ -670,22 +1164,32 @@ class PageBuilder:
             f"Notes - {metadata['title']}",
             "Quick references and notes",
             "/notes/",
+            extra_css=_DOCS_EXTRA_CSS,
         )
 
         notes_list_html = "\n".join(
-            f'    <li><a href="/notes/{n["slug"]}.html">{escape_html(n["title"])}</a></li>'
+            f"""    <a class="gb-note-card" href="{_note_url(n['slug'])}">
+      <h2>{escape_html(n['title'])}</h2>
+      <p>{escape_html(_note_description(n))}</p>
+    </a>"""
             for n in notes
         )
 
-        html = _apply_template(html, {"notesList": notes_list_html})
+        html = _apply_template(
+            html,
+            {
+                "notesSidebar": _notes_sidebar_html(notes),
+                "notesList": notes_list_html,
+            },
+        )
 
-        (OUT_DIR / "notes").mkdir(parents=True, exist_ok=True)
-        (OUT_DIR / "notes" / "index.html").write_text(html)
+        _write_page(OUT_DIR, "notes/index.html", html)
 
-    def build_note(self, metadata, note):
+    def build_note(self, metadata: SiteMetadata, note: Note, notes: list[Note]) -> None:
+        """Build a single note page."""
         template = self.data_loader.load_template("note")
         site_url = metadata["siteUrl"].rstrip("/")
-        note_url = f"/notes/{note['slug']}.html"
+        note_url = _note_url(note["slug"])
 
         note_content = self.markdown_renderer.render(note["content"])
 
@@ -695,98 +1199,119 @@ class PageBuilder:
             f"{note['title']} - {metadata['title']}",
             f"Notes on {note['title']}",
             note_url,
+            extra_css=_DOCS_GITBOOK_EXTRA_CSS,
         )
 
         html = _apply_template(
             html,
             {
+                "notesSidebar": _notes_sidebar_html(notes, note["slug"]),
                 "note.title": escape_html(note["title"]),
                 "note.content": note_content,
+                "notesPager": _notes_pager_html(notes, note["slug"]),
             },
         )
 
-        (OUT_DIR / "notes" / f"{note['slug']}.html").write_text(html)
+        _write_page(OUT_DIR, f"notes/{note['slug']}.html", html)
 
-    def build_experiments_list(self, metadata, experiments):
+    def build_experiments_list(self, metadata: SiteMetadata, experiments: list[ExperimentTopic]) -> None:
+        """Build the experiments index page."""
         template = self.data_loader.load_template("experiments")
         html = self._build_common(
             template,
             metadata,
             f"Experiments - {metadata['title']}",
-            "Code experiments and explorations",
+            "Document explorations and experiments",
             "/experiments/",
+            extra_css=_DOCS_EXTRA_CSS,
         )
-        sections = []
+        cards = []
         for exp in experiments:
             file_count = len(exp["files"]) + sum(
                 len(st["files"]) for st in exp["subtopics"]
             )
-            sub_list = []
+            chips = []
             for st in exp["subtopics"]:
-                sub_list.append(
-                    f'    <li><a href="/experiments/{exp["topic_slug"]}/{st["subtopic_path"]}/">{escape_html(st["subtopic_title"])}</a> ({len(st["files"])} file{"s" if len(st["files"]) != 1 else ""})</li>'
+                st_base = f'/experiments/{exp["topic_slug"]}/{st["subtopic_path"]}/'
+                for f in st["files"]:
+                    chips.append(
+                        f'<a href="{st_base}{f["slug"]}.html">{escape_html(f["title"])}</a>'
+                    )
+            for f in exp["files"]:
+                chips.append(
+                    f'<a href="/experiments/{exp["topic_slug"]}/{f["slug"]}.html">{escape_html(f["title"])}</a>'
                 )
-            sub_html = "\n".join(sub_list) + "\n" if sub_list else ""
-            direct_files = "\n".join(
-                f'    <li><a href="/experiments/{exp["topic_slug"]}/{f["slug"]}.html">{escape_html(f["title"])}</a></li>'
-                for f in exp["files"]
+            chip_html = (
+                '<div class="gb-topic-files">' + "".join(chips) + "</div>"
+                if chips
+                else ""
             )
-            all_files = sub_html + direct_files
-            sections.append(
-                f"""<section>
-  <h2><a href="/experiments/{exp["topic_slug"]}/">{escape_html(exp["topic_title"])}</a> <span class="meta">({file_count} file{"s" if file_count != 1 else ""})</span></h2>
-  <ul>
-{all_files}  </ul>
-</section>"""
+            cards.append(
+                f'    <a class="gb-topic-card" href="{_topic_url(exp["topic_slug"])}">'
+                f'<span class="gb-topic-count">{file_count}</span>'
+                f'<span class="gb-topic-title">{escape_html(exp["topic_title"])}</span>'
+                f"{chip_html}</a>"
             )
-        html = _apply_template(html, {"experimentsList": "\n".join(sections)})
-        (OUT_DIR / "experiments").mkdir(parents=True, exist_ok=True)
-        (OUT_DIR / "experiments" / "index.html").write_text(html)
+        html = _apply_template(
+            html,
+            {
+                "experimentsSidebar": _experiments_sidebar_html(experiments),
+                "experimentsTitle": "Experiments",
+                "experimentsLead": "Code experiments and explorations",
+                "experimentsContent": "\n".join(cards),
+                "experimentsPager": "",
+            },
+        )
+        _write_page(OUT_DIR, "experiments/index.html", html)
 
-    def build_topic_index(self, metadata, topic):
+    def build_topic_index(self, metadata: SiteMetadata, topic: ExperimentTopic, experiments: list[ExperimentTopic]) -> None:
+        """Build an experiment topic index page."""
         template = self.data_loader.load_template("experiments")
-        topic_url = f'/experiments/{topic["topic_slug"]}/'
+        topic_url = _topic_url(topic["topic_slug"])
         html = self._build_common(
             template,
             metadata,
             f'{topic["topic_title"]} - Experiments - {metadata["title"]}',
             f'Experiments in {topic["topic_title"]}',
             topic_url,
+            extra_css=_DOCS_EXTRA_CSS,
         )
         sections = []
         for st in topic["subtopics"]:
             file_links = "\n".join(
-                f'    <li><a href="/experiments/{topic["topic_slug"]}/{st["subtopic_path"]}/{f["slug"]}.html">{escape_html(f["title"])}</a></li>'
+                f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
                 for f in st["files"]
             )
             sections.append(
-                f"""<section>
-  <h2>{escape_html(st["subtopic_title"])}</h2>
-  <ul>
-{file_links}  </ul>
-</section>"""
+                f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
+                f'<div class="gb-file-list">{file_links}</div></section>'
             )
         if topic["files"]:
             file_links = "\n".join(
-                f'    <li><a href="/experiments/{topic["topic_slug"]}/{f["slug"]}.html">{escape_html(f["title"])}</a></li>'
+                f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
                 for f in topic["files"]
             )
             sections.append(
-                f"""<section>
-  <h2>Files</h2>
-  <ul>
-{file_links}  </ul>
-</section>"""
+                f'<section class="gb-index-section"><h2>Files</h2><div class="gb-file-list">{file_links}</div></section>'
             )
-        html = _apply_template(html, {"experimentsList": "\n".join(sections)})
-        (OUT_DIR / "experiments" / topic["topic_slug"]).mkdir(
-            parents=True, exist_ok=True
+        html = _apply_template(
+            html,
+            {
+                "experimentsSidebar": _experiments_sidebar_html(
+                    experiments, {"topic_slug": topic["topic_slug"]}
+                ),
+                "experimentsTitle": escape_html(topic["topic_title"]),
+                "experimentsLead": f'Experiments in {topic["topic_title"]}',
+                "experimentsContent": "\n".join(sections),
+                "experimentsPager": "",
+            },
         )
-        (
-            OUT_DIR / "experiments" / topic["topic_slug"] / "index.html"
-        ).write_text(html)
+        _write_page(
+            OUT_DIR, f'experiments/{topic["topic_slug"]}/index.html', html
+        )
 
-    def build_subtopic_index(self, metadata, topic, subtopic):
+    def build_subtopic_index(self, metadata: SiteMetadata, topic: ExperimentTopic, subtopic: dict, experiments: list[ExperimentTopic]) -> None:
+        """Build an experiment subtopic index page."""
         template = self.data_loader.load_template("experiments")
         st_url = f'/experiments/{topic["topic_slug"]}/{subtopic["subtopic_path"]}/'
         html = self._build_common(
@@ -795,62 +1320,81 @@ class PageBuilder:
             f'{subtopic["subtopic_title"]} - {topic["topic_title"]} - Experiments - {metadata["title"]}',
             f'Experiments in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
             st_url,
+            extra_css=_DOCS_EXTRA_CSS,
         )
         file_links = "\n".join(
-            f'    <li><a href="/experiments/{topic["topic_slug"]}/{subtopic["subtopic_path"]}/{f["slug"]}.html">{escape_html(f["title"])}</a></li>'
+            f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
             for f in subtopic["files"]
         )
         html = _apply_template(
             html,
             {
-                "experimentsList": f"""<section>
-  <ul>
-{file_links}  </ul>
-</section>"""
+                "experimentsSidebar": _experiments_sidebar_html(
+                    experiments,
+                    {
+                        "topic_slug": topic["topic_slug"],
+                        "subtopic_path": subtopic["subtopic_path"],
+                    },
+                ),
+                "experimentsTitle": escape_html(subtopic["subtopic_title"]),
+                "experimentsLead": f'Experiments in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
+                "experimentsContent": (
+                    f'<section class="gb-index-section"><div class="gb-file-list">{file_links}</div></section>'
+                ),
+                "experimentsPager": "",
             },
         )
-        target = (
-            OUT_DIR
-            / "experiments"
-            / topic["topic_slug"]
-            / subtopic["subtopic_path"]
+        _write_page(
+            OUT_DIR,
+            f'experiments/{topic["topic_slug"]}/{subtopic["subtopic_path"]}/index.html',
+            html,
         )
-        target.mkdir(parents=True, exist_ok=True)
-        (target / "index.html").write_text(html)
 
-    def build_experiment(self, metadata, topic, file_data, subtopic_path=None):
+    def build_experiment(
+        self, metadata: SiteMetadata, topic: ExperimentTopic, file_data: FileData, experiments: list[ExperimentTopic], subtopic_path: str | None = None
+    ) -> None:
+        """Build a single experiment file page."""
         rendered = _render_experiment_content(file_data, self.markdown_renderer)
-        parts = [OUT_DIR, "experiments", topic["topic_slug"]]
+        exp_url = _exp_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
+        template = self.data_loader.load_template("experiment")
+        html = self._build_common(
+            template,
+            metadata,
+            f'{file_data["title"]} - {metadata["title"]}',
+            f'Experiment: {file_data["title"]}',
+            exp_url,
+            extra_css=_DOCS_GITBOOK_EXTRA_CSS,
+        )
+        html = _apply_template(
+            html,
+            {
+                "experimentsSidebar": _experiments_sidebar_html(
+                    experiments,
+                    {
+                        "topic_slug": topic["topic_slug"],
+                        "subtopic_path": subtopic_path,
+                        "file_slug": file_data["slug"],
+                    },
+                ),
+                "experiment.title": escape_html(file_data["title"]),
+                "experiment.meta": escape_html(file_data["ext"].upper()),
+                "experiment.content": rendered,
+                "experimentsPager": _docs_pager(
+                    _flatten_experiment_pages(experiments), exp_url
+                ),
+            },
+        )
+        exp_dir = f'experiments/{topic["topic_slug"]}'
         if subtopic_path:
-            parts.append(subtopic_path)
-        target_dir = pathlib.Path(*parts)
-        target_dir.mkdir(parents=True, exist_ok=True)
-        (target_dir / f'{file_data["slug"]}.html').write_text(rendered)
+            exp_dir += f'/{subtopic_path}'
+        _write_page(OUT_DIR, f'{exp_dir}/{file_data["slug"]}.html', html)
 
-    def build_about(self, metadata, author, avatar):
+    def build_about(self, metadata: SiteMetadata, author: dict, avatar: str) -> None:
+        """Build the about page."""
         template = self.data_loader.load_template("about")
         site_url = metadata["siteUrl"].rstrip("/")
-        author_details = metadata.get("authorDetails", {})
 
-        main_entity = {
-            "@type": "Person",
-            "name": metadata["author"],
-            "url": site_url,
-            "description": author_details.get("description")
-            or metadata.get("description", ""),
-            "sameAs": author_details.get("sameAs", []),
-            "jobTitle": author_details.get("jobTitle", "Software Engineer"),
-        }
-        img = author_details.get("image") or metadata.get("siteLogo", "")
-        if img:
-            main_entity["image"] = site_url + img.replace("__BASE_PATH__", "")
-        email = metadata.get("email")
-        if email:
-            main_entity["email"] = email
-        knows_about = author_details.get("knowsAbout")
-        if knows_about:
-            main_entity["knowsAbout"] = knows_about
-
+        main_entity = _main_entity_schema(metadata, site_url)
         about_page = {
             "@type": "ProfilePage",
             "name": f"About {metadata['author']}",
@@ -880,53 +1424,18 @@ class PageBuilder:
             },
         )
 
-        (OUT_DIR / "about.html").write_text(html)
+        _write_page(OUT_DIR, "about.html", html)
 
-    def build_projects(self, metadata, projects):
+    def build_projects(self, metadata: SiteMetadata, projects: list[Project]) -> None:
+        """Build the projects page."""
         template = self.data_loader.load_template("projects")
-        metadata["siteUrl"].rstrip("/")
 
         best_rating = max((r.get("stars", 0) for r in projects), default=0)
-        software_items = []
-        for i, p in enumerate(projects, 1):
-            app_url = p.get("website") or p["href"]
-            app = {
-                "@type": "SoftwareApplication",
-                "name": p["title"],
-                "description": p.get("description", ""),
-                "url": app_url,
-                "codeRepository": p["href"],
-                "applicationCategory": "DeveloperApplication",
-                "operatingSystem": "Any",
-                "author": _build_author_schema(metadata),
-                "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "USD",
-                },
-                "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": p.get("stars", 0),
-                    "bestRating": best_rating,
-                    "worstRating": 0,
-                    "ratingCount": 1,
-                },
-            }
-            software_items.append(
-                {
-                    "@type": "ListItem",
-                    "position": i,
-                    "item": app,
-                }
-            )
-
-        collection_schema = {
-            "@type": "CollectionPage",
-            "mainEntity": {
-                "@type": "ItemList",
-                "itemListElement": software_items,
-            },
-        }
+        software_items = [
+            _software_application_item(metadata, p, i, best_rating)
+            for i, p in enumerate(projects, 1)
+        ]
+        collection_schema = _collection_schema(software_items)
 
         html = self._build_common(
             template,
@@ -947,19 +1456,11 @@ class PageBuilder:
         )
 
         html = _apply_template(html, {"projectsList": projects_list_html})
-        (OUT_DIR / "projects.html").write_text(html)
+        _write_page(OUT_DIR, "projects.html", html)
 
-    def build_bookshelf(self, metadata, books):
+    def build_bookshelf(self, metadata: SiteMetadata, books: dict) -> None:
+        """Build the bookshelf page."""
         template = self.data_loader.load_template("bookshelf")
-
-        def _render_stars(rating):
-            try:
-                n = int(rating)
-            except (ValueError, TypeError):
-                return ""
-            if not n:
-                return ""
-            return "★" * n + "☆" * (5 - n)
 
         category_configs = [
             {"label": "Curated", "dataKey": "curated", "tagClass": "tag-curated"},
@@ -991,57 +1492,19 @@ class PageBuilder:
         ]
         groups = [g for g in groups_data if g["books"]]
 
-        def _resolve_image(book):
-            url = book.get("imageUrl", "")
-            if not url or "nophoto" in url:
-                return ""
-            if url.startswith("/"):
-                local = (
-                    pathlib.Path.cwd()
-                    / "data"
-                    / "public"
-                    / url.lstrip("/")
-                )
-                if not local.exists():
-                    url = book.get("imageUrlRemote", "")
-            return url if url and "nophoto" not in url else ""
-
         site_url = metadata["siteUrl"].rstrip("/")
         all_books = curated + currently_reading + read_books
-        book_list_items = []
-        for i, book in enumerate(all_books, 1):
-            b_schema = {"@type": "Book", "name": book["title"]}
-            b_schema["author"] = book.get("author", "")
-            b_schema["url"] = book.get("link", "")
-            img = _resolve_image(book)
-            if img:
-                b_schema["image"] = img
-            try:
-                rating = int(book.get("rating", 0))
-            except (ValueError, TypeError):
-                rating = 0
-            if rating > 0:
-                b_schema["aggregateRating"] = {
-                    "@type": "AggregateRating",
-                    "ratingValue": rating,
-                    "ratingCount": 1,
-                    "bestRating": 5,
-                    "worstRating": 1,
-                }
-            book_list_items.append(
-                {"@type": "ListItem", "position": i, "item": b_schema}
-            )
+        book_list_items = [
+            _book_item(book, i, _resolve_book_image)
+            for i, book in enumerate(all_books, 1)
+        ]
 
-        collection_schema = {
-            "@type": "CollectionPage",
-            "name": "Bookshelf",
-            "description": "Books I've read",
-            "url": site_url + "/bookshelf.html",
-            "mainEntity": {
-                "@type": "ItemList",
-                "itemListElement": book_list_items,
-            },
-        }
+        collection_schema = _collection_schema(
+            book_list_items,
+            name="Bookshelf",
+            description="Books I've read",
+            url=site_url + "/bookshelf.html",
+        )
 
         html = self._build_common(
             template,
@@ -1052,62 +1515,6 @@ class PageBuilder:
             extra_schemas=[collection_schema],
         )
 
-        def _build_card(book, category):
-            escaped_title = escape_html(book.get("title", ""))
-            escaped_author = escape_html(book.get("author", ""))
-            stars = _render_stars(book.get("rating"))
-            href = escape_html(book.get("link", "#"))
-            img_url = _resolve_image(book)
-
-            has_image = bool(img_url)
-            is_current = category["dataKey"] == "currently-reading"
-
-            style = (
-                f' style="background-image:url({escape_html(img_url)})"'
-                if has_image
-                else ""
-            )
-            placeholder = (
-                f'<div class="book-placeholder">{escaped_title}</div>'
-                if not has_image
-                else ""
-            )
-            stars_html = (
-                f'<span class="book-rating">{stars}</span>' if stars else ""
-            )
-            current_class = " current" if is_current else ""
-
-            return f'''
-    <a href="{href}" class="book{current_class}" target="_blank" rel="noopener"{style}>
-      {placeholder}
-      <div class="book-shine"></div>
-      {stars_html}
-      <div class="book-tooltip">
-        <b>{escaped_title}</b>
-        <span>{escaped_author}</span>
-      </div>
-    </a>'''
-
-        def _build_unified_bookcase(groups):
-            shelves_el = []
-            for group in groups:
-                books_html = "".join(_build_card(b, group) for b in group["books"])
-                shelves_el.append(
-                    f'''
-    <section class="shelf-section">
-      <div class="shelf-label {group["tagClass"]}">
-        <span class="tag-dot"></span>{group["label"]}<span class="n">{len(group["books"])} book{"s" if len(group["books"]) != 1 else ""}</span>
-      </div>
-      <div class="compartment">
-        <div class="shelf-boards">{books_html}</div>
-      </div>
-    </section>'''
-                )
-            return f'''
-    <div class="bookcase">
-      {"".join(shelves_el)}
-    </div>'''
-
         html = _apply_template(
             html,
             {
@@ -1115,41 +1522,13 @@ class PageBuilder:
             },
         )
 
-        (OUT_DIR / "bookshelf.html").write_text(html)
+        _write_page(OUT_DIR, "bookshelf.html", html)
 
-    def build_quotes(self, metadata, quotes):
+    def build_quotes(self, metadata: SiteMetadata, quotes: list[Quote]) -> None:
+        """Build the quotes page."""
         template = self.data_loader.load_template("quotes")
 
         site_url = metadata["siteUrl"].rstrip("/")
-
-        def _render_quote_item(q):
-            escaped_quote = escape_html(q.get("quote", ""))
-            escaped_author = escape_html(q.get("author", ""))
-            escaped_book = (
-                escape_html(q.get("book", "")) if q.get("book") else ""
-            )
-            url = q.get("url", "")
-
-            author_html = (
-                f'<span class="quote-author">{escaped_author}</span>'
-                if escaped_author
-                else ""
-            )
-            book_html = (
-                f', <span class="quote-book">{escaped_book}</span>'
-                if escaped_book
-                else ""
-            )
-
-            quote_url = f'<a href="{escape_html(url)}" class="quote-body-link" target="_blank" rel="noopener">'
-            return f'''    <li>
-      <div class="quote-content">
-        {quote_url}<q>{escaped_quote}</q></a>
-        <div class="quote-attribution">
-          {author_html}{book_html}
-        </div>
-      </div>
-    </li>'''
 
         items_html = "\n".join(_render_quote_item(q) for q in quotes)
         quotes_list_html = f"<ul>\n{items_html}\n</ul>"
@@ -1171,9 +1550,10 @@ class PageBuilder:
         )
 
         html = _apply_template(html, {"quotesList": quotes_list_html})
-        (OUT_DIR / "quotes.html").write_text(html)
+        _write_page(OUT_DIR, "quotes.html", html)
 
-    def build_tags(self, metadata, essays):
+    def build_tags(self, metadata: SiteMetadata, essays: list[Essay]) -> None:
+        """Build the tags index and individual tag pages."""
         tag_map = {}
         for essay in essays:
             for tag in essay["tags"]:
@@ -1196,14 +1576,13 @@ class PageBuilder:
             {
                 "tagsCount": str(len(sorted_tags)),
                 "tagsList": "".join(
-                    f'\n    <a href="/tags/{tag}.html" class="tag">#{escape_html(tag)} <span class="count">{len(essays)}</span></a>'
+                    f'\n    <a href="{_tag_url(tag)}" class="tag">#{escape_html(tag)} <span class="count">{len(essays)}</span></a>'
                     for tag, essays in sorted_tags
                 ),
             },
         )
 
-        (OUT_DIR / "tags").mkdir(parents=True, exist_ok=True)
-        (OUT_DIR / "tags" / "index.html").write_text(tags_index_html)
+        _write_page(OUT_DIR, "tags/index.html", tags_index_html)
 
         for tag, tagged_essays in tag_map.items():
             tag_html = self._build_common(
@@ -1211,7 +1590,7 @@ class PageBuilder:
                 metadata,
                 f"#{tag} - {metadata['title']}",
                 f"Essays tagged with {tag}",
-                f"/tags/{tag}.html",
+                _tag_url(tag),
             )
             count_label = "essays" if len(tagged_essays) != 1 else "essay"
             tag_html = _apply_template(
@@ -1227,9 +1606,10 @@ class PageBuilder:
                 },
             )
 
-            (OUT_DIR / "tags" / f"{tag}.html").write_text(tag_html)
+            _write_page(OUT_DIR, f"tags/{tag}.html", tag_html)
 
-    def build_sitelinks(self, metadata, essays, projects, notes, experiments):
+    def build_sitelinks(self, metadata: SiteMetadata, essays: list[Essay], projects: list[Project], notes: list[Note], experiments: list[ExperimentTopic]) -> None:
+        """Build the site links page."""
         template = self.data_loader.load_template("sitelinks")
         html = self._build_common(
             template,
@@ -1261,7 +1641,7 @@ class PageBuilder:
         )
 
         essay_links_html = "\n".join(
-            f'    <li><a href="/essays/{e["slug"]}.html">{escape_html(e["title"])}</a> <span class="meta">{_format_date(e["date"])}</span></li>'
+            f'    <li><a href="{_essay_url(e["slug"])}">{escape_html(e["title"])}</a> <span class="meta">{_format_date(e["date"])}</span></li>'
             for e in essays
         )
 
@@ -1270,7 +1650,7 @@ class PageBuilder:
             tag_set.update(e["tags"])
         tags_sorted = sorted(tag_set)
         tag_links_html = "\n".join(
-            f'    <li><a href="/tags/{t}.html">#{escape_html(t)}</a></li>'
+            f'    <li><a href="{_tag_url(t)}">#{escape_html(t)}</a></li>'
             for t in tags_sorted
         )
 
@@ -1289,14 +1669,14 @@ class PageBuilder:
         )
 
         notes_links_html = "\n".join(
-            f'    <li><a href="/notes/{n["slug"]}.html">{escape_html(n["title"])}</a></li>'
+            f'    <li><a href="{_note_url(n["slug"])}">{escape_html(n["title"])}</a></li>'
             for n in notes
         )
 
         experiment_links = []
         for exp in experiments:
             experiment_links.append(
-                f'    <li><a href="/experiments/{exp["topic_slug"]}/">{escape_html(exp["topic_title"])}</a></li>'
+                f'    <li><a href="{_topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></li>'
             )
         experiment_links_html = "\n".join(experiment_links)
 
@@ -1317,17 +1697,26 @@ class PageBuilder:
             },
         )
 
-        (OUT_DIR / "sitelinks.html").write_text(html)
+        _write_page(OUT_DIR, "sitelinks.html", html)
 
 
-def build_site():
+def _setup_logging() -> None:
+    """Configure console logging for the build process."""
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(message)s",
+    )
+
+
+def build_site() -> None:
+    """Build the entire static site into the out/ directory."""
     data_dir = pathlib.Path.cwd() / "data" / "non-public"
     data_loader = DataLoader(data_dir)
     markdown_renderer = MarkdownRenderer()
     page_builder = PageBuilder(data_loader, markdown_renderer)
     public_dir = pathlib.Path.cwd() / "data" / "public"
 
-    print("Reading data...")
+    _logger.info("Reading data...")
     metadata = data_loader.read_site_metadata()
     author = data_loader.read_author()
     essays = data_loader.get_essays()
@@ -1339,16 +1728,22 @@ def build_site():
     notes = data_loader.get_notes()
     experiments = data_loader.get_experiments()
 
-    print(
-        f"Found {len(essays)} essays, {len(projects)} projects, {len(leetcode_solutions)} leetcode solutions, {len(quotes)} quotes, {len(notes)} notes, {len(experiments)} experiment topics"
+    _logger.info(
+        "Found %d essays, %d projects, %d leetcode solutions, %d quotes, %d notes, %d experiment topics",
+        len(essays),
+        len(projects),
+        len(leetcode_solutions),
+        len(quotes),
+        len(notes),
+        len(experiments),
     )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    shutil.rmtree(OUT_DIR) if OUT_DIR.exists() else None
+    shutil.rmtree(OUT_DIR)
     if public_dir.exists():
         shutil.copytree(public_dir, OUT_DIR, dirs_exist_ok=True)
 
-    print("Building pages...")
+    _logger.info("Building pages...")
     avatar = f"{BASE_PATH}/static/images/avatar.jpg"
     page_builder.build_home(metadata, essays, books, projects, author, avatar, precept)
     page_builder.build_essays_list(metadata, essays)
@@ -1361,21 +1756,21 @@ def build_site():
     page_builder.build_quotes(metadata, quotes)
     page_builder.build_notes_list(metadata, notes)
     for note in notes:
-        page_builder.build_note(metadata, note)
+        page_builder.build_note(metadata, note, notes)
     page_builder.build_experiments_list(metadata, experiments)
     for exp in experiments:
-        page_builder.build_topic_index(metadata, exp)
+        page_builder.build_topic_index(metadata, exp, experiments)
         for f in exp["files"]:
-            page_builder.build_experiment(metadata, exp, f)
+            page_builder.build_experiment(metadata, exp, f, experiments)
         for st in exp["subtopics"]:
-            page_builder.build_subtopic_index(metadata, exp, st)
+            page_builder.build_subtopic_index(metadata, exp, st, experiments)
             for f in st["files"]:
                 page_builder.build_experiment(
-                    metadata, exp, f, subtopic_path=st["subtopic_path"]
+                    metadata, exp, f, experiments, subtopic_path=st["subtopic_path"]
                 )
     page_builder.build_sitelinks(metadata, essays, projects, notes, experiments)
 
-    print("Generating RSS, sitemap, and robots.txt...")
+    _logger.info("Generating RSS, sitemap, and robots.txt...")
     (OUT_DIR / "feed.xml").write_text(
         generate_rss_feed(metadata, essays)
     )
@@ -1388,8 +1783,14 @@ def build_site():
         f"User-agent: *\nAllow: /\n\nSitemap: {metadata['siteUrl']}sitemap.xml"
     )
 
-    print("Done! Static site generated in out/")
+    _logger.info("Done! Static site generated in out/")
+
+
+def main() -> None:
+    """Entry point: configure logging and build the site."""
+    _setup_logging()
+    build_site()
 
 
 if __name__ == "__main__":
-    build_site()
+    main()

@@ -38,32 +38,11 @@ class TestExperimentsListPage:
         assert bc
         assert bc["itemListElement"][1]["item"]["name"] == "Experiments"
 
-    def test_should_have_some_topic_links(self, page):
-        page.goto("/experiments/")
-        hrefs = page.locator('a[href^="/experiments/"]').all()
-        topic_hrefs = [
-            h.get_attribute("href")
-            for h in hrefs
-            if h.get_attribute("href").count("/") == 2
-        ]
-        assert len(topic_hrefs) >= 1
-
     def test_should_have_file_links(self, page):
         page.goto("/experiments/")
         file_links = page.locator('a[href$=".html"]')
         assert file_links.count() >= 1
 
-
-class TestExperimentsTopicPage:
-    def test_should_load_and_list_content(self, page):
-        page.goto("/experiments/")
-        topic_links = page.locator('section a[href^="/experiments/"][href*="/"][href$="/"]')
-        topic_count = topic_links.count()
-        assert topic_count >= 1
-        href = topic_links.first.get_attribute("href")
-        page.goto(href)
-        expect(page).to_have_title(re.compile("Experiments"))
-        assert page.locator("section a").count() >= 1
 
 
 class TestExperimentsIntegration:

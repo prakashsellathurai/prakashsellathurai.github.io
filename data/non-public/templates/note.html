@@ -1,12 +1,20 @@
 <!doctype html>
 <html lang="en">
-  {{head}}
-  <body>
-    {{header}}
-    <article class="centered-layout">
-      <h1>{{note.title}}</h1>
-      <div class="content">{{note.content}}</div>
-    </article>
-    {{footer}}
-  </body>
+{{head}}
+<body class="gb-notes">
+  {{notesSidebar}}
+  <div class="gb-main">
+    <nav class="gb-topbar">
+      <a href="/notes/">Notes</a><span class="gb-crumb-sep">/</span><span>{{note.title}}</span>
+    </nav>
+    <div class="gb-scroll">
+      <article class="gb-content">
+        <h1>{{note.title}}</h1>
+        <div class="content gitbook-markdown-body">{{note.content}}</div>
+      </article>
+      {{notesPager}}
+    </div>
+  </div>
+  <script src="/static/js/gitbook-search.js"></script>
+</body>
 </html>

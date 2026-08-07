@@ -1,15 +1,23 @@
 <!doctype html>
 <html lang="en">
-  {{head}}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-  <body>
-    {{header}}
-    <article class="centered-layout"{{experiment.article_attrs}}>
-      <h1>{{experiment.title}}</h1>
-      <div class="content">{{experiment.content}}</div>
-    </article>
-    {{footer}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-  </body>
+{{head}}
+<body class="gb-notes">
+  {{experimentsSidebar}}
+  <div class="gb-main">
+    <nav class="gb-topbar">
+      <a href="/experiments/">Experiments</a>
+    </nav>
+    <div class="gb-scroll">
+      <article class="gb-content">
+        <h1>{{experiment.title}}</h1>
+        <p class="gb-lead">{{experiment.meta}} file</p>
+        <div class="content gitbook-markdown-body">{{experiment.content}}</div>
+      </article>
+      {{experimentsPager}}
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/static/js/gitbook-search.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
 </html>

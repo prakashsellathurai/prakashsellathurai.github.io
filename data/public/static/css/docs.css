@@ -384,7 +384,7 @@ body.gb-notes .gitbook-markdown-body .hljs {
         gap: 8px;
         position: fixed;
         top: 10px;
-        left: 14px;
+        right: 14px;
         z-index: 20;
         font-size: 13.5px;
         font-weight: 600;
@@ -482,7 +482,7 @@ body.gb-notes .gitbook-markdown-body .hljs {
 .gb-tree-dir > summary::before {
     content: "";
     position: absolute;
-    left: 5px;
+    right: 1px;
     top: 50%;
     width: 7px;
     height: 7px;

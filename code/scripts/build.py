@@ -418,9 +418,6 @@ def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, ext
   {_render_open_graph(page_info, site_url, full_url, og_image, metadata["title"])}
   {_render_twitter_card(page_info, site_url, og_image)}
   {_render_json_ld(schemas)}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
   {rss_link}
   {_FAVICON_LINKS}
   {_render_css_link(extra_css)}
@@ -502,7 +499,7 @@ def _notes_sidebar_html(notes: list[Note], current_slug: str | None = None) -> s
       </div>
     </details>
   </nav>
-  <a class="gb-back" href="/">&larr; prakashsellathurai.com</a>
+  <a class="gb-back" href="/">&larr; Home</a>
 </aside>"""
 
 
@@ -664,7 +661,7 @@ def _experiments_sidebar_html(experiments: list[ExperimentTopic], current: dict 
   <nav class="gb-tree">
     {tree}
   </nav>
-  <a class="gb-back" href="/">&larr; prakashsellathurai.com</a>
+  <a class="gb-back" href="/">&larr; Home</a>
 </aside>"""
 
 

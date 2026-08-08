@@ -70,3 +70,41 @@ class TestMermaidRendering:
         page.goto("/experiments/biology/dna-sequencing/readme.html")
         svg = page.locator(".gitbook-markdown-body svg[id^='mermaid']")
         expect(svg.first).to_be_visible(timeout=15000)
+
+
+class TestNotebookCollapsible:
+    URL = "/experiments/python/numba/np.mean/scratchbook.html"
+
+    def test_code_cells_are_collapsed_by_default(self, page):
+        page.goto(self.URL)
+        blocks = page.locator(".gb-code-block")
+        assert blocks.count() >= 1
+        expect(blocks.first).not_to_have_attribute("open", "")
+
+    def test_expand_label_visible_while_collapsed(self, page):
+        page.goto(self.URL)
+        first = page.locator(".gb-code-block").first
+        expect(first.locator(".gb-code-expand")).to_be_visible()
+        expect(first.locator(".gb-code-collapse")).to_be_hidden()
+
+    def test_outputs_visible_while_collapsed(self, page):
+        page.goto(self.URL)
+        cell = page.locator("div.code_cell:has(.gb-code-block):has(.output_wrapper)").first
+        expect(cell.locator(".output_wrapper").first).to_be_visible()
+
+    def test_prompt_visible_while_collapsed(self, page):
+        page.goto(self.URL)
+        first = page.locator(".gb-code-block").first
+        prompt = first.locator("xpath=preceding-sibling::div[contains(@class,'input_prompt')]")
+        expect(prompt).to_be_visible()
+
+    def test_clicking_summary_expands_and_collapses(self, page):
+        page.goto(self.URL)
+        first = page.locator(".gb-code-block").first
+        summary = first.locator("summary")
+        summary.click()
+        expect(first).to_have_attribute("open", "")
+        expect(first.locator(".gb-code-collapse")).to_be_visible()
+        expect(first.locator(".gb-code-expand")).to_be_hidden()
+        summary.click()
+        expect(first).not_to_have_attribute("open", "")

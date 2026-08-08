@@ -691,3 +691,58 @@ body.gb-notes .gitbook-markdown-body .hljs {
 .gb-content .content > pre {
     border-radius: 6px;
 }
+
+/* ------------------------------------------------------------------
+   Collapsible code cells in rendered notebooks
+   ------------------------------------------------------------------ */
+
+.gb-code-block {
+    flex: 1;
+    min-width: 0;
+    border-radius: 6px;
+}
+
+.gb-code-block > summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    color: #57606a;
+    background: #f3f3f3;
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e6ea;
+}
+
+.gb-code-block > summary::-webkit-details-marker {
+    display: none;
+}
+
+.gb-code-block > summary:hover {
+    background: #e9ebee;
+}
+
+.gb-code-block[open] > summary {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+}
+
+.gb-code-block > summary .gb-code-collapse {
+    display: none;
+}
+
+.gb-code-block[open] > summary .gb-code-collapse {
+    display: inline;
+}
+
+.gb-code-block[open] > summary .gb-code-expand {
+    display: none;
+}
+
+.gb-code-block .inner_cell {
+    border: 1px solid #e2e6ea;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+}

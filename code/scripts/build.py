@@ -10,6 +10,8 @@ import shutil
 from datetime import datetime
 from urllib.parse import urlparse
 
+from bs4 import BeautifulSoup
+
 from nbconvert import HTMLExporter
 from nbformat import v4 as nbf, reads, NO_CONVERT
 
@@ -807,6 +809,33 @@ def _render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) -
     return markdown_renderer.render(content)
 
 
+def _make_code_cells_collapsible(body_html: str) -> str:
+    """Wrap each notebook code cell input in a collapsible <details> block.
+
+    Code cells are collapsed by default; the prompt and outputs stay visible.
+    """
+    soup = BeautifulSoup(body_html, "html.parser")
+    for cell in soup.select("div.code_cell"):
+        inp = cell.find("div", class_="input", recursive=False)
+        if inp is None:
+            continue
+        inner = inp.find("div", class_="inner_cell", recursive=False)
+        if inner is None:
+            continue
+        details = soup.new_tag("details", attrs={"class": "gb-code-block"})
+        summary = soup.new_tag("summary")
+        expand = soup.new_tag("span", attrs={"class": "gb-code-expand"})
+        expand.string = "Expand Code"
+        collapse = soup.new_tag("span", attrs={"class": "gb-code-collapse"})
+        collapse.string = "Collapse Code"
+        summary.append(expand)
+        summary.append(collapse)
+        details.append(summary)
+        inner.wrap(details)
+    main = soup.find("main")
+    return str(main) if main is not None else str(soup)
+
+
 def _render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
     content = file_data["content"]
     try:
@@ -817,7 +846,7 @@ def _render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -
     try:
         exporter = HTMLExporter(template_name="classic")
         full_html, _resources = exporter.from_notebook_node(nb)
-        return _extract_body(full_html)
+        return _make_code_cells_collapsible(_extract_body(full_html))
     except Exception as exc:
         _logger.warning("Notebook export failed, rendering as code: %s", exc)
     return f"<pre><code>{escape_html(content)}</code></pre>"

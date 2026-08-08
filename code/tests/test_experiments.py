@@ -108,3 +108,15 @@ class TestNotebookCollapsible:
         expect(first.locator(".gb-code-expand")).to_be_hidden()
         summary.click()
         expect(first).not_to_have_attribute("open", "")
+
+    def test_code_is_syntax_highlighted(self, page):
+        page.goto(self.URL)
+        page.locator(".gb-code-block").first.locator("summary").click()
+        code = page.locator(".gb-code-block pre code.language-python").first
+        expect(code).to_be_visible()
+        expect(code).to_contain_text("import numpy as np")
+        page.locator(".gb-code-block pre code.language-python.hljs").first.wait_for(
+            state="visible"
+        )
+        highlighted = page.locator(".gb-code-block code.hljs span.hljs-keyword")
+        assert highlighted.count() >= 1

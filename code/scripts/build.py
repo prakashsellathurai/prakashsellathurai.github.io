@@ -809,10 +809,37 @@ def _render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) -
     return markdown_renderer.render(content)
 
 
+_HLJS_LANG_MAP = {
+    "ipython3": "python",
+    "ipython": "python",
+    "python": "python",
+    "py": "python",
+    "bash": "bash",
+    "sh": "bash",
+    "shell": "bash",
+    "c": "c",
+    "cpp": "cpp",
+    "r": "r",
+    "julia": "julia",
+    "javascript": "javascript",
+    "js": "javascript",
+}
+
+
+def _hljs_language(highlight_cls: str) -> str | None:
+    """Map an nbconvert 'hl-*' pygments class to a highlight.js language."""
+    for token in highlight_cls.split():
+        if token.startswith("hl-"):
+            return _HLJS_LANG_MAP.get(token[3:].lower())
+    return None
+
+
 def _make_code_cells_collapsible(body_html: str) -> str:
     """Wrap each notebook code cell input in a collapsible <details> block.
 
     Code cells are collapsed by default; the prompt and outputs stay visible.
+    The nbconvert pygments markup is replaced with a highlight.js-friendly
+    <pre><code class="language-..."> so hljs.highlightAll() can colorize it.
     """
     soup = BeautifulSoup(body_html, "html.parser")
     for cell in soup.select("div.code_cell"):
@@ -832,6 +859,18 @@ def _make_code_cells_collapsible(body_html: str) -> str:
         summary.append(collapse)
         details.append(summary)
         inner.wrap(details)
+
+        for hl in inner.select("div.highlight"):
+            pre = hl.find("pre")
+            if pre is None:
+                continue
+            code = soup.new_tag("code")
+            language = _hljs_language(" ".join(hl.get("class") or []))
+            if language:
+                code["class"] = f"language-{language}"
+            code.string = pre.get_text()
+            pre.clear()
+            pre.append(code)
     main = soup.find("main")
     return str(main) if main is not None else str(soup)
 

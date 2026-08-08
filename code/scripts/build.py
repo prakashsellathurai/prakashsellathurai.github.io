@@ -10,6 +10,8 @@ import shutil
 from datetime import datetime
 from urllib.parse import urlparse
 
+from bs4 import BeautifulSoup
+
 from nbconvert import HTMLExporter
 from nbformat import v4 as nbf, reads, NO_CONVERT
 
@@ -807,6 +809,72 @@ def _render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) -
     return markdown_renderer.render(content)
 
 
+_HLJS_LANG_MAP = {
+    "ipython3": "python",
+    "ipython": "python",
+    "python": "python",
+    "py": "python",
+    "bash": "bash",
+    "sh": "bash",
+    "shell": "bash",
+    "c": "c",
+    "cpp": "cpp",
+    "r": "r",
+    "julia": "julia",
+    "javascript": "javascript",
+    "js": "javascript",
+}
+
+
+def _hljs_language(highlight_cls: str) -> str | None:
+    """Map an nbconvert 'hl-*' pygments class to a highlight.js language."""
+    for token in highlight_cls.split():
+        if token.startswith("hl-"):
+            return _HLJS_LANG_MAP.get(token[3:].lower())
+    return None
+
+
+def _make_code_cells_collapsible(body_html: str) -> str:
+    """Wrap each notebook code cell input in a collapsible <details> block.
+
+    Code cells are collapsed by default; the prompt and outputs stay visible.
+    The nbconvert pygments markup is replaced with a highlight.js-friendly
+    <pre><code class="language-..."> so hljs.highlightAll() can colorize it.
+    """
+    soup = BeautifulSoup(body_html, "html.parser")
+    for cell in soup.select("div.code_cell"):
+        inp = cell.find("div", class_="input", recursive=False)
+        if inp is None:
+            continue
+        inner = inp.find("div", class_="inner_cell", recursive=False)
+        if inner is None:
+            continue
+        details = soup.new_tag("details", attrs={"class": "gb-code-block"})
+        summary = soup.new_tag("summary")
+        expand = soup.new_tag("span", attrs={"class": "gb-code-expand"})
+        expand.string = "Expand Code"
+        collapse = soup.new_tag("span", attrs={"class": "gb-code-collapse"})
+        collapse.string = "Collapse Code"
+        summary.append(expand)
+        summary.append(collapse)
+        details.append(summary)
+        inner.wrap(details)
+
+        for hl in inner.select("div.highlight"):
+            pre = hl.find("pre")
+            if pre is None:
+                continue
+            code = soup.new_tag("code")
+            language = _hljs_language(" ".join(hl.get("class") or []))
+            if language:
+                code["class"] = f"language-{language}"
+            code.string = pre.get_text()
+            pre.clear()
+            pre.append(code)
+    main = soup.find("main")
+    return str(main) if main is not None else str(soup)
+
+
 def _render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
     content = file_data["content"]
     try:
@@ -817,7 +885,7 @@ def _render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -
     try:
         exporter = HTMLExporter(template_name="classic")
         full_html, _resources = exporter.from_notebook_node(nb)
-        return _extract_body(full_html)
+        return _make_code_cells_collapsible(_extract_body(full_html))
     except Exception as exc:
         _logger.warning("Notebook export failed, rendering as code: %s", exc)
     return f"<pre><code>{escape_html(content)}</code></pre>"

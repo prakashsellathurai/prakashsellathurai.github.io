@@ -8,13 +8,11 @@
       <a href="/notes/">Notes</a>
     </nav>
     <div class="gb-scroll">
-      <article class="gb-content">
-        <h1>Notes</h1>
-        <p class="gb-lead">Quick references and notes on various topics</p>
-        <div class="gb-note-list">
-        {{notesList}}
-        </div>
-      </article>
+      <div class="gb-content">
+        <h1>{{notesTitle}}</h1>
+        <p class="gb-lead">{{notesLead}}</p>
+        {{notesContent}}
+      </div>
     </div>
   </div>
   <script src="/static/js/gitbook-search.js"></script>

@@ -10,12 +10,6 @@ class Essay(TypedDict):
     content: str
 
 
-class Note(TypedDict):
-    title: str
-    slug: str
-    content: str
-
-
 class FileData(TypedDict):
     filename: str
     slug: str
@@ -31,6 +25,14 @@ class Subtopic(TypedDict):
 
 
 class ExperimentTopic(TypedDict):
+    topic: str
+    topic_slug: str
+    topic_title: str
+    files: list[FileData]
+    subtopics: list[Subtopic]
+
+
+class NoteTopic(TypedDict):
     topic: str
     topic_slug: str
     topic_title: str

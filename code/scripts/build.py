@@ -20,7 +20,7 @@ from lib.datatypes import (
     Essay,
     ExperimentTopic,
     FileData,
-    Note,
+    NoteTopic,
     Project,
     Quote,
     SiteMetadata,
@@ -460,8 +460,8 @@ def render_footer(metadata: SiteMetadata) -> str:
 _LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 
 
-def _note_description(note: Note, limit: int = 160) -> str:
-    text = _LINK_RE.sub(r"\1", note["content"])
+def _note_description(file_data: FileData, limit: int = 160) -> str:
+    text = _LINK_RE.sub(r"\1", file_data["content"])
     for token in ("#", "`", "*", "_", ">", "[", "]"):
         text = text.replace(token, " ")
     text = " ".join(text.split())
@@ -478,28 +478,71 @@ def _gb_search_html() -> str:
 </div>"""
 
 
-def _notes_sidebar_html(notes: list[Note], current_slug: str | None = None) -> str:
-    items = []
+def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> str:
+    current = current or {}
+
+    parts_html = []
     for n in notes:
-        active = n["slug"] == current_slug
-        cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
-        aria = ' aria-current="page"' if active else ""
-        items.append(
-            f'<a{cls} href="{_note_url(n["slug"])}"{aria}>{escape_html(n["title"])}</a>'
+        topic_slug = n["topic_slug"]
+        root = {"dirs": {}, "files": list(n["files"])}
+        for st in n["subtopics"]:
+            node = root
+            for part in st["subtopic_path"].split("/"):
+                if part not in node["dirs"]:
+                    node["dirs"][part] = {"dirs": {}, "files": []}
+                node = node["dirs"][part]
+            node["files"] = list(st["files"])
+
+        def files_html(node, path_parts):
+            cur_sub = "/".join(path_parts) if path_parts else None
+            out = []
+            for f in node["files"]:
+                href = _note_file_url(topic_slug, cur_sub, f["slug"])
+                active = (
+                    current.get("topic_slug") == topic_slug
+                    and current.get("subtopic_path") == cur_sub
+                    and current.get("file_slug") == f["slug"]
+                )
+                cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
+                out.append(f'<a{cls} href="{href}">{escape_html(f["title"])}</a>')
+            return "\n".join(out)
+
+        def dirs_html(dirs, path_parts):
+            out = []
+            for name, sub in sorted(dirs.items()):
+                child_path = "/".join(path_parts + [name])
+                current_path = current.get("subtopic_path") or ""
+                expanded = current.get("topic_slug") == topic_slug and (
+                    current_path == child_path
+                    or current_path.startswith(child_path + "/")
+                )
+                inner = files_html(sub, path_parts + [name]) + dirs_html(
+                    sub["dirs"], path_parts + [name]
+                )
+                open_attr = " open" if expanded else ""
+                out.append(
+                    f'<details class="gb-tree-sub"{open_attr}><summary>{escape_html(name)}</summary>'
+                    f'<div class="gb-tree-inner">{inner}</div></details>'
+                )
+            return "\n".join(out)
+
+        topic_active = current.get("topic_slug") == topic_slug
+        summary_cls = ' class="topic-active"' if topic_active else ""
+        inner = files_html(root, []) + dirs_html(root["dirs"], [])
+        open_attr = " open" if topic_active else ""
+        parts_html.append(
+            f'<details class="gb-tree-dir"{open_attr}><summary{summary_cls}>{escape_html(n["topic_title"])}</summary>'
+            f'<div class="gb-tree-inner">{inner}</div></details>'
         )
-    nav = "\n    ".join(items)
+
+    tree = "\n".join(parts_html)
     return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
 <label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle notes navigation">Menu</label>
 <aside class="gb-sidebar">
   <a class="gb-brand" href="/notes/">Notes</a>
   {_gb_search_html()}
   <nav class="gb-tree">
-    <details class="gb-tree-dir" open>
-      <summary>Notes</summary>
-      <div class="gb-tree-inner">
-        {nav}
-      </div>
-    </details>
+    {tree}
   </nav>
   <a class="gb-back" href="/">&larr; Home</a>
 </aside>"""
@@ -533,11 +576,26 @@ def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: s
 </nav>"""
 
 
-def _notes_pager_html(notes: list[Note], current_slug: str) -> str:
-    return _pager_html(
-        notes, current_slug, lambda n: n["slug"], lambda n: _note_url(n["slug"]),
-        "Note navigation",
-    )
+def _notes_pager_html(notes: list[NoteTopic], current_url: str) -> str:
+    return _docs_pager(_flatten_note_pages(notes), current_url)
+
+
+def _flatten_note_pages(notes: list[NoteTopic]) -> list[dict]:
+    pages = []
+    for n in notes:
+        base = _note_topic_url(n["topic_slug"])
+        for st in n["subtopics"]:
+            st_base = f'{base}{st["subtopic_path"]}/'
+            for f in st["files"]:
+                pages.append(
+                    {
+                        "url": f'{st_base}{f["slug"]}.html',
+                        "title": f'{f["title"]} \u00b7 {n["topic_title"]}',
+                    }
+                )
+        for f in n["files"]:
+            pages.append({"url": f'{base}{f["slug"]}.html', "title": f["title"]})
+    return pages
 
 
 def _docs_pager(items: list[dict], current_url: str) -> str:
@@ -575,9 +633,16 @@ def _essay_url(slug: str) -> str:
     return f"/essays/{slug}.html"
 
 
-def _note_url(slug: str) -> str:
-    """Return the URL path for a note slug."""
-    return f"/notes/{slug}.html"
+def _note_topic_url(topic_slug: str) -> str:
+    """Return the URL path for a note topic index."""
+    return f"/notes/{topic_slug}/"
+
+
+def _note_file_url(topic_slug: str, subtopic_path: str | None, file_slug: str) -> str:
+    base = f"/notes/{topic_slug}"
+    if subtopic_path:
+        base += "/" + subtopic_path
+    return f"{base}/{file_slug}.html"
 
 
 def _tag_url(tag: str) -> str:
@@ -977,27 +1042,72 @@ class DataLoader:
     def get_quotes(self) -> list[Quote]:
         return self.read_json("quotes.json")
 
-    def get_notes(self) -> list[Note]:
+    def get_notes(self) -> list[NoteTopic]:
         notes_path = NOTES_DIR
         if not notes_path.is_dir():
             return []
         notes = []
-        for entry in sorted(notes_path.iterdir()):
-            if not entry.is_dir():
+        for topic in sorted(notes_path.iterdir()):
+            if not topic.is_dir():
                 continue
-            md_files = sorted(f for f in entry.iterdir() if f.suffix == ".md")
-            if not md_files:
-                continue
-            combined = []
-            for f in md_files:
-                combined.append(f.read_text().strip())
-            notes.append(
-                {
-                    "title": entry.name,
-                    "slug": slug(entry.name),
-                    "content": "\n\n".join(combined),
-                }
-            )
+            topic_data = {
+                "topic": topic.name,
+                "topic_slug": slug(topic.name),
+                "topic_title": topic.name.replace("-", " ")
+                .replace("_", " ")
+                .title(),
+                "files": [],
+                "subtopics": {},
+            }
+            for root, dirs, filenames in os.walk(topic):
+                dirs[:] = [
+                    d
+                    for d in dirs
+                    if not d.startswith(".")
+                    and d != "__pycache__"
+                    and d != ".ipynb_checkpoints"
+                ]
+                for f in sorted(filenames):
+                    if pathlib.Path(f).suffix.lower() != ".md":
+                        continue
+                    full_path = pathlib.Path(root) / f
+                    rel_dir = os.path.relpath(root, topic)
+                    if rel_dir == ".":
+                        rel_dir = None
+                    try:
+                        content = full_path.read_text()
+                    except OSError as exc:
+                        _logger.warning("Skipping unreadable file %s: %s", full_path, exc)
+                        continue
+                    name = full_path.stem
+                    file_data = {
+                        "filename": f,
+                        "slug": slug(name),
+                        "title": name.replace("-", " ").replace("_", " ").title(),
+                        "ext": "md",
+                        "content": content,
+                    }
+                    if rel_dir is None:
+                        topic_data["files"].append(file_data)
+                    else:
+                        st_path = rel_dir.replace(os.sep, "/")
+                        topic_data["subtopics"].setdefault(st_path, []).append(
+                            file_data
+                        )
+            if topic_data["files"] or topic_data["subtopics"]:
+                st_list = []
+                for st_path in sorted(topic_data["subtopics"]):
+                    st_list.append(
+                        {
+                            "subtopic_path": st_path,
+                            "subtopic_title": st_path.replace("-", " ")
+                            .replace("_", " ")
+                            .title(),
+                            "files": topic_data["subtopics"][st_path],
+                        }
+                    )
+                topic_data["subtopics"] = st_list
+                notes.append(topic_data)
         return notes
 
     def get_experiments(self) -> list[ExperimentTopic]:
@@ -1221,7 +1331,7 @@ class PageBuilder:
 
         _write_page(OUT_DIR, f"essays/{essay['slug']}.html", html)
 
-    def build_notes_list(self, metadata: SiteMetadata, notes: list[Note]) -> None:
+    def build_notes_list(self, metadata: SiteMetadata, notes: list[NoteTopic]) -> None:
         """Build the notes index page."""
         template = self.data_loader.load_template("notes")
         html = self._build_common(
@@ -1233,37 +1343,107 @@ class PageBuilder:
             extra_css=_DOCS_EXTRA_CSS,
         )
 
-        notes_list_html = "\n".join(
-            f"""    <a class="gb-note-card" href="{_note_url(n['slug'])}">
-      <h2>{escape_html(n['title'])}</h2>
-      <p>{escape_html(_note_description(n))}</p>
-    </a>"""
-            for n in notes
-        )
-
         html = _apply_template(
             html,
             {
                 "notesSidebar": _notes_sidebar_html(notes),
-                "notesList": notes_list_html,
+                "notesTitle": "Notes",
+                "notesLead": "Quick references and notes on various topics",
             },
         )
 
         _write_page(OUT_DIR, "notes/index.html", html)
 
-    def build_note(self, metadata: SiteMetadata, note: Note, notes: list[Note]) -> None:
+    def build_note_topic_index(self, metadata: SiteMetadata, topic: NoteTopic, notes: list[NoteTopic]) -> None:
+        """Build a note topic index page."""
+        template = self.data_loader.load_template("notes")
+        topic_url = _note_topic_url(topic["topic_slug"])
+        html = self._build_common(
+            template,
+            metadata,
+            f'{topic["topic_title"]} - Notes - {metadata["title"]}',
+            f'Notes in {topic["topic_title"]}',
+            topic_url,
+            extra_css=_DOCS_EXTRA_CSS,
+        )
+        sections = []
+        for st in topic["subtopics"]:
+            file_links = "\n".join(
+                f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                for f in st["files"]
+            )
+            sections.append(
+                f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
+                f'<div class="gb-file-list">{file_links}</div></section>'
+            )
+        if topic["files"]:
+            file_links = "\n".join(
+                f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                for f in topic["files"]
+            )
+            sections.append(
+                f'<section class="gb-index-section"><h2>Notes</h2><div class="gb-file-list">{file_links}</div></section>'
+            )
+        html = _apply_template(
+            html,
+            {
+                "notesSidebar": _notes_sidebar_html(
+                    notes, {"topic_slug": topic["topic_slug"]}
+                ),
+                "notesTitle": escape_html(topic["topic_title"]),
+                "notesLead": f'Notes in {topic["topic_title"]}',
+            },
+        )
+        _write_page(OUT_DIR, f'notes/{topic["topic_slug"]}/index.html', html)
+
+    def build_note_subtopic_index(self, metadata: SiteMetadata, topic: NoteTopic, subtopic: dict, notes: list[NoteTopic]) -> None:
+        """Build a note subtopic index page."""
+        template = self.data_loader.load_template("notes")
+        st_url = f'/notes/{topic["topic_slug"]}/{subtopic["subtopic_path"]}/'
+        html = self._build_common(
+            template,
+            metadata,
+            f'{subtopic["subtopic_title"]} - {topic["topic_title"]} - Notes - {metadata["title"]}',
+            f'Notes in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
+            st_url,
+            extra_css=_DOCS_EXTRA_CSS,
+        )
+        file_links = "\n".join(
+            f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+            for f in subtopic["files"]
+        )
+        html = _apply_template(
+            html,
+            {
+                "notesSidebar": _notes_sidebar_html(
+                    notes,
+                    {
+                        "topic_slug": topic["topic_slug"],
+                        "subtopic_path": subtopic["subtopic_path"],
+                    },
+                ),
+                "notesTitle": escape_html(subtopic["subtopic_title"]),
+                "notesLead": f'Notes in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
+            },
+        )
+        _write_page(
+            OUT_DIR,
+            f'notes/{topic["topic_slug"]}/{subtopic["subtopic_path"]}/index.html',
+            html,
+        )
+
+    def build_note(self, metadata: SiteMetadata, topic: NoteTopic, file_data: FileData, notes: list[NoteTopic], subtopic_path: str | None = None) -> None:
         """Build a single note page."""
         template = self.data_loader.load_template("note")
-        site_url = metadata["siteUrl"].rstrip("/")
-        note_url = _note_url(note["slug"])
+        note_url = _note_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
 
-        note_content = self.gfm_renderer.render(note["content"])
+        note_content = self.gfm_renderer.render(file_data["content"])
 
         html = self._build_common(
             template,
             metadata,
-            f"{note['title']} - {metadata['title']}",
-            f"Notes on {note['title']}",
+            f"{file_data['title']} - Notes - {metadata['title']}",
+            f"Notes on {file_data['title']}",
             note_url,
             extra_css=_DOCS_GITBOOK_EXTRA_CSS,
         )
@@ -1271,14 +1451,24 @@ class PageBuilder:
         html = _apply_template(
             html,
             {
-                "notesSidebar": _notes_sidebar_html(notes, note["slug"]),
-                "note.title": escape_html(note["title"]),
+                "notesSidebar": _notes_sidebar_html(
+                    notes,
+                    {
+                        "topic_slug": topic["topic_slug"],
+                        "subtopic_path": subtopic_path,
+                        "file_slug": file_data["slug"],
+                    },
+                ),
+                "note.title": escape_html(file_data["title"]),
                 "note.content": note_content,
-                "notesPager": _notes_pager_html(notes, note["slug"]),
+                "notesPager": _notes_pager_html(notes, note_url),
             },
         )
 
-        _write_page(OUT_DIR, f"notes/{note['slug']}.html", html)
+        note_dir = f'notes/{topic["topic_slug"]}'
+        if subtopic_path:
+            note_dir += f'/{subtopic_path}'
+        _write_page(OUT_DIR, f'{note_dir}/{file_data["slug"]}.html', html)
 
     def build_experiments_list(self, metadata: SiteMetadata, experiments: list[ExperimentTopic]) -> None:
         """Build the experiments index page."""
@@ -1674,7 +1864,7 @@ class PageBuilder:
 
             _write_page(OUT_DIR, f"tags/{tag}.html", tag_html)
 
-    def build_sitelinks(self, metadata: SiteMetadata, essays: list[Essay], projects: list[Project], notes: list[Note], experiments: list[ExperimentTopic]) -> None:
+    def build_sitelinks(self, metadata: SiteMetadata, essays: list[Essay], projects: list[Project], notes: list[NoteTopic], experiments: list[ExperimentTopic]) -> None:
         """Build the site links page."""
         template = self.data_loader.load_template("sitelinks")
         html = self._build_common(
@@ -1735,7 +1925,7 @@ class PageBuilder:
         )
 
         notes_links_html = "\n".join(
-            f'    <li><a href="{_note_url(n["slug"])}">{escape_html(n["title"])}</a></li>'
+            f'    <li><a href="{_note_topic_url(n["topic_slug"])}">{escape_html(n["topic_title"])}</a></li>'
             for n in notes
         )
 
@@ -1822,8 +2012,16 @@ def build_site() -> None:
     page_builder.build_bookshelf(metadata, books)
     page_builder.build_quotes(metadata, quotes)
     page_builder.build_notes_list(metadata, notes)
-    for note in notes:
-        page_builder.build_note(metadata, note, notes)
+    for topic in notes:
+        page_builder.build_note_topic_index(metadata, topic, notes)
+        for f in topic["files"]:
+            page_builder.build_note(metadata, topic, f, notes)
+        for st in topic["subtopics"]:
+            page_builder.build_note_subtopic_index(metadata, topic, st, notes)
+            for f in st["files"]:
+                page_builder.build_note(
+                    metadata, topic, f, notes, subtopic_path=st["subtopic_path"]
+                )
     page_builder.build_experiments_list(metadata, experiments)
     for exp in experiments:
         page_builder.build_topic_index(metadata, exp, experiments)

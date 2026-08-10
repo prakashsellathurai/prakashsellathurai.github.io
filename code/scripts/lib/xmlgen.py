@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
-from lib.datatypes import Essay, Project, LeetcodeSolution, Note, ExperimentTopic
+from lib.datatypes import Essay, Project, LeetcodeSolution, NoteTopic, ExperimentTopic
 
 _ATOM_URI = "http://www.w3.org/2005/Atom"
 _SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -37,7 +37,7 @@ def generate_sitemap(
     essays: list[Essay],
     projects: list[Project],
     leetcode_solutions: list[LeetcodeSolution],
-    notes: list[Note],
+    notes: list[NoteTopic],
     experiments: list[ExperimentTopic],
 ) -> str:
     site_url = metadata["siteUrl"].rstrip("/")
@@ -89,7 +89,35 @@ def generate_sitemap(
         _add_url(urlset, seen, f"{site_url}/{s['href']}", today, "0.5")
 
     for n in notes:
-        _add_url(urlset, seen, f"{site_url}/notes/{n['slug']}.html", today, "0.6")
+        _add_url(
+            urlset,
+            seen,
+            f"{site_url}/notes/{n['topic_slug']}/", today, "0.6"
+        )
+        for f in n["files"]:
+            _add_url(
+                urlset,
+                seen,
+                f'{site_url}/notes/{n["topic_slug"]}/{f["slug"]}.html',
+                today,
+                "0.5",
+            )
+        for st in n["subtopics"]:
+            _add_url(
+                urlset,
+                seen,
+                f'{site_url}/notes/{n["topic_slug"]}/{st["subtopic_path"]}/',
+                today,
+                "0.6",
+            )
+            for f in st["files"]:
+                _add_url(
+                    urlset,
+                    seen,
+                    f'{site_url}/notes/{n["topic_slug"]}/{st["subtopic_path"]}/{f["slug"]}.html',
+                    today,
+                    "0.5",
+                )
 
     for exp in experiments:
         _add_url(

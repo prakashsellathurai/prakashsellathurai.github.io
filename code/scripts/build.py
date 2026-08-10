@@ -537,7 +537,7 @@ def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> 
 
     tree = "\n".join(parts_html)
     return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
-<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle notes navigation">Menu</label>
+<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle notes navigation"><span class="gb-burger-icon"><span></span><span></span><span></span></span></label>
 <aside class="gb-sidebar">
   <a class="gb-brand" href="/notes/">Notes</a>
   {_gb_search_html()}
@@ -721,7 +721,7 @@ def _experiments_sidebar_html(experiments: list[ExperimentTopic], current: dict 
 
     tree = "\n".join(parts_html)
     return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
-<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle experiments navigation">Menu</label>
+<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle experiments navigation"><span class="gb-burger-icon"><span></span><span></span><span></span></span></label>
 <aside class="gb-sidebar">
   <a class="gb-brand" href="/experiments/">Experiments</a>
   {_gb_search_html()}

@@ -28,6 +28,18 @@ class TestNotesSidebar:
         expect(page.locator('/notes/cpython/development.html'))
         expect(page.locator('/notes/unix-commands/tail.html'))
 
+    def test_notes_index_has_topic_cards(self, page):
+        page.goto("/notes/")
+        cards = page.locator(".gb-content .gb-index-section")
+        expect(cards).not_to_have_count(0)
+        expect(cards.first).to_be_visible()
+
+    def test_note_topic_page_lists_files(self, page):
+        page.goto("/notes/cpython/")
+        file_links = page.locator(".gb-content .gb-file-link")
+        expect(file_links).not_to_have_count(0)
+        expect(file_links.first).to_be_visible()
+
 
 
 class TestExperimentsSidebar:

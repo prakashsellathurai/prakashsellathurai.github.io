@@ -657,6 +657,20 @@ body.gb-notes .gitbook-markdown-body .hljs {
 }
 
 /* Index page file list (topic / subtopic index) */
+.gb-index-section h2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 28px 0 10px;
+}
+
+.gb-index-section h2 a.gb-topic-title {
+    color: #1c1d1e;
+}
+
+.gb-index-section h2 a.gb-topic-title:hover {
+    color: #0464ac;
+}
+
 .gb-file-list {
     display: flex;
     flex-direction: column;

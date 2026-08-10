@@ -1343,12 +1343,30 @@ class PageBuilder:
             extra_css=_DOCS_EXTRA_CSS,
         )
 
+        sections = []
+        for note in notes:
+            file_links = []
+            for st in note["subtopics"]:
+                for f in st["files"]:
+                    file_links.append(
+                        f'    <a class="gb-file-link" href="{_note_file_url(note["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                    )
+            for f in note["files"]:
+                file_links.append(
+                    f'    <a class="gb-file-link" href="{_note_file_url(note["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                )
+            sections.append(
+                f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_note_topic_url(note["topic_slug"])}">{escape_html(note["topic_title"])}</a></h2>'
+                f'<div class="gb-file-list">{"".join(file_links)}</div></section>'
+            )
+
         html = _apply_template(
             html,
             {
                 "notesSidebar": _notes_sidebar_html(notes),
                 "notesTitle": "Notes",
                 "notesLead": "Quick references and notes on various topics",
+                "notesContent": "\n".join(sections),
             },
         )
 
@@ -1392,6 +1410,7 @@ class PageBuilder:
                 ),
                 "notesTitle": escape_html(topic["topic_title"]),
                 "notesLead": f'Notes in {topic["topic_title"]}',
+                "notesContent": "\n".join(sections),
             },
         )
         _write_page(OUT_DIR, f'notes/{topic["topic_slug"]}/index.html', html)
@@ -1424,6 +1443,7 @@ class PageBuilder:
                 ),
                 "notesTitle": escape_html(subtopic["subtopic_title"]),
                 "notesLead": f'Notes in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
+                "notesContent": f'<section class="gb-index-section"><div class="gb-file-list">{file_links}</div></section>',
             },
         )
         _write_page(
@@ -1481,32 +1501,21 @@ class PageBuilder:
             "/experiments/",
             extra_css=_DOCS_EXTRA_CSS,
         )
-        cards = []
+        sections = []
         for exp in experiments:
-            file_count = len(exp["files"]) + sum(
-                len(st["files"]) for st in exp["subtopics"]
-            )
-            chips = []
+            file_links = []
             for st in exp["subtopics"]:
-                st_base = f'/experiments/{exp["topic_slug"]}/{st["subtopic_path"]}/'
                 for f in st["files"]:
-                    chips.append(
-                        f'<a href="{st_base}{f["slug"]}.html">{escape_html(f["title"])}</a>'
+                    file_links.append(
+                        f'    <a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
                     )
             for f in exp["files"]:
-                chips.append(
-                    f'<a href="/experiments/{exp["topic_slug"]}/{f["slug"]}.html">{escape_html(f["title"])}</a>'
+                file_links.append(
+                    f'    <a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
                 )
-            chip_html = (
-                '<div class="gb-topic-files">' + "".join(chips) + "</div>"
-                if chips
-                else ""
-            )
-            cards.append(
-                f'    <a class="gb-topic-card" href="{_topic_url(exp["topic_slug"])}">'
-                f'<span class="gb-topic-count">{file_count}</span>'
-                f'<span class="gb-topic-title">{escape_html(exp["topic_title"])}</span>'
-                f"{chip_html}</a>"
+            sections.append(
+                f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></h2>'
+                f'<div class="gb-file-list">{"".join(file_links)}</div></section>'
             )
         html = _apply_template(
             html,
@@ -1514,7 +1523,7 @@ class PageBuilder:
                 "experimentsSidebar": _experiments_sidebar_html(experiments),
                 "experimentsTitle": "Experiments",
                 "experimentsLead": "Code experiments and explorations",
-                "experimentsContent": "\n".join(cards),
+                "experimentsContent": "\n".join(sections),
                 "experimentsPager": "",
             },
         )

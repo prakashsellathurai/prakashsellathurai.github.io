@@ -43,6 +43,18 @@ class TestExperimentsListPage:
         file_links = page.locator('a[href$=".html"]')
         assert file_links.count() >= 1
 
+    def test_directory_pages_list_their_files(self, page):
+        page.goto("/experiments/biology/dna-sequencing/")
+        file_links = page.locator(".gb-content .gb-file-link")
+        expect(file_links).not_to_have_count(0)
+        expect(file_links.first).to_be_visible()
+
+    def test_topic_page_groups_subtopic_files(self, page):
+        page.goto("/experiments/python/")
+        sections = page.locator(".gb-content .gb-index-section")
+        expect(sections).not_to_have_count(0)
+        expect(sections.first).to_be_visible()
+
 
 
 class TestExperimentsIntegration:

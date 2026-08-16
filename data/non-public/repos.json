@@ -48,10 +48,18 @@
         "pinned": true
     },
     {
-        "title": "Grimoire",
-        "href": "https://github.com/prakashsellathurai/Grimoire",
-        "website": "",
-        "description": "Notebooks, Computer codes and Magic Spells",
+        "title": "leetcode-solutions",
+        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
+        "description": "My solutions to Leetcode problems",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "pi-llama-wsl2",
+        "href": "https://github.com/prakashsellathurai/pi-llama-wsl2",
+        "website": null,
+        "description": "Pi coding agent extension: llama.cpp provider with dynamic model + context window discovery",
         "stars": 0,
         "pinned": false
     },
@@ -60,6 +68,14 @@
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
         "description": "personal website",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "Grimoire",
+        "href": "https://github.com/prakashsellathurai/Grimoire",
+        "website": "",
+        "description": "Notebooks, Computer codes and Magic Spells",
         "stars": 0,
         "pinned": false
     },
@@ -76,14 +92,6 @@
         "href": "https://github.com/prakashsellathurai/ssserve",
         "website": "https://pypi.org/project/ssserve/",
         "description": "Python port of [vercel/serve](https://github.com/vercel/serve) \u2014 static file serving and directory listing.",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "leetcode-solutions",
-        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
-        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
-        "description": "My solutions to Leetcode problems",
         "stars": 0,
         "pinned": false
     },

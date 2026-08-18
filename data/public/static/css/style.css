@@ -157,31 +157,33 @@ img {
 }
 
 #p-logo {
-    text-align: center;
-    margin-bottom: 1em;
+    position: absolute;
+    top: 0.55em;
+    left: 1em;
+    z-index: 10;
 }
 
 #p-logo a {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     color: var(--text);
 }
 
-#p-logo img {
-    width: 88px;
-    height: 88px;
+#p-logo .logo-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4em;
+    height: 2.4em;
     border-radius: 50%;
-    border: 1px solid var(--border-soft);
-    object-fit: cover;
-    margin-bottom: 0.4em;
-}
-
-#p-logo .wordmark {
-    display: block;
+    background: var(--text);
+    color: #ffffff;
     font-family: var(--serif);
     font-size: 1.05em;
-    line-height: 1.2;
-    color: var(--text);
+    line-height: 1;
+    border: 1px solid var(--border-soft);
 }
 
 .portal {
@@ -333,6 +335,13 @@ img {
     font-size: 0.8em;
     color: var(--text-muted);
     margin: 0 0 1em;
+}
+
+/* Essay pages: constrain the reading column */
+body.essay-page #bodyContent {
+    max-width: min(600px, 100%);
+    margin: 0 0;
+    text-align: left;
 }
 
 .mw-parser-output {
@@ -984,28 +993,28 @@ article.essay-item .tags a {
 }
 
 .gb-file-link {
-    display: block;
-    padding: 0.4em 0.7em;
-    border: 1px solid var(--border-soft);
-    border-radius: 2px;
+    display: inline;
+    padding: 0;
+    border: none;
+    border-radius: 0;
     font-size: 0.95em;
-    color: var(--text);
+    color: var(--link);
+    text-decoration: none;
 }
 
 .gb-file-link:hover {
-    border-color: var(--link);
-    text-decoration: none;
     color: var(--link);
+    text-decoration: underline;
 }
 
 .gb-file-link:visited {
-    color: var(--text);
+    color: var(--visited);
 }
 
 .gb-file-link .gb-file-meta {
-    display: block;
-    margin-top: 0.1em;
-    font-size: 0.75em;
+    display: inline;
+    margin-left: 0.4em;
+    font-size: 0.8em;
     color: var(--text-muted);
 }
 
@@ -1261,6 +1270,11 @@ article.essay-item .tags a {
     #p-personal {
         justify-content: flex-end;
         padding: 0.5em 0.8em 0;
+    }
+
+    #p-logo {
+        top: 0.5em;
+        left: 3.4em;
     }
 
     #p-search {

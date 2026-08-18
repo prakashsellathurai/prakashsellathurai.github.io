@@ -8,9 +8,12 @@ def test_should_load_homepage_successfully(page):
     expect(page).to_have_title(re.compile("Prakash"))
 
 
-def test_should_display_author_name(page):
+def test_should_display_author_logo(page):
     page.goto("/")
-    expect(page.locator("#mw-panel")).to_contain_text("Prakash")
+    logo = page.locator("#mw-head #p-logo a")
+    expect(logo).to_be_visible()
+    expect(logo).to_have_attribute("href", "/")
+    expect(logo).to_contain_text("PS")
 
 
 def test_should_display_site_description(page):

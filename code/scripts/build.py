@@ -435,7 +435,7 @@ _FAVICON_LINKS = """
 
 
 def _render_css_link(extra_css):
-    css_link = '<link rel="stylesheet" href="/static/css/wiki.css">'
+    css_link = '<link rel="stylesheet" href="/static/css/style.css">'
     if extra_css:
         css_link += f"\n  {extra_css}"
     return css_link
@@ -555,20 +555,18 @@ def _tools_links_html(metadata: SiteMetadata) -> str:
 
 
 def render_header(metadata: SiteMetadata, sidebar_html: str = "") -> str:
-    avatar = f"{BASE_PATH}/static/images/avatar.jpg"
     return f"""<input type="checkbox" id="mw-nav-toggle" class="mw-nav-toggle" aria-hidden="true">
 <label for="mw-nav-toggle" class="mw-burger" aria-label="Toggle navigation"><span>&#9776;</span></label>
 <header id="mw-head">
+  <div id="p-logo">
+    <a href="/" aria-label="Home">
+      <span class="logo-initials">PS</span>
+    </a>
+  </div>
   <div id="p-personal">{_personal_tools_html(metadata)}</div>
   <div id="p-search">{_search_html(metadata)}</div>
 </header>
 <aside id="mw-panel">
-  <div id="p-logo">
-    <a href="/">
-      <img src="{escape_html(avatar)}" alt="{escape_html(metadata['author'])}">
-      <span class="wordmark">{escape_html(metadata['author'])}</span>
-    </a>
-  </div>
   {_panel_section("Navigation", _nav_links_html(metadata), "p-navigation")}
   {sidebar_html}
   {_panel_section("Tools", _tools_links_html(metadata), "p-tb")}
@@ -1346,11 +1344,7 @@ class PageBuilder:
         featured = _essay_article_html(essays[0], indent=4) if essays else ""
         featured += '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
 
-        did_you_know_html = "\n".join(
-            f'    <li><span class="quote-content"><q>{escape_html(q.get("quote", ""))}</q>'
-            f'{" — " + escape_html(q.get("author", "")) if q.get("author") else ""}</span></li>'
-            for q in quotes[:4]
-        )
+        did_you_know_html = "\n".join(_render_quote_item(q) for q in quotes[:4])
         if did_you_know_html:
             did_you_know_html = f'    <ul>\n{did_you_know_html}\n    </ul>'
 

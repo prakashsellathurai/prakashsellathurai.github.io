@@ -6,7 +6,12 @@
         <h1 id="firstHeading">{{metadata.author}}</h1>
         <div id="siteSub">Software Engineer, tinkerer, and lifelong learner</div>
         <div class="mw-parser-output">
-            <img src="{{avatar}}" alt="{{metadata.author}}" class="about-avatar">
+            <div class="thumb tright about-thumb">
+                <div class="thumbinner">
+                    <img src="{{avatar}}" alt="{{metadata.author}}" class="thumbimage">
+                    <div class="thumbcaption">{{metadata.author}}</div>
+                </div>
+            </div>
             <div>{{author.body}}</div>
         </div>
         {{footer}}

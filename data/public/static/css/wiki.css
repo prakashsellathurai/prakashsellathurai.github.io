@@ -106,6 +106,12 @@ img {
     padding: 0.3em 1.5em 0.4em;
 }
 
+#p-search form {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+}
+
 #p-search input[type="search"] {
     width: 18em;
     max-width: 42vw;
@@ -133,46 +139,6 @@ img {
 
 #p-search button:hover {
     background: var(--tab-bg);
-}
-
-#mw-tabs {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-top: auto;
-    padding: 0 1em 0 11em;
-    border-bottom: 1px solid var(--border-soft);
-}
-
-.mw-tabs ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.mw-tabs li a {
-    display: block;
-    padding: 0.28em 0.9em;
-    font-size: 0.85em;
-    color: var(--text-muted);
-    background: var(--tab-bg);
-    border: 1px solid var(--border-soft);
-    border-bottom: none;
-    margin-right: 0.1em;
-}
-
-.mw-tabs li a:hover {
-    text-decoration: none;
-    color: var(--link);
-}
-
-.mw-tabs li.selected a {
-    background: var(--content-bg);
-    color: var(--text);
-    border-bottom: 1px solid var(--content-bg);
-    margin-bottom: -1px;
-    position: relative;
 }
 
 /* ------------------------------------------------------------------
@@ -1186,14 +1152,31 @@ article.essay-item .tags a {
    About page
    ------------------------------------------------------------------ */
 
-.about-avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+.about-thumb {
+    float: right;
+    clear: right;
+    margin: 0.3em 0 1.2em 1.4em;
+}
+
+.about-thumb .thumbinner {
+    background: var(--tab-bg);
     border: 1px solid var(--border-soft);
-    object-fit: cover;
-    margin: 1em auto 0.8em;
+    padding: 4px;
+}
+
+.about-thumb .thumbimage {
+    width: 220px;
+    height: auto;
+    border: 1px solid var(--border-soft);
     display: block;
+}
+
+.about-thumb .thumbcaption {
+    font-size: 0.85em;
+    line-height: 1.4;
+    color: var(--text-muted);
+    padding: 0.4em 0.2em 0.1em;
+    text-align: left;
 }
 
 /* ------------------------------------------------------------------
@@ -1247,10 +1230,6 @@ article.essay-item .tags a {
    ------------------------------------------------------------------ */
 
 @media (max-width: 899px) {
-    #mw-tabs {
-        padding-left: 1em;
-    }
-
     #p-search input[type="search"] {
         width: 12em;
     }
@@ -1330,6 +1309,16 @@ article.essay-item .tags a {
         width: 100%;
         max-width: none;
         margin: 0.2em 0 1em;
+    }
+
+    .about-thumb {
+        float: none;
+        margin: 0 auto 1em;
+    }
+
+    .about-thumb .thumbimage {
+        width: 180px;
+        margin: 0 auto;
     }
 
     .mp-columns {

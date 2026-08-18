@@ -39,6 +39,16 @@
         panel.dataset.gbHasResults = visible > 0 ? "1" : "0";
     }
 
+    function handleSubmit(form) {
+        var input = form.querySelector("input[data-gb-search]");
+        var query = input ? input.value.trim() : "";
+        if (!query) return;
+        var domain = form.getAttribute("data-site-domain") || "";
+        var url = "https://www.google.com/search?q=" +
+            encodeURIComponent("site:" + domain + " " + query);
+        window.location.href = url;
+    }
+
     document.addEventListener("keydown", function (e) {
         var modifier = e.ctrlKey || e.metaKey;
         if (modifier && e.key.toLowerCase() === "k") {
@@ -61,5 +71,12 @@
 
     document.querySelectorAll("input[data-gb-search]").forEach(function (input) {
         input.addEventListener("input", function () { handleSearch(input); });
+        var form = input.closest("form");
+        if (form) {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                handleSubmit(form);
+            });
+        }
     });
 })();

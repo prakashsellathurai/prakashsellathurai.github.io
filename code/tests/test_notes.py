@@ -9,11 +9,28 @@ class TestNotesSidebar:
         search = page.locator("#p-search input[data-gb-search]")
         expect(search).to_be_visible()
 
+    def test_search_box_submits_to_google_with_site_operator(self, page):
+        page.goto("/notes/")
+        form = page.locator("#p-search form[data-site-domain]")
+        expect(form).to_have_attribute("action", "https://www.google.com/search")
+        expect(form).to_have_attribute("data-site-domain", "prakashsellathurai.com")
+        expect(form.locator('input[name="q"]')).to_be_visible()
+
     def test_notes_sidebar_is_grouped_tree(self, page):
         page.goto("/notes/")
         group = page.locator("#mw-panel details.gb-tree-dir")
         expect(group.first).to_be_visible()
-        expect(page.locator("#mw-panel a.gb-tree-file")).to_have_count(5)
+        expect(page.locator("#p-notes a.gb-tree-file")).to_have_count(5)
+
+    def test_essays_are_in_sidebar_and_searchable(self, page):
+        page.goto("/notes/")
+        essays = page.locator("#p-essays a.gb-tree-file")
+        expect(essays.first).to_be_visible()
+        search = page.locator("#p-search input[data-gb-search]")
+        search.fill("bottom")
+        visible = page.locator("#p-essays a.gb-tree-file:visible")
+        expect(visible).to_have_count(1)
+        expect(visible).to_have_text(re.compile("bottom", re.I))
 
     def test_notes_detail_highlights_active_note(self, page):
         page.goto("/notes/agentic-systems/notes.html")

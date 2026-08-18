@@ -381,36 +381,6 @@ def _build_toc(content_html: str) -> tuple[str, str]:
     return str(soup), toc_html
 
 
-def _page_tabs(edit_url: str = "", history_url: str = "") -> str:
-    """Render the Wikipedia-style namespace/view tabs for an article.
-
-    Args:
-        edit_url: Link for the 'Edit' tab (e.g. a GitHub edit URL).
-        history_url: Link for the 'View history' tab (e.g. a GitHub commits URL).
-    """
-    edit = (
-        f'<li><a href="{escape_html(edit_url)}">Edit</a></li>' if edit_url else ""
-    )
-    history = (
-        f'<li><a href="{escape_html(history_url)}">View history</a></li>'
-        if history_url
-        else ""
-    )
-    return f"""<div class="p-namespaces">
-      <ul>
-        <li class="selected"><a href="#">Article</a></li>
-        <li><a href="#">Talk</a></li>
-      </ul>
-    </div>
-    <div class="p-views">
-      <ul>
-        <li class="selected"><a href="#">Read</a></li>
-        {edit}
-        {history}
-      </ul>
-    </div>"""
-
-
 def _write_page(out_dir: pathlib.Path, rel_path: str, html: str) -> None:
     """Write rendered HTML to out_dir/rel_path, creating parents as needed."""
     target = out_dir / rel_path
@@ -530,31 +500,23 @@ def _personal_tools_html(metadata: SiteMetadata) -> str:
         if url:
             links.append(f'<li><a href="{escape_html(url)}" rel="me">{escape_html(label)}</a></li>')
     links.append('<li><a href="/feed.xml">RSS</a></li>')
-    return (
-        '<span>Not logged in</span>'
-        f'<ul>{"".join(links)}</ul>'
+    return f'<ul>{"".join(links)}</ul>'
+
+
+def _search_html(metadata: SiteMetadata) -> str:
+    domain = metadata["siteUrl"].rstrip("/").split("//", 1)[-1]
+    return f"""<form action="https://www.google.com/search" method="get" role="search" data-site-domain="{escape_html(domain)}">
+<input type="search" name="q" placeholder="Search this site" aria-label="Search" data-gb-search>
+<button type="submit" aria-label="Search"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></form>"""
+
+
+def _essays_sidebar_html(essays: list[Essay]) -> str:
+    """Return a flat list of essay links as a wiki-panel portal section."""
+    links = "\n".join(
+        f'      <a class="gb-tree-file" href="{_essay_url(e["slug"])}">{escape_html(e["title"])}</a>'
+        for e in essays
     )
-
-
-def _search_html() -> str:
-    return f"""<input type="search" placeholder="Search this site" aria-label="Search" data-gb-search>
-<button type="submit" aria-label="Search"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>"""
-
-
-def _default_tabs_html() -> str:
-    return """<div class="p-namespaces">
-      <ul>
-        <li class="selected"><a href="/">Article</a></li>
-        <li><a href="/about.html">Talk</a></li>
-      </ul>
-    </div>
-    <div class="p-views">
-      <ul>
-        <li class="selected"><a href="/">Read</a></li>
-        <li><a href="https://github.com/prakashsellathurai/prakashsellathurai.github.io">Edit</a></li>
-        <li><a href="https://github.com/prakashsellathurai/prakashsellathurai.github.io/commits/main">View history</a></li>
-      </ul>
-    </div>"""
+    return _panel_section("Essays", f"    <div class=\"gb-tree-inner\">\n{links}\n    </div>", "p-essays")
 
 
 def _panel_section(title: str, body: str, id_attr: str = "") -> str:
@@ -592,16 +554,13 @@ def _tools_links_html(metadata: SiteMetadata) -> str:
     return f'<ul>{"".join(f'<li><a href="{url}">{label}</a></li>' for url, label in items)}</ul>'
 
 
-def render_header(metadata: SiteMetadata, sidebar_html: str = "", tabs_html: str = "") -> str:
-    if not tabs_html:
-        tabs_html = _default_tabs_html()
+def render_header(metadata: SiteMetadata, sidebar_html: str = "") -> str:
     avatar = f"{BASE_PATH}/static/images/avatar.jpg"
     return f"""<input type="checkbox" id="mw-nav-toggle" class="mw-nav-toggle" aria-hidden="true">
 <label for="mw-nav-toggle" class="mw-burger" aria-label="Toggle navigation"><span>&#9776;</span></label>
 <header id="mw-head">
   <div id="p-personal">{_personal_tools_html(metadata)}</div>
-  <div id="p-search">{_search_html()}</div>
-  <div id="mw-tabs">{tabs_html}</div>
+  <div id="p-search">{_search_html(metadata)}</div>
 </header>
 <aside id="mw-panel">
   <div id="p-logo">
@@ -1325,6 +1284,7 @@ class PageBuilder:
         self.data_loader = data_loader
         self.markdown_renderer = markdown_renderer
         self.gfm_renderer = gfm_renderer
+        self.essays: list[Essay] = []
 
     def _build_common(
         self,
@@ -1337,7 +1297,6 @@ class PageBuilder:
         extra_schemas: list[dict] | None = None,
         extra_css: str | None = None,
         sidebar_html: str = "",
-        tabs_html: str = "",
     ) -> str:
         """Fill a template's head/header/footer with site-wide HTML.
 
@@ -1351,11 +1310,12 @@ class PageBuilder:
             extra_schemas: Optional JSON-LD schemas.
             extra_css: Optional extra CSS link tags.
             sidebar_html: Optional extra sidebar portal HTML (e.g. notes tree).
-            tabs_html: Optional per-page Wikipedia-style tabs HTML.
 
         Returns:
             The fully rendered page HTML with page content still to be filled.
         """
+        if self.essays:
+            sidebar_html += _essays_sidebar_html(self.essays)
         return _apply_template(
             template,
             {
@@ -1370,7 +1330,7 @@ class PageBuilder:
                     extra_schemas=extra_schemas,
                     extra_css=extra_css,
                 ),
-                "header": render_header(metadata, sidebar_html=sidebar_html, tabs_html=tabs_html),
+                "header": render_header(metadata, sidebar_html=sidebar_html),
                 "footer": render_footer(metadata),
                 "metadata.author": escape_html(metadata["author"]),
             },
@@ -1476,8 +1436,6 @@ class PageBuilder:
         blog_posting = _blog_posting_schema(metadata, essay, site_url, essay_url)
 
         essay_source = f"data/non-public/essays/{essay['slug']}.md"
-        edit_url = f"https://github.com/prakashsellathurai/prakashsellathurai.github.io/edit/main/{essay_source}"
-        history_url = f"https://github.com/prakashsellathurai/prakashsellathurai.github.io/commits/main/{essay_source}"
 
         html = self._build_common(
             template,
@@ -1486,7 +1444,6 @@ class PageBuilder:
             essay["summary"],
             essay_url,
             extra_schemas=[blog_posting],
-            tabs_html=_page_tabs(edit_url, history_url),
         )
 
         essay_content = self.markdown_renderer.render(essay["content"])
@@ -1638,8 +1595,6 @@ class PageBuilder:
         if subtopic_path:
             source_rel += f'/{subtopic_path}'
         source_rel += f'/{file_data["filename"]}'
-        edit_url = f"https://github.com/prakashsellathurai/Grimoire/edit/main/{source_rel}"
-        history_url = f"https://github.com/prakashsellathurai/Grimoire/commits/main/{source_rel}"
 
         html = self._build_common(
             template,
@@ -1655,7 +1610,6 @@ class PageBuilder:
                     "file_slug": file_data["slug"],
                 },
             ),
-            tabs_html=_page_tabs(edit_url, history_url),
         )
 
         html = _apply_template(
@@ -1808,8 +1762,6 @@ class PageBuilder:
         if subtopic_path:
             source_rel += f'/{subtopic_path}'
         source_rel += f'/{file_data["filename"]}'
-        edit_url = f"https://github.com/prakashsellathurai/Grimoire/edit/main/{source_rel}"
-        history_url = f"https://github.com/prakashsellathurai/Grimoire/commits/main/{source_rel}"
 
         html = self._build_common(
             template,
@@ -1825,7 +1777,6 @@ class PageBuilder:
                     "file_slug": file_data["slug"],
                 },
             ),
-            tabs_html=_page_tabs(edit_url, history_url),
         )
         html = _apply_template(
             html,
@@ -2176,6 +2127,7 @@ def build_site() -> None:
     metadata = data_loader.read_site_metadata()
     author = data_loader.read_author()
     essays = data_loader.get_essays()
+    page_builder.essays = essays
     books = data_loader.get_books()
     precept = data_loader.get_precept()
     projects = data_loader.get_projects()

@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en">
     {{head}}
-    <body>
+    <body class="skin-vector">
         {{header}}
-        <div class="centered-layout">
-            <img src="{{avatar}}" alt="{{metadata.author}}" class="avatar avatar-large avatar-centered">
-            <h1 >{{metadata.author}}</h1>
+        <h1 id="firstHeading">{{metadata.author}}</h1>
+        <div id="siteSub">Software Engineer, tinkerer, and lifelong learner</div>
+        <div class="mw-parser-output">
+            <img src="{{avatar}}" alt="{{metadata.author}}" class="about-avatar">
             <div>{{author.body}}</div>
         </div>
         {{footer}}

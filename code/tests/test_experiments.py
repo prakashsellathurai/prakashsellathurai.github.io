@@ -45,13 +45,13 @@ class TestExperimentsListPage:
 
     def test_directory_pages_list_their_files(self, page):
         page.goto("/experiments/biology/dna-sequencing/")
-        file_links = page.locator(".gb-content .gb-file-link")
+        file_links = page.locator(".mw-parser-output .gb-file-link")
         expect(file_links).not_to_have_count(0)
         expect(file_links.first).to_be_visible()
 
     def test_topic_page_groups_subtopic_files(self, page):
         page.goto("/experiments/python/")
-        sections = page.locator(".gb-content .gb-index-section")
+        sections = page.locator(".mw-parser-output .gb-index-section")
         expect(sections).not_to_have_count(0)
         expect(sections.first).to_be_visible()
 
@@ -60,7 +60,7 @@ class TestExperimentsListPage:
 class TestExperimentsIntegration:
     def test_header_has_experiments_link(self, page):
         page.goto("/")
-        expect(page.locator('header a[href="/experiments/"]')).to_be_visible()
+        expect(page.locator('#mw-panel a[href="/experiments/"]')).to_be_visible()
 
     def test_sitemap_contains_experiments(self, page):
         response = page.request.get("/sitemap.xml")

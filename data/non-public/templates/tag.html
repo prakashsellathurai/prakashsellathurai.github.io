@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 {{head}}
-<body>
+<body class="skin-vector">
 {{header}}
-<h1>#{{tag}}</h1>
-<p class="meta">{{taggedEssaysCount}} {{taggedEssaysCountLabel}}</p>
+<h1 id="firstHeading">#{{tag}}</h1>
+<div id="siteSub">{{taggedEssaysCount}} {{taggedEssaysCountLabel}}</div>
+<div class="mw-parser-output">
 {{taggedEssays}}
+</div>
 {{footer}}
 </body>
 </html>

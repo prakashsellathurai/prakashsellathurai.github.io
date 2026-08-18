@@ -10,7 +10,7 @@ def test_should_load_homepage_successfully(page):
 
 def test_should_display_author_name(page):
     page.goto("/")
-    expect(page.locator(".sidebar")).to_contain_text("Prakash")
+    expect(page.locator("#mw-panel")).to_contain_text("Prakash")
 
 
 def test_should_display_site_description(page):

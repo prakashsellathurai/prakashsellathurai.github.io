@@ -4,8 +4,8 @@
     }
 
     function walk(el, out) {
-        El: for (var node = el.firstChild; node; node = node.nextSibling) {
-            if (node.nodeType === 1 && node.matches && node.matches("a.gb-tree-file,a.gb-nav-link")) {
+        for (var node = el.firstChild; node; node = node.nextSibling) {
+            if (node.nodeType === 1 && node.matches && node.matches("a.gb-tree-file")) {
                 out.push(node);
                 continue;
             }
@@ -17,10 +17,10 @@
     }
 
     function handleSearch(input) {
-        var sidebar = input.closest(".gb-sidebar");
-        if (!sidebar) return;
+        var panel = document.getElementById("mw-panel");
+        if (!panel) return;
         var query = normalize(input.value);
-        var links = walk(sidebar, []);
+        var links = walk(panel, []);
 
         links.forEach(function (link) {
             var text = normalize(link.textContent);
@@ -28,21 +28,21 @@
             link.classList.toggle("gb-search-hidden", !match);
         });
 
-        var visible = sidebar.querySelectorAll("a.gb-tree-file:not(.gb-search-hidden), a.gb-nav-link:not(.gb-search-hidden)").length;
+        var visible = panel.querySelectorAll("a.gb-tree-file:not(.gb-search-hidden)").length;
 
-        sidebar.querySelectorAll("details.gb-tree-dir, details.gb-tree-sub").forEach(function (det) {
+        panel.querySelectorAll("details.gb-tree-dir, details.gb-tree-sub").forEach(function (det) {
             if (query) {
                 det.setAttribute("open", "");
             }
         });
-        sidebar.dataset.gbSearchActive = query ? "1" : "0";
-        sidebar.dataset.gbHasResults = visible > 0 ? "1" : "0";
+        panel.dataset.gbSearchActive = query ? "1" : "0";
+        panel.dataset.gbHasResults = visible > 0 ? "1" : "0";
     }
 
     document.addEventListener("keydown", function (e) {
         var modifier = e.ctrlKey || e.metaKey;
         if (modifier && e.key.toLowerCase() === "k") {
-            var input = document.querySelector(".gb-sidebar input[data-gb-search]");
+            var input = document.querySelector("#p-search input[data-gb-search]");
             if (input) {
                 e.preventDefault();
                 input.focus();
@@ -59,7 +59,7 @@
         }
     });
 
-    document.querySelectorAll(".gb-sidebar input[data-gb-search]").forEach(function (input) {
+    document.querySelectorAll("input[data-gb-search]").forEach(function (input) {
         input.addEventListener("input", function () { handleSearch(input); });
     });
 })();

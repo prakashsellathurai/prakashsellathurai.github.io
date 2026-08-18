@@ -24,3 +24,22 @@ def test_should_display_site_description(page):
 def test_about_page_displays_full_name(page):
     page.goto("/about.html")
     expect(page.locator("h1")).to_contain_text("Prakash Sellathurai")
+
+
+class TestRecentNotes:
+    def test_homepage_has_recent_notes_box(self, page):
+        page.goto("/")
+        box = page.locator(".mp-box", has_text="Recent notes")
+        expect(box).to_be_visible()
+
+    def test_recent_notes_box_lists_note_links(self, page):
+        page.goto("/")
+        box = page.locator(".mp-box", has_text="Recent notes")
+        links = box.locator('a[href^="/notes/"]')
+        expect(links.first).to_be_visible()
+        expect(links.first).to_have_attribute("href", re.compile(r"/notes/.*\.html"))
+
+    def test_recent_notes_box_has_all_notes_link(self, page):
+        page.goto("/")
+        box = page.locator(".mp-box", has_text="Recent notes")
+        expect(box.locator('a[href="/notes/"]')).to_be_visible()

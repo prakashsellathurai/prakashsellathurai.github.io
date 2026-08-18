@@ -7,6 +7,7 @@ import os
 import pathlib
 import re
 import shutil
+import subprocess
 from datetime import datetime
 from urllib.parse import urlparse
 
@@ -592,7 +593,7 @@ def render_footer(metadata: SiteMetadata) -> str:
   <div id="footer-text">
     <h3>{escape_html(metadata['author'])}</h3>
     <p>&copy; {year} {escape_html(metadata['author'])}. All rights reserved.</p>
-    <p>This page is a personal knowledge base, written and maintained by {escape_html(metadata['author'])}.</p>
+    <p>This page is written and maintained by {escape_html(metadata['author'])}.</p>
   </div>
   <div id="footer-icons">
     <h3>Elsewhere</h3>
@@ -601,7 +602,6 @@ def render_footer(metadata: SiteMetadata) -> str:
       {f'<li><a href="{escape_html(metadata["linkedin"])}">LinkedIn</a></li>' if metadata.get("linkedin") else ''}
     </ul>
   </div>
-  <div class="footer-note">Content is available under the author's own copyright unless otherwise noted.</div>
 </footer>
 """
 
@@ -730,6 +730,37 @@ def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: s
 
 def _notes_pager_html(notes: list[NoteTopic], current_url: str) -> str:
     return _docs_pager(_flatten_note_pages(notes), current_url)
+
+
+def _recent_notes(notes: list[NoteTopic], limit: int = 5) -> list[tuple[NoteTopic, FileData, str | None]]:
+    """Return the most recently committed note files across all topics."""
+    grimoire_dir = pathlib.Path("data/non-public/submodules/Grimoire")
+    candidates: list[tuple[int, NoteTopic, FileData, str | None]] = []
+    for note in notes:
+        for st in note["subtopics"]:
+            for f in st["files"]:
+                rel = pathlib.Path("notes") / note["topic"] / st["subtopic_path"] / f["filename"]
+                candidates.append((_note_commit_time(grimoire_dir, rel), note, f, st["subtopic_path"]))
+        for f in note["files"]:
+            rel = pathlib.Path("notes") / note["topic"] / f["filename"]
+            candidates.append((_note_commit_time(grimoire_dir, rel), note, f, None))
+    candidates.sort(key=lambda c: c[0], reverse=True)
+    return [(note, f, st_path) for _, note, f, st_path in candidates[:limit]]
+
+
+def _note_commit_time(grimoire_dir: pathlib.Path, rel_path: pathlib.Path) -> int:
+    """Return the last commit timestamp for a note file in the Grimoire submodule."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(grimoire_dir), "log", "-1", "--format=%ct", "--", str(rel_path)],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        ts = result.stdout.strip()
+        return int(ts) if ts else 0
+    except (subprocess.CalledProcessError, OSError, ValueError):
+        return 0
 
 
 def _flatten_note_pages(notes: list[NoteTopic]) -> list[dict]:
@@ -1334,7 +1365,7 @@ class PageBuilder:
             },
         )
 
-    def build_home(self, metadata: SiteMetadata, essays: list[Essay], books: dict, projects: list[Project], author: dict, avatar: str, precept: dict, quotes: list[Quote], experiments: list[ExperimentTopic]) -> None:
+    def build_home(self, metadata: SiteMetadata, essays: list[Essay], books: dict, projects: list[Project], author: dict, avatar: str, precept: dict, quotes: list[Quote], experiments: list[ExperimentTopic], notes: list[NoteTopic]) -> None:
         """Build the homepage (index.html)."""
         template = self.data_loader.load_template("home")
         html = self._build_common(
@@ -1371,6 +1402,17 @@ class PageBuilder:
         if on_this_day_html:
             on_this_day_html = f"    <ul>\n{on_this_day_html}\n    </ul>"
 
+        recent_notes_html = "\n".join(
+            f'    <li><a href="{_note_file_url(note["topic_slug"], st_path, f["slug"])}">{escape_html(f["title"])}</a>'
+            f' <span class="meta">{escape_html(note["topic_title"])}</span></li>'
+            for note, f, st_path in _recent_notes(notes)
+        )
+        if recent_notes_html:
+            recent_notes_html = (
+                f"    <ul>\n{recent_notes_html}\n    </ul>"
+                '\n    <p class="section-footer"><a href="/notes/">All notes &rarr;</a></p>'
+            )
+
         featured_projects_html = (
             '<div class="project-grid">'
             + "".join(
@@ -1393,6 +1435,7 @@ class PageBuilder:
                 "didYouKnow": did_you_know_html,
                 "inTheNews": in_the_news_html,
                 "onThisDay": on_this_day_html,
+                "recentNotes": recent_notes_html,
                 "featuredProjects": featured_projects_html,
                 "metadata.shortDescription": escape_html(
                     first_para or metadata["description"]
@@ -2147,7 +2190,7 @@ def build_site() -> None:
 
     _logger.info("Building pages...")
     avatar = f"{BASE_PATH}/static/images/avatar.jpg"
-    page_builder.build_home(metadata, essays, books, projects, author, avatar, precept, quotes, experiments)
+    page_builder.build_home(metadata, essays, books, projects, author, avatar, precept, quotes, experiments, notes)
     page_builder.build_essays_list(metadata, essays)
     for essay in essays:
         page_builder.build_essay(metadata, essay)

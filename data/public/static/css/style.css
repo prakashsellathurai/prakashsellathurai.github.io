@@ -38,6 +38,14 @@ body {
     color: var(--text);
     font-family: var(--sans);
     line-height: 1.8;
+    display: grid;
+    grid-template-columns: 11em minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "head head"
+        "panel content"
+        "footer footer";
+    min-height: 100vh;
 }
 
 a {
@@ -70,12 +78,9 @@ img {
 }
 
 #mw-head {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    grid-area: head;
+    position: relative;
     height: 5.6em;
-    z-index: 30;
     background: var(--bg);
     display: flex;
     flex-direction: column;
@@ -219,14 +224,9 @@ img {
    ------------------------------------------------------------------ */
 
 #mw-panel {
-    position: fixed;
-    top: 5.6em;
-    left: 0;
-    bottom: 0;
-    width: 11em;
+    grid-area: panel;
     padding: 0.6em 0.9em 1.5em;
     overflow-y: auto;
-    z-index: 20;
 }
 
 #p-logo {
@@ -385,13 +385,12 @@ img {
    ------------------------------------------------------------------ */
 
 #content {
-    margin: 5.6em 0 0 11em;
+    grid-area: content;
     background: var(--content-bg);
     border: 1px solid var(--border-soft);
     border-top: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     padding: 1.1em 2em 2em;
-    min-height: calc(100vh - 5.6em);
 }
 
 #firstHeading {
@@ -1268,13 +1267,14 @@ article.essay-item .tags a {
    ------------------------------------------------------------------ */
 
 #footer {
-    margin: 0 0 0 11em;
+    grid-area: footer;
     padding: 1.2em 2em 2.5em;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     gap: 2em;
     font-size: 0.82em;
     color: var(--text-muted);
+    text-align: center;
 }
 
 #footer h3 {
@@ -1320,6 +1320,14 @@ article.essay-item .tags a {
 }
 
 @media (max-width: 719px) {
+
+    body {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "head"
+            "content"
+            "footer";
+    }
 
     .mw-burger {
         display: inline-flex;
@@ -1377,17 +1385,16 @@ article.essay-item .tags a {
     }
 
     #content {
-        margin: 5.6em 0 0 0;
         padding: 0.8em 1em 1.5em;
         border-left: none;
         border-right: none;
     }
 
     #footer {
-        margin-left: 0;
         padding: 1em 1.2em 2em;
         grid-template-columns: 1fr;
         gap: 1.2em;
+        text-align: left;
     }
 
     #toc {

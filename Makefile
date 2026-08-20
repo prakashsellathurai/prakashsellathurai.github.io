@@ -19,7 +19,7 @@ build:
 	uv run  code/scripts/build.py
 
 dev: build
-	uv run ssserve ./out -u 
+	uvx ssserve ./out -u 
 
 test:
 	uv run pytest code/tests/ -v

@@ -50,7 +50,7 @@ _PAGE_NAMES = {
     "/experiments/": "Experiments",
 }
 
-
+# TODO: put all date related functions in  lib/dates
 def _parse_date(date_str: str) -> datetime:
     """Parse an ISO date string (with optional trailing 'Z') to datetime."""
     return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
@@ -65,7 +65,7 @@ def _format_date(date_str: str) -> str:
     """Format a date string for human display (e.g. 'Aug 07, 2026')."""
     return _parse_date(date_str).strftime("%b %d, %Y")
 
-
+# TODO: put schema related functions in libs /seo
 def _build_author_schema(metadata: SiteMetadata) -> dict:
     details = metadata.get("authorDetails", {})
     author = {"@type": "Person", "name": metadata["author"]}
@@ -378,7 +378,7 @@ def _build_toc(content_html: str) -> tuple[str, str]:
   <ul>
     {lis}
   </ul>
-</div>"""
+</div>""" # TODO: html strings can be put as html file and and load and apply 
 
     return str(soup), toc_html
 
@@ -404,7 +404,7 @@ def _render_open_graph(page_info: dict, site_url: str, full_url: str, og_image: 
   <meta property="og:url" content="{full_url}">
   <meta property="og:image" content="{site_url}{og_image}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="{escape_html(site_title)}">"""
+  <meta property="og:site_name" content="{escape_html(site_title)}">""" # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_twitter_card(page_info: dict, site_url: str, og_image: str) -> str:
@@ -412,7 +412,7 @@ def _render_twitter_card(page_info: dict, site_url: str, og_image: str) -> str:
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{escape_html(page_info["title"])}">
   <meta name="twitter:description" content="{escape_html(page_info["description"])}">
-  <meta name="twitter:image" content="{site_url}{og_image}">"""
+  <meta name="twitter:image" content="{site_url}{og_image}">""" # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_json_ld(schemas: list[dict]) -> str:
@@ -425,7 +425,7 @@ def _render_json_ld(schemas: list[dict]) -> str:
     return f"""
   <script type="application/ld+json">
   {json_ld_str}
-  </script>"""
+  </script>""" # TODO: html strings can be put as html file and and load and apply 
 
 
 _FAVICON_LINKS = """
@@ -492,7 +492,7 @@ def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, ext
   {_FAVICON_LINKS}
   {_render_css_link(extra_css)}
 </head>
-"""
+"""# TODO: html strings can be put as html file and and load and apply 
 
 
 def _personal_tools_html(metadata: SiteMetadata) -> str:
@@ -510,7 +510,7 @@ def _search_html(metadata: SiteMetadata) -> str:
     return f"""<form action="https://www.google.com/search" method="get" role="search" data-site-domain="{escape_html(domain)}">
 <input type="search" name="q" placeholder="Search this site" aria-label="Search" data-gb-search>
 <button type="submit" aria-label="Search"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></form>"""
-
+# TODO: html strings can be put as html file and and load and apply 
 
 def _essays_sidebar_html(essays: list[Essay]) -> str:
     """Return a flat list of essay links as a wiki-panel portal section."""
@@ -576,7 +576,7 @@ def render_header(metadata: SiteMetadata, sidebar_html: str = "") -> str:
 <main id="content" class="mw-body">
   <div id="bodyContent">
 """
-
+# TODO: html strings can be put as html file and and load and apply 
 
 def render_footer(metadata: SiteMetadata) -> str:
     year = datetime.now().year
@@ -606,7 +606,7 @@ def render_footer(metadata: SiteMetadata) -> str:
 </footer>
 <script src="/static/search-index.js"></script>
 <script src="/static/js/search.js"></script>
-"""
+"""# TODO: html strings can be put as html file and and load and apply 
 
 
 _LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
@@ -728,7 +728,7 @@ def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: s
     return f"""<nav class="gb-pager" aria-label="{aria_label}">
   {cell("prev", prev_item)}
   {cell("next", next_item)}
-</nav>"""
+</nav>"""# TODO: html strings can be put as html file and and load and apply 
 
 
 def _notes_pager_html(notes: list[NoteTopic], current_url: str) -> str:
@@ -813,7 +813,7 @@ def _flatten_experiment_pages(experiments: list[ExperimentTopic]) -> list[dict]:
             pages.append({"url": f'{base}{f["slug"]}.html', "title": f["title"]})
     return pages
 
-
+# TODO: put url related functins under libs/url
 def _essay_url(slug: str) -> str:
     """Return the URL path for an essay slug."""
     return f"/essays/{slug}.html"
@@ -877,7 +877,7 @@ def _essay_article_html(e: Essay, indent: int = 0, tags: bool = True) -> str:
         f'{i}<p class="meta"><time>{_format_date(e["date"])}</time></p>\n'
         f'{i}<p class="summary">{escape_html(e["summary"])}</p>\n'
         f'{t}{p}</article>'
-    )
+    ) # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_stars(rating) -> str:
@@ -930,7 +930,7 @@ def _build_book_card(book: Book, category: dict, resolve_image) -> str:
         <b>{escaped_title}</b>
         <span>{escaped_author}</span>
       </div>
-    </a>'''
+    </a>''' # TODO: html strings can be put as html file and and load and apply 
 
 
 def _build_unified_bookcase(groups: list[dict]) -> str:
@@ -954,7 +954,7 @@ def _build_unified_bookcase(groups: list[dict]) -> str:
     return f'''
     <div class="bookcase">
       {"".join(shelves_el)}
-    </div>'''
+    </div>''' # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_quote_item(q: Quote) -> str:
@@ -981,7 +981,7 @@ def _render_quote_item(q: Quote) -> str:
           {author_html}{book_html}
         </div>
       </div>
-    </li>'''
+    </li>''' # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
@@ -1082,7 +1082,7 @@ def _render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -
         return _make_code_cells_collapsible(_extract_body(full_html))
     except Exception as exc:
         _logger.warning("Notebook export failed, rendering as code: %s", exc)
-    return f"<pre><code>{escape_html(content)}</code></pre>"
+    return f"<pre><code>{escape_html(content)}</code></pre>" # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_code_as_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
@@ -1103,7 +1103,7 @@ def _render_experiment_content(file_data: FileData, markdown_renderer: MarkdownR
     strategy = _RENDER_STRATEGIES.get(file_data["ext"], _render_code_as_notebook)
     return strategy(file_data, markdown_renderer)
 
-
+# TODO: can be put under libs/dataloader
 class DataLoader:
     """Loads raw site data (JSON, markdown, templates, submodule content)."""
 
@@ -1308,7 +1308,7 @@ class DataLoader:
                 experiments.append(topic_data)
         return experiments
 
-
+# TODO: under libs/pagebuilder
 class PageBuilder:
     """Renders every page of the site and writes HTML to the output dir."""
 
@@ -1427,7 +1427,7 @@ class PageBuilder:
                 for p in projects[:6]
             )
             + '\n    </div>\n    <p class="section-footer"><a href="/projects.html">All projects &rarr;</a></p>'
-        )
+        ) # TODO: html strings can be put as html file and and load and apply 
 
         first_para = author["body"].split("\n\n")[0] if author["body"] else ""
 
@@ -1532,7 +1532,7 @@ class PageBuilder:
             sections.append(
                 f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_note_topic_url(note["topic_slug"])}">{escape_html(note["topic_title"])}</a></h2>'
                 f'<ul class="gb-file-list">\n{"".join(file_links)}\n    </ul></section>'
-            )
+            ) 
 
         html = _apply_template(
             html,

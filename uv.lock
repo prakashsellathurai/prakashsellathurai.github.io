@@ -725,7 +725,7 @@ requires-dist = [
     { name = "nbconvert", extras = ["execute", "serve", "test", "webpdf"], specifier = ">=7.17.1" },
     { name = "nbformat", specifier = ">=5.10.4" },
     { name = "pyyaml", specifier = ">=6.0.3" },
-    { name = "ssserve", specifier = ">=0.3.1" },
+    { name = "ssserve", specifier = ">=0.3.2" },
 ]
 
 [package.metadata.requires-dev]
@@ -1055,14 +1055,14 @@ wheels = [
 
 [[package]]
 name = "ssserve"
-version = "0.3.1"
+version = "0.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/a0/d75bd8e4be530ede8fc78bd202a9662068c0d7be29c9886587dccb3e193c/ssserve-0.3.1.tar.gz", hash = "sha256:bf70e3b2c292a451ed58d01ae1018330f756a139f08897a840dd18cff996b8c1", size = 15128, upload-time = "2026-07-19T12:18:27.61Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bd/59/35693c2e42b34f40258f6cc0f143fdb4e99e7f9dca04de09629ac284b617/ssserve-0.3.2.tar.gz", hash = "sha256:81beb71ceb81205b7c7c47cb0aa91139bbd948b9e416d6d2a9fabe7353ee60e5", size = 15241, upload-time = "2026-08-20T06:53:58.935Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/19/78cb24fbea8173d96e33fce71fe1423fb07a532f10a8f27d2b74edeb81d7/ssserve-0.3.1-py3-none-any.whl", hash = "sha256:2e9c2c5189eb46c2008db52acc2fa2a7bcdab9eadf863b2bdd99ca60c9d557c5", size = 15164, upload-time = "2026-07-19T12:18:26.393Z" },
+    { url = "https://files.pythonhosted.org/packages/f1/e8/853bc3d05476decd20880ca2e68cb2d5968b01bd3ec96fc719b456b3b393/ssserve-0.3.2-py3-none-any.whl", hash = "sha256:35d8ccdbc51766713501c861c06ea0f4016fbc7da1be9d5c1d87da82c8cf7f74", size = 15239, upload-time = "2026-08-20T06:53:57.832Z" },
 ]
 
 [[package]]

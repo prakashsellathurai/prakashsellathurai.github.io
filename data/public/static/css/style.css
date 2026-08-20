@@ -151,6 +151,69 @@ img {
     background: var(--tab-bg);
 }
 
+.sb-wrap {
+    position: relative;
+}
+
+.sb-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 50;
+    display: none;
+    min-width: 100%;
+    max-width: 42vw;
+    background: var(--content-bg);
+    border: 1px solid var(--border-soft);
+    border-top: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 0.85em;
+    text-align: left;
+}
+
+.sb-dropdown.open {
+    display: block;
+}
+
+.sb-dropdown .sb-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 0.45em 0.7em;
+    cursor: pointer;
+}
+
+.sb-dropdown .sb-item.active,
+.sb-dropdown .sb-item:hover {
+    background: var(--tab-bg);
+}
+
+.sb-dropdown .sb-title mark {
+    background: transparent;
+    color: var(--link);
+    font-weight: bold;
+}
+
+.sb-dropdown .sb-type {
+    color: var(--text-muted);
+    font-size: 0.75em;
+    white-space: nowrap;
+}
+
+.sb-dropdown .sb-google {
+    padding: 0.45em 0.7em;
+    cursor: pointer;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-muted);
+}
+
+.sb-dropdown .sb-google.active,
+.sb-dropdown .sb-google:hover {
+    background: var(--tab-bg);
+    color: var(--text);
+}
+
 /* ------------------------------------------------------------------
    Left panel (#mw-panel)
    ------------------------------------------------------------------ */

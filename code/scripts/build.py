@@ -28,6 +28,7 @@ from lib.datatypes import (
 )
 from lib.frontmatter import parse_frontmatter
 from lib.markdown import MarkdownRenderer, escape_html
+from lib.search import build_search_js
 from lib.slug import slug
 from lib.xmlgen import generate_rss_feed, generate_sitemap
 
@@ -603,6 +604,8 @@ def render_footer(metadata: SiteMetadata) -> str:
     </ul>
   </div>
 </footer>
+<script src="/static/search-index.js"></script>
+<script src="/static/js/search.js"></script>
 """
 
 
@@ -2222,6 +2225,11 @@ def build_site() -> None:
                     metadata, exp, f, experiments, subtopic_path=st["subtopic_path"]
                 )
     page_builder.build_sitelinks(metadata, essays, projects, notes, experiments)
+
+    _logger.info("Generating search index...")
+    (OUT_DIR / "static" / "search-index.js").write_text(
+        build_search_js(essays, notes, experiments, books, projects, quotes)
+    )
 
     _logger.info("Generating RSS, sitemap, and robots.txt...")
     (OUT_DIR / "feed.xml").write_text(

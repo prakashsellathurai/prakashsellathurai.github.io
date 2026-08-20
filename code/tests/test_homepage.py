@@ -27,6 +27,11 @@ def test_about_page_displays_full_name(page):
 
 
 class TestRecentNotes:
+    def test_homepage_sidebar_lists_essays(self, page):
+        page.goto("/")
+        essays = page.locator("#p-essays a.gb-tree-file")
+        expect(essays.first).to_be_visible()
+
     def test_homepage_has_recent_notes_box(self, page):
         page.goto("/")
         box = page.locator(".mp-box", has_text="Recent notes")

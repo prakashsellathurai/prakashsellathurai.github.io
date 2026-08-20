@@ -1315,7 +1315,6 @@ class PageBuilder:
         self.data_loader = data_loader
         self.markdown_renderer = markdown_renderer
         self.gfm_renderer = gfm_renderer
-        self.essays: list[Essay] = []
 
     def _build_common(
         self,
@@ -1345,8 +1344,6 @@ class PageBuilder:
         Returns:
             The fully rendered page HTML with page content still to be filled.
         """
-        if self.essays:
-            sidebar_html += _essays_sidebar_html(self.essays)
         return _apply_template(
             template,
             {
@@ -1371,7 +1368,8 @@ class PageBuilder:
         """Build the homepage (index.html)."""
         template = self.data_loader.load_template("home")
         html = self._build_common(
-            template, metadata, metadata["title"], metadata["description"], "/"
+            template, metadata, metadata["title"], metadata["description"], "/",
+            sidebar_html=_essays_sidebar_html(essays),
         )
 
         featured = _essay_article_html(essays[0], indent=4) if essays else ""
@@ -2166,7 +2164,6 @@ def build_site() -> None:
     metadata = data_loader.read_site_metadata()
     author = data_loader.read_author()
     essays = data_loader.get_essays()
-    page_builder.essays = essays
     books = data_loader.get_books()
     precept = data_loader.get_precept()
     projects = data_loader.get_projects()

@@ -22,10 +22,9 @@ class TestNotesSidebar:
         expect(group.first).to_be_visible()
         expect(page.locator("#p-notes a.gb-tree-file")).not_to_have_count(0)
 
-    def test_essays_are_in_sidebar(self, page):
+    def test_essays_not_in_sidebar(self, page):
         page.goto("/notes/")
-        essays = page.locator("#p-essays a.gb-tree-file")
-        expect(essays.first).to_be_visible()
+        expect(page.locator("#p-essays")).to_have_count(0)
 
     def test_notes_detail_highlights_active_note(self, page):
         page.goto("/notes/agentic-systems/notes.html")

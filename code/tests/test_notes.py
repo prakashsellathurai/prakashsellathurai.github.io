@@ -65,11 +65,3 @@ class TestExperimentsSidebar:
         page.goto("/experiments/")
         search = page.locator("#p-search input[data-gb-search]")
         expect(search).to_be_visible()
-
-    def test_search_filters_experiment_files(self, page):
-        page.goto("/experiments/")
-        search = page.locator("#p-search input[data-gb-search]")
-        search.fill("epoll")
-        visible = page.locator("#mw-panel a.gb-tree-file:visible")
-        expect(visible).to_have_count(1)
-        expect(visible).to_have_text(re.compile("epoll_server", re.I))

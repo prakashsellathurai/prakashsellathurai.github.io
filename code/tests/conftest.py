@@ -1,15 +1,23 @@
+import pathlib
 import subprocess
-import time
-import urllib.request
-import urllib.error
 
 import pytest
+
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+OUT_DIR = ROOT / "out"
+
+
+@pytest.fixture(scope="session")
+def out_dir():
+    return OUT_DIR
 
 
 @pytest.fixture(scope="session")
 def build_site():
     result = subprocess.run(
         ["make", "build"],
+        cwd=ROOT,
         capture_output=True,
         text=True,
     )
@@ -17,36 +25,26 @@ def build_site():
     return True
 
 
-BASE_URL = "http://localhost:3000"
-
-
 @pytest.fixture(scope="session")
-def server(build_site):
-    proc = subprocess.Popen(
-        ["make", "dev"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    for _ in range(30):
-        try:
-            urllib.request.urlopen(BASE_URL, timeout=1)
-            break
-        except urllib.error.URLError:
-            time.sleep(0.5)
-    else:
-        proc.terminate()
-        pytest.fail("Server did not start within 15 seconds")
-    yield
-    proc.terminate()
-    proc.wait()
-
-
-@pytest.fixture(scope="session")
-def browser_context_args(browser_context_args):
-    return {**browser_context_args, "base_url": "http://localhost:3000"}
+def browser_context_args(browser_context_args, build_site):
+    return {**browser_context_args, "base_url": OUT_DIR.as_uri() + "/"}
 
 
 @pytest.fixture(autouse=True)
-def setup_page(page, server):
+def setup_page(page, build_site):
     page.set_default_timeout(10000)
+
+    def _serve_static(route):
+        url = route.request.url
+        if url.startswith("file:///"):
+            rel = url[len("file:///"):]
+            target = OUT_DIR / rel if rel else OUT_DIR
+            if target.is_dir():
+                target = target / "index.html"
+            if target.is_file():
+                route.fulfill(path=str(target))
+                return
+        route.fallback()
+
+    page.route("**/*", _serve_static)
     return page

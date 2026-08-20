@@ -62,15 +62,12 @@ class TestExperimentsIntegration:
         page.goto("/")
         expect(page.locator('#mw-panel a[href="/experiments/"]')).to_be_visible()
 
-    def test_sitemap_contains_experiments(self, page):
-        response = page.request.get("/sitemap.xml")
-        assert response.ok
-        text = response.text()
+    def test_sitemap_contains_experiments(self, out_dir):
+        text = (out_dir / "sitemap.xml").read_text()
         assert "/experiments/" in text
 
-    def test_sitemap_has_experiment_file_entries(self, page):
-        response = page.request.get("/sitemap.xml")
-        text = response.text()
+    def test_sitemap_has_experiment_file_entries(self, out_dir):
+        text = (out_dir / "sitemap.xml").read_text()
         assert ".html" in text
         entries = re.findall(r"<loc>[^<]+</loc>", text)
         exp_entries = [e for e in entries if "/experiments/" in e]

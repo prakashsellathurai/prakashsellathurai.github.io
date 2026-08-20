@@ -22,7 +22,7 @@ dev: build
 	uvx ssserve ./out -u 
 
 test:
-	uv run pytest code/tests/
+	uv run pytest code/tests/ 
 
 test-ui:
 	uv run pytest code/tests/ -v --headed

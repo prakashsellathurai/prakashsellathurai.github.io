@@ -26,6 +26,7 @@
     --tab-bg: #f8f9fa;
     --serif: "Lora", "Linux Libertine", Georgia, "Times New Roman", serif;
     --sans: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    --logo: #FF9800;
 }
 
 html {
@@ -251,7 +252,7 @@ img {
     width: 2.4em;
     height: 2.4em;
     border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-    background: var(--text);
+    background: var(--border);
     color: #ffffff;
     font-family: var(--serif);
     font-size: 1.05em;

@@ -986,10 +986,12 @@ article.essay-item .tags a {
 }
 
 .gb-file-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35em;
-    margin-bottom: 1em;
+    margin: 0 0 1em 1.5em;
+    padding: 0;
+}
+
+.gb-file-list li {
+    margin: 0.35em 0;
 }
 
 .gb-file-link {

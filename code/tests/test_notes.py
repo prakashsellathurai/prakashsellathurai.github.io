@@ -57,6 +57,12 @@ class TestNotesSidebar:
         expect(file_links).not_to_have_count(0)
         expect(file_links.first).to_be_visible()
 
+    def test_file_links_are_in_a_simple_list(self, page):
+        page.goto("/notes/")
+        list_items = page.locator(".mw-parser-output .gb-file-list li")
+        expect(list_items.first).to_be_visible()
+        expect(list_items.first.locator("a.gb-file-link")).to_be_visible()
+
 
 
 class TestExperimentsSidebar:

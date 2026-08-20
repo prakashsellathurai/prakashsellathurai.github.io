@@ -1520,15 +1520,15 @@ class PageBuilder:
             for st in note["subtopics"]:
                 for f in st["files"]:
                     file_links.append(
-                        f'    <a class="gb-file-link" href="{_note_file_url(note["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                        f'        <li><a class="gb-file-link" href="{_note_file_url(note["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
                     )
             for f in note["files"]:
                 file_links.append(
-                    f'    <a class="gb-file-link" href="{_note_file_url(note["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                    f'        <li><a class="gb-file-link" href="{_note_file_url(note["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
                 )
             sections.append(
                 f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_note_topic_url(note["topic_slug"])}">{escape_html(note["topic_title"])}</a></h2>'
-                f'<div class="gb-file-list">{"".join(file_links)}</div></section>'
+                f'<ul class="gb-file-list">\n{"".join(file_links)}\n    </ul></section>'
             )
 
         html = _apply_template(
@@ -1559,20 +1559,20 @@ class PageBuilder:
         sections = []
         for st in topic["subtopics"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                f'        <li><a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
                 for f in st["files"]
             )
             sections.append(
                 f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
-                f'<div class="gb-file-list">{file_links}</div></section>'
+                f'<ul class="gb-file-list">\n{file_links}\n    </ul></section>'
             )
         if topic["files"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                f'        <li><a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
                 for f in topic["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>Notes</h2><div class="gb-file-list">{file_links}</div></section>'
+                f'<section class="gb-index-section"><h2>Notes</h2><ul class="gb-file-list">\n{file_links}\n    </ul></section>'
             )
         html = _apply_template(
             html,
@@ -1603,7 +1603,7 @@ class PageBuilder:
             ),
         )
         file_links = "\n".join(
-            f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+            f'        <li><a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
             for f in subtopic["files"]
         )
         html = _apply_template(
@@ -1611,7 +1611,7 @@ class PageBuilder:
             {
                 "notesTitle": escape_html(subtopic["subtopic_title"]),
                 "notesLead": f'Notes in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
-                "notesContent": f'<section class="gb-index-section"><div class="gb-file-list">{file_links}</div></section>',
+                "notesContent": f'<section class="gb-index-section"><ul class="gb-file-list">\n{file_links}\n    </ul></section>',
             },
         )
         _write_page(
@@ -1681,15 +1681,15 @@ class PageBuilder:
             for st in exp["subtopics"]:
                 for f in st["files"]:
                     file_links.append(
-                        f'    <a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                        f'        <li><a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                     )
             for f in exp["files"]:
                 file_links.append(
-                    f'    <a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                    f'        <li><a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 )
             sections.append(
                 f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></h2>'
-                f'<div class="gb-file-list">{"".join(file_links)}</div></section>'
+                f'<ul class="gb-file-list">\n{"".join(file_links)}\n    </ul></section>'
             )
         html = _apply_template(
             html,
@@ -1719,20 +1719,20 @@ class PageBuilder:
         sections = []
         for st in topic["subtopics"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                f'        <li><a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 for f in st["files"]
             )
             sections.append(
                 f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
-                f'<div class="gb-file-list">{file_links}</div></section>'
+                f'<ul class="gb-file-list">\n{file_links}\n    </ul></section>'
             )
         if topic["files"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                f'        <li><a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 for f in topic["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>Files</h2><div class="gb-file-list">{file_links}</div></section>'
+                f'<section class="gb-index-section"><h2>Files</h2><ul class="gb-file-list">\n{file_links}\n    </ul></section>'
             )
         html = _apply_template(
             html,
@@ -1766,7 +1766,7 @@ class PageBuilder:
             ),
         )
         file_links = "\n".join(
-            f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+            f'        <li><a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
             for f in subtopic["files"]
         )
         html = _apply_template(
@@ -1775,7 +1775,7 @@ class PageBuilder:
                 "experimentsTitle": escape_html(subtopic["subtopic_title"]),
                 "experimentsLead": f'Experiments in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
                 "experimentsContent": (
-                    f'<section class="gb-index-section"><div class="gb-file-list">{file_links}</div></section>'
+                    f'<section class="gb-index-section"><ul class="gb-file-list">\n{file_links}\n    </ul></section>'
                 ),
                 "experimentsPager": "",
             },

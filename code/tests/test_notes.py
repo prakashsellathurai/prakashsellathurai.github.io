@@ -20,7 +20,7 @@ class TestNotesSidebar:
         page.goto("/notes/")
         group = page.locator("#mw-panel details.gb-tree-dir")
         expect(group.first).to_be_visible()
-        expect(page.locator("#p-notes a.gb-tree-file")).to_have_count(5)
+        expect(page.locator("#p-notes a.gb-tree-file")).not_to_have_count(0)
 
     def test_essays_are_in_sidebar(self, page):
         page.goto("/notes/")

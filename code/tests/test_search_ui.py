@@ -48,3 +48,10 @@ class TestSearchDropdown:
         page.locator("#p-search input[data-gb-search]").fill("zzzzznomatch")
         page.wait_for_timeout(400)
         expect(page.locator(".sb-dropdown.open")).to_have_count(0)
+
+    def test_index_loaded_only_after_typing(self, page):
+        page.goto("/notes/")
+        assert page.evaluate("window.__SEARCH__") is None
+        page.locator("#p-search input[data-gb-search]").fill("cpython")
+        expect(page.locator(".sb-dropdown.open")).to_be_visible()
+        assert page.evaluate("window.__SEARCH__ !== null")

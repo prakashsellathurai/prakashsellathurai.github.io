@@ -5,11 +5,45 @@
     var TYPE_LABELS = ["Essay", "Note", "Experiment", "Book", "Project", "Quote", "LeetCode"];
     var TYPE_BOOST = [3, 3, 2.5, 1.5, 1.5, 1, 1];
 
-    var INDEX = window.__SEARCH__ || null;
-    var docs = INDEX ? INDEX.d : [];
-    var chars = INDEX ? INDEX.c : [];
-    var kids = INDEX ? INDEX.k : [];
-    var weights = INDEX ? INDEX.w : [];
+    var INDEX = null;
+    var docs = [];
+    var chars = [];
+    var kids = [];
+    var weights = [];
+    var indexLoading = false;
+    var indexQueue = [];
+
+    function setIndexData() {
+        INDEX = window.__SEARCH__ || null;
+        docs = INDEX ? INDEX.d : [];
+        chars = INDEX ? INDEX.c : [];
+        kids = INDEX ? INDEX.k : [];
+        weights = INDEX ? INDEX.w : [];
+    }
+
+    function ensureIndex(cb) {
+        if (INDEX) {
+            cb();
+            return;
+        }
+        indexQueue.push(cb);
+        if (indexLoading) return;
+        indexLoading = true;
+        var s = document.createElement("script");
+        s.src = "/static/search-index.js";
+        s.onload = function () {
+            setIndexData();
+            indexLoading = false;
+            var queue = indexQueue;
+            indexQueue = [];
+            for (var i = 0; i < queue.length; i++) queue[i]();
+        };
+        s.onerror = function () {
+            indexLoading = false;
+            indexQueue = [];
+        };
+        document.head.appendChild(s);
+    }
 
     function normalizeQuery(q) {
         return (q || "").toLowerCase().replace(/\s+/g, " ").trim();
@@ -187,7 +221,9 @@
                 return;
             }
             clearTimeout(timer);
-            timer = setTimeout(function () { render(q); }, 120);
+            timer = setTimeout(function () {
+                ensureIndex(function () { render(q); });
+            }, 120);
         }
 
         dropdown.addEventListener("mousedown", function (e) {

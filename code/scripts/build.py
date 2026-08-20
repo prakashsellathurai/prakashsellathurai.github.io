@@ -604,7 +604,6 @@ def render_footer(metadata: SiteMetadata) -> str:
     </ul>
   </div>
 </footer>
-<script src="/static/search-index.js"></script>
 <script src="/static/js/search.js"></script>
 """# TODO: html strings can be put as html file and and load and apply 
 

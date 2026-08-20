@@ -43,7 +43,12 @@ git bisect bad HEAD
 git bisect good "$GOOD_COMMIT"
 
 # Run bisect driver
-git bisect run bash -c 'run_test'
+git bisect run bash -c '
+  git submodule update --init --recursive
+  make install-dev
+  make install-playwright
+  make test
+'
 
 echo
 echo ">>> Result:"

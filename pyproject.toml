@@ -7,10 +7,10 @@ requires-python = ">=3.14"
 dependencies = [
     "beautifulsoup4>=4.12",
     "jinja2>=3.1.6",
-    "nbconvert[execute,serve,test,webpdf]>=7.17.1",
+    "nbconvert[serve,test,webpdf]>=7.17.1",
     "nbformat>=5.10.4",
     "pyyaml>=6.0.3",
-    "ssserve>=0.3.2",
+    "ssserve>=0.3.3",
 ]
 
 [dependency-groups]

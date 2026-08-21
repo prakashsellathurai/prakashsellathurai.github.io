@@ -556,7 +556,8 @@ def _tools_links_html(metadata: SiteMetadata) -> str:
     return f'<ul>{"".join(f'<li><a href="{url}">{label}</a></li>' for url, label in items)}</ul>'
 
 
-def render_header(metadata: SiteMetadata, sidebar_html: str = "") -> str:
+def render_header(metadata: SiteMetadata, sidebar_html: str = "", main_class: str = "") -> str:
+    extra = f" {main_class}" if main_class else ""
     return f"""<input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
 <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation"><span>&#9776;</span></label>
 <header id="site-header">
@@ -573,7 +574,7 @@ def render_header(metadata: SiteMetadata, sidebar_html: str = "") -> str:
   {sidebar_html}
   {_panel_section("Tools", _tools_links_html(metadata), "site-tools")}
 </aside>
-<main id="content" class="site-main">
+<main id="content" class="site-main{extra}">
   <div id="bodyContent">
 """
 # TODO: html strings can be put as html file and and load and apply 
@@ -1327,6 +1328,7 @@ class PageBuilder:
         extra_schemas: list[dict] | None = None,
         extra_css: str | None = None,
         sidebar_html: str = "",
+        main_class: str = "",
     ) -> str:
         """Fill a template's head/header/footer with site-wide HTML.
 
@@ -1340,6 +1342,7 @@ class PageBuilder:
             extra_schemas: Optional JSON-LD schemas.
             extra_css: Optional extra CSS link tags.
             sidebar_html: Optional extra sidebar portal HTML (e.g. notes tree).
+            main_class: Extra CSS class for the <main> element.
 
         Returns:
             The fully rendered page HTML with page content still to be filled.
@@ -1358,7 +1361,7 @@ class PageBuilder:
                     extra_schemas=extra_schemas,
                     extra_css=extra_css,
                 ),
-                "header": render_header(metadata, sidebar_html=sidebar_html),
+                "header": render_header(metadata, sidebar_html=sidebar_html, main_class=main_class),
                 "footer": render_footer(metadata),
                 "metadata.author": escape_html(metadata["author"]),
             },
@@ -1512,6 +1515,7 @@ class PageBuilder:
             "Quick references and notes",
             "/notes/",
             sidebar_html=_notes_sidebar_html(notes),
+            main_class="page-note",
         )
 
         sections = []
@@ -1555,6 +1559,7 @@ class PageBuilder:
             sidebar_html=_notes_sidebar_html(
                 notes, {"topic_slug": topic["topic_slug"]}
             ),
+            main_class="page-note",
         )
         sections = []
         for st in topic["subtopics"]:
@@ -1601,6 +1606,7 @@ class PageBuilder:
                     "subtopic_path": subtopic["subtopic_path"],
                 },
             ),
+            main_class="page-note",
         )
         file_links = "\n".join(
             f'        <li><a class="content-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
@@ -1647,6 +1653,7 @@ class PageBuilder:
                     "file_slug": file_data["slug"],
                 },
             ),
+            main_class="page-note",
         )
 
         html = _apply_template(
@@ -1674,6 +1681,7 @@ class PageBuilder:
             "Document explorations and experiments",
             "/experiments/",
             sidebar_html=_experiments_sidebar_html(experiments),
+            main_class="page-experiment",
         )
         sections = []
         for exp in experiments:
@@ -1715,6 +1723,7 @@ class PageBuilder:
             sidebar_html=_experiments_sidebar_html(
                 experiments, {"topic_slug": topic["topic_slug"]}
             ),
+            main_class="page-experiment",
         )
         sections = []
         for st in topic["subtopics"]:
@@ -1764,6 +1773,7 @@ class PageBuilder:
                     "subtopic_path": subtopic["subtopic_path"],
                 },
             ),
+            main_class="page-experiment",
         )
         file_links = "\n".join(
             f'        <li><a class="content-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
@@ -1814,6 +1824,7 @@ class PageBuilder:
                     "file_slug": file_data["slug"],
                 },
             ),
+            main_class="page-experiment",
         )
         html = _apply_template(
             html,

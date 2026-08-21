@@ -417,6 +417,11 @@ img {
     padding: 1.1em 2em 2em;
 }
 
+.page-note#content,
+.page-experiment#content {
+    background: var(--color-bg-surface);
+}
+
 #firstHeading {
     font-family: var(--font-heading);
     font-size: 1.9em;
@@ -555,6 +560,10 @@ body.essay-page #bodyContent {
 
 .article-content .task-list-item input[type="checkbox"] {
     margin-right: 0.4em;
+}
+
+.gitbook-markdown-body{
+     background: var(--color-bg-surface);
 }
 
 /* Sidenote footnotes (inline, Wikipedia-style) */

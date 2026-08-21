@@ -79,29 +79,22 @@ class TestHomepageSEO:
         assert person.get("image")
         assert person.get("email")
 
-    def test_should_have_robots_txt(self, page):
-        response = page.request.get("/robots.txt")
-        assert response.ok
-        text = response.text()
+    def test_should_have_robots_txt(self, out_dir):
+        text = (out_dir / "robots.txt").read_text()
         assert "User-agent:" in text
         assert "Sitemap:" in text
 
-    def test_should_have_sitemap_xml(self, page):
-        response = page.request.get("/sitemap.xml")
-        assert response.ok
-        text = response.text()
+    def test_should_have_sitemap_xml(self, out_dir):
+        text = (out_dir / "sitemap.xml").read_text()
         assert "<urlset" in text
         assert "<loc>" in text
 
-    def test_sitemap_should_not_have_duplicate_urls(self, page):
-        response = page.request.get("/sitemap.xml")
-        assert response.ok
-        locs = re.findall(r"<loc>([^<]+)</loc>", response.text())
+    def test_sitemap_should_not_have_duplicate_urls(self, out_dir):
+        locs = re.findall(r"<loc>([^<]+)</loc>", (out_dir / "sitemap.xml").read_text())
         assert len(locs) == len(set(locs)), f"duplicate URLs: {set(x for x in locs if locs.count(x) > 1)}"
-    def test_should_have_rss_feed(self, page):
-        response = page.request.get("/feed.xml")
-        assert response.ok
-        text = response.text()
+
+    def test_should_have_rss_feed(self, out_dir):
+        text = (out_dir / "feed.xml").read_text()
         assert "<rss" in text
         assert "<channel>" in text
 

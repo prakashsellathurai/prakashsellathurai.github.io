@@ -1,43 +1,44 @@
 <!doctype html>
 <html lang="en">
-    {{head}}
-    <body>
-        {{header}}
-        <div class="layout">
-            <div class="main">
-                <h1>Latest Essays</h1>
-                {{recentEssays}}
-            </div>
+{{head}}
+<body>
+{{header}}
+  <div id="home-welcome">
+    <h2>Welcome to {{metadata.author}}'s Web Page</h2>
+    <p>{{metadata.shortDescription}}</p>
+  </div>
 
-            <div class="sidebar">
-                <div class="sidebar-about">
-                    <img
-                        src="{{avatar}}"
-                        alt="{{metadata.author}}"
-                        class="avatar"
-                    />
-                    <p>{{authorPreview}}</p>
-                    <p><a href="/about.html">Read more &rarr;</a></p>
-                </div>
+  <div class="home-columns">
+    <div class="mp-column mp-left">
+      <div class="home-box">
+        <div class="home-box-header">Featured essay</div>
+        <div class="home-box-body">{{featuredArticle}}</div>
+      </div>
+      <div class="home-box">
+        <div class="home-box-header">Quotes</div>
+        <div class="home-box-body">{{didYouKnow}}</div>
+      </div>
+    </div>
+    <div class="mp-column mp-right">
+      <div class="home-box">
+        <div class="home-box-header">Recent experiments</div>
+        <div class="home-box-body">{{inTheNews}}</div>
+      </div>
+      <div class="home-box">
+        <div class="home-box-header">Recent notes</div>
+        <div class="home-box-body">{{recentNotes}}</div>
+      </div>
+      <div class="home-box">
+        <div class="home-box-header">Precepts</div>
+        <div class="home-box-body">{{onThisDay}}</div>
+      </div>
+    </div>
+  </div>
 
-                <div>
-                    <h2>Curated Reads</h2>
-                    <h3>Books</h3>
-                    <ul>
-                        {{readingList}}
-                    </ul>
-                    <h3>Blogs</h3>
-                    <ul>
-                        {{preceptList}}
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <section class="projects-section">
-            <h1>Featured Projects</h1>
-            {{featuredProjects}}
-        </section>
-        {{footer}}
-    </body>
+  <section class="projects-section">
+    <h2>Featured projects</h2>
+    {{featuredProjects}}
+  </section>
+{{footer}}
+</body>
 </html>

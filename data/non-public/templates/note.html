@@ -1,29 +1,24 @@
 <!doctype html>
 <html lang="en">
 {{head}}
-<body class="gb-notes">
-  {{notesSidebar}}
-  <div class="gb-main">
-    <nav class="gb-topbar">
-      <a href="/notes/">Notes</a><span class="gb-crumb-sep">/</span><span>{{note.title}}</span>
-    </nav>
-    <div class="gb-scroll">
-      <article class="gb-content">
-        <h1>{{note.title}}</h1>
-        <div class="content gitbook-markdown-body">{{note.content}}</div>
-      </article>
-      {{notesPager}}
-    </div>
-  </div>
-  <script src="/static/js/gitbook-search.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
-  <script>
-    document.querySelectorAll("pre > code.language-mermaid").forEach(function (code) {
-      var pre = code.parentElement;
-      pre.classList.add("mermaid");
-      pre.removeChild(code);
-    });
-    mermaid.initialize({ startOnLoad: true });
-  </script>
+<body>
+{{header}}
+<h1 id="firstHeading">{{note.title}}</h1>
+<div id="siteSub">From {{metadata.author}}'s Web Page</div>
+{{toc}}
+<div class="article-content gitbook-markdown-body">
+{{note.content}}
+</div>
+{{notesPager}}
+{{footer}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+<script>
+  document.querySelectorAll("pre > code.language-mermaid").forEach(function (code) {
+    var pre = code.parentElement;
+    pre.classList.add("mermaid");
+    pre.removeChild(code);
+  });
+  mermaid.initialize({ startOnLoad: true });
+</script>
 </body>
 </html>

@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en">
   {{head}}
-  <body>
+  <body class="essay-page">
     {{header}}
-    <article class="centered-layout">
-      <h1>{{essay.title}}</h1>
+    <h1 id="firstHeading">{{essay.title}}</h1>
+    {{toc}}
+    <div class="article-content content-with-sidenotes">
       <p class="meta"><time>{{essay.date}}</time></p>
-
-      <div class="content">{{essay.content}}</div>
-      <div class="tags">{{essay.tags}}</div>
-    </article>
+      {{essay.content}}
+      <div id="catlinks"><span class="catlinks-title">Tags:</span>{{essay.tags}}</div>
+    </div>
     {{footer}}
   </body>
 </html>

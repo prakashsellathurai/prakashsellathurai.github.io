@@ -19,10 +19,10 @@ build:
 	uv run  code/scripts/build.py
 
 dev: build
-	uvx ssserve ./out -u
+	uv run ssserve ./out -u 
 
 test:
-	uv run pytest code/tests/ -v
+	uv run pytest code/tests/ 
 
 test-ui:
 	uv run pytest code/tests/ -v --headed
@@ -30,7 +30,6 @@ test-ui:
 update-data:
 	uv run python3 code/scripts/utils/books.py
 	uv run python3 code/scripts/utils/github.py
-	uv run python3 code/scripts/utils/quotes.py
 	uv run python3 code/scripts/utils/sync_description.py
 
 install-dev:

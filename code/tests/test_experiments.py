@@ -45,13 +45,13 @@ class TestExperimentsListPage:
 
     def test_directory_pages_list_their_files(self, page):
         page.goto("/experiments/biology/dna-sequencing/")
-        file_links = page.locator(".gb-content .gb-file-link")
+        file_links = page.locator(".article-content .content-file-link")
         expect(file_links).not_to_have_count(0)
         expect(file_links.first).to_be_visible()
 
     def test_topic_page_groups_subtopic_files(self, page):
         page.goto("/experiments/python/")
-        sections = page.locator(".gb-content .gb-index-section")
+        sections = page.locator(".article-content .content-index-section")
         expect(sections).not_to_have_count(0)
         expect(sections.first).to_be_visible()
 
@@ -60,17 +60,14 @@ class TestExperimentsListPage:
 class TestExperimentsIntegration:
     def test_header_has_experiments_link(self, page):
         page.goto("/")
-        expect(page.locator('header a[href="/experiments/"]')).to_be_visible()
+        expect(page.locator('#site-sidebar a[href="/experiments/"]')).to_be_visible()
 
-    def test_sitemap_contains_experiments(self, page):
-        response = page.request.get("/sitemap.xml")
-        assert response.ok
-        text = response.text()
+    def test_sitemap_contains_experiments(self, out_dir):
+        text = (out_dir / "sitemap.xml").read_text()
         assert "/experiments/" in text
 
-    def test_sitemap_has_experiment_file_entries(self, page):
-        response = page.request.get("/sitemap.xml")
-        text = response.text()
+    def test_sitemap_has_experiment_file_entries(self, out_dir):
+        text = (out_dir / "sitemap.xml").read_text()
         assert ".html" in text
         entries = re.findall(r"<loc>[^<]+</loc>", text)
         exp_entries = [e for e in entries if "/experiments/" in e]
@@ -89,46 +86,46 @@ class TestNotebookCollapsible:
 
     def test_code_cells_are_collapsed_by_default(self, page):
         page.goto(self.URL)
-        blocks = page.locator(".gb-code-block")
+        blocks = page.locator(".notebook-cell")
         assert blocks.count() >= 1
         expect(blocks.first).not_to_have_attribute("open", "")
 
     def test_expand_label_visible_while_collapsed(self, page):
         page.goto(self.URL)
-        first = page.locator(".gb-code-block").first
-        expect(first.locator(".gb-code-expand")).to_be_visible()
-        expect(first.locator(".gb-code-collapse")).to_be_hidden()
+        first = page.locator(".notebook-cell").first
+        expect(first.locator(".notebook-expand")).to_be_visible()
+        expect(first.locator(".notebook-collapse")).to_be_hidden()
 
     def test_outputs_visible_while_collapsed(self, page):
         page.goto(self.URL)
-        cell = page.locator("div.code_cell:has(.gb-code-block):has(.output_wrapper)").first
+        cell = page.locator("div.code_cell:has(.notebook-cell):has(.output_wrapper)").first
         expect(cell.locator(".output_wrapper").first).to_be_visible()
 
     def test_prompt_visible_while_collapsed(self, page):
         page.goto(self.URL)
-        first = page.locator(".gb-code-block").first
+        first = page.locator(".notebook-cell").first
         prompt = first.locator("xpath=preceding-sibling::div[contains(@class,'input_prompt')]")
         expect(prompt).to_be_visible()
 
     def test_clicking_summary_expands_and_collapses(self, page):
         page.goto(self.URL)
-        first = page.locator(".gb-code-block").first
+        first = page.locator(".notebook-cell").first
         summary = first.locator("summary")
         summary.click()
         expect(first).to_have_attribute("open", "")
-        expect(first.locator(".gb-code-collapse")).to_be_visible()
-        expect(first.locator(".gb-code-expand")).to_be_hidden()
+        expect(first.locator(".notebook-collapse")).to_be_visible()
+        expect(first.locator(".notebook-expand")).to_be_hidden()
         summary.click()
         expect(first).not_to_have_attribute("open", "")
 
     def test_code_is_syntax_highlighted(self, page):
         page.goto(self.URL)
-        page.locator(".gb-code-block").first.locator("summary").click()
-        code = page.locator(".gb-code-block pre code.language-python").first
+        page.locator(".notebook-cell").first.locator("summary").click()
+        code = page.locator(".notebook-cell pre code.language-python").first
         expect(code).to_be_visible()
         expect(code).to_contain_text("import numpy as np")
-        page.locator(".gb-code-block pre code.language-python.hljs").first.wait_for(
+        page.locator(".notebook-cell pre code.language-python.hljs").first.wait_for(
             state="visible"
         )
-        highlighted = page.locator(".gb-code-block code.hljs span.hljs-keyword")
+        highlighted = page.locator(".notebook-cell code.hljs span.hljs-keyword")
         assert highlighted.count() >= 1

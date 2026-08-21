@@ -1,20 +1,13 @@
 <!doctype html>
 <html lang="en">
 {{head}}
-<body class="gb-notes">
-  {{experimentsSidebar}}
-  <div class="gb-main">
-    <nav class="gb-topbar">
-      <a href="/experiments/">Experiments</a>
-    </nav>
-    <div class="gb-scroll">
-      <div class="gb-content">
-        <h1>{{experimentsTitle}}</h1>
-        <p class="gb-lead">{{experimentsLead}}</p>
-        {{experimentsContent}}
-      </div>
-    </div>
-  </div>
-  <script src="/static/js/gitbook-search.js"></script>
+<body>
+{{header}}
+<h1 id="firstHeading">{{experimentsTitle}}</h1>
+<div id="siteSub">{{experimentsLead}}</div>
+<div class="article-content">
+{{experimentsContent}}
+</div>
+{{footer}}
 </body>
 </html>

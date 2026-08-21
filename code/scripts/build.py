@@ -7,6 +7,7 @@ import os
 import pathlib
 import re
 import shutil
+import subprocess
 from datetime import datetime
 from urllib.parse import urlparse
 
@@ -27,6 +28,7 @@ from lib.datatypes import (
 )
 from lib.frontmatter import parse_frontmatter
 from lib.markdown import MarkdownRenderer, escape_html
+from lib.search import build_search_js
 from lib.slug import slug
 from lib.xmlgen import generate_rss_feed, generate_sitemap
 
@@ -38,19 +40,6 @@ NOTES_DIR = pathlib.Path("data/non-public/submodules/Grimoire/notes")
 EXPERIMENTS_DIR = pathlib.Path("data/non-public/submodules/Grimoire/experiments")
 _ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
 
-_DOCS_EXTRA_CSS = (
-    '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
-    '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-    '  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">\n'
-    '  <link rel="stylesheet" href="/static/css/docs.css">'
-)
-_DOCS_GITBOOK_EXTRA_CSS = (
-    '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
-    '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-    '<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">\n'
-    '  <link rel="stylesheet" href="/static/css/docs.css">\n'
-    '  <link rel="stylesheet" href="/static/css/gitbook-markdown.css">'
-)
 _PAGE_NAMES = {
     "/essays/": "Essays",
     "/about.html": "About",
@@ -61,7 +50,7 @@ _PAGE_NAMES = {
     "/experiments/": "Experiments",
 }
 
-
+# TODO: put all date related functions in  lib/dates
 def _parse_date(date_str: str) -> datetime:
     """Parse an ISO date string (with optional trailing 'Z') to datetime."""
     return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
@@ -76,7 +65,7 @@ def _format_date(date_str: str) -> str:
     """Format a date string for human display (e.g. 'Aug 07, 2026')."""
     return _parse_date(date_str).strftime("%b %d, %Y")
 
-
+# TODO: put schema related functions in libs /seo
 def _build_author_schema(metadata: SiteMetadata) -> dict:
     details = metadata.get("authorDetails", {})
     author = {"@type": "Person", "name": metadata["author"]}
@@ -315,6 +304,85 @@ def _apply_template(template_str: str, data: dict) -> str:
     return result
 
 
+def _heading_to_id(text: str, used: dict) -> str:
+    base = slug(text)
+    if not base:
+        base = "section"
+    candidate = base
+    n = 2
+    while candidate in used:
+        candidate = f"{base}-{n}"
+        n += 1
+    used[candidate] = True
+    return candidate
+
+
+def _build_toc(content_html: str) -> tuple[str, str]:
+    """Inject ids into h2/h3 headings and build a Wikipedia-style TOC box.
+
+    Args:
+        content_html: Rendered HTML of the article body.
+
+    Returns:
+        (content_html_with_ids, toc_html) — TOC is empty if no h2 headings.
+    """
+    soup = BeautifulSoup(content_html, "html.parser")
+    headings = soup.find_all(["h2", "h3"])
+    if not headings:
+        return content_html, ""
+
+    used: dict = {}
+    entries = []  # (level, id, text)
+    for h in headings:
+        text = " ".join(h.get_text(" ", strip=True).split())
+        hid = _heading_to_id(text, used)
+        h["id"] = hid
+        entries.append((h.name, hid, text))
+
+    h2s = [e for e in entries if e[0] == "h2"]
+    if not h2s:
+        return str(soup), ""
+
+    # Build nested list: h3 children nest under preceding h2.
+    toc_items = []
+    current_h2: dict | None = None
+    for level, hid, text in entries:
+        if level == "h2":
+            current_h2 = {"id": hid, "text": text, "children": []}
+            toc_items.append(current_h2)
+        elif level == "h3" and current_h2 is not None:
+            current_h2["children"].append({"id": hid, "text": text})
+
+    def li_html(item: dict, counter: list) -> str:
+        counter[0] += 1
+        num = f'<span class="tocnumber">{counter[0]}</span>'
+        text = f'<span class="toctext">{escape_html(item["text"])}</span>'
+        inner = f'<li><a href="#{item["id"]}">{num}{text}</a>'
+        if item["children"]:
+            child_lis = "\n".join(
+                f'<li><a href="#{c["id"]}"><span class="tocnumber">{counter[0]}.{i}</span>'
+                f'<span class="toctext">{escape_html(c["text"])}</span></a></li>'
+                for i, c in enumerate(item["children"], 1)
+            )
+            inner += f"\n<ul>{child_lis}</ul>"
+        return inner + "</li>"
+
+    counter = [0]
+    lis = "\n".join(li_html(item, counter) for item in toc_items)
+
+    toc_html = f"""<div id="toc" role="navigation" aria-labelledby="toctitle">
+  <input type="checkbox" id="toctogglecheckbox" class="toctoggle">
+  <div class="toctitle" id="toctitle"><h2>Contents</h2>
+    <label for="toctogglecheckbox" class="toc-toggle">[hide]</label>
+  </div>
+  <ul>
+    {lis}
+  </ul>
+</div>""" # TODO: html strings can be put as html file and and load and apply 
+
+    return str(soup), toc_html
+
+
 def _write_page(out_dir: pathlib.Path, rel_path: str, html: str) -> None:
     """Write rendered HTML to out_dir/rel_path, creating parents as needed."""
     target = out_dir / rel_path
@@ -336,7 +404,7 @@ def _render_open_graph(page_info: dict, site_url: str, full_url: str, og_image: 
   <meta property="og:url" content="{full_url}">
   <meta property="og:image" content="{site_url}{og_image}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="{escape_html(site_title)}">"""
+  <meta property="og:site_name" content="{escape_html(site_title)}">""" # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_twitter_card(page_info: dict, site_url: str, og_image: str) -> str:
@@ -344,7 +412,7 @@ def _render_twitter_card(page_info: dict, site_url: str, og_image: str) -> str:
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{escape_html(page_info["title"])}">
   <meta name="twitter:description" content="{escape_html(page_info["description"])}">
-  <meta name="twitter:image" content="{site_url}{og_image}">"""
+  <meta name="twitter:image" content="{site_url}{og_image}">""" # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_json_ld(schemas: list[dict]) -> str:
@@ -357,7 +425,7 @@ def _render_json_ld(schemas: list[dict]) -> str:
     return f"""
   <script type="application/ld+json">
   {json_ld_str}
-  </script>"""
+  </script>""" # TODO: html strings can be put as html file and and load and apply 
 
 
 _FAVICON_LINKS = """
@@ -424,37 +492,121 @@ def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, ext
   {_FAVICON_LINKS}
   {_render_css_link(extra_css)}
 </head>
-"""
+"""# TODO: html strings can be put as html file and and load and apply 
 
 
-def render_header(metadata: SiteMetadata) -> str:
-    return """<header>
-  <a href="/">Home</a>
-  <a href="/static/resume/prakash_s_resume.pdf">Resume</a>
-  <a href="/essays/">Essays</a>
-    <a href="/projects.html">Projects</a>
-    <a href="/bookshelf.html">Bookshelf</a>
-    <a href="/notes/">Notes</a>
-    <a href="/experiments/">Experiments</a>
-    <a href="/quotes.html">Quotes</a>
-    <a href="/about.html">About</a>
-  <a href="/feed.xml" class="rss-link" aria-label="RSS Feed">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 11a9 9 0 0 1 9 9"/>
-      <path d="M4 4a16 16 0 0 1 16 16"/>
-      <circle cx="5" cy="19" r="1"/>
-    </svg>
-  </a>
+def _personal_tools_html(metadata: SiteMetadata) -> str:
+    links = []
+    for label, key in (("GitHub", "github"), ("LinkedIn", "linkedin"), ("Instagram", "instagram")):
+        url = metadata.get(key)
+        if url:
+            links.append(f'<li><a href="{escape_html(url)}" rel="me">{escape_html(label)}</a></li>')
+    links.append('<li><a href="/feed.xml">RSS</a></li>')
+    return f'<ul>{"".join(links)}</ul>'
+
+
+def _search_html(metadata: SiteMetadata) -> str:
+    domain = metadata["siteUrl"].rstrip("/").split("//", 1)[-1]
+    return f"""<form action="https://www.google.com/search" method="get" role="search" data-site-domain="{escape_html(domain)}">
+<input type="search" name="q" placeholder="Search this site" aria-label="Search" data-search>
+<button type="submit" aria-label="Search"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></form>"""
+# TODO: html strings can be put as html file and and load and apply 
+
+def _essays_sidebar_html(essays: list[Essay]) -> str:
+    """Return a flat list of essay links as a wiki-panel portal section."""
+    links = "\n".join(
+        f'      <a class="nav-tree-file" href="{_essay_url(e["slug"])}">{escape_html(e["title"])}</a>'
+        for e in essays
+    )
+    return _panel_section("Essays", f"    <div class=\"nav-tree-inner\">\n{links}\n    </div>", "site-essays")
+
+
+def _panel_section(title: str, body: str, id_attr: str = "") -> str:
+    id_str = f' id="{escape_html(id_attr)}"' if id_attr else ""
+    return f"""<div class="portal"{id_str}>
+      <h3>{escape_html(title)}</h3>
+      <div class="body">{body}</div>
+    </div>"""
+
+
+def _nav_links_html(metadata: SiteMetadata) -> str:
+    items = [
+        ("/", "Main page"),
+        ("/essays/", "Essays"),
+        ("/projects.html", "Projects"),
+        ("/bookshelf.html", "Bookshelf"),
+        ("/notes/", "Notes"),
+        ("/experiments/", "Experiments"),
+        ("/quotes.html", "Quotes"),
+        ("/about.html", "About"),
+        ("/tags/", "Tags"),
+        ("/static/resume/prakash_s_resume.pdf", "Resume"),
+    ]
+    return f'<ul>{"".join(f'<li><a href="{url}">{label}</a></li>' for url, label in items)}</ul>'
+
+
+def _tools_links_html(metadata: SiteMetadata) -> str:
+    items = [
+        ("/sitelinks.html", "Site links"),
+        ("/feed.xml", "RSS feed"),
+    ]
+    github = metadata.get("github")
+    if github:
+        items.append((github, "GitHub profile"))
+    return f'<ul>{"".join(f'<li><a href="{url}">{label}</a></li>' for url, label in items)}</ul>'
+
+
+def render_header(metadata: SiteMetadata, sidebar_html: str = "", main_class: str = "") -> str:
+    extra = f" {main_class}" if main_class else ""
+    return f"""<input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+<label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation"><span>&#9776;</span></label>
+<header id="site-header">
+  <div id="site-logo">
+    <a href="/" aria-label="Home">
+      <span class="logo-initials">PS</span>
+    </a>
+  </div>
+  <div id="site-personal">{_personal_tools_html(metadata)}</div>
+  <div id="site-search">{_search_html(metadata)}</div>
 </header>
+<aside id="site-sidebar">
+  {_panel_section("Navigation", _nav_links_html(metadata), "site-navigation")}
+  {sidebar_html}
+  {_panel_section("Tools", _tools_links_html(metadata), "site-tools")}
+</aside>
+<main id="content" class="site-main{extra}">
+  <div id="bodyContent">
 """
-
+# TODO: html strings can be put as html file and and load and apply 
 
 def render_footer(metadata: SiteMetadata) -> str:
     year = datetime.now().year
-    return f"""<footer>
-  <p>&copy; {year} {escape_html(metadata["author"])}. &middot; <a href="/sitelinks.html">Site Links</a></p>
+    return f"""  </div>
+</main>
+<footer id="footer">
+  <div id="footer-places">
+    <h3>Places</h3>
+    <ul>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/sitelinks.html">Site links</a></li>
+      <li><a href="/feed.xml">RSS</a></li>
+    </ul>
+  </div>
+  <div id="footer-text">
+    <h3>{escape_html(metadata['author'])}</h3>
+    <p>&copy; {year} {escape_html(metadata['author'])}. All rights reserved.</p>
+    <p>This page is written and maintained by {escape_html(metadata['author'])}.</p>
+  </div>
+  <div id="footer-icons">
+    <h3>Elsewhere</h3>
+    <ul>
+      {f'<li><a href="{escape_html(metadata["github"])}">GitHub</a></li>' if metadata.get("github") else ''}
+      {f'<li><a href="{escape_html(metadata["linkedin"])}">LinkedIn</a></li>' if metadata.get("linkedin") else ''}
+    </ul>
+  </div>
 </footer>
-"""
+<script src="/static/js/search.js"></script>
+"""# TODO: html strings can be put as html file and and load and apply 
 
 
 _LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
@@ -470,22 +622,22 @@ def _note_description(file_data: FileData, limit: int = 160) -> str:
     return text
 
 
-def _gb_search_html() -> str:
-    return f"""<div class="gb-search">
-  <svg class="gb-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-  <input type="search" placeholder="Search&hellip;" aria-label="Search" data-gb-search>
-  <kbd class="gb-search-kbd">Ctrl K</kbd>
-</div>"""
-
-
-def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> str:
+def _sidebar_tree_html(
+    items: list[dict],
+    current: dict | None,
+    file_url_fn,
+    topic_title_key: str,
+    topic_slug_key: str,
+    current_section_key: str,
+) -> str:
+    """Build a collapsible topic tree suitable for the wiki left panel."""
     current = current or {}
 
     parts_html = []
-    for n in notes:
-        topic_slug = n["topic_slug"]
-        root = {"dirs": {}, "files": list(n["files"])}
-        for st in n["subtopics"]:
+    for item in items:
+        topic_slug = item[topic_slug_key]
+        root = {"dirs": {}, "files": list(item["files"])}
+        for st in item["subtopics"]:
             node = root
             for part in st["subtopic_path"].split("/"):
                 if part not in node["dirs"]:
@@ -497,13 +649,13 @@ def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> 
             cur_sub = "/".join(path_parts) if path_parts else None
             out = []
             for f in node["files"]:
-                href = _note_file_url(topic_slug, cur_sub, f["slug"])
+                href = file_url_fn(topic_slug, cur_sub, f["slug"])
                 active = (
-                    current.get("topic_slug") == topic_slug
+                    current.get(topic_slug_key) == topic_slug
                     and current.get("subtopic_path") == cur_sub
                     and current.get("file_slug") == f["slug"]
                 )
-                cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
+                cls = ' class="nav-tree-file active"' if active else ' class="nav-tree-file"'
                 out.append(f'<a{cls} href="{href}">{escape_html(f["title"])}</a>')
             return "\n".join(out)
 
@@ -512,7 +664,7 @@ def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> 
             for name, sub in sorted(dirs.items()):
                 child_path = "/".join(path_parts + [name])
                 current_path = current.get("subtopic_path") or ""
-                expanded = current.get("topic_slug") == topic_slug and (
+                expanded = current.get(topic_slug_key) == topic_slug and (
                     current_path == child_path
                     or current_path.startswith(child_path + "/")
                 )
@@ -521,31 +673,34 @@ def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> 
                 )
                 open_attr = " open" if expanded else ""
                 out.append(
-                    f'<details class="gb-tree-sub"{open_attr}><summary>{escape_html(name)}</summary>'
-                    f'<div class="gb-tree-inner">{inner}</div></details>'
+                    f'<details class="nav-tree-sub"{open_attr}><summary>{escape_html(name)}</summary>'
+                    f'<div class="nav-tree-inner">{inner}</div></details>'
                 )
             return "\n".join(out)
 
-        topic_active = current.get("topic_slug") == topic_slug
+        topic_active = current.get(topic_slug_key) == topic_slug
         summary_cls = ' class="topic-active"' if topic_active else ""
         inner = files_html(root, []) + dirs_html(root["dirs"], [])
         open_attr = " open" if topic_active else ""
         parts_html.append(
-            f'<details class="gb-tree-dir"{open_attr}><summary{summary_cls}>{escape_html(n["topic_title"])}</summary>'
-            f'<div class="gb-tree-inner">{inner}</div></details>'
+            f'<details class="nav-tree-dir"{open_attr}><summary{summary_cls}>{escape_html(item[topic_title_key])}</summary>'
+            f'<div class="nav-tree-inner">{inner}</div></details>'
         )
 
-    tree = "\n".join(parts_html)
-    return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
-<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle notes navigation"><span class="gb-burger-icon"><span></span><span></span><span></span></span></label>
-<aside class="gb-sidebar">
-  <a class="gb-brand" href="/notes/">Notes</a>
-  {_gb_search_html()}
-  <nav class="gb-tree">
-    {tree}
-  </nav>
-  <a class="gb-back" href="/">&larr; Home</a>
-</aside>"""
+    return f'<nav class="nav-tree">\n    {"\n    ".join(parts_html)}\n  </nav>'
+
+
+def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> str:
+    """Return the notes tree as a wiki-panel portal section."""
+    tree = _sidebar_tree_html(
+        notes,
+        current,
+        _note_file_url,
+        "topic_title",
+        "topic_slug",
+        "notes",
+    )
+    return _panel_section("Notes", tree, "site-notes")
 
 
 def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: str) -> str:
@@ -560,24 +715,55 @@ def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: s
         arrow = "&larr;" if direction == "prev" else "&rarr;"
         if item is None:
             return (
-                f'<a class="gb-pager-{direction} disabled" href="#" tabindex="-1">'
-                f'<span class="gb-pager-label">{arrow} {label}</span>'
-                f'<span class="gb-pager-title"></span></a>'
+                f'<a class="content-pager-{direction} disabled" href="#" tabindex="-1">'
+                f'<span class="content-pager-label">{arrow} {label}</span>'
+                f'<span class="content-pager-title"></span></a>'
             )
         return (
-            f'<a class="gb-pager-{direction}" href="{get_href(item)}">'
-            f'<span class="gb-pager-label">{arrow} {label}</span>'
-            f'<span class="gb-pager-title">{escape_html(item["title"])}</span></a>'
+            f'<a class="content-pager-{direction}" href="{get_href(item)}">'
+            f'<span class="content-pager-label">{arrow} {label}</span>'
+            f'<span class="content-pager-title">{escape_html(item["title"])}</span></a>'
         )
 
-    return f"""<nav class="gb-pager" aria-label="{aria_label}">
+    return f"""<nav class="content-pager" aria-label="{aria_label}">
   {cell("prev", prev_item)}
   {cell("next", next_item)}
-</nav>"""
+</nav>"""# TODO: html strings can be put as html file and and load and apply 
 
 
 def _notes_pager_html(notes: list[NoteTopic], current_url: str) -> str:
     return _docs_pager(_flatten_note_pages(notes), current_url)
+
+
+def _recent_notes(notes: list[NoteTopic], limit: int = 5) -> list[tuple[NoteTopic, FileData, str | None]]:
+    """Return the most recently committed note files across all topics."""
+    grimoire_dir = pathlib.Path("data/non-public/submodules/Grimoire")
+    candidates: list[tuple[int, NoteTopic, FileData, str | None]] = []
+    for note in notes:
+        for st in note["subtopics"]:
+            for f in st["files"]:
+                rel = pathlib.Path("notes") / note["topic"] / st["subtopic_path"] / f["filename"]
+                candidates.append((_note_commit_time(grimoire_dir, rel), note, f, st["subtopic_path"]))
+        for f in note["files"]:
+            rel = pathlib.Path("notes") / note["topic"] / f["filename"]
+            candidates.append((_note_commit_time(grimoire_dir, rel), note, f, None))
+    candidates.sort(key=lambda c: c[0], reverse=True)
+    return [(note, f, st_path) for _, note, f, st_path in candidates[:limit]]
+
+
+def _note_commit_time(grimoire_dir: pathlib.Path, rel_path: pathlib.Path) -> int:
+    """Return the last commit timestamp for a note file in the Grimoire submodule."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(grimoire_dir), "log", "-1", "--format=%ct", "--", str(rel_path)],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        ts = result.stdout.strip()
+        return int(ts) if ts else 0
+    except (subprocess.CalledProcessError, OSError, ValueError):
+        return 0
 
 
 def _flatten_note_pages(notes: list[NoteTopic]) -> list[dict]:
@@ -627,7 +813,7 @@ def _flatten_experiment_pages(experiments: list[ExperimentTopic]) -> list[dict]:
             pages.append({"url": f'{base}{f["slug"]}.html', "title": f["title"]})
     return pages
 
-
+# TODO: put url related functins under libs/url
 def _essay_url(slug: str) -> str:
     """Return the URL path for an essay slug."""
     return f"/essays/{slug}.html"
@@ -663,73 +849,16 @@ def _exp_file_url(topic_slug: str, subtopic_path: str | None, file_slug: str) ->
 
 
 def _experiments_sidebar_html(experiments: list[ExperimentTopic], current: dict | None = None) -> str:
-    current = current or {}
-
-    parts_html = []
-    for exp in experiments:
-        topic_slug = exp["topic_slug"]
-        root = {"dirs": {}, "files": list(exp["files"])}
-        for st in exp["subtopics"]:
-            node = root
-            for part in st["subtopic_path"].split("/"):
-                if part not in node["dirs"]:
-                    node["dirs"][part] = {"dirs": {}, "files": []}
-                node = node["dirs"][part]
-            node["files"] = list(st["files"])
-
-        def files_html(node, path_parts):
-            cur_sub = "/".join(path_parts) if path_parts else None
-            out = []
-            for f in node["files"]:
-                href = _exp_file_url(topic_slug, cur_sub, f["slug"])
-                active = (
-                    current.get("topic_slug") == topic_slug
-                    and current.get("subtopic_path") == cur_sub
-                    and current.get("file_slug") == f["slug"]
-                )
-                cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
-                out.append(f'<a{cls} href="{href}">{escape_html(f["title"])}</a>')
-            return "\n".join(out)
-
-        def dirs_html(dirs, path_parts):
-            out = []
-            for name, sub in sorted(dirs.items()):
-                child_path = "/".join(path_parts + [name])
-                current_path = current.get("subtopic_path") or ""
-                expanded = current.get("topic_slug") == topic_slug and (
-                    current_path == child_path
-                    or current_path.startswith(child_path + "/")
-                )
-                inner = files_html(sub, path_parts + [name]) + dirs_html(
-                    sub["dirs"], path_parts + [name]
-                )
-                open_attr = " open" if expanded else ""
-                out.append(
-                    f'<details class="gb-tree-sub"{open_attr}><summary>{escape_html(name)}</summary>'
-                    f'<div class="gb-tree-inner">{inner}</div></details>'
-                )
-            return "\n".join(out)
-
-        topic_active = current.get("topic_slug") == topic_slug
-        summary_cls = ' class="topic-active"' if topic_active else ""
-        inner = files_html(root, []) + dirs_html(root["dirs"], [])
-        open_attr = " open" if topic_active else ""
-        parts_html.append(
-            f'<details class="gb-tree-dir"{open_attr}><summary{summary_cls}>{escape_html(exp["topic_title"])}</summary>'
-            f'<div class="gb-tree-inner">{inner}</div></details>'
-        )
-
-    tree = "\n".join(parts_html)
-    return f"""<input type="checkbox" id="gb-nav-toggle" class="gb-nav-toggle">
-<label for="gb-nav-toggle" class="gb-burger" aria-label="Toggle experiments navigation"><span class="gb-burger-icon"><span></span><span></span><span></span></span></label>
-<aside class="gb-sidebar">
-  <a class="gb-brand" href="/experiments/">Experiments</a>
-  {_gb_search_html()}
-  <nav class="gb-tree">
-    {tree}
-  </nav>
-  <a class="gb-back" href="/">&larr; Home</a>
-</aside>"""
+    """Return the experiments tree as a wiki-panel portal section."""
+    tree = _sidebar_tree_html(
+        experiments,
+        current,
+        _exp_file_url,
+        "topic_title",
+        "topic_slug",
+        "experiments",
+    )
+    return _panel_section("Experiments", tree, "p-experiments")
 
 
 def _essay_article_html(e: Essay, indent: int = 0, tags: bool = True) -> str:
@@ -743,12 +872,12 @@ def _essay_article_html(e: Essay, indent: int = 0, tags: bool = True) -> str:
         )
         t = f'{i}<div class="tags">\n{i}  {t}\n{i}</div>\n'
     return (
-        f'{p}<article>\n'
+        f'{p}<article class="essay-item">\n'
         f'{i}<h2><a href="{_essay_url(e["slug"])}">{escape_html(e["title"])}</a></h2>\n'
         f'{i}<p class="meta"><time>{_format_date(e["date"])}</time></p>\n'
         f'{i}<p class="summary">{escape_html(e["summary"])}</p>\n'
         f'{t}{p}</article>'
-    )
+    ) # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_stars(rating) -> str:
@@ -801,7 +930,7 @@ def _build_book_card(book: Book, category: dict, resolve_image) -> str:
         <b>{escaped_title}</b>
         <span>{escaped_author}</span>
       </div>
-    </a>'''
+    </a>''' # TODO: html strings can be put as html file and and load and apply 
 
 
 def _build_unified_bookcase(groups: list[dict]) -> str:
@@ -825,7 +954,7 @@ def _build_unified_bookcase(groups: list[dict]) -> str:
     return f'''
     <div class="bookcase">
       {"".join(shelves_el)}
-    </div>'''
+    </div>''' # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_quote_item(q: Quote) -> str:
@@ -852,7 +981,7 @@ def _render_quote_item(q: Quote) -> str:
           {author_html}{book_html}
         </div>
       </div>
-    </li>'''
+    </li>''' # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
@@ -914,11 +1043,11 @@ def _make_code_cells_collapsible(body_html: str) -> str:
         inner = inp.find("div", class_="inner_cell", recursive=False)
         if inner is None:
             continue
-        details = soup.new_tag("details", attrs={"class": "gb-code-block"})
+        details = soup.new_tag("details", attrs={"class": "notebook-cell"})
         summary = soup.new_tag("summary")
-        expand = soup.new_tag("span", attrs={"class": "gb-code-expand"})
+        expand = soup.new_tag("span", attrs={"class": "notebook-expand"})
         expand.string = "Expand Code"
-        collapse = soup.new_tag("span", attrs={"class": "gb-code-collapse"})
+        collapse = soup.new_tag("span", attrs={"class": "notebook-collapse"})
         collapse.string = "Collapse Code"
         summary.append(expand)
         summary.append(collapse)
@@ -953,7 +1082,7 @@ def _render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -
         return _make_code_cells_collapsible(_extract_body(full_html))
     except Exception as exc:
         _logger.warning("Notebook export failed, rendering as code: %s", exc)
-    return f"<pre><code>{escape_html(content)}</code></pre>"
+    return f"<pre><code>{escape_html(content)}</code></pre>" # TODO: html strings can be put as html file and and load and apply 
 
 
 def _render_code_as_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
@@ -974,7 +1103,7 @@ def _render_experiment_content(file_data: FileData, markdown_renderer: MarkdownR
     strategy = _RENDER_STRATEGIES.get(file_data["ext"], _render_code_as_notebook)
     return strategy(file_data, markdown_renderer)
 
-
+# TODO: can be put under libs/dataloader
 class DataLoader:
     """Loads raw site data (JSON, markdown, templates, submodule content)."""
 
@@ -1179,7 +1308,7 @@ class DataLoader:
                 experiments.append(topic_data)
         return experiments
 
-
+# TODO: under libs/pagebuilder
 class PageBuilder:
     """Renders every page of the site and writes HTML to the output dir."""
 
@@ -1198,8 +1327,22 @@ class PageBuilder:
         image: str = "",
         extra_schemas: list[dict] | None = None,
         extra_css: str | None = None,
+        sidebar_html: str = "",
+        main_class: str = "",
     ) -> str:
         """Fill a template's head/header/footer with site-wide HTML.
+
+        Args:
+            template: Template name to fill.
+            metadata: Site-wide metadata.
+            page_title: Title for the page <head>.
+            page_description: Meta description.
+            url: Canonical URL path.
+            image: Social image path.
+            extra_schemas: Optional JSON-LD schemas.
+            extra_css: Optional extra CSS link tags.
+            sidebar_html: Optional extra sidebar portal HTML (e.g. notes tree).
+            main_class: Extra CSS class for the <main> element.
 
         Returns:
             The fully rendered page HTML with page content still to be filled.
@@ -1218,22 +1361,60 @@ class PageBuilder:
                     extra_schemas=extra_schemas,
                     extra_css=extra_css,
                 ),
-                "header": render_header(metadata),
+                "header": render_header(metadata, sidebar_html=sidebar_html, main_class=main_class),
                 "footer": render_footer(metadata),
+                "metadata.author": escape_html(metadata["author"]),
             },
         )
 
-    def build_home(self, metadata: SiteMetadata, essays: list[Essay], books: dict, projects: list[Project], author: dict, avatar: str, precept: dict) -> None:
+    def build_home(self, metadata: SiteMetadata, essays: list[Essay], books: dict, projects: list[Project], author: dict, avatar: str, precept: dict, quotes: list[Quote], experiments: list[ExperimentTopic], notes: list[NoteTopic]) -> None:
         """Build the homepage (index.html)."""
         template = self.data_loader.load_template("home")
         html = self._build_common(
-            template, metadata, metadata["title"], metadata["description"], "/"
+            template, metadata, metadata["title"], metadata["description"], "/",
+            sidebar_html=_essays_sidebar_html(essays),
         )
 
-        recent_essays_html = "\n".join(
-            _essay_article_html(e, indent=4) for e in essays[:4]
+        featured = _essay_article_html(essays[0], indent=4) if essays else ""
+        featured += '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
+
+        did_you_know_html = "\n".join(_render_quote_item(q) for q in quotes[:4])
+        if did_you_know_html:
+            did_you_know_html = f'    <ul>\n{did_you_know_html}\n    </ul>'
+
+        recent_experiments = []
+        for exp in experiments:
+            for f in exp["files"][:1]:
+                recent_experiments.append((exp, f, None))
+            for st in exp["subtopics"]:
+                for f in st["files"][:1]:
+                    recent_experiments.append((exp, f, st["subtopic_path"]))
+        recent_experiments = recent_experiments[:5]
+        in_the_news_html = "\n".join(
+            f'    <li><a href="{_exp_file_url(exp["topic_slug"], st_path, f["slug"])}">{escape_html(f["title"])}</a>'
+            f' <span class="meta">{escape_html(exp["topic_title"])}</span></li>'
+            for exp, f, st_path in recent_experiments
         )
-        recent_essays_html += '\n    <p class="section-footer"><a href="/essays/">All essays &rarr;</a></p>'
+        if in_the_news_html:
+            in_the_news_html = f"    <ul>\n{in_the_news_html}\n    </ul>"
+
+        on_this_day_html = "\n".join(
+            f'    <li><a href="{escape_html(p["link"])}" target="_blank" rel="noopener">{escape_html(p["title"])}</a></li>'
+            for p in (precept[:4] or [])
+        )
+        if on_this_day_html:
+            on_this_day_html = f"    <ul>\n{on_this_day_html}\n    </ul>"
+
+        recent_notes_html = "\n".join(
+            f'    <li><a href="{_note_file_url(note["topic_slug"], st_path, f["slug"])}">{escape_html(f["title"])}</a>'
+            f' <span class="meta">{escape_html(note["topic_title"])}</span></li>'
+            for note, f, st_path in _recent_notes(notes)
+        )
+        if recent_notes_html:
+            recent_notes_html = (
+                f"    <ul>\n{recent_notes_html}\n    </ul>"
+                '\n    <p class="section-footer"><a href="/notes/">All notes &rarr;</a></p>'
+            )
 
         featured_projects_html = (
             '<div class="project-grid">'
@@ -1246,33 +1427,22 @@ class PageBuilder:
                 for p in projects[:6]
             )
             + '\n    </div>\n    <p class="section-footer"><a href="/projects.html">All projects &rarr;</a></p>'
-        )
-
-        curated_books = books.get("curated", [])
-        reading_list_html = "\n".join(
-            f"""    <li>
-      <a href="{escape_html(b["link"])}" target="_blank" rel="noopener">{escape_html(b["title"])}</a>
-    </li>"""
-            for b in curated_books[:5]
-        )
+        ) # TODO: html strings can be put as html file and and load and apply 
 
         first_para = author["body"].split("\n\n")[0] if author["body"] else ""
-
-        precept_html = "\n".join(
-            f"""    <li>
-      <a href="{escape_html(p["link"])}" target="_blank" rel="noopener">{escape_html(p["title"])}</a>
-    </li>"""
-            for p in (precept[:4] or [])
-        )
 
         html = _apply_template(
             html,
             {
-                "recentEssays": recent_essays_html,
+                "featuredArticle": featured,
+                "didYouKnow": did_you_know_html,
+                "inTheNews": in_the_news_html,
+                "onThisDay": on_this_day_html,
+                "recentNotes": recent_notes_html,
                 "featuredProjects": featured_projects_html,
-                "authorPreview": escape_html(first_para),
-                "readingList": reading_list_html,
-                "preceptList": precept_html,
+                "metadata.shortDescription": escape_html(
+                    first_para or metadata["description"]
+                ),
                 "metadata.author": escape_html(metadata["author"]),
                 "avatar": avatar,
             },
@@ -1305,6 +1475,8 @@ class PageBuilder:
 
         blog_posting = _blog_posting_schema(metadata, essay, site_url, essay_url)
 
+        essay_source = f"data/non-public/essays/{essay['slug']}.md"
+
         html = self._build_common(
             template,
             metadata,
@@ -1315,10 +1487,12 @@ class PageBuilder:
         )
 
         essay_content = self.markdown_renderer.render(essay["content"])
+        essay_content, toc_html = _build_toc(essay_content)
 
         html = _apply_template(
             html,
             {
+                "toc": toc_html,
                 "essay.title": escape_html(essay["title"]),
                 "essay.date": _format_date(essay["date"]),
                 "essay.tags": " ".join(
@@ -1340,7 +1514,8 @@ class PageBuilder:
             f"Notes - {metadata['title']}",
             "Quick references and notes",
             "/notes/",
-            extra_css=_DOCS_EXTRA_CSS,
+            sidebar_html=_notes_sidebar_html(notes),
+            main_class="page-note",
         )
 
         sections = []
@@ -1349,21 +1524,20 @@ class PageBuilder:
             for st in note["subtopics"]:
                 for f in st["files"]:
                     file_links.append(
-                        f'    <a class="gb-file-link" href="{_note_file_url(note["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                        f'        <li><a class="content-file-link" href="{_note_file_url(note["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                     )
             for f in note["files"]:
                 file_links.append(
-                    f'    <a class="gb-file-link" href="{_note_file_url(note["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                    f'        <li><a class="content-file-link" href="{_note_file_url(note["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                 )
             sections.append(
-                f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_note_topic_url(note["topic_slug"])}">{escape_html(note["topic_title"])}</a></h2>'
-                f'<div class="gb-file-list">{"".join(file_links)}</div></section>'
-            )
+                f'<section class="content-index-section"><h2><a class="content-topic-title" href="{_note_topic_url(note["topic_slug"])}">{escape_html(note["topic_title"])}</a></h2>'
+                f'<ul class="content-file-list">\n{"".join(file_links)}\n    </ul></section>'
+            ) 
 
         html = _apply_template(
             html,
             {
-                "notesSidebar": _notes_sidebar_html(notes),
                 "notesTitle": "Notes",
                 "notesLead": "Quick references and notes on various topics",
                 "notesContent": "\n".join(sections),
@@ -1382,32 +1556,32 @@ class PageBuilder:
             f'{topic["topic_title"]} - Notes - {metadata["title"]}',
             f'Notes in {topic["topic_title"]}',
             topic_url,
-            extra_css=_DOCS_EXTRA_CSS,
+            sidebar_html=_notes_sidebar_html(
+                notes, {"topic_slug": topic["topic_slug"]}
+            ),
+            main_class="page-note",
         )
         sections = []
         for st in topic["subtopics"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                f'        <li><a class="content-file-link" href="{_note_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                 for f in st["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
-                f'<div class="gb-file-list">{file_links}</div></section>'
+                f'<section class="content-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
+                f'<ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         if topic["files"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+                f'        <li><a class="content-file-link" href="{_note_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                 for f in topic["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>Notes</h2><div class="gb-file-list">{file_links}</div></section>'
+                f'<section class="content-index-section"><h2>Notes</h2><ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         html = _apply_template(
             html,
             {
-                "notesSidebar": _notes_sidebar_html(
-                    notes, {"topic_slug": topic["topic_slug"]}
-                ),
                 "notesTitle": escape_html(topic["topic_title"]),
                 "notesLead": f'Notes in {topic["topic_title"]}',
                 "notesContent": "\n".join(sections),
@@ -1425,25 +1599,25 @@ class PageBuilder:
             f'{subtopic["subtopic_title"]} - {topic["topic_title"]} - Notes - {metadata["title"]}',
             f'Notes in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
             st_url,
-            extra_css=_DOCS_EXTRA_CSS,
+            sidebar_html=_notes_sidebar_html(
+                notes,
+                {
+                    "topic_slug": topic["topic_slug"],
+                    "subtopic_path": subtopic["subtopic_path"],
+                },
+            ),
+            main_class="page-note",
         )
         file_links = "\n".join(
-            f'    <a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a>'
+            f'        <li><a class="content-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
             for f in subtopic["files"]
         )
         html = _apply_template(
             html,
             {
-                "notesSidebar": _notes_sidebar_html(
-                    notes,
-                    {
-                        "topic_slug": topic["topic_slug"],
-                        "subtopic_path": subtopic["subtopic_path"],
-                    },
-                ),
                 "notesTitle": escape_html(subtopic["subtopic_title"]),
                 "notesLead": f'Notes in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
-                "notesContent": f'<section class="gb-index-section"><div class="gb-file-list">{file_links}</div></section>',
+                "notesContent": f'<section class="content-index-section"><ul class="content-file-list">\n{file_links}\n    </ul></section>',
             },
         )
         _write_page(
@@ -1458,6 +1632,12 @@ class PageBuilder:
         note_url = _note_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
 
         note_content = self.gfm_renderer.render(file_data["content"])
+        note_content, toc_html = _build_toc(note_content)
+
+        source_rel = f'notes/{topic["topic"]}'
+        if subtopic_path:
+            source_rel += f'/{subtopic_path}'
+        source_rel += f'/{file_data["filename"]}'
 
         html = self._build_common(
             template,
@@ -1465,20 +1645,21 @@ class PageBuilder:
             f"{file_data['title']} - Notes - {metadata['title']}",
             f"Notes on {file_data['title']}",
             note_url,
-            extra_css=_DOCS_GITBOOK_EXTRA_CSS,
+            sidebar_html=_notes_sidebar_html(
+                notes,
+                {
+                    "topic_slug": topic["topic_slug"],
+                    "subtopic_path": subtopic_path,
+                    "file_slug": file_data["slug"],
+                },
+            ),
+            main_class="page-note",
         )
 
         html = _apply_template(
             html,
             {
-                "notesSidebar": _notes_sidebar_html(
-                    notes,
-                    {
-                        "topic_slug": topic["topic_slug"],
-                        "subtopic_path": subtopic_path,
-                        "file_slug": file_data["slug"],
-                    },
-                ),
+                "toc": toc_html,
                 "note.title": escape_html(file_data["title"]),
                 "note.content": note_content,
                 "notesPager": _notes_pager_html(notes, note_url),
@@ -1499,7 +1680,8 @@ class PageBuilder:
             f"Experiments - {metadata['title']}",
             "Document explorations and experiments",
             "/experiments/",
-            extra_css=_DOCS_EXTRA_CSS,
+            sidebar_html=_experiments_sidebar_html(experiments),
+            main_class="page-experiment",
         )
         sections = []
         for exp in experiments:
@@ -1507,20 +1689,19 @@ class PageBuilder:
             for st in exp["subtopics"]:
                 for f in st["files"]:
                     file_links.append(
-                        f'    <a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                        f'        <li><a class="content-file-link" href="{_exp_file_url(exp["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                     )
             for f in exp["files"]:
                 file_links.append(
-                    f'    <a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                    f'        <li><a class="content-file-link" href="{_exp_file_url(exp["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 )
             sections.append(
-                f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></h2>'
-                f'<div class="gb-file-list">{"".join(file_links)}</div></section>'
+                f'<section class="content-index-section"><h2><a class="content-topic-title" href="{_topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></h2>'
+                f'<ul class="content-file-list">\n{"".join(file_links)}\n    </ul></section>'
             )
         html = _apply_template(
             html,
             {
-                "experimentsSidebar": _experiments_sidebar_html(experiments),
                 "experimentsTitle": "Experiments",
                 "experimentsLead": "Code experiments and explorations",
                 "experimentsContent": "\n".join(sections),
@@ -1539,32 +1720,32 @@ class PageBuilder:
             f'{topic["topic_title"]} - Experiments - {metadata["title"]}',
             f'Experiments in {topic["topic_title"]}',
             topic_url,
-            extra_css=_DOCS_EXTRA_CSS,
+            sidebar_html=_experiments_sidebar_html(
+                experiments, {"topic_slug": topic["topic_slug"]}
+            ),
+            main_class="page-experiment",
         )
         sections = []
         for st in topic["subtopics"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                f'        <li><a class="content-file-link" href="{_exp_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 for f in st["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
-                f'<div class="gb-file-list">{file_links}</div></section>'
+                f'<section class="content-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
+                f'<ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         if topic["files"]:
             file_links = "\n".join(
-                f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+                f'        <li><a class="content-file-link" href="{_exp_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 for f in topic["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>Files</h2><div class="gb-file-list">{file_links}</div></section>'
+                f'<section class="content-index-section"><h2>Files</h2><ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         html = _apply_template(
             html,
             {
-                "experimentsSidebar": _experiments_sidebar_html(
-                    experiments, {"topic_slug": topic["topic_slug"]}
-                ),
                 "experimentsTitle": escape_html(topic["topic_title"]),
                 "experimentsLead": f'Experiments in {topic["topic_title"]}',
                 "experimentsContent": "\n".join(sections),
@@ -1585,26 +1766,26 @@ class PageBuilder:
             f'{subtopic["subtopic_title"]} - {topic["topic_title"]} - Experiments - {metadata["title"]}',
             f'Experiments in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
             st_url,
-            extra_css=_DOCS_EXTRA_CSS,
+            sidebar_html=_experiments_sidebar_html(
+                experiments,
+                {
+                    "topic_slug": topic["topic_slug"],
+                    "subtopic_path": subtopic["subtopic_path"],
+                },
+            ),
+            main_class="page-experiment",
         )
         file_links = "\n".join(
-            f'    <a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a>'
+            f'        <li><a class="content-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
             for f in subtopic["files"]
         )
         html = _apply_template(
             html,
             {
-                "experimentsSidebar": _experiments_sidebar_html(
-                    experiments,
-                    {
-                        "topic_slug": topic["topic_slug"],
-                        "subtopic_path": subtopic["subtopic_path"],
-                    },
-                ),
                 "experimentsTitle": escape_html(subtopic["subtopic_title"]),
                 "experimentsLead": f'Experiments in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
                 "experimentsContent": (
-                    f'<section class="gb-index-section"><div class="gb-file-list">{file_links}</div></section>'
+                    f'<section class="content-index-section"><ul class="content-file-list">\n{file_links}\n    </ul></section>'
                 ),
                 "experimentsPager": "",
             },
@@ -1620,27 +1801,35 @@ class PageBuilder:
     ) -> None:
         """Build a single experiment file page."""
         rendered = _render_experiment_content(file_data, self.gfm_renderer)
+        rendered, toc_html = _build_toc(rendered)
         exp_url = _exp_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
         template = self.data_loader.load_template("experiment")
+
+        source_rel = f'experiments/{topic["topic"]}'
+        if subtopic_path:
+            source_rel += f'/{subtopic_path}'
+        source_rel += f'/{file_data["filename"]}'
+
         html = self._build_common(
             template,
             metadata,
             f'{file_data["title"]} - {metadata["title"]}',
             f'Experiment: {file_data["title"]}',
             exp_url,
-            extra_css=_DOCS_GITBOOK_EXTRA_CSS,
+            sidebar_html=_experiments_sidebar_html(
+                experiments,
+                {
+                    "topic_slug": topic["topic_slug"],
+                    "subtopic_path": subtopic_path,
+                    "file_slug": file_data["slug"],
+                },
+            ),
+            main_class="page-experiment",
         )
         html = _apply_template(
             html,
             {
-                "experimentsSidebar": _experiments_sidebar_html(
-                    experiments,
-                    {
-                        "topic_slug": topic["topic_slug"],
-                        "subtopic_path": subtopic_path,
-                        "file_slug": file_data["slug"],
-                    },
-                ),
+                "toc": toc_html,
                 "experiment.title": escape_html(file_data["title"]),
                 "experiment.meta": escape_html(file_data["ext"].upper()),
                 "experiment.content": rendered,
@@ -2011,7 +2200,7 @@ def build_site() -> None:
 
     _logger.info("Building pages...")
     avatar = f"{BASE_PATH}/static/images/avatar.jpg"
-    page_builder.build_home(metadata, essays, books, projects, author, avatar, precept)
+    page_builder.build_home(metadata, essays, books, projects, author, avatar, precept, quotes, experiments, notes)
     page_builder.build_essays_list(metadata, essays)
     for essay in essays:
         page_builder.build_essay(metadata, essay)
@@ -2043,6 +2232,11 @@ def build_site() -> None:
                     metadata, exp, f, experiments, subtopic_path=st["subtopic_path"]
                 )
     page_builder.build_sitelinks(metadata, essays, projects, notes, experiments)
+
+    _logger.info("Generating search index...")
+    (OUT_DIR / "static" / "search-index.js").write_text(
+        build_search_js(essays, notes, experiments, books, projects, quotes)
+    )
 
     _logger.info("Generating RSS, sitemap, and robots.txt...")
     (OUT_DIR / "feed.xml").write_text(

@@ -64,10 +64,18 @@
         "pinned": false
     },
     {
-        "title": "prakashsellathurai.github.io",
-        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-        "website": "https://prakashsellathurai.com/",
-        "description": "personal website",
+        "title": "leetcode-solutions",
+        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
+        "description": "My solutions to Leetcode problems",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "pi-llama-wsl2",
+        "href": "https://github.com/prakashsellathurai/pi-llama-wsl2",
+        "website": null,
+        "description": "Pi coding agent extension: llama.cpp provider with dynamic model + context window discovery",
         "stars": 0,
         "pinned": false
     },
@@ -324,7 +332,7 @@
         "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
         "website": "https://www.prakashsellathurai.com/blog/2020/10/03/awesome-product-management",
         "description": "A curated list of Product Management Resources :seedling:",
-        "stars": 63,
+        "stars": 65,
         "pinned": false
     },
     {

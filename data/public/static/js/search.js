@@ -135,19 +135,19 @@
     }
 
     function init() {
-        var form = document.querySelector("#p-search form");
+        var form = document.querySelector("#site-search form");
         if (!form) return;
-        var input = form.querySelector("input[data-gb-search]");
+        var input = form.querySelector("input[data-search]");
         if (!input) return;
 
         var domain = form.getAttribute("data-site-domain") || "";
         var wrap = document.createElement("div");
-        wrap.className = "sb-wrap";
+        wrap.className = "search-wrap";
         form.parentNode.insertBefore(wrap, form);
         wrap.appendChild(form);
 
         var dropdown = document.createElement("div");
-        dropdown.className = "sb-dropdown";
+        dropdown.className = "search-dropdown";
         dropdown.setAttribute("role", "listbox");
         wrap.appendChild(dropdown);
 
@@ -180,13 +180,13 @@
                 var d = docs[results[i].id];
                 items.push(d);
                 html +=
-                    '<div class="sb-item" role="option" data-idx="' + results[i].id + '">' +
-                    '<span class="sb-title">' + highlight(escapeHtml(d[0]), q) + "</span>" +
-                    '<span class="sb-type">' + TYPE_LABELS[d[2]] + "</span>" +
+                    '<div class="search-item" role="option" data-idx="' + results[i].id + '">' +
+                    '<span class="search-title">' + highlight(escapeHtml(d[0]), q) + "</span>" +
+                    '<span class="search-type">' + TYPE_LABELS[d[2]] + "</span>" +
                     "</div>";
             }
             html +=
-                '<div class="sb-google" role="option" data-idx="google">' +
+                '<div class="search-google" role="option" data-idx="google">' +
                 'Search Google for <strong>"' + escapeHtml(q) + '"</strong> on ' +
                 escapeHtml(domain) + "</div>";
             dropdown.innerHTML = html;
@@ -197,7 +197,7 @@
         }
 
         function setActive(idx) {
-            var rows = dropdown.querySelectorAll(".sb-item, .sb-google");
+            var rows = dropdown.querySelectorAll(".search-item, .search-google");
             for (var i = 0; i < rows.length; i++) {
                 rows[i].classList.toggle("active", i === idx);
             }
@@ -205,9 +205,9 @@
         }
 
         function navigate(idx) {
-            var row = dropdown.querySelectorAll(".sb-item, .sb-google")[idx];
+            var row = dropdown.querySelectorAll(".search-item, .search-google")[idx];
             if (!row) return;
-            if (row.classList.contains("sb-google")) {
+            if (row.classList.contains("search-google")) {
                 window.location.href = googleUrl(normalizeQuery(input.value));
             } else {
                 window.location.href = docs[+row.getAttribute("data-idx")][1];
@@ -228,16 +228,16 @@
 
         dropdown.addEventListener("mousedown", function (e) {
             e.preventDefault();
-            var row = e.target.closest(".sb-item, .sb-google");
+            var row = e.target.closest(".search-item, .search-google");
             if (!row) return;
-            var all = dropdown.querySelectorAll(".sb-item, .sb-google");
+            var all = dropdown.querySelectorAll(".search-item, .search-google");
             navigate(Array.prototype.indexOf.call(all, row));
         });
 
         dropdown.addEventListener("mousemove", function (e) {
-            var row = e.target.closest(".sb-item, .sb-google");
+            var row = e.target.closest(".search-item, .search-google");
             if (row) {
-                var all = dropdown.querySelectorAll(".sb-item, .sb-google");
+                var all = dropdown.querySelectorAll(".search-item, .search-google");
                 setActive(Array.prototype.indexOf.call(all, row));
             }
         });
@@ -254,11 +254,11 @@
         input.addEventListener("keydown", function (e) {
             if (e.key === "ArrowDown") {
                 e.preventDefault();
-                var total = dropdown.querySelectorAll(".sb-item, .sb-google").length;
+                var total = dropdown.querySelectorAll(".search-item, .search-google").length;
                 if (total) setActive((activeIndex + 1) % total);
             } else if (e.key === "ArrowUp") {
                 e.preventDefault();
-                var totalUp = dropdown.querySelectorAll(".sb-item, .sb-google").length;
+                var totalUp = dropdown.querySelectorAll(".search-item, .search-google").length;
                 if (totalUp) setActive((activeIndex - 1 + totalUp) % totalUp);
             } else if (e.key === "Enter") {
                 var q = normalizeQuery(input.value);

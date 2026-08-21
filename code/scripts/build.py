@@ -508,17 +508,17 @@ def _personal_tools_html(metadata: SiteMetadata) -> str:
 def _search_html(metadata: SiteMetadata) -> str:
     domain = metadata["siteUrl"].rstrip("/").split("//", 1)[-1]
     return f"""<form action="https://www.google.com/search" method="get" role="search" data-site-domain="{escape_html(domain)}">
-<input type="search" name="q" placeholder="Search this site" aria-label="Search" data-gb-search>
+<input type="search" name="q" placeholder="Search this site" aria-label="Search" data-search>
 <button type="submit" aria-label="Search"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></form>"""
 # TODO: html strings can be put as html file and and load and apply 
 
 def _essays_sidebar_html(essays: list[Essay]) -> str:
     """Return a flat list of essay links as a wiki-panel portal section."""
     links = "\n".join(
-        f'      <a class="gb-tree-file" href="{_essay_url(e["slug"])}">{escape_html(e["title"])}</a>'
+        f'      <a class="nav-tree-file" href="{_essay_url(e["slug"])}">{escape_html(e["title"])}</a>'
         for e in essays
     )
-    return _panel_section("Essays", f"    <div class=\"gb-tree-inner\">\n{links}\n    </div>", "p-essays")
+    return _panel_section("Essays", f"    <div class=\"nav-tree-inner\">\n{links}\n    </div>", "site-essays")
 
 
 def _panel_section(title: str, body: str, id_attr: str = "") -> str:
@@ -557,23 +557,23 @@ def _tools_links_html(metadata: SiteMetadata) -> str:
 
 
 def render_header(metadata: SiteMetadata, sidebar_html: str = "") -> str:
-    return f"""<input type="checkbox" id="mw-nav-toggle" class="mw-nav-toggle" aria-hidden="true">
-<label for="mw-nav-toggle" class="mw-burger" aria-label="Toggle navigation"><span>&#9776;</span></label>
-<header id="mw-head">
-  <div id="p-logo">
+    return f"""<input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+<label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation"><span>&#9776;</span></label>
+<header id="site-header">
+  <div id="site-logo">
     <a href="/" aria-label="Home">
       <span class="logo-initials">PS</span>
     </a>
   </div>
-  <div id="p-personal">{_personal_tools_html(metadata)}</div>
-  <div id="p-search">{_search_html(metadata)}</div>
+  <div id="site-personal">{_personal_tools_html(metadata)}</div>
+  <div id="site-search">{_search_html(metadata)}</div>
 </header>
-<aside id="mw-panel">
-  {_panel_section("Navigation", _nav_links_html(metadata), "p-navigation")}
+<aside id="site-sidebar">
+  {_panel_section("Navigation", _nav_links_html(metadata), "site-navigation")}
   {sidebar_html}
-  {_panel_section("Tools", _tools_links_html(metadata), "p-tb")}
+  {_panel_section("Tools", _tools_links_html(metadata), "site-tools")}
 </aside>
-<main id="content" class="mw-body">
+<main id="content" class="site-main">
   <div id="bodyContent">
 """
 # TODO: html strings can be put as html file and and load and apply 
@@ -654,7 +654,7 @@ def _sidebar_tree_html(
                     and current.get("subtopic_path") == cur_sub
                     and current.get("file_slug") == f["slug"]
                 )
-                cls = ' class="gb-tree-file active"' if active else ' class="gb-tree-file"'
+                cls = ' class="nav-tree-file active"' if active else ' class="nav-tree-file"'
                 out.append(f'<a{cls} href="{href}">{escape_html(f["title"])}</a>')
             return "\n".join(out)
 
@@ -672,8 +672,8 @@ def _sidebar_tree_html(
                 )
                 open_attr = " open" if expanded else ""
                 out.append(
-                    f'<details class="gb-tree-sub"{open_attr}><summary>{escape_html(name)}</summary>'
-                    f'<div class="gb-tree-inner">{inner}</div></details>'
+                    f'<details class="nav-tree-sub"{open_attr}><summary>{escape_html(name)}</summary>'
+                    f'<div class="nav-tree-inner">{inner}</div></details>'
                 )
             return "\n".join(out)
 
@@ -682,11 +682,11 @@ def _sidebar_tree_html(
         inner = files_html(root, []) + dirs_html(root["dirs"], [])
         open_attr = " open" if topic_active else ""
         parts_html.append(
-            f'<details class="gb-tree-dir"{open_attr}><summary{summary_cls}>{escape_html(item[topic_title_key])}</summary>'
-            f'<div class="gb-tree-inner">{inner}</div></details>'
+            f'<details class="nav-tree-dir"{open_attr}><summary{summary_cls}>{escape_html(item[topic_title_key])}</summary>'
+            f'<div class="nav-tree-inner">{inner}</div></details>'
         )
 
-    return f'<nav class="gb-tree">\n    {"\n    ".join(parts_html)}\n  </nav>'
+    return f'<nav class="nav-tree">\n    {"\n    ".join(parts_html)}\n  </nav>'
 
 
 def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> str:
@@ -699,7 +699,7 @@ def _notes_sidebar_html(notes: list[NoteTopic], current: dict | None = None) -> 
         "topic_slug",
         "notes",
     )
-    return _panel_section("Notes", tree, "p-notes")
+    return _panel_section("Notes", tree, "site-notes")
 
 
 def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: str) -> str:
@@ -714,17 +714,17 @@ def _pager_html(items: list[dict], current: str, get_id, get_href, aria_label: s
         arrow = "&larr;" if direction == "prev" else "&rarr;"
         if item is None:
             return (
-                f'<a class="gb-pager-{direction} disabled" href="#" tabindex="-1">'
-                f'<span class="gb-pager-label">{arrow} {label}</span>'
-                f'<span class="gb-pager-title"></span></a>'
+                f'<a class="content-pager-{direction} disabled" href="#" tabindex="-1">'
+                f'<span class="content-pager-label">{arrow} {label}</span>'
+                f'<span class="content-pager-title"></span></a>'
             )
         return (
-            f'<a class="gb-pager-{direction}" href="{get_href(item)}">'
-            f'<span class="gb-pager-label">{arrow} {label}</span>'
-            f'<span class="gb-pager-title">{escape_html(item["title"])}</span></a>'
+            f'<a class="content-pager-{direction}" href="{get_href(item)}">'
+            f'<span class="content-pager-label">{arrow} {label}</span>'
+            f'<span class="content-pager-title">{escape_html(item["title"])}</span></a>'
         )
 
-    return f"""<nav class="gb-pager" aria-label="{aria_label}">
+    return f"""<nav class="content-pager" aria-label="{aria_label}">
   {cell("prev", prev_item)}
   {cell("next", next_item)}
 </nav>"""# TODO: html strings can be put as html file and and load and apply 
@@ -1042,11 +1042,11 @@ def _make_code_cells_collapsible(body_html: str) -> str:
         inner = inp.find("div", class_="inner_cell", recursive=False)
         if inner is None:
             continue
-        details = soup.new_tag("details", attrs={"class": "gb-code-block"})
+        details = soup.new_tag("details", attrs={"class": "notebook-cell"})
         summary = soup.new_tag("summary")
-        expand = soup.new_tag("span", attrs={"class": "gb-code-expand"})
+        expand = soup.new_tag("span", attrs={"class": "notebook-expand"})
         expand.string = "Expand Code"
-        collapse = soup.new_tag("span", attrs={"class": "gb-code-collapse"})
+        collapse = soup.new_tag("span", attrs={"class": "notebook-collapse"})
         collapse.string = "Collapse Code"
         summary.append(expand)
         summary.append(collapse)
@@ -1520,15 +1520,15 @@ class PageBuilder:
             for st in note["subtopics"]:
                 for f in st["files"]:
                     file_links.append(
-                        f'        <li><a class="gb-file-link" href="{_note_file_url(note["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
+                        f'        <li><a class="content-file-link" href="{_note_file_url(note["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                     )
             for f in note["files"]:
                 file_links.append(
-                    f'        <li><a class="gb-file-link" href="{_note_file_url(note["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
+                    f'        <li><a class="content-file-link" href="{_note_file_url(note["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                 )
             sections.append(
-                f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_note_topic_url(note["topic_slug"])}">{escape_html(note["topic_title"])}</a></h2>'
-                f'<ul class="gb-file-list">\n{"".join(file_links)}\n    </ul></section>'
+                f'<section class="content-index-section"><h2><a class="content-topic-title" href="{_note_topic_url(note["topic_slug"])}">{escape_html(note["topic_title"])}</a></h2>'
+                f'<ul class="content-file-list">\n{"".join(file_links)}\n    </ul></section>'
             ) 
 
         html = _apply_template(
@@ -1559,20 +1559,20 @@ class PageBuilder:
         sections = []
         for st in topic["subtopics"]:
             file_links = "\n".join(
-                f'        <li><a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
+                f'        <li><a class="content-file-link" href="{_note_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                 for f in st["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
-                f'<ul class="gb-file-list">\n{file_links}\n    </ul></section>'
+                f'<section class="content-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
+                f'<ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         if topic["files"]:
             file_links = "\n".join(
-                f'        <li><a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
+                f'        <li><a class="content-file-link" href="{_note_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
                 for f in topic["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>Notes</h2><ul class="gb-file-list">\n{file_links}\n    </ul></section>'
+                f'<section class="content-index-section"><h2>Notes</h2><ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         html = _apply_template(
             html,
@@ -1603,7 +1603,7 @@ class PageBuilder:
             ),
         )
         file_links = "\n".join(
-            f'        <li><a class="gb-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">note</span></a></li>'
+            f'        <li><a class="content-file-link" href="{_note_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">note</span></a></li>'
             for f in subtopic["files"]
         )
         html = _apply_template(
@@ -1611,7 +1611,7 @@ class PageBuilder:
             {
                 "notesTitle": escape_html(subtopic["subtopic_title"]),
                 "notesLead": f'Notes in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
-                "notesContent": f'<section class="gb-index-section"><ul class="gb-file-list">\n{file_links}\n    </ul></section>',
+                "notesContent": f'<section class="content-index-section"><ul class="content-file-list">\n{file_links}\n    </ul></section>',
             },
         )
         _write_page(
@@ -1681,15 +1681,15 @@ class PageBuilder:
             for st in exp["subtopics"]:
                 for f in st["files"]:
                     file_links.append(
-                        f'        <li><a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
+                        f'        <li><a class="content-file-link" href="{_exp_file_url(exp["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                     )
             for f in exp["files"]:
                 file_links.append(
-                    f'        <li><a class="gb-file-link" href="{_exp_file_url(exp["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
+                    f'        <li><a class="content-file-link" href="{_exp_file_url(exp["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 )
             sections.append(
-                f'<section class="gb-index-section"><h2><a class="gb-topic-title" href="{_topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></h2>'
-                f'<ul class="gb-file-list">\n{"".join(file_links)}\n    </ul></section>'
+                f'<section class="content-index-section"><h2><a class="content-topic-title" href="{_topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></h2>'
+                f'<ul class="content-file-list">\n{"".join(file_links)}\n    </ul></section>'
             )
         html = _apply_template(
             html,
@@ -1719,20 +1719,20 @@ class PageBuilder:
         sections = []
         for st in topic["subtopics"]:
             file_links = "\n".join(
-                f'        <li><a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
+                f'        <li><a class="content-file-link" href="{_exp_file_url(topic["topic_slug"], st["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 for f in st["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
-                f'<ul class="gb-file-list">\n{file_links}\n    </ul></section>'
+                f'<section class="content-index-section"><h2>{escape_html(st["subtopic_title"])}</h2>'
+                f'<ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         if topic["files"]:
             file_links = "\n".join(
-                f'        <li><a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
+                f'        <li><a class="content-file-link" href="{_exp_file_url(topic["topic_slug"], None, f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
                 for f in topic["files"]
             )
             sections.append(
-                f'<section class="gb-index-section"><h2>Files</h2><ul class="gb-file-list">\n{file_links}\n    </ul></section>'
+                f'<section class="content-index-section"><h2>Files</h2><ul class="content-file-list">\n{file_links}\n    </ul></section>'
             )
         html = _apply_template(
             html,
@@ -1766,7 +1766,7 @@ class PageBuilder:
             ),
         )
         file_links = "\n".join(
-            f'        <li><a class="gb-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="gb-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
+            f'        <li><a class="content-file-link" href="{_exp_file_url(topic["topic_slug"], subtopic["subtopic_path"], f["slug"])}">{escape_html(f["title"])}<span class="content-file-meta">{escape_html(f["ext"].upper())} file</span></a></li>'
             for f in subtopic["files"]
         )
         html = _apply_template(
@@ -1775,7 +1775,7 @@ class PageBuilder:
                 "experimentsTitle": escape_html(subtopic["subtopic_title"]),
                 "experimentsLead": f'Experiments in {topic["topic_title"]} / {subtopic["subtopic_title"]}',
                 "experimentsContent": (
-                    f'<section class="gb-index-section"><ul class="gb-file-list">\n{file_links}\n    </ul></section>'
+                    f'<section class="content-index-section"><ul class="content-file-list">\n{file_links}\n    </ul></section>'
                 ),
                 "experimentsPager": "",
             },

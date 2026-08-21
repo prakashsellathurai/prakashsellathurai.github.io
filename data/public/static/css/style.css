@@ -34,7 +34,6 @@ html {
 
 body {
     margin: 0;
-    background: var(--color-bg-page);
     color: var(--color-text);
     font-family: var(--font-body);
     line-height: 1.8;
@@ -46,6 +45,28 @@ body {
         "panel content"
         "footer footer";
     min-height: 100vh;
+  opacity: 1;
+
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background-image: url('/static/images/wabi-sabi-bg.webp');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: cover;
+
+  mask-image: linear-gradient(to top left, black 0%, black 20%, transparent 70%);
+  -webkit-mask-image: linear-gradient(to top left, black 0%, black 20%, transparent 70%);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+
+  z-index: -1;
+  pointer-events: none;
 }
 
 a {
@@ -81,9 +102,12 @@ img {
     grid-area: head;
     position: relative;
     height: 5.6em;
-    background: var(--color-bg-page);
     display: flex;
     flex-direction: column;
+    background-image: url('/static/images/wabi-sabi-bg.webp');
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 #site-personal {
@@ -227,6 +251,7 @@ img {
     grid-area: panel;
     padding: 0.6em 0.9em 1.5em;
     overflow-y: auto;
+    background-color: #f4f1ea24;
 }
 
 #site-logo {
@@ -261,16 +286,18 @@ img {
 
 .portal {
     margin-bottom: 1.1em;
+    border-left: 2px solid #c9beac; /* sampled accent tone */
+    padding-left: 0.75rem;
 }
 
 .portal h3 {
     font-size: 0.8em;
     font-weight: normal;
-    color: var(--color-text-muted);
     border-bottom: 1px solid var(--color-border-accent);
     padding-bottom: 0.2em;
     margin: 0 0 0.35em;
     letter-spacing: 0.02em;
+    color: #8b7355;
 }
 
 .portal ul {
@@ -386,7 +413,7 @@ img {
 
 #content {
     grid-area: content;
-    background: var(--color-bg-surface);
+    
     border: 1px solid var(--color-border-light);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     padding: 1.1em 2em 2em;
@@ -751,7 +778,7 @@ article.essay-item .tags a {
 
 .home-box {
     border: 1px solid var(--color-border-light);
-    background: var(--color-bg-surface);
+    background: #ffffff69;
     margin-bottom: 1.2em;
 }
 
@@ -868,15 +895,15 @@ article.essay-item .tags a {
            0 40px 80px -30px rgba(0, 0, 0, 0.15);
        position: relative;
    }
-   
+
    .shelf-section {
        margin-bottom: 20px;
    }
-   
+
    .shelf-section:last-child {
        margin-bottom: 0;
    }
-   
+
    .shelf-label {
        display: flex;
        align-items: center;
@@ -888,33 +915,33 @@ article.essay-item .tags a {
        color: #7a6a58;
        padding: 0 6px 10px;
    }
-   
+
    .shelf-label .tag-dot {
        width: 8px;
        height: 8px;
        border-radius: 50%;
        display: inline-block;
    }
-   
+
    .tag-curated .tag-dot {
        background: #b0563c;
    }
-   
+
    .tag-current .tag-dot {
        background: #7a9770;
        box-shadow: 0 0 8px #7a9770;
    }
-   
+
    .tag-read .tag-dot {
        background: #c9a15a;
    }
-   
+
    .shelf-label .n {
        margin-left: auto;
        color: #9a8a78;
        font-size: 11px;
    }
-   
+
    .compartment {
        background: linear-gradient(
            180deg,
@@ -929,7 +956,7 @@ article.essay-item .tags a {
            inset 0 -18px 14px -12px rgba(120, 105, 85, 0.3),
            0 10px 10px -6px rgba(0, 0, 0, 0.1);
    }
-   
+
    .compartment::after {
        content: "";
        position: absolute;
@@ -940,14 +967,14 @@ article.essay-item .tags a {
        border-radius: 0 0 4px 4px;
        pointer-events: none;
    }
-   
+
    .shelf-boards {
        display: flex;
        flex-wrap: wrap;
        align-items: flex-end;
        gap: 10px 8px;
    }
-   
+
    .book-rating {
        position: absolute;
        left: 0;
@@ -961,7 +988,7 @@ article.essay-item .tags a {
        text-align: center;
        border-radius: 0 0 4px 4px;
    }
-   
+
    /* Book card */
    .book {
        position: relative;
@@ -985,19 +1012,19 @@ article.essay-item .tags a {
        flex-shrink: 0;
        margin-bottom: 14px;
    }
-   
+
    .book:nth-child(3n) {
        transform: rotate(-1.2deg);
    }
-   
+
    .book:nth-child(4n) {
        transform: rotate(1deg);
    }
-   
+
    .book:nth-child(5n) {
        transform: rotate(-0.5deg);
    }
-   
+
    .book:hover {
        transform: translateY(-10px) rotate(0deg) scale(1.04);
        box-shadow:
@@ -1006,7 +1033,7 @@ article.essay-item .tags a {
            inset 2px 0 0 rgba(255, 255, 255, 0.08);
        z-index: 5;
    }
-   
+
    .book .book-placeholder {
        position: absolute;
        inset: 0;
@@ -1022,7 +1049,7 @@ article.essay-item .tags a {
        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
        font-weight: 500;
    }
-   
+
    .book .book-shine {
        position: absolute;
        inset: 0;
@@ -1034,12 +1061,12 @@ article.essay-item .tags a {
        border-radius: 2px 4px 4px 2px;
        pointer-events: none;
    }
-   
+
    /* Currently reading bookmark */
    .book.current {
        outline: 1px solid rgba(122, 151, 112, 0.7);
    }
-   
+
    .book.current::before {
        content: "";
        position: absolute;
@@ -1051,7 +1078,7 @@ article.essay-item .tags a {
        clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
    }
-   
+
    /* Tooltip */
    .book .book-tooltip {
        position: absolute;
@@ -1075,19 +1102,19 @@ article.essay-item .tags a {
        z-index: 10;
        color: var(--color-text);
    }
-   
+
    .book .book-tooltip b {
        display: block;
        font-weight: 600;
        font-size: 13px;
        margin-bottom: 2px;
    }
-   
+
    .book .book-tooltip span {
        color: var(--color-text-muted);
        font-style: italic;
    }
-   
+
    .book .book-tooltip::after {
        content: "";
        position: absolute;
@@ -1097,12 +1124,12 @@ article.essay-item .tags a {
        border: 6px solid transparent;
        border-top-color: var(--color-bg-page);
    }
-   
+
    .book:hover .book-tooltip {
        opacity: 1;
        transform: translateX(-50%) translateY(-4px);
    }
-   
+
    @media (max-width: 520px) {
        .book {
            width: 64px;

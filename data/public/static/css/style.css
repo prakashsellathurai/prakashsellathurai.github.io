@@ -1528,7 +1528,7 @@ article.essay-item .tags a {
 
     #site-sidebar {
         position: fixed;
-        top: 0;
+        top: 5.7em;
         left: 0;
         bottom: 0;
         width: 270px;

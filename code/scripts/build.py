@@ -1400,7 +1400,7 @@ class PageBuilder:
 
         on_this_day_html = "\n".join(
             f'    <li><a href="{escape_html(p["link"])}" target="_blank" rel="noopener">{escape_html(p["title"])}</a></li>'
-            for p in (precept[:4] or [])
+            for p in (precept[:5] or [])
         )
         if on_this_day_html:
             on_this_day_html = f"    <ul>\n{on_this_day_html}\n    </ul>"

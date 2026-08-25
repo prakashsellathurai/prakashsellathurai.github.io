@@ -73,7 +73,7 @@ name = "cffi"
 version = "2.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pycparser", marker = "implementation_name != 'PyPy'" },
+    { name = "pycparser" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9e/ef/008a1939e372c06329a3fce4279c02f328488f3526744906eeec3da7ad5f/cffi-2.1.1.tar.gz", hash = "sha256:dd31f52ea1086513bb9df30f8fcee9b8918323ae067a3d5b78bc826a000712be", size = 530807, upload-time = "2026-08-03T21:21:18.939Z" }
 wheels = [
@@ -1137,15 +1137,12 @@ wheels = [
 
 [[package]]
 name = "ssserve"
-version = "0.3.3"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c0/03/43c14905a6662761ac26786c001a32a9a7049b50d4d8ea93698d3f04758c/ssserve-0.3.3.tar.gz", hash = "sha256:dca96e0f71ae289939123e1069f7e941508beb4182d971e1a1e56a2e0d03de19", size = 16643, upload-time = "2026-08-21T06:14:00.522Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/dc/003f037cb4c16969b14e0a7b37c2979afdd11a646af18538fd0dcc38d075/ssserve-0.3.3-py3-none-any.whl", hash = "sha256:c743611378a788762d73d937e4d3f7020408fa41ab1c6a9b2dea7e3541fc15bc", size = 17145, upload-time = "2026-08-21T06:13:59.335Z" },
-]
+sdist = { url = "https://files.pythonhosted.org/packages/2b/71/fdbf7518de2f37cd01c0e3f2f099742ca510733d14422d0e54f3ac840c2e/ssserve-0.4.0.tar.gz", hash = "sha256:d28f583d95be3a71ade43bca1a3d26f219623aa1b118288db688d167b4bf0ceb", size = 36073, upload-time = "2026-08-25T13:30:34.707Z" }
 
 [[package]]
 name = "stack-data"

@@ -14,17 +14,16 @@
 }
 
 :root {
-    --color-bg-page: #f0ead2;
-    --color-bg-surface: #ffffff;
-    --color-bg-muted: #dde5b4;
-    --color-text: #4a3c33;
-    --color-text-muted: #6c584c;
-    --color-link: #4d6023;
-    --color-link-visited: #a98467;
-    --color-border-strong: #a98467;
-    --color-border-light: #e2dec5;
-    --color-border-accent: #adc178;
-    --color-logo-accent: #adc178;
+    --color-bg-page: #f9f5ee;
+    --color-bg-muted: #f1ddbf5c;
+    --color-text: #2e3a4a;
+    --color-text-muted: #525e75;
+    --color-link: #4e7a6a;
+    --color-link-visited: #3d5e50;
+    --color-border-strong: #78938a;
+    --color-border-light: #d4cbb5;
+    --color-border-accent: #92ba92;
+    --color-logo-accent: #78938a;
     --font-heading: "Lora", "Linux Libertine", Georgia, "Times New Roman", serif;
     --font-body: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }

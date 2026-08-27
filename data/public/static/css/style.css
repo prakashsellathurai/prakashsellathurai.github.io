@@ -31,8 +31,8 @@
 /* ---- Dark mode ---- */
 [data-theme="dark"] {
     --color-bg-page: #231d19;
-    --color-bg-surface: #332924;
-    --color-bg-muted: #6c584c;
+    --color-bg-surface: transparent;
+    --color-bg-muted: transparent;
     --color-text: #f0ead2;
     --color-text-muted: #dde5b4;
     --color-link: #adc178;

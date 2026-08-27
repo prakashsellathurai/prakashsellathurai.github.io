@@ -490,6 +490,7 @@ def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, ext
   {_render_json_ld(schemas)}
   {rss_link}
   {_FAVICON_LINKS}
+  <script>(function(){{var t;try{{t=localStorage.getItem("theme")}}catch(e){{}}if(!t)t=window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}})()</script>
   {_render_css_link(extra_css)}
 </head>
 """# TODO: html strings can be put as html file and and load and apply 
@@ -566,7 +567,7 @@ def render_header(metadata: SiteMetadata, sidebar_html: str = "", main_class: st
       <span class="logo-initials">PS</span>
     </a>
   </div>
-  <div id="site-personal">{_personal_tools_html(metadata)}</div>
+  <div id="site-personal">{_personal_tools_html(metadata)}<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#127769;</button></div>
   <div id="site-search">{_search_html(metadata)}</div>
 </header>
 <aside id="site-sidebar">
@@ -606,6 +607,7 @@ def render_footer(metadata: SiteMetadata) -> str:
   </div>
 </footer>
 <script src="/static/js/search.js"></script>
+<script src="/static/js/theme.js"></script>
 """# TODO: html strings can be put as html file and and load and apply 
 
 

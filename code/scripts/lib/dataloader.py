@@ -50,6 +50,13 @@ class DataLoader:
             raise FileNotFoundError(f"Template not found: {template_path}")
         return template_path.read_text()
 
+    def load_partial(self, name: str) -> str:
+        """Load an HTML partial from templates/partials/."""
+        partial_path = self.data_dir / "templates" / "partials" / f"{name}.html"
+        if not partial_path.exists():
+            raise FileNotFoundError(f"Partial not found: {partial_path}")
+        return partial_path.read_text()
+
     def read_author(self) -> dict:
         content = (
             self.data_dir / "authors" / "default.mdx"

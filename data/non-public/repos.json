@@ -48,14 +48,6 @@
         "pinned": true
     },
     {
-        "title": "ssserve",
-        "href": "https://github.com/prakashsellathurai/ssserve",
-        "website": "https://pypi.org/project/ssserve/",
-        "description": "Python port of [vercel/serve](https://github.com/vercel/serve) \u2014 static file serving and directory listing.",
-        "stars": 0,
-        "pinned": false
-    },
-    {
         "title": "Grimoire",
         "href": "https://github.com/prakashsellathurai/Grimoire",
         "website": "",
@@ -68,6 +60,14 @@
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
         "description": "personal website",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "ssserve",
+        "href": "https://github.com/prakashsellathurai/ssserve",
+        "website": "https://pypi.org/project/ssserve/",
+        "description": "Python port of [vercel/serve](https://github.com/vercel/serve) \u2014 static file serving and directory listing.",
         "stars": 0,
         "pinned": false
     },
@@ -324,7 +324,7 @@
         "href": "https://github.com/prakashsellathurai/Awesome-Product-Management",
         "website": "https://www.prakashsellathurai.com/blog/2020/10/03/awesome-product-management",
         "description": "A curated list of Product Management Resources :seedling:",
-        "stars": 65,
+        "stars": 66,
         "pinned": false
     },
     {

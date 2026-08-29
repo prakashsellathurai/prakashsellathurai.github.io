@@ -82,11 +82,27 @@ def _recent_notes(notes: list[NoteTopic], limit: int = 5) -> list[tuple[NoteTopi
     return [(note, f, st_path) for _, note, f, st_path in candidates[:limit]]
 
 
+def _recent_experiments(experiments: list[ExperimentTopic], limit: int = 5) -> list[tuple[ExperimentTopic, FileData, str | None]]:
+    """Return the most recently committed experiment files across all topics."""
+    grimoire_dir = pathlib.Path("data/non-public/submodules/Grimoire")
+    candidates: list[tuple[int, ExperimentTopic, FileData, str | None]] = []
+    for exp in experiments:
+        for st in exp["subtopics"]:
+            for f in st["files"]:
+                rel = pathlib.Path("experiments") / exp["topic"] / st["subtopic_path"] / f["filename"]
+                candidates.append((_note_commit_time(grimoire_dir, rel), exp, f, st["subtopic_path"]))
+        for f in exp["files"]:
+            rel = pathlib.Path("experiments") / exp["topic"] / f["filename"]
+            candidates.append((_note_commit_time(grimoire_dir, rel), exp, f, None))
+    candidates.sort(key=lambda c: c[0], reverse=True)
+    return [(exp, f, st_path) for _, exp, f, st_path in candidates[:limit]]
+
+
 def _note_commit_time(grimoire_dir: pathlib.Path, rel_path: pathlib.Path) -> int:
     """Return the last commit timestamp for a note file in the Grimoire submodule."""
     try:
         result = subprocess.run(
-            ["git", "-C", str(grimoire_dir), "log", "-1", "--format=%ct", "--", str(rel_path)],
+            ["git", "-C", str(grimoire_dir), "log", "-1", "--format=%ct", "--", rel_path.as_posix()],
             capture_output=True,
             text=True,
             check=True,
@@ -545,14 +561,7 @@ class PageBuilder:
         if did_you_know_html:
             did_you_know_html = f'    <ul>\n{did_you_know_html}\n    </ul>'
 
-        recent_experiments = []
-        for exp in experiments:
-            for f in exp["files"][:1]:
-                recent_experiments.append((exp, f, None))
-            for st in exp["subtopics"]:
-                for f in st["files"][:1]:
-                    recent_experiments.append((exp, f, st["subtopic_path"]))
-        recent_experiments = recent_experiments[:5]
+        recent_experiments = _recent_experiments(experiments)
         in_the_news_html = "\n".join(
             f'    <li><a href="{exp_file_url(exp["topic_slug"], st_path, f["slug"])}">{escape_html(f["title"])}</a>'
             f' <span class="meta">{escape_html(exp["topic_title"])}</span></li>'

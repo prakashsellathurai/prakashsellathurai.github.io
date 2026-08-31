@@ -58,6 +58,7 @@ def build_site() -> None:
     quotes = data_loader.get_quotes()
     notes = data_loader.get_notes()
     experiments = data_loader.get_experiments()
+    links = data_loader.get_links()
 
     _logger.info(
         "Found %d essays, %d projects, %d leetcode solutions, %d quotes, %d notes, %d experiment topics",
@@ -85,6 +86,7 @@ def build_site() -> None:
     page_builder.build_projects(metadata, projects)
     page_builder.build_bookshelf(metadata, books)
     page_builder.build_quotes(metadata, quotes)
+    page_builder.build_cabinet(metadata, links, precept)
     page_builder.build_notes_list(metadata, notes)
     for topic in notes:
         page_builder.build_note_topic_index(metadata, topic, notes)

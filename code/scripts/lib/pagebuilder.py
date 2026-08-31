@@ -432,6 +432,7 @@ def _nav_links_html(metadata: SiteMetadata) -> str:
         ("/notes/", "Notes"),
         ("/experiments/", "Experiments"),
         ("/quotes.html", "Quotes"),
+        ("/cabinet.html", "Cabinet"),
         ("/about.html", "About"),
         ("/tags/", "Tags"),
         ("/static/resume/prakash_s_resume.pdf", "Resume"),
@@ -1166,6 +1167,113 @@ class PageBuilder:
         html = apply_template(html, {"quotesList": quotes_list_html})
         write_page(OUT_DIR, "quotes.html", html)
 
+    def build_cabinet(self, metadata: SiteMetadata, links: list[dict], precept: list[dict]) -> None:
+        """Build the cabinet of curiosities page."""
+        template = self.data_loader.load_template("cabinet")
+
+        html = self._build_common(
+            template,
+            metadata,
+            f"Cabinet of Curiosities - {metadata['title']}",
+            "A curated treasury of instruments, treatises, repositories and philosophical maxims",
+            "/cabinet.html",
+        )
+
+        from urllib.parse import urlparse as _urlparse
+
+        def _clean_domain(url: str) -> str:
+            try:
+                host = _urlparse(url).hostname or url
+                return host.removeprefix("www.")
+            except Exception:
+                return url
+
+        def _clean_path(url: str) -> str:
+            try:
+                parsed = _urlparse(url)
+                path = parsed.path
+                if parsed.fragment:
+                    path = f"{path}#{parsed.fragment}"
+                if not path or path == "/":
+                    return "index / folio"
+                return path.lstrip("/")
+            except Exception:
+                return url
+
+        roman_numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"]
+
+        sections_html = []
+        for idx, cat in enumerate(links):
+            numeral = roman_numerals[idx] if idx < len(roman_numerals) else f"{idx + 1}"
+            count = len(cat["links"])
+            count_text = f"{count} specimen" if count == 1 else f"{count} specimens"
+
+            cards = "\n".join(
+                f'        <a class="cabinet-card" href="{escape_html(url)}" target="_blank" rel="noopener">\n'
+                f'          <div class="cabinet-card-inner">\n'
+                f'            <div class="cabinet-card-top">\n'
+                f'              <span class="cabinet-card-glyph" aria-hidden="true">&#9670;</span>\n'
+                f'              <span class="cabinet-card-domain">{escape_html(_clean_domain(url))}</span>\n'
+                f'              <span class="cabinet-card-arrow" aria-hidden="true">&#8599;</span>\n'
+                f'            </div>\n'
+                f'            <div class="cabinet-card-path">{escape_html(_clean_path(url))}</div>\n'
+                f'          </div>\n'
+                f'        </a>'
+                for url in cat["links"]
+            )
+
+            sections_html.append(
+                f'    <section class="cabinet-section">\n'
+                f'      <div class="cabinet-section-header">\n'
+                f'        <div class="cabinet-section-title-wrap">\n'
+                f'          <span class="cabinet-numeral" aria-hidden="true">{numeral}.</span>\n'
+                f'          <h2 class="cabinet-section-title">{escape_html(cat["title"])}</h2>\n'
+                f'        </div>\n'
+                f'        <span class="cabinet-specimen-count">{count_text}</span>\n'
+                f'      </div>\n'
+                f'      <div class="cabinet-links">\n{cards}\n      </div>\n'
+                f'    </section>'
+            )
+
+        precepts_html = ""
+        if precept:
+            items = "\n".join(
+                f'        <article class="cabinet-precept-card">\n'
+                f'          <div class="cabinet-precept-top">\n'
+                f'            <span class="cabinet-precept-fleuron" aria-hidden="true">&#10087;</span>\n'
+                f'            <h3 class="cabinet-precept-title">\n'
+                f'              <a href="{escape_html(p["link"])}" target="_blank" rel="noopener">{escape_html(p["title"])}</a>\n'
+                f'            </h3>\n'
+                f'          </div>\n'
+                f'          <div class="cabinet-precept-author">&mdash; {escape_html(p.get("author", "Anonymus"))}</div>\n'
+                + (f'          <div class="cabinet-precept-desc">{escape_html(p["description"])}</div>\n' if p.get("description") else "")
+                + f'        </article>'
+                for p in precept
+            )
+
+            precepts_html = (
+                f'    <div class="cabinet-divider" aria-hidden="true">\n'
+                f'      <span class="divider-line"></span>\n'
+                f'      <span class="divider-glyph">&#10086; &bull; &#10022; &bull; &#10087;</span>\n'
+                f'      <span class="divider-line"></span>\n'
+                f'    </div>\n'
+                f'    <section class="cabinet-precepts-section">\n'
+                f'      <div class="cabinet-precepts-header">\n'
+                f'        <div class="cabinet-section-title-wrap">\n'
+                f'          <span class="cabinet-numeral" aria-hidden="true">&#10022;</span>\n'
+                f'          <h2 class="cabinet-section-title">Philosophical Precepts &amp; Treatises</h2>\n'
+                f'        </div>\n'
+                f'        <span class="cabinet-specimen-count">Scholia &amp; Maximae</span>\n'
+                f'      </div>\n'
+                f'      <div class="cabinet-precepts-grid">\n{items}\n      </div>\n'
+                f'    </section>'
+            )
+
+        cabinet_content = "\n".join(sections_html) + "\n" + precepts_html
+
+        html = apply_template(html, {"cabinetContent": cabinet_content})
+        write_page(OUT_DIR, "cabinet.html", html)
+
     def build_tags(self, metadata: SiteMetadata, essays: list[Essay]) -> None:
         """Build the tags index and individual tag pages."""
         tag_map = {}
@@ -1245,6 +1353,7 @@ class PageBuilder:
             ("/notes/", "Notes"),
             ("/experiments/", "Experiments"),
             ("/quotes.html", "Quotes"),
+            ("/cabinet.html", "Cabinet of Curiosities"),
             ("/tags/", "Tags"),
             ("/static/resume/prakash_s_resume.pdf", "Resume"),
         ]

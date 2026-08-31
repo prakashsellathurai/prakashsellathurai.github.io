@@ -23,6 +23,7 @@ _logger = logging.getLogger(__name__)
 
 NOTES_DIR = pathlib.Path("data/non-public/submodules/Grimoire/notes")
 EXPERIMENTS_DIR = pathlib.Path("data/non-public/submodules/Grimoire/experiments")
+WEBPAGES_DIR = pathlib.Path("data/non-public/submodules/Grimoire/webpages")
 _ALLOWED_EXTS = {".txt", ".py", ".c", ".md", ".ipynb"}
 
 
@@ -105,6 +106,25 @@ class DataLoader:
 
     def get_quotes(self) -> list[Quote]:
         return self.read_json("quotes.json")
+
+    def get_links(self) -> list[dict]:
+        """Parse webpages/links.txt into categorized link groups."""
+        links_file = WEBPAGES_DIR / "links.txt"
+        if not links_file.exists():
+            return []
+        categories = []
+        current_category = None
+        for line in links_file.read_text().splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith("#"):
+                title = line.lstrip("#").strip()
+                current_category = {"title": title, "links": []}
+                categories.append(current_category)
+            elif current_category is not None and line.startswith("http"):
+                current_category["links"].append(line)
+        return [c for c in categories if c["links"]]
 
     def get_notes(self) -> list[NoteTopic]:
         notes_path = NOTES_DIR

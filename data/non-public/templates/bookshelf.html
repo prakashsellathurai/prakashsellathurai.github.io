@@ -6,8 +6,61 @@
 <h1 id="firstHeading">Bookshelf</h1>
 <div id="siteSub">Books I've read, curated, and am currently reading</div>
 <div class="article-content">
-{{bookshelfSection}}
+  <div class="bookshelf-toolbar">
+    <div class="bookshelf-views">
+      <button id="view-3d-btn" class="toolbar-btn active" type="button" aria-pressed="true" title="3D Interactive Bookshelf">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        3D View
+      </button>
+      <button id="view-2d-btn" class="toolbar-btn" type="button" aria-pressed="false" title="2D Grid View">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        2D Grid
+      </button>
+    </div>
+    <div class="bookshelf-filters">
+      <button class="filter-chip active" type="button" data-filter="all">All</button>
+      <button class="filter-chip" type="button" data-filter="curated">Curated</button>
+      <button class="filter-chip" type="button" data-filter="currently-reading">Reading</button>
+      <button class="filter-chip" type="button" data-filter="read">Read</button>
+    </div>
+    <div class="bookshelf-actions">
+      <input type="search" id="bookshelf-search" placeholder="Search books..." aria-label="Search bookshelf">
+      <button id="reset-cam-btn" class="toolbar-btn icon-btn" type="button" title="Reset Camera View" aria-label="Reset Camera View">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="bookshelf-3d-wrapper" class="bookshelf-3d-wrapper">
+    <div id="bookshelf-3d-canvas" class="bookshelf-3d-canvas"></div>
+    <div class="bookshelf-hint">
+      <span>Drag to rotate &bull; Scroll to zoom &bull; Click book to inspect</span>
+    </div>
+    <div id="book-detail-modal" class="book-detail-modal hidden" aria-hidden="true">
+      <div class="book-detail-backdrop"></div>
+      <div class="book-detail-card">
+        <button class="book-detail-close" type="button" aria-label="Close">&times;</button>
+        <div class="book-detail-cover" id="modal-book-cover"></div>
+        <div class="book-detail-info">
+          <span class="book-detail-category" id="modal-book-category"></span>
+          <h2 class="book-detail-title" id="modal-book-title"></h2>
+          <div class="book-detail-author" id="modal-book-author"></div>
+          <div class="book-detail-rating" id="modal-book-rating"></div>
+          <p class="book-detail-desc" id="modal-book-desc"></p>
+          <a href="#" id="modal-book-link" class="book-detail-link" target="_blank" rel="noopener">View on Goodreads &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bookshelf-2d-container" class="bookshelf-2d-container hidden">
+    {{bookshelfSection}}
+  </div>
 </div>
+<script id="bookshelf-data" type="application/json">{{bookshelfJson}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="/static/js/bookshelf-3d.js"></script>
 {{footer}}
 </body>
 </html>

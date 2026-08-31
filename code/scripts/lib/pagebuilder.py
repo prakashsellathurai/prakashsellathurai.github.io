@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import pathlib
 import re
 import subprocess
@@ -1129,10 +1130,32 @@ class PageBuilder:
             extra_schemas=[c_schema],
         )
 
+        bookshelf_json_data = [
+            {
+                "label": g["label"],
+                "dataKey": g["dataKey"],
+                "tagClass": g["tagClass"],
+                "books": [
+                    {
+                        "title": b.get("title", ""),
+                        "author": b.get("author", ""),
+                        "imageUrl": _resolve_book_image(b),
+                        "rating": b.get("rating", "0"),
+                        "link": b.get("link", "#"),
+                        "description": b.get("description", ""),
+                        "pubDate": b.get("pubDate", ""),
+                    }
+                    for b in g["books"]
+                ],
+            }
+            for g in groups
+        ]
+
         html = apply_template(
             html,
             {
                 "bookshelfSection": _build_unified_bookcase(groups),
+                "bookshelfJson": json.dumps(bookshelf_json_data),
             },
         )
 

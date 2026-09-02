@@ -16,8 +16,8 @@
 <script>
   document.querySelectorAll("pre > code.language-mermaid").forEach(function (code) {
     var pre = code.parentElement;
-    pre.classList.add("mermaid");
-    pre.removeChild(code);
+     pre.textContent = code.textContent; // preserve the diagram text
+     pre.classList.add("mermaid");
   });
   mermaid.initialize({ startOnLoad: true });
 </script>

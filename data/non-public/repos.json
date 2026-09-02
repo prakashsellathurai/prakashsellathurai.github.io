@@ -48,18 +48,26 @@
         "pinned": true
     },
     {
-        "title": "prakashsellathurai.github.io",
-        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
-        "website": "https://prakashsellathurai.com/",
-        "description": "personal website",
-        "stars": 0,
-        "pinned": false
-    },
-    {
         "title": "Grimoire",
         "href": "https://github.com/prakashsellathurai/Grimoire",
         "website": "",
         "description": "Notebooks, Computer codes and Magic Spells",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "InterDimensionalCable",
+        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
+        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
+        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "prakashsellathurai.github.io",
+        "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
+        "website": "https://prakashsellathurai.com/",
+        "description": "personal website",
         "stars": 0,
         "pinned": false
     },
@@ -84,14 +92,6 @@
         "href": "https://github.com/prakashsellathurai/pi-llama-wsl2",
         "website": "",
         "description": "Pi coding agent extension support for wsl2",
-        "stars": 0,
-        "pinned": false
-    },
-    {
-        "title": "InterDimensionalCable",
-        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
-        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
-        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
         "stars": 0,
         "pinned": false
     },
@@ -269,14 +269,6 @@
         "website": "",
         "description": "Image Recommendation via similarity retrieval through deep learning ",
         "stars": 3,
-        "pinned": false
-    },
-    {
-        "title": "bookmarks",
-        "href": "https://github.com/prakashsellathurai/bookmarks",
-        "website": "",
-        "description": "List of websites related to a variety of topics I am curious about.",
-        "stars": 5,
         "pinned": false
     },
     {

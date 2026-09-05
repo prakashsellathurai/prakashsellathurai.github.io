@@ -15,8 +15,8 @@
 
 :root {
     --color-bg-page: #f9f5ee;
-    --color-bg-muted: #f1ddbf5c;
-    --color-text: #2e3a4a;
+    --color-bg-muted: whitesmoke;
+    --color-text: black;
     --color-text-muted: #525e75;
     --color-link: #4e7a6a;
     --color-link-visited: #3d5e50;
@@ -193,7 +193,6 @@ body::before {
 
   background-image: url('/static/images/wabi-sabi-bg.webp');
   background-repeat: no-repeat;
-  background-position: bottom right;
   background-size: cover;
 
   mask-image: linear-gradient(to top left, black 0%, black 20%, transparent 70%);

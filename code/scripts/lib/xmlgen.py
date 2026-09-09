@@ -1,4 +1,3 @@
-import pathlib
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from urllib.parse import urlparse
@@ -31,27 +30,6 @@ def _add_url(
     ET.SubElement(url, "loc").text = loc
     ET.SubElement(url, "lastmod").text = lastmod
     ET.SubElement(url, "priority").text = priority
-
-
-def _is_raw_source_file(filename: str) -> bool:
-    """Check if a file is a raw source file that should not be in sitemap."""
-    raw_exts = {".py", ".c", ".cpp", ".txt"}
-    return pathlib.Path(filename).suffix.lower() in raw_exts
-
-
-def _normalize_leetcode_url(href: str) -> str | None:
-    """Normalize LeetCode solution URLs to canonical trailing-slash form.
-    
-    Returns None for dryrun pages (should be excluded).
-    Converts /index.html to trailing slash.
-    """
-    if "/dryrun/" in href:
-        return None
-    
-    if href.endswith("/index.html"):
-        return href[:-len("index.html")]
-    
-    return href
 
 
 def generate_sitemap(
@@ -108,10 +86,7 @@ def generate_sitemap(
             _add_url(urlset, seen, loc, today, "0.6")
 
     for s in leetcode_solutions:
-        canonical_href = _normalize_leetcode_url(s["href"])
-        if canonical_href is None:
-            continue
-        _add_url(urlset, seen, f"{site_url}/{canonical_href}", today, "0.5")
+        _add_url(urlset, seen, f"{site_url}/{s['href']}", today, "0.5")
 
     for n in notes:
         _add_url(
@@ -151,8 +126,6 @@ def generate_sitemap(
             f"{site_url}/experiments/{exp['topic_slug']}/", today, "0.6"
         )
         for f in exp["files"]:
-            if _is_raw_source_file(f["filename"]):
-                continue
             _add_url(
                 urlset,
                 seen,
@@ -169,8 +142,6 @@ def generate_sitemap(
                 "0.6",
             )
             for f in st["files"]:
-                if _is_raw_source_file(f["filename"]):
-                    continue
                 _add_url(
                     urlset,
                     seen,

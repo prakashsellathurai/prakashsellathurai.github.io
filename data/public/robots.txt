@@ -1,11 +1,13 @@
+# Allow all crawlers
 User-agent: *
 Allow: /
 
-# Disallow raw source files (not useful standalone pages)
-Disallow: /*.py$
-Disallow: /*.c$
-Disallow: /*.cpp$
-Disallow: /*.txt$
-
 # Sitemap location
 Sitemap: https://prakashsellathurai.com/sitemap.xml
+
+# Block search indexing of Next.js internals
+Disallow: /_next/
+Disallow: /api/
+
+# Allow but deprioritize static assets
+Allow: /static/

@@ -114,7 +114,7 @@ def build_site() -> None:
         build_search_js(essays, notes, experiments, books, projects, quotes)
     )
 
-    _logger.info("Generating RSS and sitemap...")
+    _logger.info("Generating RSS, sitemap, and robots.txt...")
     (OUT_DIR / "feed.xml").write_text(
         generate_rss_feed(metadata, essays)
     )
@@ -122,6 +122,9 @@ def build_site() -> None:
         generate_sitemap(
             metadata, essays, projects, leetcode_solutions, notes, experiments
         )
+    )
+    (OUT_DIR / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\n\nSitemap: {metadata['siteUrl']}sitemap.xml"
     )
 
     _logger.info("Done! Static site generated in out/")

@@ -99,40 +99,6 @@ class TestHomepageSEO:
         assert "<channel>" in text
 
 
-class TestSitemapSEO:
-    def test_sitemap_should_not_contain_raw_source_files(self, out_dir):
-        """Sitemap should not contain .py, .c, .cpp, .txt URLs."""
-        text = (out_dir / "sitemap.xml").read_text()
-        locs = re.findall(r"<loc>([^<]+)</loc>", text)
-        raw_exts = ('.py', '.c', '.cpp', '.txt')
-        for loc in locs:
-            for ext in raw_exts:
-                assert not loc.endswith(ext), f"Sitemap contains raw source file: {loc}"
-
-    def test_sitemap_should_not_contain_dryrun_urls(self, out_dir):
-        """Sitemap should not contain dryrun URLs."""
-        text = (out_dir / "sitemap.xml").read_text()
-        assert "/dryrun/" not in text, "Sitemap contains dryrun URL"
-
-    def test_sitemap_should_use_trailing_slash_for_leetcode(self, out_dir):
-        """LeetCode solution URLs should use trailing slash, not index.html."""
-        text = (out_dir / "sitemap.xml").read_text()
-        locs = re.findall(r"<loc>([^<]+)</loc>", text)
-        leetcode_locs = [loc for loc in locs if "/leetcode-solutions/" in loc]
-        for loc in leetcode_locs:
-            if loc != "https://prakashsellathurai.com/leetcode-solutions/":
-                assert loc.endswith("/"), f"LeetCode URL should end with trailing slash: {loc}"
-                assert not loc.endswith("/index.html"), f"LeetCode URL should not end with index.html: {loc}"
-
-    def test_robots_txt_should_disallow_raw_source_files(self, out_dir):
-        """robots.txt should disallow raw source file extensions."""
-        text = (out_dir / "robots.txt").read_text()
-        assert "Disallow: /*.py$" in text
-        assert "Disallow: /*.c$" in text
-        assert "Disallow: /*.cpp$" in text
-        assert "Disallow: /*.txt$" in text
-
-
 class TestEssaySEO:
     def test_should_have_unique_title_per_essay(self, page):
         page.goto("/essays/")

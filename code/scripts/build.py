@@ -123,9 +123,18 @@ def build_site() -> None:
             metadata, essays, projects, leetcode_solutions, notes, experiments
         )
     )
-    (OUT_DIR / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\n\nSitemap: {metadata['siteUrl']}sitemap.xml"
-    )
+    robots_txt = f"""User-agent: *
+Allow: /
+
+# Disallow raw source files (not useful standalone pages)
+User-agent: *
+Disallow: /*.py$
+Disallow: /*.c$
+Disallow: /*.cpp$
+Disallow: /*.txt$
+
+Sitemap: {metadata['siteUrl']}sitemap.xml"""
+    (OUT_DIR / "robots.txt").write_text(robots_txt)
 
     _logger.info("Done! Static site generated in out/")
 

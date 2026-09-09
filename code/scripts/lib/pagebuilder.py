@@ -363,7 +363,7 @@ def _render_css_link(extra_css):
     return css_link
 
 
-def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, extra_css=None) -> str:
+def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, extra_css=None, noindex: bool = False) -> str:
     """Render the <head> HTML for a page."""
     site_url = metadata["siteUrl"].rstrip("/")
     full_url = f"{site_url}{page_info['url']}" if page_info["url"] else site_url
@@ -374,6 +374,7 @@ def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, ext
     )
 
     canonical = f'<link rel="canonical" href="{full_url}">'
+    noindex_meta = '<meta name="robots" content="noindex, nofollow">' if noindex else ""
 
     schemas = [
         website_schema(site_url, metadata["title"]),
@@ -395,6 +396,7 @@ def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, ext
   <meta name="description" content="{escape_html(page_info["description"])}">
   {_render_keywords_meta(metadata)}
   {canonical}
+  {noindex_meta}
   {_render_open_graph(page_info, site_url, full_url, og_image, metadata["title"])}
   {_render_twitter_card(page_info, site_url, og_image)}
   {_render_json_ld(schemas)}
@@ -524,6 +526,7 @@ class PageBuilder:
         extra_css: str | None = None,
         sidebar_html: str = "",
         main_class: str = "",
+        noindex: bool = False,
     ) -> str:
         """Fill a template's head/header/footer with site-wide HTML."""
         return apply_template(
@@ -539,6 +542,7 @@ class PageBuilder:
                     },
                     extra_schemas=extra_schemas,
                     extra_css=extra_css,
+                    noindex=noindex,
                 ),
                 "header": render_header(metadata, sidebar_html=sidebar_html, main_class=main_class),
                 "footer": render_footer(metadata),
@@ -970,6 +974,8 @@ class PageBuilder:
         e_url = exp_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
         template = self.data_loader.load_template("experiment")
 
+        is_raw_source = file_data["ext"] in {"py", "c", "cpp", "txt"}
+
         html = self._build_common(
             template,
             metadata,
@@ -985,6 +991,7 @@ class PageBuilder:
                 },
             ),
             main_class="page-experiment",
+            noindex=is_raw_source,
         )
         html = apply_template(
             html,

@@ -73,6 +73,23 @@ class TestExperimentsIntegration:
         exp_entries = [e for e in entries if "/experiments/" in e]
         assert len(exp_entries) >= 1
 
+    def test_raw_source_file_pages_have_noindex(self, page):
+        """Raw source file pages (.py, .c, .txt) should have noindex meta tag."""
+        raw_source_urls = [
+            "/experiments/python/cache/learning/LFU-cache.html",
+            "/experiments/python/cache/learning/Lrucache.html",
+        ]
+        for url in raw_source_urls:
+            page.goto(url)
+            robots_meta = page.locator('meta[name="robots"]').get_attribute("content")
+            assert "noindex" in robots_meta, f"Page {url} should have noindex meta tag"
+
+    def test_markdown_pages_do_not_have_noindex(self, page):
+        """Markdown pages should not have noindex meta tag."""
+        page.goto("/experiments/biology/dna-sequencing/readme.html")
+        robots_meta = page.locator('meta[name="robots"]')
+        assert robots_meta.count() == 0, "Markdown page should not have robots meta tag"
+
 
 class TestMermaidRendering:
     def test_mermaid_diagram_renders_as_svg(self, page):

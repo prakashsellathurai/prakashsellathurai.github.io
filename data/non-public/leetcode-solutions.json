@@ -88,6 +88,10 @@
         "href": "leetcode-solutions/problems/0021-merge-two-sorted-lists/index.html"
     },
     {
+        "title": "problems/0025-reverse-nodes-in-k-group/index.html",
+        "href": "leetcode-solutions/problems/0025-reverse-nodes-in-k-group/index.html"
+    },
+    {
         "title": "problems/0026-remove-duplicates-from-sorted-array/dryrun/index.html",
         "href": "leetcode-solutions/problems/0026-remove-duplicates-from-sorted-array/dryrun/index.html"
     },
@@ -1470,6 +1474,14 @@
     {
         "title": "problems/236-lowest-common-ancestor-of-a-binary-tree/index.html",
         "href": "leetcode-solutions/problems/236-lowest-common-ancestor-of-a-binary-tree/index.html"
+    },
+    {
+        "title": "problems/2365-task-scheduler-ii/dryrun/index.html",
+        "href": "leetcode-solutions/problems/2365-task-scheduler-ii/dryrun/index.html"
+    },
+    {
+        "title": "problems/2365-task-scheduler-ii/index.html",
+        "href": "leetcode-solutions/problems/2365-task-scheduler-ii/index.html"
     },
     {
         "title": "problems/2385-amount-of-time-for-binary-tree-to-be-infected/index.html",

@@ -278,6 +278,98 @@ def render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) ->
     return markdown_renderer.render(content)
 
 
+_WIDGET_DEPS = """\
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    if (!mimeElement) return;
+    var scriptElement = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed.js';
+
+    var widgetState;
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'https://unpkg.com/@jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    scriptElement.src = widgetRendererSrc;
+    document.body.appendChild(scriptElement);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>"""
+
+
+def _has_widgets(full_html: str) -> bool:
+    return "application/vnd.jupyter.widget-view+json" in full_html
+
+
+def _extract_widget_state(full_html: str) -> str:
+    match = re.search(
+        r'<script type="application/vnd\.jupyter\.widget-state\+json">\s*(\{.*?\})\s*</script>',
+        full_html,
+        re.S,
+    )
+    if not match:
+        return ""
+    return (
+        '<script type="application/vnd.jupyter.widget-state+json">'
+        + match.group(1)
+        + "</script>"
+    )
+
+
+def _extract_plotly_figures(full_html: str) -> str:
+    """Extract Plotly figure data from widget state and render as static elements."""
+    state_match = re.search(
+        r'<script type="application/vnd\.jupyter\.widget-state\+json">\s*(\{.*?\})\s*</script>',
+        full_html,
+        re.S,
+    )
+    if not state_match:
+        return ""
+    try:
+        widget_state = json.loads(state_match.group(1))
+    except (json.JSONDecodeError, KeyError):
+        return ""
+
+    models = widget_state.get("state", {})
+    plotly_divs = []
+    div_counter = [0]
+
+    for model_id, model in models.items():
+        model_state = model.get("state", {})
+        outputs = model_state.get("outputs", [])
+        for output in outputs:
+            data = output.get("data", {})
+            plotly_data = data.get("application/vnd.plotly.v1+json")
+            if not plotly_data:
+                continue
+            div_id = f"plotly-widget-{div_counter[0]}"
+            div_counter[0] += 1
+            fig_data_json = json.dumps(plotly_data.get("data", []))
+            fig_layout_json = json.dumps(plotly_data.get("layout", {}))
+            plotly_divs.append(
+                f'<div id="{div_id}" style="width:100%;height:620px"></div>'
+                f"<script>"
+                f"Plotly.newPlot('{div_id}', {fig_data_json}, {fig_layout_json}, "
+                f"{{responsive: true, displayModeBar: false}});"
+                f"</script>"
+            )
+
+    if not plotly_divs:
+        return ""
+
+    plotly_script = (
+        '<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>'
+    )
+    return plotly_script + "\n" + "\n".join(plotly_divs)
+
+
 def render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
     content = file_data["content"]
     try:
@@ -288,7 +380,13 @@ def render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) ->
     try:
         exporter = HTMLExporter(template_name="classic")
         full_html, _resources = exporter.from_notebook_node(nb)
-        return make_code_cells_collapsible(extract_body(full_html))
+        body = extract_body(full_html)
+        if _has_widgets(full_html):
+            widget_state_tag = _extract_widget_state(full_html)
+            plotly_html = _extract_plotly_figures(full_html)
+            injection = _WIDGET_DEPS + widget_state_tag + plotly_html
+            body = body.replace("</main>", injection + "</main>", 1)
+        return make_code_cells_collapsible(body)
     except Exception as exc:
         _logger.warning("Notebook export failed, rendering as code: %s", exc)
     return f"<pre><code>{escape_html(content)}</code></pre>"

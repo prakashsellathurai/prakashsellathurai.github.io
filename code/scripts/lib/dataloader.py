@@ -124,13 +124,13 @@ class DataLoader:
                 "subtopics": {},
             }
             for root, dirs, filenames in os.walk(topic):
-                dirs[:] = [
+                dirs[:] = sorted(
                     d
                     for d in dirs
                     if not d.startswith(".")
                     and d != "__pycache__"
                     and d != ".ipynb_checkpoints"
-                ]
+                )
                 for f in sorted(filenames):
                     if pathlib.Path(f).suffix.lower() != ".md":
                         continue
@@ -192,13 +192,13 @@ class DataLoader:
                 "subtopics": {},
             }
             for root, dirs, filenames in os.walk(topic):
-                dirs[:] = [
+                dirs[:] = sorted(
                     d
                     for d in dirs
                     if not d.startswith(".")
                     and d != "__pycache__"
                     and d != ".ipynb_checkpoints"
-                ]
+                )
                 for f in sorted(filenames):
                     ext = pathlib.Path(f).suffix.lower()
                     if ext not in _ALLOWED_EXTS:

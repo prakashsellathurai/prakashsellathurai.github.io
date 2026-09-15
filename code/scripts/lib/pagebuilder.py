@@ -59,11 +59,30 @@ from lib.url import (
     topic_url,
 )
 
+import json
 import logging
+import os
 
 _logger = logging.getLogger(__name__)
 
 OUT_DIR = pathlib.Path("out")
+
+_HISTORY_CACHE_PATH = pathlib.Path("data/non-public/history-cache.json")
+_HISTORY_CACHE: dict[str, int] | None = None
+
+
+def _load_history_cache() -> dict[str, int]:
+    """Load the history cache from disk (once per process)."""
+    global _HISTORY_CACHE
+    if _HISTORY_CACHE is None:
+        if _HISTORY_CACHE_PATH.exists():
+            try:
+                _HISTORY_CACHE = json.loads(_HISTORY_CACHE_PATH.read_text())
+            except (json.JSONDecodeError, OSError):
+                _HISTORY_CACHE = {}
+        else:
+            _HISTORY_CACHE = {}
+    return _HISTORY_CACHE
 
 
 def _recent_notes(notes: list[NoteTopic], limit: int = 5) -> list[tuple[NoteTopic, FileData, str | None]]:
@@ -99,10 +118,18 @@ def _recent_experiments(experiments: list[ExperimentTopic], limit: int = 5) -> l
 
 
 def _note_commit_time(grimoire_dir: pathlib.Path, rel_path: pathlib.Path) -> int:
-    """Return the last commit timestamp for a note file in the Grimoire submodule."""
+    """Return the last commit timestamp for a note file in the Grimoire submodule.
+
+    Uses the history cache built by ``utils/history_cache.py``.
+    Falls back to ``git log`` only when the file is missing from the cache.
+    """
+    cache = _load_history_cache()
+    key = rel_path.as_posix()
+    if key in cache:
+        return cache[key]
     try:
         result = subprocess.run(
-            ["git", "-C", str(grimoire_dir), "log", "-1", "--format=%ct", "--", rel_path.as_posix()],
+            ["git", "-C", str(grimoire_dir), "log", "-1", "--format=%ct", "--", key],
             capture_output=True,
             text=True,
             check=True,

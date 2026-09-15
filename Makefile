@@ -31,6 +31,7 @@ update-data:
 	uv run python3 code/scripts/utils/books.py
 	uv run python3 code/scripts/utils/github.py
 	uv run python3 code/scripts/utils/sync_description.py
+	uv run python3 code/scripts/utils/history_cache.py
 
 install-dev:
 	uv sync --group dev

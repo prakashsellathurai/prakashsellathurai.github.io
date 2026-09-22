@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import json
 import re
-import string
 
 _STOPWORDS = frozenset(
     """
@@ -62,12 +61,19 @@ _TYPE_LABELS = {
 
 
 def tokenize(text: str) -> list[str]:
-    """Lowercase, split into alphanumeric tokens, drop stopwords and short words."""
-    tokens = []
-    for tok in _TOKEN_RE.findall(text.lower()):
-        if len(tok) >= 3 and tok not in _STOPWORDS:
-            tokens.append(tok)
-    return tokens
+    """Lowercase, split into alphanumeric tokens, drop stopwords and short words.
+
+    Args:
+        text: Raw input text to tokenize.
+
+    Returns:
+        A list of normalized tokens (>= 3 chars, not stopwords).
+    """
+    return [
+        tok
+        for tok in _TOKEN_RE.findall(text.lower())
+        if len(tok) >= 3 and tok not in _STOPWORDS
+    ]
 
 
 class TrieNode:
@@ -95,6 +101,16 @@ class SearchIndexBuilder:
         body: str = "",
         title_weight: int = 3,
     ) -> None:
+        """Add a document to the search index.
+
+        Args:
+            title: Document title (receives highest token weight).
+            url: Relative URL for the document.
+            type_code: Content type constant (e.g. TYPE_ESSAY).
+            tags: Space-separated tag string for additional tokens.
+            body: Full body text for token extraction.
+            title_weight: Weight assigned to title tokens.
+        """
         doc_id = len(self._docs)
         self._docs.append({"title": title, "url": url, "type": type_code})
         self._add_tokens(doc_id, tokenize(title), title_weight)
@@ -120,6 +136,9 @@ class SearchIndexBuilder:
 
         Single-child chains without word boundaries are merged into multi-char
         segments (edge compression), which shrinks the node count substantially.
+
+        Returns:
+            A JavaScript assignment string (e.g. ``window.__SEARCH__={...};``).
         """
         chars: list[str] = []
         kids: list[list[int]] = []
@@ -281,5 +300,17 @@ def build_search_js(
     projects: list[dict],
     quotes: list[dict],
 ) -> str:
-    """Build and serialize the full search index as a JavaScript string."""
+    """Build and serialize the full search index as a JavaScript string.
+
+    Args:
+        essays: List of essay data dicts.
+        notes: List of note topic data dicts.
+        experiments: List of experiment topic data dicts.
+        books: Bookshelf data (dict keyed by genre or list of book dicts).
+        projects: List of project data dicts.
+        quotes: List of quote data dicts.
+
+    Returns:
+        A JavaScript string assigning the serialized trie to window.__SEARCH__.
+    """
     return _build_index(essays, notes, experiments, books, projects, quotes).to_js()

@@ -1,6 +1,10 @@
-import xml.etree.ElementTree as ET
+"""Generate RSS feed and XML sitemap."""
+
+from __future__ import annotations
+
 from datetime import datetime, timezone
 from urllib.parse import urlparse
+import xml.etree.ElementTree as ET
 
 from lib.datatypes import Essay, Project, LeetcodeSolution, NoteTopic, ExperimentTopic
 
@@ -40,6 +44,22 @@ def generate_sitemap(
     notes: list[NoteTopic],
     experiments: list[ExperimentTopic],
 ) -> str:
+    """Generate an XML sitemap for the site.
+
+    Includes static pages, essays, tag pages, project sites hosted on
+    the same domain, notes, experiments, and LeetCode solutions.
+
+    Args:
+        metadata: Site metadata dict with ``siteUrl``.
+        essays: List of published essays.
+        projects: List of project entries.
+        leetcode_solutions: List of LeetCode solution entries.
+        notes: List of note topics.
+        experiments: List of experiment topics.
+
+    Returns:
+        Complete XML sitemap string with declaration.
+    """
     site_url = metadata["siteUrl"].rstrip("/")
     today = _utc_today()
 
@@ -154,6 +174,19 @@ def generate_sitemap(
 
 
 def generate_rss_feed(metadata: dict, essays: list[Essay]) -> str:
+    """Generate an RSS 2.0 feed with Atom self-link.
+
+    Essays are sorted by date descending. The feed includes title,
+    link, description, language, and per-item metadata.
+
+    Args:
+        metadata: Site metadata dict with ``title``, ``siteUrl``,
+            optional ``description`` and ``language``.
+        essays: List of published essays.
+
+    Returns:
+        Complete XML feed string with declaration.
+    """
     site_url = metadata["siteUrl"].rstrip("/")
     sorted_essays = sorted(essays, key=lambda x: x["date"], reverse=True)
 

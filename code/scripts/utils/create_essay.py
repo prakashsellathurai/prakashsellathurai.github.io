@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""Create a new essay file with frontmatter and template body."""
+
+from __future__ import annotations
+
 import json
 import os
 import sys
@@ -76,7 +80,8 @@ TEMPLATES = {
 }
 
 
-def usage():
+def usage() -> None:
+    """Print CLI usage instructions."""
     print("""Usage:
   python code/scripts/utils/create_essay.py --title "My New Essay" [options]
 
@@ -92,7 +97,15 @@ Options:
 """)
 
 
-def parse_args(argv):
+def parse_args(argv: list[str]) -> dict[str, str | bool]:
+    """Parse CLI arguments into a key-value dict.
+
+    Args:
+        argv: List of CLI arguments (without program name).
+
+    Returns:
+        Dict mapping flag names (without --) to string values or True for booleans.
+    """
     args = {}
     i = 0
     while i < len(argv):
@@ -111,7 +124,8 @@ def parse_args(argv):
     return args
 
 
-def main():
+def main() -> None:
+    """Parse arguments, create essay file with frontmatter, and print path."""
     args = parse_args(sys.argv[1:])
     title = args.get("title")
 

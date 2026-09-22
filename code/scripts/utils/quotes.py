@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
+"""Scrape and cache Goodreads quotes."""
+
+from __future__ import annotations
+
 import json
 import math
 import os
 import re
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -13,20 +18,35 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"}
 PER_PAGE = 30
 
 
-def fetch_page(page):
+def fetch_page(page: int) -> str | None:
+    """Fetch a single page of quotes from Goodreads.
+
+    Args:
+        page: Page number to fetch.
+
+    Returns:
+        HTML content of the page, or None on error.
+    """
     url = f"{QUOTES_URL}?page={page}"
     try:
         req = urllib.request.Request(url, headers=HEADERS)
         with urllib.request.urlopen(req, timeout=60) as resp:
             return resp.read().decode("utf-8")
-    except Exception as e:
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
         print(f"Error fetching page {page}: {e}")
         return None
 
 
-def find_matching_div_end(text, start):
-    """Find the matching </div> for a <div> starting at position `start`.
-    Returns the position right after the closing </div>, or -1."""
+def find_matching_div_end(text: str, start: int) -> int:
+    """Find the matching </div> for a <div> starting at position start.
+
+    Args:
+        text: Full HTML string to search.
+        start: Character offset of the opening <div> tag.
+
+    Returns:
+        Position right after the closing </div>, or -1 if not found.
+    """
     i = start
     depth = 0
     # Find positions of all <div and </div
@@ -42,7 +62,15 @@ def find_matching_div_end(text, start):
     return -1
 
 
-def parse_quotes(html):
+def parse_quotes(html: str) -> list[dict[str, object]]:
+    """Parse quotes from a Goodreads quotes list HTML page.
+
+    Args:
+        html: Raw HTML string from the quotes page.
+
+    Returns:
+        List of quote dicts with quote, author, book, tags, and url keys.
+    """
     quotes = []
     # Each quote is in an <li class="gr-d-flex elementList ">
     li_pattern = re.compile(
@@ -67,15 +95,12 @@ def parse_quotes(html):
         author, book = extract_author_book(text_html)
 
         # Extract quoteFooter (handle nested divs)
+        footer_html = ""
         footer_start = li_content.find('<div class="quoteFooter">')
         if footer_start >= 0:
             footer_end = find_matching_div_end(li_content, footer_start)
             if footer_end > 0:
                 footer_html = li_content[footer_start:footer_end]
-            else:
-                footer_html = ""
-        else:
-            footer_html = ""
 
         tags = extract_tags(footer_html)
         quote_url = extract_quote_url(footer_html)
@@ -92,7 +117,15 @@ def parse_quotes(html):
     return quotes
 
 
-def extract_quote_text(text_html):
+def extract_quote_text(text_html: str) -> str:
+    """Extract quote text from HTML, stripping smart quotes and tags.
+
+    Args:
+        text_html: HTML fragment containing the quote text.
+
+    Returns:
+        Cleaned quote text string.
+    """
     m = re.search(r"&ldquo;(.*?)&rdquo;", text_html, re.DOTALL)
     if m:
         text = m.group(1).strip()
@@ -102,7 +135,15 @@ def extract_quote_text(text_html):
     return ""
 
 
-def extract_author_book(text_html):
+def extract_author_book(text_html: str) -> tuple[str, str]:
+    """Extract author and book title from quote HTML.
+
+    Args:
+        text_html: HTML fragment containing author and book info.
+
+    Returns:
+        Tuple of (author, book_title), each empty string if not found.
+    """
     author = ""
     book = ""
 
@@ -111,12 +152,14 @@ def extract_author_book(text_html):
     )
     for span_text in author_spans:
         text = re.sub(r"<[^>]*>", "", span_text).strip()
-        if text:
-            if text.endswith(","):
-                text = text[:-1].strip()
-            if text:
-                author = text
-                break
+        if not text:
+            continue
+        if text.endswith(","):
+            text = text[:-1].strip()
+        if not text:
+            continue
+        author = text
+        break
 
     book_match = re.search(
         r'<span[^>]*id=quote_book_link_\d+[^>]*>.*?<a[^>]*class="authorOrTitle"[^>]*>(.*?)</a>',
@@ -129,13 +172,29 @@ def extract_author_book(text_html):
     return author, book
 
 
-def extract_tags(footer_html):
+def extract_tags(footer_html: str) -> list[str]:
+    """Extract tag strings from quote footer HTML.
+
+    Args:
+        footer_html: HTML fragment containing tag links.
+
+    Returns:
+        List of tag name strings.
+    """
     return re.findall(
         r'<a href="/quotes/tag/[^"]*">\s*(.*?)\s*</a>', footer_html, re.DOTALL
     )
 
 
-def extract_quote_url(footer_html):
+def extract_quote_url(footer_html: str) -> str:
+    """Extract the Goodreads quote URL from footer HTML.
+
+    Args:
+        footer_html: HTML fragment containing the quote link.
+
+    Returns:
+        Full Goodreads URL, or empty string if not found.
+    """
     m = re.search(
         r'<a\s+class="smallText"[^>]*href="/quotes/([^"]*)"[^>]*>',
         footer_html,
@@ -146,14 +205,23 @@ def extract_quote_url(footer_html):
     return ""
 
 
-def get_total_quotes(html):
+def get_total_quotes(html: str) -> int:
+    """Extract total quote count from the quotes list page.
+
+    Args:
+        html: Raw HTML string from the quotes page.
+
+    Returns:
+        Total number of quotes, or 0 if not found.
+    """
     m = re.search(r"Showing \d+[–-]\d+ of (\d+)", html)
     if m:
         return int(m.group(1))
     return 0
 
 
-def fetch_quotes():
+def fetch_quotes() -> None:
+    """Fetch all pages of quotes, deduplicate, and write quotes.json."""
     print("Fetching first page to determine total...")
     html = fetch_page(1)
     if not html:

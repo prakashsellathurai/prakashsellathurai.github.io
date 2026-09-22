@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
+"""Fetch and cache Goodreads book data and cover images."""
+
+from __future__ import annotations
+
 import hashlib
 import json
 import os
 import re
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -10,19 +15,35 @@ SHELVES = ["currently-reading", "read", "curated"]
 IMAGE_DIR = "./data/public/static/images/bookshelf"
 
 
-def get_books(shelf):
+def get_books(shelf: str) -> list[dict[str, str]]:
+    """Fetch books from a Goodreads RSS shelf.
+
+    Args:
+        shelf: Goodreads shelf name (e.g. 'read', 'currently-reading').
+
+    Returns:
+        List of book dicts with title, link, imageUrl, author, and optional fields.
+    """
     url = f"https://www.goodreads.com/review/list_rss/105903487?shelf={shelf}"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=30) as resp:
             xml = resp.read().decode("utf-8")
         return parse_books(xml)
-    except Exception as e:
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
         print(f"Error fetching books for shelf {shelf}: {e}")
         return []
 
 
-def parse_books(xml):
+def parse_books(xml: str) -> list[dict[str, str]]:
+    """Parse book entries from Goodreads RSS XML.
+
+    Args:
+        xml: Raw XML string from the RSS feed.
+
+    Returns:
+        List of parsed book dicts with title, link, imageUrl, and author keys.
+    """
     books = []
     for item_match in re.finditer(r"<item>([\s\S]*?)</item>", xml):
         content = item_match.group(1)
@@ -89,12 +110,13 @@ def _download_image(url):
         with open(filepath, "wb") as f:
             f.write(data)
         return f"/static/images/bookshelf/{filename}"
-    except Exception as e:
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
         print(f"  Failed to download {url}: {e}")
         return None
 
 
-def fetch_books():
+def fetch_books() -> None:
+    """Fetch all book shelves, download cover images, and write books.json."""
     os.makedirs(IMAGE_DIR, exist_ok=True)
     books_data = {}
     for shelf in SHELVES:
@@ -102,15 +124,12 @@ def fetch_books():
         books = get_books(shelf)
         for book in books:
             url = book.get("imageUrl", "")
-            if url and "nophoto" not in url:
-                book["imageUrlRemote"] = url
-                local = _download_image(url)
-                if local:
-                    book["imageUrl"] = local
-                else:
-                    book["imageUrl"] = url
-            else:
+            if not url or "nophoto" in url:
                 book["imageUrl"] = ""
+                continue
+            book["imageUrlRemote"] = url
+            local = _download_image(url)
+            book["imageUrl"] = local or url
         books_data[shelf] = books
 
     out = Path("./data/non-public/books.json")

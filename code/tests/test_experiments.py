@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import json
 import re
 
 from playwright.sync_api import expect
 
 
-def _get_schema(data, schema_type):
+def _get_schema(data: dict, schema_type: str) -> dict | None:
     if data.get("@type") == schema_type:
         return data
     if "@graph" in data:
@@ -14,59 +16,58 @@ def _get_schema(data, schema_type):
     return None
 
 
-def _load_json_ld(page):
+def _load_json_ld(page) -> dict | None:
     text = page.locator('script[type="application/ld+json"]').text_content()
     return json.loads(text) if text else None
 
 
 class TestExperimentsListPage:
-    def test_should_load_successfully(self, page):
+    def test_experiments_page_loads_with_correct_title(self, page):
         page.goto("/experiments/")
         expect(page).to_have_title(re.compile("Experiments"))
         desc = page.locator('meta[name="description"]').get_attribute("content")
         assert "experiment" in desc.lower()
 
-    def test_should_have_canonical_url(self, page):
+    def test_experiments_page_has_canonical_url(self, page):
         page.goto("/experiments/")
         canonical = page.locator('link[rel="canonical"]').get_attribute("href")
         assert "/experiments/" in canonical
 
-    def test_should_have_experiments_breadcrumb(self, page):
+    def test_experiments_page_has_breadcrumb_schema(self, page):
         page.goto("/experiments/")
         data = _load_json_ld(page)
         bc = _get_schema(data, "BreadcrumbList")
         assert bc
         assert bc["itemListElement"][1]["item"]["name"] == "Experiments"
 
-    def test_should_have_file_links(self, page):
+    def test_experiments_page_displays_file_links(self, page):
         page.goto("/experiments/")
         file_links = page.locator('a[href$=".html"]')
         assert file_links.count() >= 1
 
-    def test_directory_pages_list_their_files(self, page):
+    def test_directory_page_lists_its_files(self, page):
         page.goto("/experiments/biology/dna-sequencing/")
         file_links = page.locator(".article-content .content-file-link")
         expect(file_links).not_to_have_count(0)
         expect(file_links.first).to_be_visible()
 
-    def test_topic_page_groups_subtopic_files(self, page):
+    def test_topic_page_groups_files_by_subtopic(self, page):
         page.goto("/experiments/python/")
         sections = page.locator(".article-content .content-index-section")
         expect(sections).not_to_have_count(0)
         expect(sections.first).to_be_visible()
 
 
-
 class TestExperimentsIntegration:
-    def test_header_has_experiments_link(self, page):
+    def test_site_header_links_to_experiments(self, page):
         page.goto("/")
         expect(page.locator('#site-sidebar a[href="/experiments/"]')).to_be_visible()
 
-    def test_sitemap_contains_experiments(self, out_dir):
+    def test_sitemap_contains_experiments_section(self, out_dir):
         text = (out_dir / "sitemap.xml").read_text()
         assert "/experiments/" in text
 
-    def test_sitemap_has_experiment_file_entries(self, out_dir):
+    def test_sitemap_contains_experiment_file_entries(self, out_dir):
         text = (out_dir / "sitemap.xml").read_text()
         assert ".html" in text
         entries = re.findall(r"<loc>[^<]+</loc>", text)
@@ -85,30 +86,30 @@ class TestNotebookCollapsible:
     URL = "/experiments/python/numba/np.mean/scratchbook.html"
 
     def test_code_cells_are_collapsed_by_default(self, page):
-        page.goto(self.URL)
+        page.goto(TestNotebookCollapsible.URL)
         blocks = page.locator(".notebook-cell")
         assert blocks.count() >= 1
         expect(blocks.first).not_to_have_attribute("open", "")
 
-    def test_expand_label_visible_while_collapsed(self, page):
-        page.goto(self.URL)
+    def test_expand_label_visible_while_cell_is_collapsed(self, page):
+        page.goto(TestNotebookCollapsible.URL)
         first = page.locator(".notebook-cell").first
         expect(first.locator(".notebook-expand")).to_be_visible()
         expect(first.locator(".notebook-collapse")).to_be_hidden()
 
-    def test_outputs_visible_while_collapsed(self, page):
-        page.goto(self.URL)
+    def test_outputs_visible_while_cell_is_collapsed(self, page):
+        page.goto(TestNotebookCollapsible.URL)
         cell = page.locator("div.code_cell:has(.notebook-cell):has(.output_wrapper)").first
         expect(cell.locator(".output_wrapper").first).to_be_visible()
 
-    def test_prompt_visible_while_collapsed(self, page):
-        page.goto(self.URL)
+    def test_input_prompt_visible_while_cell_is_collapsed(self, page):
+        page.goto(TestNotebookCollapsible.URL)
         first = page.locator(".notebook-cell").first
         prompt = first.locator("xpath=preceding-sibling::div[contains(@class,'input_prompt')]")
         expect(prompt).to_be_visible()
 
-    def test_clicking_summary_expands_and_collapses(self, page):
-        page.goto(self.URL)
+    def test_clicking_summary_expands_and_collapses_cell(self, page):
+        page.goto(TestNotebookCollapsible.URL)
         first = page.locator(".notebook-cell").first
         summary = first.locator("summary")
         summary.click()
@@ -118,8 +119,8 @@ class TestNotebookCollapsible:
         summary.click()
         expect(first).not_to_have_attribute("open", "")
 
-    def test_code_is_syntax_highlighted(self, page):
-        page.goto(self.URL)
+    def test_code_cell_applies_syntax_highlighting(self, page):
+        page.goto(TestNotebookCollapsible.URL)
         page.locator(".notebook-cell").first.locator("summary").click()
         code = page.locator(".notebook-cell pre code.language-python").first
         expect(code).to_be_visible()

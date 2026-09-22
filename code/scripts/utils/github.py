@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
+"""Fetch GitHub repos, pinned repos, leetcode solutions, and precept data."""
+
+from __future__ import annotations
+
 import json
 import os
 import re
 import subprocess
+import urllib.error
 import urllib.request
 
 GITHUB_API_URL = "https://api.github.com/users/prakashsellathurai/repos?per_page=100"
 GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
 
-def get_github_token():
+def get_github_token() -> str:
+    """Retrieve GitHub token from env var or gh CLI.
+
+    Returns:
+        Token string, or empty string if unavailable.
+    """
     token = os.environ.get("GITHUB_TOKEN")
     if token:
         return token
@@ -17,7 +27,7 @@ def get_github_token():
         result = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, timeout=10)
         if result.returncode == 0:
             return result.stdout.strip()
-    except Exception:
+    except (subprocess.CalledProcessError, OSError, subprocess.TimeoutExpired):
         pass
     return ""
 
@@ -25,13 +35,29 @@ def get_github_token():
 GITHUB_TOKEN = get_github_token()
 
 
-def fetch_url(url):
+def fetch_url(url: str) -> tuple[str, dict[str, str]]:
+    """Fetch a URL and return decoded content with response headers.
+
+    Args:
+        url: URL to fetch.
+
+    Returns:
+        Tuple of (response body as string, response headers dict).
+    """
     req = urllib.request.Request(url, headers={"User-Agent": "Python", "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.read().decode("utf-8"), dict(resp.headers)
 
 
-def fetch_all_repos(url):
+def fetch_all_repos(url: str) -> list[dict[str, object]]:
+    """Fetch all repos from a paginated GitHub API endpoint.
+
+    Args:
+        url: Initial GitHub API URL.
+
+    Returns:
+        Combined list of repo dicts across all pages.
+    """
     repos = []
     next_url = url
     while next_url:
@@ -51,7 +77,12 @@ def fetch_all_repos(url):
     return repos
 
 
-def fetch_pinned_repos():
+def fetch_pinned_repos() -> list[dict[str, str | None]]:
+    """Fetch pinned repos via GitHub GraphQL API.
+
+    Returns:
+        List of dicts with name and description keys, or empty list on error.
+    """
     if not GITHUB_TOKEN:
         print("No GITHUB_TOKEN env var, skipping pinned repos")
         return []
@@ -87,7 +118,8 @@ def fetch_pinned_repos():
     return [{"name": r["name"], "description": r.get("description")} for r in pinned]
 
 
-def fetch_repos():
+def fetch_repos() -> None:
+    """Fetch all repos, merge pinned status, and write repos.json."""
     try:
         all_repos = fetch_all_repos(GITHUB_API_URL)
         pinned_repos = fetch_pinned_repos()
@@ -95,17 +127,17 @@ def fetch_repos():
         all_repos.sort(key=lambda r: r.get("pushed_at", ""), reverse=True)
         pinned_names = {p["name"] for p in pinned_repos}
 
-        repos_with_pinned = []
-        for repo in all_repos:
-            name = repo["name"]
-            repos_with_pinned.append({
-                "title": name,
+        repos_with_pinned = [
+            {
+                "title": repo["name"],
                 "href": repo["html_url"],
                 "website": repo.get("homepage"),
                 "description": repo.get("description"),
                 "stars": repo.get("stargazers_count", 0),
-                "pinned": name in pinned_names,
-            })
+                "pinned": repo["name"] in pinned_names,
+            }
+            for repo in all_repos
+        ]
 
         pinned_first = [r for r in repos_with_pinned if r["pinned"]]
         rest = [r for r in repos_with_pinned if not r["pinned"]]
@@ -115,11 +147,21 @@ def fetch_repos():
             json.dump(final_data, f, indent=4)
         print(f"Updated repos.json with {len(final_data)} repos ({len(pinned_first)} pinned)")
 
-    except Exception as e:
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, OSError) as e:
         print(f"Error fetching GitHub repositories: {e}")
 
 
-def list_subtree(github_repo, path, ref="main"):
+def list_subtree(github_repo: str, path: str, ref: str = "main") -> list[str]:
+    """List files under a path in a GitHub repo tree.
+
+    Args:
+        github_repo: Owner/repo string (e.g. 'user/repo').
+        path: Directory prefix to filter.
+        ref: Git ref (branch, tag, or commit SHA).
+
+    Returns:
+        List of file paths matching the prefix.
+    """
     url = f"https://api.github.com/repos/{github_repo}/git/trees/{ref}?recursive=1"
     data, _ = fetch_url(url)
     tree = json.loads(data).get("tree", [])
@@ -127,7 +169,8 @@ def list_subtree(github_repo, path, ref="main"):
     return files
 
 
-def write_leetcode_solutions_as_json():
+def write_leetcode_solutions_as_json() -> None:
+    """Fetch leetcode solution files and write leetcode-solutions.json."""
     files = list_subtree("prakashsellathurai/leetcode-solutions", "problems", "gh-pages")
     yamldata = [{"title": f, "href": f"leetcode-solutions/{f}"} for f in files]
     with open("./data/non-public/leetcode-solutions.json", "w") as f:
@@ -138,7 +181,8 @@ PRECEPT_PATH = "data/non-public/submodules/Grimoire/precept.txt"
 PRECEPT_URL = "https://raw.githubusercontent.com/prakashsellathurai/grimoire/main/precept.txt"
 
 
-def update_precept():
+def update_precept() -> None:
+    """Read precept text from submodule or remote, parse, and write precept.json."""
     try:
         if os.path.exists(PRECEPT_PATH):
             with open(PRECEPT_PATH) as f:
@@ -180,7 +224,7 @@ def update_precept():
             json.dump(entries, f, indent=2)
         print(f"Updated precept.json with {len(entries)} entries")
 
-    except Exception as e:
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError, OSError) as e:
         print(f"Error updating precept: {e}")
 
 

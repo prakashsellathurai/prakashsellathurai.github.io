@@ -1,27 +1,17 @@
 #!/usr/bin/env python3
 """Static site generator for prakashsellathurai.com."""
+from __future__ import annotations
 
 import logging
 import os
 import pathlib
 import shutil
 
-from lib.datatypes import (
-    Book,
-    Essay,
-    ExperimentTopic,
-    FileData,
-    NoteTopic,
-    Project,
-    Quote,
-    SiteMetadata,
-)
 from lib.dataloader import DataLoader
-from lib.dates import format_date, format_date_iso
-from lib.markdown import MarkdownRenderer, escape_html
+from lib.dates import format_date
+from lib.markdown import MarkdownRenderer
 from lib.pagebuilder import PageBuilder
 from lib.search import build_search_js
-from lib.slug import slug
 from lib.xmlgen import generate_rss_feed, generate_sitemap
 
 _logger = logging.getLogger(__name__)

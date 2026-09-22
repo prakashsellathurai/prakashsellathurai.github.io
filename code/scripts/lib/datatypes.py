@@ -1,3 +1,7 @@
+"""TypedDict definitions for structured data used across the build pipeline."""
+
+from __future__ import annotations
+
 from typing import TypedDict, NotRequired
 
 

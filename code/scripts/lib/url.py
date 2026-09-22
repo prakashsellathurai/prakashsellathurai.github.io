@@ -16,6 +16,16 @@ def note_topic_url(topic_slug: str) -> str:
 
 
 def note_file_url(topic_slug: str, subtopic_path: str | None, file_slug: str) -> str:
+    """Return the URL path for a file within a note topic.
+
+    Args:
+        topic_slug: Slug of the parent note topic.
+        subtopic_path: Optional nested subtopic path segments.
+        file_slug: Slug of the individual file.
+
+    Returns:
+        Full URL path to the note file.
+    """
     base = f"/notes/{topic_slug}"
     if subtopic_path:
         base += "/" + subtopic_path
@@ -33,6 +43,16 @@ def topic_url(topic_slug: str) -> str:
 
 
 def exp_file_url(topic_slug: str, subtopic_path: str | None, file_slug: str) -> str:
+    """Return the URL path for a file within an experiment topic.
+
+    Args:
+        topic_slug: Slug of the parent experiment topic.
+        subtopic_path: Optional nested subtopic path segments.
+        file_slug: Slug of the individual file.
+
+    Returns:
+        Full URL path to the experiment file.
+    """
     base = f"/experiments/{topic_slug}"
     if subtopic_path:
         base += "/" + subtopic_path
@@ -40,6 +60,16 @@ def exp_file_url(topic_slug: str, subtopic_path: str | None, file_slug: str) -> 
 
 
 def flatten_experiment_pages(experiments: list[ExperimentTopic]) -> list[dict]:
+    """Flatten all experiment topics into a list of page entries.
+
+    Includes both top-level files and files nested under subtopics.
+
+    Args:
+        experiments: List of experiment topics with files and subtopics.
+
+    Returns:
+        List of dicts with ``url`` and ``title`` keys.
+    """
     pages = []
     for exp in experiments:
         base = topic_url(exp["topic_slug"])
@@ -58,6 +88,16 @@ def flatten_experiment_pages(experiments: list[ExperimentTopic]) -> list[dict]:
 
 
 def flatten_note_pages(notes: list[NoteTopic]) -> list[dict]:
+    """Flatten all note topics into a list of page entries.
+
+    Includes both top-level files and files nested under subtopics.
+
+    Args:
+        notes: List of note topics with files and subtopics.
+
+    Returns:
+        List of dicts with ``url`` and ``title`` keys.
+    """
     pages = []
     for n in notes:
         base = note_topic_url(n["topic_slug"])

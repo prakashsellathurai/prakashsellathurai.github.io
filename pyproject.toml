@@ -10,7 +10,7 @@ dependencies = [
     "nbconvert[serve,test,webpdf]>=7.17.1",
     "nbformat>=5.10.4",
     "pyyaml>=6.0.3",
-    "ssserve>=0.3.3",
+    "ssserve>=0.4.1",
 ]
 
 [dependency-groups]

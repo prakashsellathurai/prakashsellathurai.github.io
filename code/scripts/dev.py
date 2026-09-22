@@ -22,31 +22,52 @@ WATCH_DIRS = [
 IGNORED_SUFFIXES = {".pyc", ".pyo", "__pycache__"}
 IGNORED_NAMES = {".git", "__pycache__", ".DS_Store"}
 
-_debounce_timer: threading.Timer | None = None
 _rebuild_lock = threading.Lock()
+_pending_timer: threading.Timer | None = None
 
+
+
+def get_ram_mb() -> float:
+    """Return current process RSS in MB from /proc/self/status."""
+    try:
+        with open("/proc/self/status") as f:
+            for line in f:
+                if line.startswith("VmRSS:"):
+                    return int(line.split()[1]) / 1024
+    except (OSError, IndexError, ValueError):
+        pass
+    return 0.0
+
+
+def log_ram(prefix: str = "") -> None:
+    """Print current RAM usage, overwriting the previous line."""
+    mb = get_ram_mb()
+    print(f"\r{prefix}RAM: {mb:.1f} MB", end="", flush=True)
 
 def rebuild() -> None:
     """Run the build script."""
+    global _pending_timer
+    _pending_timer = None
     print("\n--- Rebuilding site... ---")
     result = subprocess.run(
         [sys.executable, str(ROOT / "code" / "scripts" / "build.py")],
         cwd=str(ROOT),
     )
     if result.returncode == 0:
-        print("--- Rebuild complete ---\n")
+        print("--- Rebuild complete ---")
+        log_ram()
     else:
-        print(f"--- Rebuild failed (exit code {result.returncode}) ---\n")
+        print(f"--- Rebuild failed (exit code {result.returncode}) ---")
 
 
 def debounced_rebuild() -> None:
     """Debounce rapid file changes into a single rebuild."""
-    global _debounce_timer
+    global _pending_timer
     with _rebuild_lock:
-        if _debounce_timer is not None:
-            _debounce_timer.cancel()
-        _debounce_timer = threading.Timer(0.5, rebuild)
-        _debounce_timer.start()
+        if _pending_timer is not None:
+            _pending_timer.cancel()
+        _pending_timer = threading.Timer(0.5, rebuild)
+        _pending_timer.start()
 
 
 class ChangeHandler(FileSystemEventHandler):
@@ -55,18 +76,24 @@ class ChangeHandler(FileSystemEventHandler):
     def __init__(self, observer: Observer) -> None:
         super().__init__()
         self._observer = observer
+        self._watched: set[str] = set()
+        self._lock = threading.Lock()
 
     def on_any_event(self, event: FileSystemEvent) -> None:
+        path = Path(event.src_path)
+
         if event.is_directory:
             if event.event_type == "created":
-                self._watch_new_dir(Path(event.src_path))
+                self._watch_new_dir(path)
+            elif event.event_type in ("deleted", "moved"):
+                self._unschedule_dir(path)
             return
-        src = Path(event.src_path)
-        if src.suffix in IGNORED_SUFFIXES:
+
+        if path.suffix in IGNORED_SUFFIXES:
             return
-        if any(part in IGNORED_NAMES for part in src.parts):
+        if any(part in IGNORED_NAMES for part in path.parts):
             return
-        print(f"Change detected: {src.relative_to(ROOT)}")
+        print(f"Change detected: {path.relative_to(ROOT)}")
         debounced_rebuild()
 
     def _watch_new_dir(self, path: Path) -> None:
@@ -75,11 +102,38 @@ class ChangeHandler(FileSystemEventHandler):
             return
         if any(part in IGNORED_NAMES for part in path.parts):
             return
+        key = str(path)
+        with self._lock:
+            if key in self._watched:
+                return
+            self._watched.add(key)
         self._observer.schedule(self, str(path), recursive=True)
         print(f"Now watching: {path.relative_to(ROOT)}")
         for child in path.iterdir():
             if child.is_dir():
                 self._watch_new_dir(child)
+
+    def _unschedule_dir(self, path: Path) -> None:
+        """Remove watch for a deleted directory."""
+        key = str(path)
+        with self._lock:
+            if key not in self._watched:
+                return
+            self._watched.discard(key)
+        try:
+            self._observer.unschedule(path)
+        except KeyError:
+            pass
+
+    def cleanup(self) -> None:
+        """Unschedule all watches and cancel pending timer."""
+        global _pending_timer
+        with _rebuild_lock:
+            if _pending_timer is not None:
+                _pending_timer.cancel()
+                _pending_timer = None
+        with self._lock:
+            self._watched.clear()
 
 
 def start_ssserve() -> subprocess.Popen[bytes]:
@@ -114,9 +168,11 @@ def main() -> None:
 
     try:
         while True:
-            time.sleep(1)
+            time.sleep(5)
+            log_ram()
     except KeyboardInterrupt:
         print("\nShutting down...")
+        handler.cleanup()
         observer.stop()
         observer.join()
         server.terminate()

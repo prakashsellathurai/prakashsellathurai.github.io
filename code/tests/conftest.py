@@ -1,20 +1,23 @@
+from __future__ import annotations
+
 import pathlib
 import subprocess
 
 import pytest
-
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "out"
 
 
 @pytest.fixture(scope="session")
-def out_dir():
+def out_dir() -> pathlib.Path:
+    """Return the built site output directory."""
     return OUT_DIR
 
 
 @pytest.fixture(scope="session")
-def build_site():
+def build_site() -> bool:
+    """Build the site once per session; cache the result."""
     result = subprocess.run(
         ["make", "build"],
         cwd=ROOT,
@@ -26,12 +29,14 @@ def build_site():
 
 
 @pytest.fixture(scope="session")
-def browser_context_args(browser_context_args, build_site):
+def browser_context_args(browser_context_args, build_site: bool) -> dict:
+    """Point the browser base URL at the built site directory."""
     return {**browser_context_args, "base_url": OUT_DIR.as_uri() + "/"}
 
 
 @pytest.fixture(autouse=True)
-def setup_page(page, build_site):
+def setup_page(page, build_site: bool):
+    """Configure every page to serve static files from the built site."""
     page.set_default_timeout(10000)
 
     def _serve_static(route):

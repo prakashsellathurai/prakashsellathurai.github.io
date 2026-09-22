@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""Sync the first paragraph of default.mdx into siteMetadata.json description."""
+
+from __future__ import annotations
+
 import json
 import os
 import re

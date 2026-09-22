@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import re
 
 from playwright.sync_api import expect
 
 
 class TestFootnotes:
-    def test_sidenote_links_match_sidenote_ids(self, page):
+    def test_sidenote_links_match_their_target_ids(self, page):
         page.goto("/essays/bottom-up.html")
         refs = page.locator("a.sidenote-number")
         note_count = refs.count()

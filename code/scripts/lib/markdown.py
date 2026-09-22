@@ -1,5 +1,10 @@
-import mistune
+"""Markdown rendering with sidenote-style footnotes."""
+
+from __future__ import annotations
+
 import re
+
+import mistune
 
 _ESCAPE_TABLE = str.maketrans({
     "&": "&amp;",
@@ -10,7 +15,15 @@ _ESCAPE_TABLE = str.maketrans({
 })
 
 
-def escape_html(text):
+def escape_html(text: str | None) -> str:
+    """Escape special HTML characters in text.
+
+    Args:
+        text: String to escape. Returns empty string if None or falsy.
+
+    Returns:
+        Escaped string safe for HTML embedding.
+    """
     if not text:
         return ""
     return str(text).translate(_ESCAPE_TABLE)
@@ -29,10 +42,31 @@ _md_gfm = mistune.create_markdown(
 
 
 class MarkdownRenderer:
-    def __init__(self, gfm=False):
+    """Render Markdown to HTML with optional GitHub-Flavored extensions.
+
+    Supports sidenote-style footnotes: definitions at the bottom of the
+    content are rendered as inline sidenote elements.
+
+    Args:
+        gfm: Enable GitHub-Flavored Markdown extensions (tables,
+            strikethrough, task lists, autolinks).
+    """
+
+    def __init__(self, gfm: bool = False) -> None:
         self._md = _md_gfm if gfm else _md
 
-    def render(self, content):
+    def render(self, content: str) -> str:
+        """Render Markdown content to HTML.
+
+        Extracts footnotes, renders the body, then replaces footnote
+        placeholders with sidenote HTML elements.
+
+        Args:
+            content: Markdown source text with optional footnote definitions.
+
+        Returns:
+            Rendered HTML string.
+        """
         defs, body = self._extract_footnotes(content)
         body = _PAT_FN_REF.sub(lambda m: _PLACEHOLDER.format(m.group(1)), body)
         html = self._md(body)
@@ -47,26 +81,26 @@ class MarkdownRenderer:
             html = html.replace(_PLACEHOLDER.format(fn_id), sidenote)
         return html
 
-    def _extract_footnotes(self, text):
-        defs = {}
+    def _extract_footnotes(self, text: str) -> tuple[dict[str, str], str]:
+        defs: dict[str, str] = {}
         lines = text.split("\n")
-        result = []
+        result: list[str] = []
         i = 0
         while i < len(lines):
             line = lines[i]
             m = _PAT_FN_DEF.match(line)
             if m:
                 fn_id = m.group(1)
-                content = m.group(2)
+                parts = [m.group(2)]
                 i += 1
                 while i < len(lines):
                     next_line = lines[i]
                     if next_line == "" or next_line[0] in (" ", "\t"):
-                        content += "\n\n" if next_line == "" else " " + next_line.strip()
+                        parts.append("\n\n" if next_line == "" else " " + next_line.strip())
                         i += 1
                     else:
                         break
-                defs[fn_id] = content.strip()
+                defs[fn_id] = "".join(parts).strip()
             else:
                 result.append(line)
                 i += 1

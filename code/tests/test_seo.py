@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import json
 import re
 
 from playwright.sync_api import expect
 
 
-def _get_schema(data, schema_type):
+def _get_schema(data: dict, schema_type: str) -> dict | None:
     if data.get("@type") == schema_type:
         return data
     if "@graph" in data:
@@ -14,52 +16,52 @@ def _get_schema(data, schema_type):
     return None
 
 
-def _load_json_ld(page):
+def _load_json_ld(page) -> dict | None:
     text = page.locator('script[type="application/ld+json"]').text_content()
     return json.loads(text) if text else None
 
 
 class TestHomepageSEO:
-    def test_should_have_title_tag(self, page):
+    def test_homepage_has_nonempty_title_tag(self, page):
         page.goto("/")
         title = page.title()
         assert title
 
-    def test_should_have_meta_description(self, page):
+    def test_homepage_meta_description_exceeds_minimum_length(self, page):
         page.goto("/")
         desc = page.locator('meta[name="description"]').get_attribute("content")
         assert desc
         assert len(desc) > 50
 
-    def test_should_have_keywords_meta(self, page):
+    def test_homepage_has_keywords_meta_tag(self, page):
         page.goto("/")
         keywords = page.locator('meta[name="keywords"]').get_attribute("content")
         assert keywords
 
-    def test_should_have_canonical_url(self, page):
+    def test_homepage_canonical_url_contains_domain(self, page):
         page.goto("/")
         canonical = page.locator('link[rel="canonical"]').get_attribute("href")
         assert "prakashsellathurai.com" in canonical
 
-    def test_should_have_open_graph_tags(self, page):
+    def test_homepage_has_all_open_graph_tags(self, page):
         page.goto("/")
         expect(page.locator('meta[property="og:title"]')).to_have_attribute("content", re.compile(".+"))
         expect(page.locator('meta[property="og:description"]')).to_have_attribute("content", re.compile(".+"))
         expect(page.locator('meta[property="og:url"]')).to_have_attribute("content", re.compile(".+"))
         expect(page.locator('meta[property="og:image"]')).to_have_attribute("content", re.compile(".+"))
 
-    def test_should_have_twitter_card_meta(self, page):
+    def test_homepage_has_twitter_summary_card_meta(self, page):
         page.goto("/")
         expect(page.locator('meta[name="twitter:card"]')).to_have_attribute("content", "summary_large_image")
         expect(page.locator('meta[name="twitter:title"]')).to_have_attribute("content", re.compile(".+"))
         expect(page.locator('meta[name="twitter:image"]')).to_have_attribute("content", re.compile(".+"))
 
-    def test_should_have_json_ld_structured_data(self, page):
+    def test_homepage_includes_json_ld_structured_data(self, page):
         page.goto("/")
         data = _load_json_ld(page)
         assert data
 
-    def test_should_have_website_schema(self, page):
+    def test_homepage_has_website_schema_with_search_action(self, page):
         page.goto("/")
         data = _load_json_ld(page)
         website = _get_schema(data, "WebSite")
@@ -69,7 +71,7 @@ class TestHomepageSEO:
         assert website["potentialAction"]["@type"] == "SearchAction"
         assert "search_term_string" in website["potentialAction"]["query-input"]
 
-    def test_should_have_person_schema(self, page):
+    def test_homepage_has_person_schema(self, page):
         page.goto("/")
         data = _load_json_ld(page)
         person = _get_schema(data, "Person")
@@ -79,28 +81,28 @@ class TestHomepageSEO:
         assert person.get("image")
         assert person.get("email")
 
-    def test_should_have_robots_txt(self, out_dir):
+    def test_robots_txt_has_required_directives(self, out_dir):
         text = (out_dir / "robots.txt").read_text()
         assert "User-agent:" in text
         assert "Sitemap:" in text
 
-    def test_should_have_sitemap_xml(self, out_dir):
+    def test_sitemap_xml_has_required_structure(self, out_dir):
         text = (out_dir / "sitemap.xml").read_text()
         assert "<urlset" in text
         assert "<loc>" in text
 
-    def test_sitemap_should_not_have_duplicate_urls(self, out_dir):
+    def test_sitemap_has_no_duplicate_urls(self, out_dir):
         locs = re.findall(r"<loc>([^<]+)</loc>", (out_dir / "sitemap.xml").read_text())
         assert len(locs) == len(set(locs)), f"duplicate URLs: {set(x for x in locs if locs.count(x) > 1)}"
 
-    def test_should_have_rss_feed(self, out_dir):
+    def test_rss_feed_has_required_structure(self, out_dir):
         text = (out_dir / "feed.xml").read_text()
         assert "<rss" in text
         assert "<channel>" in text
 
 
 class TestEssaySEO:
-    def test_should_have_unique_title_per_essay(self, page):
+    def test_essay_page_title_contains_author_suffix(self, page):
         page.goto("/essays/")
         first_essay = page.locator("article h2 a").first
         href = first_essay.get_attribute("href")
@@ -108,7 +110,7 @@ class TestEssaySEO:
         title = page.title()
         assert "- Prakash" in title
 
-    def test_should_have_essay_specific_meta_description(self, page):
+    def test_essay_page_has_unique_meta_description(self, page):
         page.goto("/essays/")
         first_essay = page.locator("article h2 a").first
         href = first_essay.get_attribute("href")
@@ -116,7 +118,7 @@ class TestEssaySEO:
         desc = page.locator('meta[name="description"]').get_attribute("content")
         assert desc
 
-    def test_should_have_essay_specific_canonical_url(self, page):
+    def test_essay_page_canonical_url_contains_essays_path(self, page):
         page.goto("/essays/")
         first_essay = page.locator("article h2 a").first
         href = first_essay.get_attribute("href")
@@ -124,7 +126,7 @@ class TestEssaySEO:
         canonical = page.locator('link[rel="canonical"]').get_attribute("href")
         assert "/essays/" in canonical
 
-    def test_should_have_blog_posting_schema(self, page):
+    def test_essay_page_has_blog_posting_schema(self, page):
         page.goto("/essays/")
         first_essay = page.locator("article h2 a").first
         href = first_essay.get_attribute("href")
@@ -138,7 +140,7 @@ class TestEssaySEO:
         assert blog["author"]["name"]
         assert "prakashsellathurai.com" in blog["url"]
 
-    def test_should_have_essay_breadcrumbs(self, page):
+    def test_essay_page_has_breadcrumb_schema(self, page):
         page.goto("/essays/")
         first_essay = page.locator("article h2 a").first
         href = first_essay.get_attribute("href")
@@ -152,7 +154,7 @@ class TestEssaySEO:
 
 
 class TestAboutPageSEO:
-    def test_should_have_about_page_schema(self, page):
+    def test_about_page_has_profile_page_schema(self, page):
         page.goto("/about.html")
         data = _load_json_ld(page)
         about = _get_schema(data, "ProfilePage")
@@ -161,7 +163,7 @@ class TestAboutPageSEO:
         assert about["mainEntity"]["@type"] == "Person"
         assert "prakashsellathurai.com" in about["url"]
 
-    def test_should_have_profile_rich_result(self, page):
+    def test_about_page_person_has_rich_profile_fields(self, page):
         page.goto("/about.html")
         data = _load_json_ld(page)
         about = _get_schema(data, "ProfilePage")
@@ -174,7 +176,7 @@ class TestAboutPageSEO:
         assert person["email"]
         assert person["knowsAbout"]
 
-    def test_should_have_about_breadcrumbs(self, page):
+    def test_about_page_has_breadcrumb_schema(self, page):
         page.goto("/about.html")
         data = _load_json_ld(page)
         breadcrumbs = _get_schema(data, "BreadcrumbList")
@@ -184,7 +186,7 @@ class TestAboutPageSEO:
 
 
 class TestProjectsPageSEO:
-    def test_should_have_collection_page_schema(self, page):
+    def test_projects_page_has_collection_page_schema(self, page):
         page.goto("/projects.html")
         data = _load_json_ld(page)
         collection = _get_schema(data, "CollectionPage")
@@ -199,7 +201,7 @@ class TestProjectsPageSEO:
         assert first["item"]["codeRepository"]
         assert first["item"]["applicationCategory"] == "DeveloperApplication"
 
-    def test_should_have_projects_breadcrumbs(self, page):
+    def test_projects_page_has_breadcrumb_schema(self, page):
         page.goto("/projects.html")
         data = _load_json_ld(page)
         breadcrumbs = _get_schema(data, "BreadcrumbList")

@@ -1,7 +1,7 @@
 [project]
 name = "prakashsellathurai-github-io"
 version = "0.1.0"
-description = "Add your description here"
+description = "Personal website and blog for Prakash Sellathurai"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -19,3 +19,9 @@ dev = [
     "pytest-playwright>=0.6",
     "pytest-xdist>=3.8.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["code/tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = ["-v", "--tb=short", "--strict-markers"]

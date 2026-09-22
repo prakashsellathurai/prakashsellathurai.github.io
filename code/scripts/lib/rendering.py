@@ -6,10 +6,11 @@ import json
 import logging
 import pathlib
 import re
-import subprocess
+from collections.abc import Callable
 
 from bs4 import BeautifulSoup
 from nbconvert import HTMLExporter
+import nbformat
 from nbformat import v4 as nbf, reads, NO_CONVERT
 
 from lib.datatypes import FileData
@@ -37,7 +38,17 @@ _HLJS_LANG_MAP = {
 }
 
 
-def apply_template(template_str: str, data: dict) -> str:
+def apply_template(template_str: str, data: dict[str, object]) -> str:
+    """Replace ``{{key}}`` placeholders in a template string.
+
+    Args:
+        template_str: Template string containing ``{{key}}`` placeholders.
+        data: Mapping of placeholder names to replacement values.
+            Entries with a ``None`` value are skipped.
+
+    Returns:
+        The template with all placeholders replaced by their values.
+    """
     result = template_str
     for key, value in data.items():
         if value is not None:
@@ -46,13 +57,32 @@ def apply_template(template_str: str, data: dict) -> str:
 
 
 def write_page(out_dir: pathlib.Path, rel_path: str, html: str) -> None:
-    """Write rendered HTML to out_dir/rel_path, creating parents as needed."""
+    """Write rendered HTML to a file relative to *out_dir*.
+
+    Creates any missing parent directories automatically.
+
+    Args:
+        out_dir: Root output directory.
+        rel_path: Relative path inside *out_dir* where the file is written.
+        html: HTML content to write.
+    """
     target = out_dir / rel_path
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(html)
 
 
-def heading_to_id(text: str, used: dict) -> str:
+def heading_to_id(text: str, used: dict[str, bool]) -> str:
+    """Generate a unique DOM id from a heading's text content.
+
+    Appends ``-N`` suffixes when the base slug is already present in *used*.
+
+    Args:
+        text: Raw heading text.
+        used: Mutable dict of ids already in use; updated in place.
+
+    Returns:
+        A unique, slugified id string.
+    """
     base = slug(text)
     if not base:
         base = "section"
@@ -66,7 +96,19 @@ def heading_to_id(text: str, used: dict) -> str:
 
 
 def build_toc(content_html: str) -> tuple[str, str]:
-    """Inject ids into h2/h3 headings and build a Wikipedia-style TOC box."""
+    """Inject ids into h2/h3 headings and build a Wikipedia-style TOC box.
+
+    Modifies heading elements in *content_html* to add ``id`` attributes,
+    then builds a collapsible table of contents from those headings.
+
+    Args:
+        content_html: Raw HTML content to process.
+
+    Returns:
+        A tuple of ``(modified_html, toc_html)`` where *modified_html* has
+        heading ids injected and *toc_html* is the rendered TOC markup
+        (empty string if no h2 headings exist).
+    """
     soup = BeautifulSoup(content_html, "html.parser")
     headings = soup.find_all(["h2", "h3"])
     if not headings:
@@ -125,6 +167,16 @@ def build_toc(content_html: str) -> tuple[str, str]:
 
 
 def panel_section(title: str, body: str, id_attr: str = "") -> str:
+    """Render a collapsible panel section with a title and body.
+
+    Args:
+        title: Panel heading text (HTML-escaped).
+        body: HTML content for the panel body.
+        id_attr: Optional ``id`` attribute for the wrapper div.
+
+    Returns:
+        HTML string for the panel section.
+    """
     id_str = f' id="{escape_html(id_attr)}"' if id_attr else ""
     return f"""<div class="portal"{id_str}>
       <h3>{escape_html(title)}</h3>
@@ -133,14 +185,28 @@ def panel_section(title: str, body: str, id_attr: str = "") -> str:
 
 
 def sidebar_tree_html(
-    items: list[dict],
-    current: dict | None,
-    file_url_fn,
+    items: list[dict[str, object]],
+    current: dict[str, object] | None,
+    file_url_fn: Callable[[str, str | None, str], str],
     topic_title_key: str,
     topic_slug_key: str,
     current_section_key: str,
 ) -> str:
-    """Build a collapsible topic tree suitable for the wiki left panel."""
+    """Build a collapsible topic tree suitable for the wiki left panel.
+
+    Args:
+        items: List of topic dicts, each containing files and subtopics.
+        current: Dict describing the currently active topic/file/section,
+            or ``None`` if nothing is active.
+        file_url_fn: Callable that builds a URL from
+            ``(topic_slug, subtopic_path, file_slug)``.
+        topic_title_key: Key in *items* dicts for the display title.
+        topic_slug_key: Key in *items* dicts for the slug.
+        current_section_key: Key used to look up the current section in *current*.
+
+    Returns:
+        HTML string for the navigation tree.
+    """
     current = current or {}
 
     parts_html = []
@@ -201,6 +267,17 @@ def sidebar_tree_html(
 
 
 def note_description(file_data: FileData, limit: int = 160) -> str:
+    """Extract a plain-text description from a note's markdown content.
+
+    Strips markdown syntax and link targets, then truncates to *limit* characters.
+
+    Args:
+        file_data: File dict with a ``content`` key holding markdown text.
+        limit: Maximum character length for the description.
+
+    Returns:
+        Truncated plain-text description ending with an ellipsis if needed.
+    """
     text = _LINK_RE.sub(r"\1", file_data["content"])
     for token in ("#", "`", "*", "_", ">", "[", "]"):
         text = text.replace(token, " ")
@@ -211,6 +288,15 @@ def note_description(file_data: FileData, limit: int = 160) -> str:
 
 
 def extract_body(full_html: str) -> str:
+    """Extract the inner content of a ``<body>`` tag from a full HTML document.
+
+    Args:
+        full_html: Complete HTML document string.
+
+    Returns:
+        The inner HTML of the ``<body>`` tag, or the original string if no
+        ``<body>`` tag is found.
+    """
     match = re.search(r"<body[^>]*>(.*)</body>", full_html, re.S)
     return match.group(1).strip() if match else full_html
 
@@ -224,7 +310,17 @@ def _hljs_language(highlight_cls: str) -> str | None:
 
 
 def make_code_cells_collapsible(body_html: str) -> str:
-    """Wrap each notebook code cell input in a collapsible <details> block."""
+    """Wrap each notebook code cell input in a collapsible ``<details>`` block.
+
+    Also annotates ``<code>`` elements inside highlight divs with the
+    appropriate ``language-*`` class for highlight.js.
+
+    Args:
+        body_html: HTML body content from an nbconvert export.
+
+    Returns:
+        Modified HTML with code cells wrapped in collapsible containers.
+    """
     soup = BeautifulSoup(body_html, "html.parser")
     for cell in soup.select("div.code_cell"):
         inp = cell.find("div", class_="input", recursive=False)
@@ -260,6 +356,17 @@ def make_code_cells_collapsible(body_html: str) -> str:
 
 
 def render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
+    """Render a markdown file as HTML via nbconvert.
+
+    Falls back to the *markdown_renderer* if nbconvert fails.
+
+    Args:
+        file_data: File dict with ``content`` (markdown text) and ``ext`` keys.
+        markdown_renderer: Fallback renderer used when nbconvert errors.
+
+    Returns:
+        Rendered HTML string.
+    """
     content = file_data["content"]
     try:
         nb = nbf.new_notebook()
@@ -273,7 +380,7 @@ def render_markdown(file_data: FileData, markdown_renderer: MarkdownRenderer) ->
         exporter = HTMLExporter(template_name="classic")
         full_html, _resources = exporter.from_notebook_node(nb)
         return extract_body(full_html)
-    except Exception as exc:
+    except (nbformat.ValidationError, ValueError, OSError) as exc:
         _logger.warning("nbconvert failed for markdown, falling back to renderer: %s", exc)
     return markdown_renderer.render(content)
 
@@ -371,10 +478,22 @@ def _extract_plotly_figures(full_html: str) -> str:
 
 
 def render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
+    """Render a Jupyter notebook (``.ipynb``) as HTML.
+
+    Handles widget state extraction for Plotly figures and collapses code
+    cell inputs. Falls back to a ``<pre><code>`` block on parse or export failure.
+
+    Args:
+        file_data: File dict with ``content`` (JSON notebook string) and ``ext`` keys.
+        markdown_renderer: Unused; kept for call-signature compatibility.
+
+    Returns:
+        Rendered HTML string.
+    """
     content = file_data["content"]
     try:
         nb = reads(content, NO_CONVERT)
-    except Exception as exc:
+    except (nbformat.ValidationError, ValueError) as exc:
         _logger.warning("Invalid notebook, rendering as code: %s", exc)
         return f"<pre><code>{escape_html(content)}</code></pre>"
     try:
@@ -387,12 +506,21 @@ def render_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) ->
             injection = _WIDGET_DEPS + widget_state_tag + plotly_html
             body = body.replace("</main>", injection + "</main>", 1)
         return make_code_cells_collapsible(body)
-    except Exception as exc:
+    except (nbformat.ValidationError, ValueError, OSError) as exc:
         _logger.warning("Notebook export failed, rendering as code: %s", exc)
     return f"<pre><code>{escape_html(content)}</code></pre>"
 
 
 def render_code_as_notebook(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
+    """Render a source-code file as a ``<pre><code>`` block.
+
+    Args:
+        file_data: File dict with ``content`` (source text) and ``ext`` keys.
+        markdown_renderer: Unused; kept for call-signature compatibility.
+
+    Returns:
+        HTML string containing the escaped source code.
+    """
     escaped = escape_html(file_data["content"])
     return f'<pre><code class="language-{file_data["ext"]}">{escaped}</code></pre>'
 
@@ -407,5 +535,17 @@ _RENDER_STRATEGIES = {
 
 
 def render_experiment_content(file_data: FileData, markdown_renderer: MarkdownRenderer) -> str:
+    """Render an experiment file using the strategy matching its extension.
+
+    Dispatches to ``render_markdown``, ``render_notebook``, or
+    ``render_code_as_notebook`` based on the file extension.
+
+    Args:
+        file_data: File dict with ``content`` and ``ext`` keys.
+        markdown_renderer: Renderer passed through to the chosen strategy.
+
+    Returns:
+        Rendered HTML string.
+    """
     strategy = _RENDER_STRATEGIES.get(file_data["ext"], render_code_as_notebook)
     return strategy(file_data, markdown_renderer)

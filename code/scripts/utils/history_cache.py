@@ -8,6 +8,7 @@ and writes the latest one to ``data/non-public/history-cache.json``.
 The cache keys are relative paths from the Grimoire root
 (e.g. ``notes/topic/file.md``, ``experiments/topic/script.py``).
 """
+from __future__ import annotations
 
 import json
 import os

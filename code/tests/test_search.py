@@ -1,5 +1,9 @@
+from __future__ import annotations
+
 import json
 import sys
+
+import pytest
 
 sys.path.insert(0, "code/scripts")
 
@@ -58,18 +62,22 @@ def _match(payload: dict, query: str) -> set[int]:
 
 
 class TestTokenizer:
-    def test_case_and_punctuation(self):
-        assert tokenize("Hello, WORLD! foo.bar") == ["hello", "world", "foo", "bar"]
-
-    def test_stopwords_and_short_tokens(self):
-        assert tokenize("a the of on go it") == []
-
-    def test_digits(self):
-        assert tokenize("python3 c++ 123") == ["python3", "123"]
+    @pytest.mark.parametrize(
+        "text, expected",
+        [
+            ("Hello, WORLD! foo.bar", ["hello", "world", "foo", "bar"]),
+            ("a the of on go it", []),
+            ("python3 c++ 123", ["python3", "123"]),
+        ],
+    )
+    def test_tokenize_normalizes_and_filters_tokens(
+        self, text: str, expected: list[str]
+    ):
+        assert tokenize(text) == expected
 
 
 class TestSearchIndexBuilder:
-    def _builder(self):
+    def _builder(self) -> SearchIndexBuilder:
         b = SearchIndexBuilder()
         b.add(
             "Agentic Systems",
@@ -93,43 +101,54 @@ class TestSearchIndexBuilder:
         )
         return b
 
-    def test_serialization_roundtrip_shape(self):
+    def test_serialization_roundtrip_preserves_all_fields(self):
         payload = _load(self._builder().to_js())
         assert payload["d"][0][0] == "Agentic Systems"
         assert payload["d"][0][1] == "/essays/agentic-systems.html"
         assert payload["d"][0][2] == 0
         assert len(payload["c"]) == len(payload["k"]) == len(payload["w"])
 
-    def test_prefix_matches_title_and_body(self):
+    @pytest.mark.parametrize(
+        "query, expected_ids",
+        [
+            ("agent", {0}),
+            ("cpython", {1}),
+            ("garbage", {1}),
+            ("backprop", {2}),
+        ],
+    )
+    def test_prefix_matches_title_body_and_tags(
+        self, query: str, expected_ids: set[int]
+    ):
         payload = _load(self._builder().to_js())
-        assert _match(payload, "agent") == {0}
-        assert _match(payload, "cpython") == {1}
-        assert _match(payload, "garbage") == {1}
-        assert _match(payload, "backprop") == {2}
+        assert _match(payload, query) == expected_ids
 
-    def test_multi_term_intersection(self):
+    def test_multi_term_query_returns_intersection(self):
         payload = _load(self._builder().to_js())
         assert _match(payload, "deep learning") == {0, 2}
+
+    def test_multi_term_query_with_no_common_docs_returns_empty(self):
+        payload = _load(self._builder().to_js())
         assert _match(payload, "garbage backprop") == set()
 
-    def test_no_match(self):
+    def test_nonexistent_term_returns_empty(self):
         payload = _load(self._builder().to_js())
         assert _match(payload, "zzzzz") == set()
 
-    def test_title_and_tag_weighting(self):
+    def test_title_and_tag_weighting_includes_weight_entry(self):
         b = self._builder()
         payload = _load(b.to_js())
         node = _find(payload, "python")
         assert any(packed >> 4 == 1 for packed in payload["w"][node])
 
-    def test_compression_merges_single_child_chains(self):
+    def test_compression_merges_single_child_chain(self):
         b = SearchIndexBuilder()
         b.add("foobar", "/foobar.html", 0)
         payload = _load(b.to_js())
         assert len(payload["c"]) == 1
         assert payload["c"][0] == "foobar"
 
-    def test_word_boundary_not_merged(self):
+    def test_word_boundary_prevents_full_prefix_merge(self):
         b = SearchIndexBuilder()
         b.add("foo", "/foo.html", 0)
         b.add("foobar", "/foobar.html", 0)
@@ -139,7 +158,7 @@ class TestSearchIndexBuilder:
         assert _match(payload, "foob") == {1}
 
 
-def test_build_search_js_accepts_site_data():
+def test_build_search_js_includes_all_content_types():
     essays = [{"slug": "a", "title": "Essay A", "tags": ["x"], "content": "body text"}]
     notes = [
         {

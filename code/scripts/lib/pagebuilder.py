@@ -1,9 +1,16 @@
-"""Page rendering and HTML generation."""
+"""Page rendering and HTML generation for the static site.
+
+Orchestrates building every page of the site by combining templates,
+content data, and the markdown renderer, then writing the resulting
+HTML files to the output directory.
+"""
 
 from __future__ import annotations
 
+import json
+import logging
+import os
 import pathlib
-import re
 import subprocess
 from datetime import datetime
 from urllib.parse import urlparse
@@ -19,35 +26,26 @@ from lib.datatypes import (
     Quote,
     SiteMetadata,
 )
-from lib.dates import format_date, format_date_iso
+from lib.dates import format_date
 from lib.markdown import MarkdownRenderer, escape_html
 from lib.rendering import (
     apply_template,
     build_toc,
-    extract_body,
-    heading_to_id,
-    note_description,
     panel_section,
     render_experiment_content,
-    render_markdown,
-    render_notebook,
-    render_code_as_notebook,
     sidebar_tree_html,
     write_page,
-    _LINK_RE,
 )
 from lib.seo import (
     blog_posting_schema,
     book_item,
     breadcrumbs_for_url,
-    build_author_schema,
     collection_schema,
     main_entity_schema,
     person_schema,
     software_application_item,
     website_schema,
 )
-from lib.slug import slug
 from lib.url import (
     essay_url,
     exp_file_url,
@@ -58,10 +56,6 @@ from lib.url import (
     tag_url,
     topic_url,
 )
-
-import json
-import logging
-import os
 
 _logger = logging.getLogger(__name__)
 
@@ -74,14 +68,15 @@ _HISTORY_CACHE: dict[str, int] | None = None
 def _load_history_cache() -> dict[str, int]:
     """Load the history cache from disk (once per process)."""
     global _HISTORY_CACHE
-    if _HISTORY_CACHE is None:
-        if _HISTORY_CACHE_PATH.exists():
-            try:
-                _HISTORY_CACHE = json.loads(_HISTORY_CACHE_PATH.read_text())
-            except (json.JSONDecodeError, OSError):
-                _HISTORY_CACHE = {}
-        else:
+    if _HISTORY_CACHE is not None:
+        return _HISTORY_CACHE
+    if _HISTORY_CACHE_PATH.exists():
+        try:
+            _HISTORY_CACHE = json.loads(_HISTORY_CACHE_PATH.read_text())
+        except (json.JSONDecodeError, OSError):
             _HISTORY_CACHE = {}
+    else:
+        _HISTORY_CACHE = {}
     return _HISTORY_CACHE
 
 
@@ -390,8 +385,24 @@ def _render_css_link(extra_css):
     return css_link
 
 
-def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, extra_css=None) -> str:
-    """Render the <head> HTML for a page."""
+def render_head(
+    metadata: SiteMetadata,
+    page_info: dict,
+    extra_schemas: list[dict] | None = None,
+    extra_css: str | None = None,
+) -> str:
+    """Render the ``<head>`` HTML for a page.
+
+    Args:
+        metadata: Site-wide metadata.
+        page_info: Page-specific info with keys ``title``, ``description``,
+            ``url``, and optionally ``image``.
+        extra_schemas: Additional JSON-LD schemas to include.
+        extra_css: Extra CSS link or inline style to append.
+
+    Returns:
+        The complete ``<head>`` element as an HTML string.
+    """
     site_url = metadata["siteUrl"].rstrip("/")
     full_url = f"{site_url}{page_info['url']}" if page_info["url"] else site_url
     og_image = (
@@ -434,13 +445,12 @@ def render_head(metadata: SiteMetadata, page_info: dict, extra_schemas=None, ext
 
 
 def _personal_tools_html(metadata: SiteMetadata) -> str:
-    links = []
-    for label, key in (("GitHub", "github"), ("LinkedIn", "linkedin"), ("Instagram", "instagram")):
-        url = metadata.get(key)
-        if url:
-            links.append(f'<li><a href="{escape_html(url)}" rel="me">{escape_html(label)}</a></li>')
-    links.append('<li><a href="/feed.xml">RSS</a></li>')
-    return f'<ul>{"".join(links)}</ul>'
+    social_links = [
+        f'<li><a href="{escape_html(metadata[key])}" rel="me">{escape_html(label)}</a></li>'
+        for label, key in (("GitHub", "github"), ("LinkedIn", "linkedin"), ("Instagram", "instagram"))
+        if metadata.get(key)
+    ]
+    return f'<ul>{"".join(social_links)}<li><a href="/feed.xml">RSS</a></li></ul>'
 
 
 def _search_html(metadata: SiteMetadata) -> str:
@@ -477,7 +487,19 @@ def _tools_links_html(metadata: SiteMetadata) -> str:
     return f'<ul>{"".join(f'<li><a href="{url}">{label}</a></li>' for url, label in items)}</ul>'
 
 
-def render_header(metadata: SiteMetadata, sidebar_html: str = "", main_class: str = "") -> str:
+def render_header(
+    metadata: SiteMetadata, sidebar_html: str = "", main_class: str = ""
+) -> str:
+    """Render the site header, sidebar, and opening ``<main>`` tag.
+
+    Args:
+        metadata: Site-wide metadata.
+        sidebar_html: Additional sidebar HTML (e.g. note tree).
+        main_class: Extra CSS class for the ``<main>`` element.
+
+    Returns:
+        HTML string from the nav toggle through ``<main>`` opening.
+    """
     extra = f" {main_class}" if main_class else ""
     return f"""<input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
 <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation"><span>&#9776;</span></label>
@@ -501,6 +523,14 @@ def render_header(metadata: SiteMetadata, sidebar_html: str = "", main_class: st
 
 
 def render_footer(metadata: SiteMetadata) -> str:
+    """Render the site footer.
+
+    Args:
+        metadata: Site-wide metadata.
+
+    Returns:
+        HTML string for the closing ``</main>`` through ``<footer>``.
+    """
     year = datetime.now().year
     return f"""  </div>
 </main>
@@ -532,9 +562,26 @@ def render_footer(metadata: SiteMetadata) -> str:
 
 
 class PageBuilder:
-    """Renders every page of the site and writes HTML to the output dir."""
+    """Renders every page of the site and writes HTML to the output dir.
 
-    def __init__(self, data_loader: DataLoader, markdown_renderer: MarkdownRenderer, gfm_renderer: MarkdownRenderer):
+    Provides one public method per page type (home, essays, notes, etc.).
+    Each method loads a template, fills it with page-specific content,
+    and writes the final HTML to the ``out/`` directory.
+    """
+
+    def __init__(
+        self,
+        data_loader: DataLoader,
+        markdown_renderer: MarkdownRenderer,
+        gfm_renderer: MarkdownRenderer,
+    ) -> None:
+        """Initialize the page builder.
+
+        Args:
+            data_loader: Provides access to templates and site data.
+            markdown_renderer: Renderer for non-GFM markdown (essays).
+            gfm_renderer: Renderer for GFM markdown (notes, experiments).
+        """
         self.data_loader = data_loader
         self.markdown_renderer = markdown_renderer
         self.gfm_renderer = gfm_renderer
@@ -573,8 +620,33 @@ class PageBuilder:
             },
         )
 
-    def build_home(self, metadata: SiteMetadata, essays: list[Essay], books: dict, projects: list[Project], author: dict, avatar: str, precept: dict, quotes: list[Quote], experiments: list[ExperimentTopic], notes: list[NoteTopic]) -> None:
-        """Build the homepage (index.html)."""
+    def build_home(
+        self,
+        metadata: SiteMetadata,
+        essays: list[Essay],
+        books: dict,
+        projects: list[Project],
+        author: dict,
+        avatar: str,
+        precept: dict,
+        quotes: list[Quote],
+        experiments: list[ExperimentTopic],
+        notes: list[NoteTopic],
+    ) -> None:
+        """Build the homepage (index.html).
+
+        Args:
+            metadata: Site-wide metadata (title, description, URLs).
+            essays: All published essays.
+            books: Bookshelf data grouped by category.
+            projects: All projects to display.
+            author: Author profile data including body text.
+            avatar: URL path to the author avatar image.
+            precept: Precept data for the "On this day" section.
+            quotes: Quotes to display on the homepage.
+            experiments: All experiment topics.
+            notes: All note topics.
+        """
         template = self.data_loader.load_template("home")
         html = self._build_common(
             template, metadata, metadata["title"], metadata["description"], "/",
@@ -650,7 +722,12 @@ class PageBuilder:
         write_page(OUT_DIR, "index.html", html)
 
     def build_essays_list(self, metadata: SiteMetadata, essays: list[Essay]) -> None:
-        """Build the essays index page."""
+        """Build the essays index page.
+
+        Args:
+            metadata: Site-wide metadata.
+            essays: All published essays.
+        """
         template = self.data_loader.load_template("essays-list")
         html = self._build_common(
             template,
@@ -667,7 +744,12 @@ class PageBuilder:
         write_page(OUT_DIR, "essays/index.html", html)
 
     def build_essay(self, metadata: SiteMetadata, essay: Essay) -> None:
-        """Build a single essay page."""
+        """Build a single essay page.
+
+        Args:
+            metadata: Site-wide metadata.
+            essay: The essay data including content, tags, and date.
+        """
         template = self.data_loader.load_template("essay")
         site_url = metadata["siteUrl"].rstrip("/")
         essay_url_val = essay_url(essay["slug"])
@@ -703,7 +785,12 @@ class PageBuilder:
         write_page(OUT_DIR, f"essays/{essay['slug']}.html", html)
 
     def build_notes_list(self, metadata: SiteMetadata, notes: list[NoteTopic]) -> None:
-        """Build the notes index page."""
+        """Build the notes index page.
+
+        Args:
+            metadata: Site-wide metadata.
+            notes: All note topics with their files.
+        """
         template = self.data_loader.load_template("notes")
         html = self._build_common(
             template,
@@ -743,8 +830,16 @@ class PageBuilder:
 
         write_page(OUT_DIR, "notes/index.html", html)
 
-    def build_note_topic_index(self, metadata: SiteMetadata, topic: NoteTopic, notes: list[NoteTopic]) -> None:
-        """Build a note topic index page."""
+    def build_note_topic_index(
+        self, metadata: SiteMetadata, topic: NoteTopic, notes: list[NoteTopic]
+    ) -> None:
+        """Build a note topic index page.
+
+        Args:
+            metadata: Site-wide metadata.
+            topic: The note topic to index.
+            notes: All note topics (for sidebar navigation).
+        """
         template = self.data_loader.load_template("notes")
         t_url = note_topic_url(topic["topic_slug"])
         html = self._build_common(
@@ -786,8 +881,17 @@ class PageBuilder:
         )
         write_page(OUT_DIR, f'notes/{topic["topic_slug"]}/index.html', html)
 
-    def build_note_subtopic_index(self, metadata: SiteMetadata, topic: NoteTopic, subtopic: dict, notes: list[NoteTopic]) -> None:
-        """Build a note subtopic index page."""
+    def build_note_subtopic_index(
+        self, metadata: SiteMetadata, topic: NoteTopic, subtopic: dict, notes: list[NoteTopic]
+    ) -> None:
+        """Build a note subtopic index page.
+
+        Args:
+            metadata: Site-wide metadata.
+            topic: The parent note topic.
+            subtopic: The subtopic data including files and path.
+            notes: All note topics (for sidebar navigation).
+        """
         template = self.data_loader.load_template("notes")
         st_url = f'/notes/{topic["topic_slug"]}/{subtopic["subtopic_path"]}/'
         html = self._build_common(
@@ -823,8 +927,23 @@ class PageBuilder:
             html,
         )
 
-    def build_note(self, metadata: SiteMetadata, topic: NoteTopic, file_data: FileData, notes: list[NoteTopic], subtopic_path: str | None = None) -> None:
-        """Build a single note page."""
+    def build_note(
+        self,
+        metadata: SiteMetadata,
+        topic: NoteTopic,
+        file_data: FileData,
+        notes: list[NoteTopic],
+        subtopic_path: str | None = None,
+    ) -> None:
+        """Build a single note page.
+
+        Args:
+            metadata: Site-wide metadata.
+            topic: The parent note topic.
+            file_data: The note file data including content and slug.
+            notes: All note topics (for sidebar navigation).
+            subtopic_path: Optional subtopic path within the topic.
+        """
         template = self.data_loader.load_template("note")
         n_url = note_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
 
@@ -863,8 +982,15 @@ class PageBuilder:
             note_dir += f'/{subtopic_path}'
         write_page(OUT_DIR, f'{note_dir}/{file_data["slug"]}.html', html)
 
-    def build_experiments_list(self, metadata: SiteMetadata, experiments: list[ExperimentTopic]) -> None:
-        """Build the experiments index page."""
+    def build_experiments_list(
+        self, metadata: SiteMetadata, experiments: list[ExperimentTopic]
+    ) -> None:
+        """Build the experiments index page.
+
+        Args:
+            metadata: Site-wide metadata.
+            experiments: All experiment topics with their files.
+        """
         template = self.data_loader.load_template("experiments")
         html = self._build_common(
             template,
@@ -902,8 +1028,16 @@ class PageBuilder:
         )
         write_page(OUT_DIR, "experiments/index.html", html)
 
-    def build_topic_index(self, metadata: SiteMetadata, topic: ExperimentTopic, experiments: list[ExperimentTopic]) -> None:
-        """Build an experiment topic index page."""
+    def build_topic_index(
+        self, metadata: SiteMetadata, topic: ExperimentTopic, experiments: list[ExperimentTopic]
+    ) -> None:
+        """Build an experiment topic index page.
+
+        Args:
+            metadata: Site-wide metadata.
+            topic: The experiment topic to index.
+            experiments: All experiment topics (for sidebar navigation).
+        """
         template = self.data_loader.load_template("experiments")
         t_url = topic_url(topic["topic_slug"])
         html = self._build_common(
@@ -948,8 +1082,17 @@ class PageBuilder:
             OUT_DIR, f'experiments/{topic["topic_slug"]}/index.html', html
         )
 
-    def build_subtopic_index(self, metadata: SiteMetadata, topic: ExperimentTopic, subtopic: dict, experiments: list[ExperimentTopic]) -> None:
-        """Build an experiment subtopic index page."""
+    def build_subtopic_index(
+        self, metadata: SiteMetadata, topic: ExperimentTopic, subtopic: dict, experiments: list[ExperimentTopic]
+    ) -> None:
+        """Build an experiment subtopic index page.
+
+        Args:
+            metadata: Site-wide metadata.
+            topic: The parent experiment topic.
+            subtopic: The subtopic data including files and path.
+            experiments: All experiment topics (for sidebar navigation).
+        """
         template = self.data_loader.load_template("experiments")
         st_url = f'/experiments/{topic["topic_slug"]}/{subtopic["subtopic_path"]}/'
         html = self._build_common(
@@ -989,9 +1132,22 @@ class PageBuilder:
         )
 
     def build_experiment(
-        self, metadata: SiteMetadata, topic: ExperimentTopic, file_data: FileData, experiments: list[ExperimentTopic], subtopic_path: str | None = None
+        self,
+        metadata: SiteMetadata,
+        topic: ExperimentTopic,
+        file_data: FileData,
+        experiments: list[ExperimentTopic],
+        subtopic_path: str | None = None,
     ) -> None:
-        """Build a single experiment file page."""
+        """Build a single experiment file page.
+
+        Args:
+            metadata: Site-wide metadata.
+            topic: The parent experiment topic.
+            file_data: The experiment file data including content and slug.
+            experiments: All experiment topics (for sidebar navigation).
+            subtopic_path: Optional subtopic path within the topic.
+        """
         rendered = render_experiment_content(file_data, self.gfm_renderer)
         rendered, toc_html = build_toc(rendered)
         e_url = exp_file_url(topic["topic_slug"], subtopic_path, file_data["slug"])
@@ -1031,7 +1187,13 @@ class PageBuilder:
         write_page(OUT_DIR, f'{exp_dir}/{file_data["slug"]}.html', html)
 
     def build_about(self, metadata: SiteMetadata, author: dict, avatar: str) -> None:
-        """Build the about page."""
+        """Build the about page.
+
+        Args:
+            metadata: Site-wide metadata.
+            author: Author profile data including body text.
+            avatar: URL path to the author avatar image.
+        """
         template = self.data_loader.load_template("about")
         site_url = metadata["siteUrl"].rstrip("/")
 
@@ -1068,7 +1230,12 @@ class PageBuilder:
         write_page(OUT_DIR, "about.html", html)
 
     def build_projects(self, metadata: SiteMetadata, projects: list[Project]) -> None:
-        """Build the projects page."""
+        """Build the projects page.
+
+        Args:
+            metadata: Site-wide metadata.
+            projects: All projects to display.
+        """
         template = self.data_loader.load_template("projects")
 
         best_rating = max((r.get("stars", 0) for r in projects), default=0)
@@ -1100,7 +1267,12 @@ class PageBuilder:
         write_page(OUT_DIR, "projects.html", html)
 
     def build_bookshelf(self, metadata: SiteMetadata, books: dict) -> None:
-        """Build the bookshelf page."""
+        """Build the bookshelf page.
+
+        Args:
+            metadata: Site-wide metadata.
+            books: Bookshelf data grouped by category (curated, read, etc.).
+        """
         template = self.data_loader.load_template("bookshelf")
 
         category_configs = [
@@ -1166,7 +1338,12 @@ class PageBuilder:
         write_page(OUT_DIR, "bookshelf.html", html)
 
     def build_quotes(self, metadata: SiteMetadata, quotes: list[Quote]) -> None:
-        """Build the quotes page."""
+        """Build the quotes page.
+
+        Args:
+            metadata: Site-wide metadata.
+            quotes: All quotes to display.
+        """
         template = self.data_loader.load_template("quotes")
 
         site_url = metadata["siteUrl"].rstrip("/")
@@ -1194,7 +1371,12 @@ class PageBuilder:
         write_page(OUT_DIR, "quotes.html", html)
 
     def build_tags(self, metadata: SiteMetadata, essays: list[Essay]) -> None:
-        """Build the tags index and individual tag pages."""
+        """Build the tags index and individual tag pages.
+
+        Args:
+            metadata: Site-wide metadata.
+            essays: All published essays (used to build the tag map).
+        """
         tag_map = {}
         for essay in essays:
             for t in essay["tags"]:
@@ -1249,8 +1431,23 @@ class PageBuilder:
 
             write_page(OUT_DIR, f"tags/{tag}.html", tag_html)
 
-    def build_sitelinks(self, metadata: SiteMetadata, essays: list[Essay], projects: list[Project], notes: list[NoteTopic], experiments: list[ExperimentTopic]) -> None:
-        """Build the site links page."""
+    def build_sitelinks(
+        self,
+        metadata: SiteMetadata,
+        essays: list[Essay],
+        projects: list[Project],
+        notes: list[NoteTopic],
+        experiments: list[ExperimentTopic],
+    ) -> None:
+        """Build the site links page.
+
+        Args:
+            metadata: Site-wide metadata.
+            essays: All published essays.
+            projects: All projects.
+            notes: All note topics.
+            experiments: All experiment topics.
+        """
         template = self.data_loader.load_template("sitelinks")
         html = self._build_common(
             template,
@@ -1295,14 +1492,11 @@ class PageBuilder:
             for t in tags_sorted
         )
 
-        same_domain_projects = []
-        for p in projects:
-            website = p.get("website")
-            if not website:
-                continue
-            hostname = urlparse(website).hostname
-            if hostname == site_hostname:
-                same_domain_projects.append(p)
+        same_domain_projects = [
+            p
+            for p in projects
+            if p.get("website") and urlparse(p["website"]).hostname == site_hostname
+        ]
 
         project_links_html = "\n".join(
             f'    <li><a href="{escape_html(p["website"])}">{escape_html(p["title"])}</a></li>'
@@ -1314,12 +1508,10 @@ class PageBuilder:
             for n in notes
         )
 
-        experiment_links = []
-        for exp in experiments:
-            experiment_links.append(
-                f'    <li><a href="{topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></li>'
-            )
-        experiment_links_html = "\n".join(experiment_links)
+        experiment_links_html = "\n".join(
+            f'    <li><a href="{topic_url(exp["topic_slug"])}">{escape_html(exp["topic_title"])}</a></li>'
+            for exp in experiments
+        )
 
         html = apply_template(
             html,

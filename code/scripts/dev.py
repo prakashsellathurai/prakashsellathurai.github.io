@@ -74,7 +74,7 @@ def log_usage() -> None:
     """Print current RAM and CPU usage, overwriting the previous line."""
     mb = get_ram_mb()
     cpu = get_cpu_percent()
-    print(f"\rRAM: {mb:.1f} MB | CPU: {cpu:.1f}%", end="", flush=True)
+    print(f"\r\033[32mRAM: {mb:.1f} MB | CPU: {cpu:.1f}%\033[0m", end="", flush=True)
 
 def rebuild() -> None:
     """Run the build script."""

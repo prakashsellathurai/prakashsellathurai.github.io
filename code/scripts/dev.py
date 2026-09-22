@@ -2,6 +2,7 @@
 """Dev server with auto-rebuild on file changes."""
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 import threading
@@ -27,6 +28,10 @@ _pending_timer: threading.Timer | None = None
 
 
 
+_prev_cpu_time: float = 0.0
+_prev_wall_time: float = 0.0
+
+
 def get_ram_mb() -> float:
     """Return current process RSS in MB from /proc/self/status."""
     try:
@@ -39,10 +44,37 @@ def get_ram_mb() -> float:
     return 0.0
 
 
-def log_ram(prefix: str = "") -> None:
-    """Print current RAM usage, overwriting the previous line."""
+def get_cpu_percent() -> float:
+    """Return CPU usage percentage since last call."""
+    global _prev_cpu_time, _prev_wall_time
+    try:
+        with open("/proc/self/stat") as f:
+            parts = f.read().split()
+        utime = int(parts[13])
+        stime = int(parts[14])
+        cpu_time = utime + stime
+        wall_time = time.monotonic()
+        if _prev_wall_time == 0:
+            _prev_cpu_time = cpu_time
+            _prev_wall_time = wall_time
+            return 0.0
+        delta_cpu = cpu_time - _prev_cpu_time
+        delta_wall = wall_time - _prev_wall_time
+        _prev_cpu_time = cpu_time
+        _prev_wall_time = wall_time
+        if delta_wall == 0:
+            return 0.0
+        return (delta_cpu / os.sysconf("SC_CLK_TCK")) / delta_wall * 100
+    except (OSError, IndexError, ValueError):
+        pass
+    return 0.0
+
+
+def log_usage() -> None:
+    """Print current RAM and CPU usage, overwriting the previous line."""
     mb = get_ram_mb()
-    print(f"\r{prefix}RAM: {mb:.1f} MB", end="", flush=True)
+    cpu = get_cpu_percent()
+    print(f"\rRAM: {mb:.1f} MB | CPU: {cpu:.1f}%", end="", flush=True)
 
 def rebuild() -> None:
     """Run the build script."""
@@ -55,7 +87,7 @@ def rebuild() -> None:
     )
     if result.returncode == 0:
         print("--- Rebuild complete ---")
-        log_ram()
+        log_usage()
     else:
         print(f"--- Rebuild failed (exit code {result.returncode}) ---")
 
@@ -160,6 +192,7 @@ def main() -> None:
     for watch_dir in WATCH_DIRS:
         if watch_dir.exists():
             observer.schedule(handler, str(watch_dir), recursive=True)
+            print()
             print(f"Watching: {watch_dir.relative_to(ROOT)}")
     observer.start()
 
@@ -169,7 +202,7 @@ def main() -> None:
     try:
         while True:
             time.sleep(5)
-            log_ram()
+            log_usage()
     except KeyboardInterrupt:
         print("\nShutting down...")
         handler.cleanup()

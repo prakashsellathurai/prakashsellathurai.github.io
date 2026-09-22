@@ -18,8 +18,8 @@ install:
 build:
 	uv run  code/scripts/build.py
 
-dev: build
-	uv run ssserve ./out -u 
+dev:
+	uv run python code/scripts/dev.py
 
 test:
 	uv run pytest code/tests/ 

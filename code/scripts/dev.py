@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
-from watchdog.observers import Observer
+from watchdog.observers.polling import PollingObserver as Observer
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 OUT_DIR = ROOT / "out"
@@ -52,8 +52,14 @@ def debounced_rebuild() -> None:
 class ChangeHandler(FileSystemEventHandler):
     """Triggers rebuild on any file change in watched directories."""
 
+    def __init__(self, observer: Observer) -> None:
+        super().__init__()
+        self._observer = observer
+
     def on_any_event(self, event: FileSystemEvent) -> None:
         if event.is_directory:
+            if event.event_type == "created":
+                self._watch_new_dir(Path(event.src_path))
             return
         src = Path(event.src_path)
         if src.suffix in IGNORED_SUFFIXES:
@@ -62,6 +68,18 @@ class ChangeHandler(FileSystemEventHandler):
             return
         print(f"Change detected: {src.relative_to(ROOT)}")
         debounced_rebuild()
+
+    def _watch_new_dir(self, path: Path) -> None:
+        """Recursively watch newly created directories."""
+        if not path.is_dir():
+            return
+        if any(part in IGNORED_NAMES for part in path.parts):
+            return
+        self._observer.schedule(self, str(path), recursive=True)
+        print(f"Now watching: {path.relative_to(ROOT)}")
+        for child in path.iterdir():
+            if child.is_dir():
+                self._watch_new_dir(child)
 
 
 def start_ssserve() -> subprocess.Popen[bytes]:
@@ -84,9 +102,10 @@ def main() -> None:
     rebuild()
 
     observer = Observer()
+    handler = ChangeHandler(observer)
     for watch_dir in WATCH_DIRS:
         if watch_dir.exists():
-            observer.schedule(ChangeHandler(), str(watch_dir), recursive=True)
+            observer.schedule(handler, str(watch_dir), recursive=True)
             print(f"Watching: {watch_dir.relative_to(ROOT)}")
     observer.start()
 

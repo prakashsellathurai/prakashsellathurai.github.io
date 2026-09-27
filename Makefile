@@ -22,7 +22,7 @@ dev:
 	uv run python code/scripts/dev.py
 
 test:
-	uv run pytest code/tests/ 
+	uv run pytest code/tests/  -q
 
 test-ui:
 	uv run pytest code/tests/ -v --headed

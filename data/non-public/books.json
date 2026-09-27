@@ -23,6 +23,16 @@
   ],
   "read": [
     {
+      "title": "Automate the Boring Stuff with Python: Practical Programming for Total Beginners",
+      "link": "https://www.goodreads.com/review/show/8978157019?utm_medium=api&utm_source=rss",
+      "imageUrl": "/static/images/bookshelf/81e046d2db0b5367afe06a407766c00e.jpg",
+      "author": "Al Sweigart",
+      "rating": "0",
+      "description": "If you've ever spent hours renaming files or updating hundreds of spreadsheet cells, you know how tedious tasks like these can be. But what if you could have your computer do them for you?In \"Automate the Boring Stuff with Python,\" you'll learn how to use Python to write programs that do in minutes what would take you hours to do by hand no prior programming experience required. Once you've mastered the basics of programming, you'll create Python programs that effortlessly perform useful and impressive feats of automation to: Search for text in a file or across multiple filesCreate, update, move, and rename files and foldersSearch the Web and download online contentUpdate and format data in Excel spreadsheets of any sizeSplit, merge, watermark, and encrypt PDFsSend reminder emails and text notificationsFill out online formsStep-by-step instructions walk you through each program, and practice projects at the end of each chapter challenge you to improve those programs and use your newfound skills to automate similar tasks.Don't spend your time doing work a well-trained monkey could do. Even if you've never written a line of code, you can make your computer do the grunt work. Learn how in \"Automate the Boring Stuff with Python.\"\"",
+      "pubDate": "Sun, 27 Sep 2026 07:39:36 -0700",
+      "imageUrlRemote": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1418768948l/22514127.jpg"
+    },
+    {
       "title": "Do Androids Dream of Electric Sheep?",
       "link": "https://www.goodreads.com/review/show/8936595710?utm_medium=api&utm_source=rss",
       "imageUrl": "/static/images/bookshelf/4d2e6e153cf69242507794f8c8f8fa90.jpg",

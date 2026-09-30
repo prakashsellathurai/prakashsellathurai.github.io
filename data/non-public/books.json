@@ -1,16 +1,6 @@
 {
   "currently-reading": [
     {
-      "title": "What Every Body is Saying: An Ex-FBI Agent's Guide to Speed-Reading People",
-      "link": "https://www.goodreads.com/review/show/8974954473?utm_medium=api&utm_source=rss",
-      "imageUrl": "/static/images/bookshelf/b7f37254bb9d6fc42529f925ddc11210.jpg",
-      "author": "Joe Navarro",
-      "rating": "0",
-      "description": "He says that's his best offer. Is it?She says she agrees. Does she?The interview went great - or did it?He said he'd never do it again. But he did.Read this book and send your nonverbal intelligence soaring. Joe Navarro, a former FBI counterintelligence officer and a recognized expert on nonverbal behavior, explains how to \"speed-read\" people: decode sentiments and behaviors, avoid hidden pitfalls, and look for deceptive behaviors. You'll also learn how your body language can influence what your boss, family, friends, and strangers think of you. You will discover:The ancient survival instincts that drive body languageWhy the face is the least likely place to gauge a person's true feelingsWhat thumbs, feet, and eyelids reveal about moods and motivesThe most powerful behaviors that reveal our confidence and true sentimentsSimple nonverbals that instantly establish trustSimple nonverbals that instantly communicate authorityFilled with examples from Navarro's professional experience, this definitive book offers a powerful new way to navigate your world.",
-      "pubDate": "Sat, 26 Sep 2026 09:04:42 -0700",
-      "imageUrlRemote": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1355055362l/1173576.jpg"
-    },
-    {
       "title": "Relevant Search: With applications for Solr and Elasticsearch",
       "link": "https://www.goodreads.com/review/show/8641013276?utm_medium=api&utm_source=rss",
       "imageUrl": "/static/images/bookshelf/a002579e9153d93d698c9abc4039e3e8.jpg",
@@ -22,6 +12,16 @@
     }
   ],
   "read": [
+    {
+      "title": "What Every Body is Saying: An Ex-FBI Agent's Guide to Speed-Reading People",
+      "link": "https://www.goodreads.com/review/show/8974954473?utm_medium=api&utm_source=rss",
+      "imageUrl": "/static/images/bookshelf/b7f37254bb9d6fc42529f925ddc11210.jpg",
+      "author": "Joe Navarro",
+      "rating": "0",
+      "description": "He says that's his best offer. Is it?She says she agrees. Does she?The interview went great - or did it?He said he'd never do it again. But he did.Read this book and send your nonverbal intelligence soaring. Joe Navarro, a former FBI counterintelligence officer and a recognized expert on nonverbal behavior, explains how to \"speed-read\" people: decode sentiments and behaviors, avoid hidden pitfalls, and look for deceptive behaviors. You'll also learn how your body language can influence what your boss, family, friends, and strangers think of you. You will discover:The ancient survival instincts that drive body languageWhy the face is the least likely place to gauge a person's true feelingsWhat thumbs, feet, and eyelids reveal about moods and motivesThe most powerful behaviors that reveal our confidence and true sentimentsSimple nonverbals that instantly establish trustSimple nonverbals that instantly communicate authorityFilled with examples from Navarro's professional experience, this definitive book offers a powerful new way to navigate your world.",
+      "pubDate": "Tue, 29 Sep 2026 12:49:14 -0700",
+      "imageUrlRemote": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1355055362l/1173576.jpg"
+    },
     {
       "title": "Automate the Boring Stuff with Python: Practical Programming for Total Beginners",
       "link": "https://www.goodreads.com/review/show/8978157019?utm_medium=api&utm_source=rss",

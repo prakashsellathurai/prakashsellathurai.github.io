@@ -64,18 +64,18 @@
         "pinned": false
     },
     {
-        "title": "InterDimensionalCable",
-        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
-        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
-        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
-        "stars": 0,
-        "pinned": false
-    },
-    {
         "title": "ssserve",
         "href": "https://github.com/prakashsellathurai/ssserve",
         "website": "https://pypi.org/project/ssserve/",
         "description": "Python port of [vercel/serve](https://github.com/vercel/serve) \u2014 static file serving and directory listing.",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "InterDimensionalCable",
+        "href": "https://github.com/prakashsellathurai/InterDimensionalCable",
+        "website": "http://prakashsellathurai.com/InterDimensionalCable/",
+        "description": "A simple, static web application to browse and stream IPTV channels directly in your browser. Powered by iptv-org.",
         "stars": 0,
         "pinned": false
     },

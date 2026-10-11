@@ -48,18 +48,18 @@
         "pinned": true
     },
     {
-        "title": "Grimoire",
-        "href": "https://github.com/prakashsellathurai/Grimoire",
-        "website": "",
-        "description": "Notebooks, Computer codes and Magic Spells",
-        "stars": 0,
-        "pinned": false
-    },
-    {
         "title": "prakashsellathurai.github.io",
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
         "description": "personal website",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "Grimoire",
+        "href": "https://github.com/prakashsellathurai/Grimoire",
+        "website": "",
+        "description": "Notebooks, Computer codes and Magic Spells",
         "stars": 0,
         "pinned": false
     },

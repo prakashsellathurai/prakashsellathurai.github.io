@@ -33,6 +33,16 @@
   ],
   "read": [
     {
+      "title": "White Nights",
+      "link": "https://www.goodreads.com/review/show/9030639624?utm_medium=api&utm_source=rss",
+      "imageUrl": "/static/images/bookshelf/44c7c4623a6f8a93dbdd90beda7aa7d4.jpg",
+      "author": "Fyodor Dostoevsky",
+      "rating": "0",
+      "description": "White Nights is a short story by Fyodor Dostoevsky that was published in 1848. Set in St. Petersburg, it is the story of a young man fighting his inner restlessness. A light and tender narrative, it delves into the torment and guilt of unrequited love. Both protagonists suffer from a deep sense of alienation that initially brings them together. A blend of romanticism and realism, the story appeals gently to the senses and feelings.",
+      "pubDate": "Fri, 16 Oct 2026 10:08:37 -0700",
+      "imageUrlRemote": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1450699039l/1772910.jpg"
+    },
+    {
       "title": "What Every Body is Saying: An Ex-FBI Agent's Guide to Speed-Reading People",
       "link": "https://www.goodreads.com/review/show/8974954473?utm_medium=api&utm_source=rss",
       "imageUrl": "/static/images/bookshelf/b7f37254bb9d6fc42529f925ddc11210.jpg",
@@ -136,7 +146,7 @@
       "imageUrl": "/static/images/bookshelf/543f37b26837847f9ed80665be3109ea.jpg",
       "author": "Darren Levine",
       "rating": "0",
-      "description": "Developed for the Israel military forces and battle tested in real-life combat, Krav Maga has gained an international reputation as an easy-to-learn yet highly effective art of self-defense. Clearly written and extensively illustrated, Complete Krav Maga details every aspect of the system including dozens of hand-to-hand combat moves, over 20 weapons defense techniques and a complete physical conditioning workout program.All the moves are described in depth from beginning Yellow Belt to advanced Black Belt, yet they are easy to learn because one of Krav Maga's strengths is its simplicity. Based on the principle that it is best to move from defense to attack as quickly as possible, Complete Krav Maga offers fast-escape maneuvers from attacks and holds. It then follows them up with specific counterattacks, including punches, kicks and throws.The authors show how anyone (big or small, man or woman) can practice self defense by using Krav Maga to protect weak spots, exploit an assailant's vulnerabilities and turn the attacker s force against him. Complete Krav Maga teaches the reader how to get in shape, gain confidence and feel safer and more secure every day.",
+      "description": "EVERY MOVE, EVERY TECHNIQUE\u201cDarren Levine has my unqualified support and gratitude for hiscontributions to Krav Maga.\u201d \u2014Imi Lichtenfeld, founder of Krav MagaThe official self-defense system of the Israeli Defense Forces, Krav Maga offersyou an easy-to-learn yet highly effective self-defense system that emphasizesinstinctive movements, practical techniques and realistic training scenarios.Based on the principle that it is best to move from defense to attack as quicklyas possible, Complete Krav Maga teaches fast-escape maneuvers combined with powerful counterattacks. Whether you are big or small, male or female, young or old, you can use Krav Maga to protect yourself by exploiting an assailant\u2019s vulnerabilities. Learning Krav Maga will give you the fitness, skills and confidence to feel safer and more secure every day.All the moves in Complete Krav Maga\u2014from beginner Yellow Belt to advanced Brown Belt\u2014are described in depth and illustrated with step-by-step \u2022BeginnerPunches, kicks, knee strikes and basic defense movements\u2022IntermediateFurther self-defense moves, counterattacks, and defenses against knives, guns and sticks\u2022AdvancedAll weapon defenses, groundfighting techniques and advanced strikes",
       "pubDate": "Tue, 30 Sep 2025 02:26:54 -0700",
       "imageUrlRemote": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328856722l/1033799.jpg"
     },
@@ -336,7 +346,7 @@
       "imageUrl": "/static/images/bookshelf/373c258c985cbd61aa655bbe78756b97.jpg",
       "author": "Steven S. Skiena",
       "rating": "5",
-      "description": "This volume helps take some of the \"mystery\" out of identifying and dealing with key algorithms. Drawing heavily on the author's own real-world experiences, the book stresses design and analysis. Coverage is divided into two parts, the first being a general guide to techniques for the design and analysis of computer algorithms. The second is a reference section, which includes a catalog of the 75 most important algorithmic problems. By browsing this catalog, readers can quickly identify what the problem they have encountered is called, what is known about it, and how they should proceed if they need to solve it. This book is ideal for the working professional who uses algorithms on a daily basis and has need for a handy reference. This work can also readily be used in an upper-division course or as a student reference guide. THE ALGORITHM DESIGN MANUAL comes with a CD-ROM that contains: * a complete hypertext version of the full printed book. * the source code and URLs for all cited implementations. * over 30 hours of audio lectures on the design and analysis of algorithms are provided, all keyed to on-line lecture notes.",
+      "description": "This volume helps take some of the \"mystery\" out of identifying and dealing with key algorithms. Drawing heavily on the author's own real-world experiences, the book stresses design and analysis. Coverage is divided into two parts, the first being a general guide to techniques for the design and analysis of computer algorithms. The second is a reference section, which includes a catalog of the 75 most important algorithmic problems. By browsing this catalog, readers can quickly identify what the problem they have encountered is called, what is known about it, and how they should proceed if they need to solve it. This book is ideal for the working professional who uses algorithms on a daily basis and has need for a handy reference. This work can also readily be used in an upper-division course or as a student reference guide.THE ALGORITHM DESIGN MANUAL comes with a CD-ROM that * a complete hypertext version of the full printed book.* the source code and URLs for all cited implementations.* over 30 hours of audio lectures on the design and analysis of algorithms are provided, all keyed to on-line lecture notes.",
       "pubDate": "Thu, 19 Aug 2021 06:13:32 -0700",
       "imageUrlRemote": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1388183113l/425208.jpg"
     },

@@ -15,6 +15,7 @@ import subprocess
 from datetime import datetime
 from urllib.parse import urlparse
 
+from lib.assets import PageAssets
 from lib.dataloader import DataLoader
 from lib.datatypes import (
     Book,
@@ -967,6 +968,7 @@ class PageBuilder:
             main_class="page-note",
         )
 
+        assets = PageAssets.from_content(note_content)
         html = apply_template(
             html,
             {
@@ -974,6 +976,7 @@ class PageBuilder:
                 "note.title": escape_html(file_data["title"]),
                 "note.content": note_content,
                 "notesPager": _notes_pager_html(notes, n_url),
+                "scripts": assets.render_html(),
             },
         )
 
@@ -1169,6 +1172,7 @@ class PageBuilder:
             ),
             main_class="page-experiment",
         )
+        assets = PageAssets.from_content(rendered)
         html = apply_template(
             html,
             {
@@ -1179,6 +1183,7 @@ class PageBuilder:
                 "experimentsPager": _docs_pager(
                     flatten_experiment_pages(experiments), e_url
                 ),
+                "scripts": assets.render_html(),
             },
         )
         exp_dir = f'experiments/{topic["topic_slug"]}'

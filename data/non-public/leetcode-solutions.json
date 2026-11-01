@@ -276,6 +276,18 @@
         "href": "leetcode-solutions/problems/0092-reverse-linked-list-ii/index.html"
     },
     {
+        "title": "problems/0100-same-tree/index.html",
+        "href": "leetcode-solutions/problems/0100-same-tree/index.html"
+    },
+    {
+        "title": "problems/0101-symmetric-tree/index.html",
+        "href": "leetcode-solutions/problems/0101-symmetric-tree/index.html"
+    },
+    {
+        "title": "problems/0104-maximum-depth-of-binary-tree/index.html",
+        "href": "leetcode-solutions/problems/0104-maximum-depth-of-binary-tree/index.html"
+    },
+    {
         "title": "problems/0121-best-time-to-buy-and-sell-stock/dryrun/index.html",
         "href": "leetcode-solutions/problems/0121-best-time-to-buy-and-sell-stock/dryrun/index.html"
     },
@@ -458,6 +470,10 @@
     {
         "title": "problems/0224-basic-calculator/index.html",
         "href": "leetcode-solutions/problems/0224-basic-calculator/index.html"
+    },
+    {
+        "title": "problems/0226-invert-binary-tree/index.html",
+        "href": "leetcode-solutions/problems/0226-invert-binary-tree/index.html"
     },
     {
         "title": "problems/0228-summary-ranges/dryrun/index.html",

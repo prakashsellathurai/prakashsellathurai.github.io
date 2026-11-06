@@ -220,6 +220,35 @@ def get_total_quotes(html: str) -> int:
     return 0
 
 
+def _load_quotes() -> list[dict[str, object]]:
+    """Load saved quotes from quotes.json.
+
+    Returns:
+        List of saved quote dicts, or empty list on error.
+    """
+    try:
+        with open("./data/non-public/quotes.json") as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
+def _exceeds_loss(previous_count: int, new_count: int, limit: float = 0.5) -> bool:
+    """Return True when content loss is over the limit.
+
+    Args:
+        previous_count: Total item count before the update.
+        new_count: Total item count after the update.
+        limit: Allowed loss ratio. Loss over this ratio counts as removal.
+
+    Returns:
+        True when the new content drops by more than the limit.
+    """
+    if previous_count <= 0:
+        return False
+    return new_count < previous_count * limit
+
+
 def fetch_quotes() -> None:
     """Fetch all pages of quotes, deduplicate, and write quotes.json."""
     print("Fetching first page to determine total...")
@@ -256,6 +285,10 @@ def fetch_quotes() -> None:
             unique.append(q)
 
     print(f"Total unique quotes: {len(unique)}")
+
+    if _exceeds_loss(len(_load_quotes()), len(unique)):
+        print("Aborting quotes write: content would drop by more than 50 percent.")
+        return
 
     out = Path("./data/non-public/quotes.json")
     out.write_text(json.dumps(unique, indent=2) + "\n")

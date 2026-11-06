@@ -118,6 +118,35 @@ def fetch_pinned_repos() -> list[dict[str, str | None]]:
     return [{"name": r["name"], "description": r.get("description")} for r in pinned]
 
 
+def _load_repos() -> list[dict[str, object]]:
+    """Load saved repos from repos.json.
+
+    Returns:
+        List of saved repo dicts, or empty list on error.
+    """
+    try:
+        with open("./data/non-public/repos.json") as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
+def _exceeds_loss(previous_count: int, new_count: int, limit: float = 0.5) -> bool:
+    """Return True when content loss is over the limit.
+
+    Args:
+        previous_count: Total item count before the update.
+        new_count: Total item count after the update.
+        limit: Allowed loss ratio. Loss over this ratio counts as removal.
+
+    Returns:
+        True when the new content drops by more than the limit.
+    """
+    if previous_count <= 0:
+        return False
+    return new_count < previous_count * limit
+
+
 def fetch_repos() -> None:
     """Fetch all repos, merge pinned status, and write repos.json."""
     try:
@@ -142,6 +171,10 @@ def fetch_repos() -> None:
         pinned_first = [r for r in repos_with_pinned if r["pinned"]]
         rest = [r for r in repos_with_pinned if not r["pinned"]]
         final_data = pinned_first + rest
+
+        if _exceeds_loss(len(_load_repos()), len(final_data)):
+            print("Aborting repos write: content would drop by more than 50 percent.")
+            return
 
         with open("./data/non-public/repos.json", "w") as f:
             json.dump(final_data, f, indent=4)

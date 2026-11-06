@@ -1,98 +1,77 @@
 #!/usr/bin/env python3
-"""Fetch and cache Goodreads book data and cover images."""
+"""Fetch and cache book covers and metadata into books.json."""
 
 from __future__ import annotations
 
 import hashlib
 import json
 import os
-import re
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
 SHELVES = ["currently-reading", "read", "curated"]
 IMAGE_DIR = "./data/public/static/images/bookshelf"
+BOOKS_PATH = Path("./data/non-public/books.json")
+OPENLIBRARY_SEARCH_URL = "https://openlibrary.org/search.json"
+OPENLIBRARY_COVER_URL = "https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
 
 
-def get_books(shelf: str) -> list[dict[str, str]]:
-    """Fetch books from a Goodreads RSS shelf.
+def _fetch_json(url: str, timeout: int = 30) -> dict | None:
+    """Fetch a JSON document over HTTP.
 
     Args:
-        shelf: Goodreads shelf name (e.g. 'read', 'currently-reading').
+        url: Absolute URL of the JSON document.
 
     Returns:
-        List of book dicts with title, link, imageUrl, author, and optional fields.
+        Parsed JSON object, or None when the fetch fails.
     """
-    url = f"https://www.goodreads.com/review/list_rss/105903487?shelf={shelf}"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            xml = resp.read().decode("utf-8")
-        return parse_books(xml)
-    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
-        print(f"Error fetching books for shelf {shelf}: {e}")
-        return []
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError) as e:
+        print(f"Error fetching {url}: {e}")
+        return None
 
 
-def parse_books(xml: str) -> list[dict[str, str]]:
-    """Parse book entries from Goodreads RSS XML.
+def _search_openlibrary(title: str, author: str) -> dict | None:
+    """Search Open Library for a book by title and author.
 
     Args:
-        xml: Raw XML string from the RSS feed.
+        title: Book title.
+        author: Book author name.
 
     Returns:
-        List of parsed book dicts with title, link, imageUrl, and author keys.
+        First matching Open Library work, or None when nothing matches.
     """
-    books = []
-    for item_match in re.finditer(r"<item>([\s\S]*?)</item>", xml):
-        content = item_match.group(1)
-
-        title_m = re.search(r"<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</title>", content)
-        link_m = re.search(r"<link>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</link>", content)
-        image_m = re.search(
-            r"<book_large_image_url>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</book_large_image_url>",
-            content,
-        ) or re.search(
-            r"<book_image_url>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</book_image_url>",
-            content,
-        )
-        author_m = re.search(
-            r"<author_name>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</author_name>",
-            content,
-        )
-        rating_m = re.search(
-            r"<user_rating>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</user_rating>",
-            content,
-        )
-        desc_m = re.search(
-            r"<book_description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</book_description>",
-            content,
-        )
-        pub_date_m = re.search(
-            r"<pubDate>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</pubDate>",
-            content,
-        )
-
-        if title_m and link_m and image_m and author_m:
-            book = {
-                "title": title_m.group(1).strip(),
-                "link": link_m.group(1).strip(),
-                "imageUrl": image_m.group(1).strip(),
-                "author": author_m.group(1).strip(),
-            }
-            if rating_m:
-                book["rating"] = rating_m.group(1).strip()
-            if desc_m:
-                book["description"] = re.sub(r"<[^>]*>", "", desc_m.group(1)).strip()
-            if pub_date_m:
-                book["pubDate"] = pub_date_m.group(1).strip()
-            books.append(book)
-
-    return books
+    query = " ".join(part for part in (title, author) if part).strip()
+    if not query:
+        return None
+    url = f"{OPENLIBRARY_SEARCH_URL}?q={urllib.parse.quote_plus(query)}&limit=3"
+    data = _fetch_json(url)
+    if not data:
+        return None
+    docs = data.get("docs") or []
+    if not docs:
+        return None
+    return docs[0]
 
 
-def _download_image(url):
+def _cover_url(cover_id: int) -> str:
+    """Build an Open Library cover image URL.
+
+    Args:
+        cover_id: Open Library cover id.
+
+    Returns:
+        Open Library cover image URL.
+    """
+    return OPENLIBRARY_COVER_URL.format(cover_id=cover_id)
+
+
+def _download_image(url: str) -> str | None:
     """Download a book cover image to the local cache. Returns the local URL path or None."""
     ext = os.path.splitext(url.split("/")[-1].split("?")[0])[1]
     if not ext or len(ext) > 6:
@@ -115,26 +94,91 @@ def _download_image(url):
         return None
 
 
-def fetch_books() -> None:
-    """Fetch all book shelves, download cover images, and write books.json."""
-    os.makedirs(IMAGE_DIR, exist_ok=True)
-    books_data = {}
-    for shelf in SHELVES:
-        print(f"Fetching books for shelf: {shelf}")
-        books = get_books(shelf)
-        for book in books:
-            url = book.get("imageUrl", "")
-            if not url or "nophoto" in url:
-                book["imageUrl"] = ""
-                continue
-            book["imageUrlRemote"] = url
-            local = _download_image(url)
-            book["imageUrl"] = local or url
-        books_data[shelf] = books
+def _enrich_book(book: dict[str, str]) -> dict[str, str]:
+    """Enrich a book entry with an Open Library cover image.
 
-    out = Path("./data/non-public/books.json")
-    out.write_text(json.dumps(books_data, indent=2) + "\n")
-    print(f"Books data saved to {out}")
+    Args:
+        book: Book entry from the bookshelf data.
+
+    Returns:
+        Book entry with an Open Library cover image.
+    """
+    enriched = dict(book)
+    doc = _search_openlibrary(book.get("title", ""), book.get("author", ""))
+    if doc is None:
+        return enriched
+    cover_id = doc.get("cover_i")
+    if not cover_id:
+        return enriched
+    remote_url = _cover_url(int(cover_id))
+    enriched["imageUrlRemote"] = remote_url
+    enriched["imageUrl"] = _download_image(remote_url) or remote_url
+    return enriched
+
+
+def _load_books() -> dict[str, list[dict[str, str]]]:
+    """Load bookshelf entries from books.json.
+
+    Returns:
+        Mapping of shelf name to book entries.
+    """
+    books_data: dict[str, list[dict[str, str]]] = {shelf: [] for shelf in SHELVES}
+    if not BOOKS_PATH.exists():
+        return books_data
+    data = json.loads(BOOKS_PATH.read_text(encoding="utf-8"))
+    for shelf in SHELVES:
+        books_data[shelf] = list(data.get(shelf) or [])
+    return books_data
+
+
+def _total_books(books_data: dict[str, list[dict[str, str]]]) -> int:
+    """Count the total number of books across all shelves.
+
+    Args:
+        books_data: Mapping of shelf name to book entries.
+
+    Returns:
+        Total number of book entries.
+    """
+    return sum(len(books or []) for books in books_data.values())
+
+
+def _exceeds_loss(previous_count: int, new_count: int, limit: float = 0.5) -> bool:
+    """Return True when content loss is over the limit.
+
+    Args:
+        previous_count: Total book entries before the update.
+        new_count: Total book entries after the update.
+        limit: Allowed loss ratio. Loss over this ratio counts as removal.
+
+    Returns:
+        True when the new content drops by more than the limit.
+    """
+    if previous_count <= 0:
+        return False
+    return new_count < previous_count * limit
+
+
+def fetch_books() -> None:
+    """Fetch book covers from Open Library and write books.json.
+
+    Books live in books.json. This step keeps cover images fresh via Open Library.
+
+    Writes the new data only when content loss stays under 50 percent.
+    Skips the write when content drops by more than 50 percent.
+    """
+    os.makedirs(IMAGE_DIR, exist_ok=True)
+    books_data = _load_books()
+    previous_count = _total_books(books_data)
+    for shelf in SHELVES:
+        books = books_data.get(shelf) or []
+        books_data[shelf] = [_enrich_book(book) for book in books]
+    new_count = _total_books(books_data)
+    if _exceeds_loss(previous_count, new_count):
+        print("Aborting books write: content would drop by more than 50 percent.")
+        return
+    BOOKS_PATH.write_text(json.dumps(books_data, indent=2) + "\n")
+    print(f"Books data saved to {BOOKS_PATH}")
 
 
 if __name__ == "__main__":

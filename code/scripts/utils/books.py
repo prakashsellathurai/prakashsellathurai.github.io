@@ -131,16 +131,52 @@ def _load_books() -> dict[str, list[dict[str, str]]]:
     return books_data
 
 
+def _total_books(books_data: dict[str, list[dict[str, str]]]) -> int:
+    """Count the total number of books across all shelves.
+
+    Args:
+        books_data: Mapping of shelf name to book entries.
+
+    Returns:
+        Total number of book entries.
+    """
+    return sum(len(books or []) for books in books_data.values())
+
+
+def _exceeds_loss(previous_count: int, new_count: int, limit: float = 0.5) -> bool:
+    """Return True when content loss is over the limit.
+
+    Args:
+        previous_count: Total book entries before the update.
+        new_count: Total book entries after the update.
+        limit: Allowed loss ratio. Loss over this ratio counts as removal.
+
+    Returns:
+        True when the new content drops by more than the limit.
+    """
+    if previous_count <= 0:
+        return False
+    return new_count < previous_count * limit
+
+
 def fetch_books() -> None:
     """Fetch book covers from Open Library and write books.json.
 
     Books live in books.json. This step keeps cover images fresh via Open Library.
+
+    Writes the new data only when content loss stays under 50 percent.
+    Skips the write when content drops by more than 50 percent.
     """
     os.makedirs(IMAGE_DIR, exist_ok=True)
     books_data = _load_books()
+    previous_count = _total_books(books_data)
     for shelf in SHELVES:
         books = books_data.get(shelf) or []
         books_data[shelf] = [_enrich_book(book) for book in books]
+    new_count = _total_books(books_data)
+    if _exceeds_loss(previous_count, new_count):
+        print("Aborting books write: content would drop by more than 50 percent.")
+        return
     BOOKS_PATH.write_text(json.dumps(books_data, indent=2) + "\n")
     print(f"Books data saved to {BOOKS_PATH}")
 

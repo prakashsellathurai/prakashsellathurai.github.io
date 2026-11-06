@@ -10,6 +10,7 @@ import re
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 SHELVES = ["currently-reading", "read", "curated"]
@@ -31,6 +32,8 @@ _LT_COLLECTION_READ = "1096112"
 _LT_TAG_CURATED = "curated"
 # Regex to extract the JSON payload from the JS wrapper LT returns.
 _LT_JSON_RE = re.compile(r"var widgetResults = (.+?);\s*LibraryThing", re.DOTALL)
+# LibraryThing work info JSON API endpoint. Accepts comma-separated ISBNs.
+_LT_WORK_INFO_URL = "https://www.librarything.com/api/json/workinfo.js?ids={isbns}"
 
 
 def _fetch_raw(url: str, timeout: int = 30) -> str | None:
@@ -71,6 +74,45 @@ def _fetch_json(url: str, timeout: int = 30) -> dict | None:
         return None
 
 
+def _lt_work_links(isbns: Sequence[str]) -> dict[str, str]:
+    """Resolve LibraryThing work links from ISBNs.
+
+    Args:
+        isbns: ISBN strings to resolve. Blank values are ignored.
+
+    Returns:
+        Mapping of ISBN to LibraryThing work link. Empty mapping on failure.
+    """
+    result: dict[str, str] = {}
+    clean_isbns = [isbn for isbn in isbns if isbn]
+    if not clean_isbns:
+        return result
+    raw = _fetch_raw(_LT_WORK_INFO_URL.format(isbns=",".join(clean_isbns)), timeout=30)
+    if raw is None:
+        return result
+    start_marker = "LT_addLibraryThinglinks("
+    start = raw.rfind(start_marker)
+    if start == -1:
+        print("LT work info: unexpected response format.")
+        return result
+    start_json = raw.find("{", start + len(start_marker))
+    end = raw.find(");", start_json)
+    if start_json == -1 or end == -1:
+        print("LT work info: unexpected response format.")
+        return result
+    payload_str = raw[start_json:end]
+    try:
+        payload = json.loads(payload_str)
+    except json.JSONDecodeError as exc:
+        print(f"LT work info: JSON parse error: {exc}")
+        return result
+    books_info = payload if isinstance(payload, dict) else {}
+    for isbn, info in books_info.items():
+        if isinstance(info, dict) and info.get("link"):
+            result[str(isbn)] = str(info["link"])
+    return result
+
+
 def _fetch_lt_books() -> dict[str, list[dict[str, str]]] | None:
     """Fetch all books from the LibraryThing public widget API.
 
@@ -93,7 +135,9 @@ def _fetch_lt_books() -> dict[str, list[dict[str, str]]] | None:
         print(f"LT API: JSON parse error: {exc}")
         return None
     lt_books: dict[str, dict] = data.get("books") or {}
-    result = _map_lt_to_shelves(lt_books)
+    isbns = [str(book.get("ISBN_cleaned") or book.get("ISBN") or "") for book in lt_books.values()]
+    work_links = _lt_work_links(isbns)
+    result = _map_lt_to_shelves(lt_books, work_links)
     total = sum(len(v) for v in result.values())
     print(f"LT API: fetched {len(lt_books)} books, mapped {total} to shelves.")
     return result
@@ -101,6 +145,7 @@ def _fetch_lt_books() -> dict[str, list[dict[str, str]]] | None:
 
 def _map_lt_to_shelves(
     lt_books: dict[str, dict],
+    work_links: Mapping[str, str],
 ) -> dict[str, list[dict[str, str]]]:
     """Map LibraryThing book records to internal shelf names.
 
@@ -109,6 +154,7 @@ def _map_lt_to_shelves(
 
     Args:
         lt_books: Mapping of book_id to LT book record.
+        work_links: Mapping of ISBN to LibraryThing work link.
 
     Returns:
         Mapping of shelf name to book entries.
@@ -118,9 +164,11 @@ def _map_lt_to_shelves(
         collections: dict[str, str] = book.get("collections") or {}
         tags: list[str] = book.get("tags") or []
         book_id = book.get("book_id", "")
+        isbn = book.get("ISBN_cleaned") or book.get("ISBN") or ""
+        link = work_links.get(isbn, "") or f"https://www.librarything.com/work/{book_id}"
         entry: dict[str, str] = {
             "title": book.get("title", ""),
-            "link": f"https://www.librarything.com/work/{book_id}",
+            "link": link,
             "imageUrl": book.get("cover", ""),
             "author": book.get("author_fl") or book.get("author_lf", ""),
             "rating": str(book.get("rating") or "0"),

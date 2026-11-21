@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""Fetch and cache book covers and metadata into books.json."""
+"""Fetch and cache book metadata into books.json."""
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
 import urllib.error
-import urllib.parse
 import urllib.request
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -16,12 +14,10 @@ from pathlib import Path
 SHELVES = ["currently-reading", "read", "curated"]
 IMAGE_DIR = "./data/public/static/images/bookshelf"
 BOOKS_PATH = Path("./data/non-public/books.json")
-OPENLIBRARY_SEARCH_URL = "https://openlibrary.org/search.json"
-OPENLIBRARY_COVER_URL = "https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
 
-# LibraryThing public widget API — no authentication required.
+# LibraryThing public JSON API — no authentication required.
 _LT_USERNAME = "prakashsellathurai"
-_LT_API_URL = (
+_LT_API_BASE = (
     "https://www.librarything.com/api_getdata.php"
     f"?userid={_LT_USERNAME}&key=0&type=json&max=1000"
     "&showCollections=1&showTags=1&showRatings=1"
@@ -30,6 +26,11 @@ _LT_API_URL = (
 _LT_COLLECTION_CURRENTLY_READING = "7"
 _LT_COLLECTION_READ = "1096112"
 _LT_TAG_CURATED = "curated"
+_LT_API_URL_CURATED = f"{_LT_API_BASE}&tag={_LT_TAG_CURATED}"
+_LT_API_URL_CURRENTLY_READING = (
+    f"{_LT_API_BASE}&collection={_LT_COLLECTION_CURRENTLY_READING}"
+)
+_LT_API_URL_READ = f"{_LT_API_BASE}&collection={_LT_COLLECTION_READ}"
 # Regex to extract the JSON payload from the JS wrapper LT returns.
 _LT_JSON_RE = re.compile(r"var widgetResults = (.+?);\s*LibraryThing", re.DOTALL)
 # LibraryThing work info JSON API endpoint. Accepts comma-separated ISBNs.
@@ -52,25 +53,6 @@ def _fetch_raw(url: str, timeout: int = 30) -> str | None:
             return resp.read().decode("utf-8")
     except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
         print(f"Error fetching {url}: {e}")
-        return None
-
-
-def _fetch_json(url: str, timeout: int = 30) -> dict | None:
-    """Fetch a JSON document over HTTP.
-
-    Args:
-        url: Absolute URL of the JSON document.
-
-    Returns:
-        Parsed JSON object, or None when the fetch fails.
-    """
-    raw = _fetch_raw(url, timeout=timeout)
-    if raw is None:
-        return None
-    try:
-        return json.loads(raw)
-    except (json.JSONDecodeError, ValueError) as e:
-        print(f"Error parsing JSON from {url}: {e}")
         return None
 
 
@@ -113,34 +95,63 @@ def _lt_work_links(isbns: Sequence[str]) -> dict[str, str]:
     return result
 
 
-def _fetch_lt_books() -> dict[str, list[dict[str, str]]] | None:
-    """Fetch all books from the LibraryThing public widget API.
+def _lt_api_url(shelf: str) -> str:
+    """Build the LibraryThing JSON API URL for one shelf.
 
-    Calls api_getdata.php, extracts the JSON payload from the JS wrapper,
-    and maps each book to the correct internal shelf.
+    Args:
+        shelf: Internal shelf name.
 
     Returns:
-        Shelf mapping, or None when the fetch or parse fails.
+        JSON API URL filtered to the shelf.
     """
-    raw = _fetch_raw(_LT_API_URL)
+    if shelf == "curated":
+        return _LT_API_URL_CURATED
+    if shelf == "currently-reading":
+        return _LT_API_URL_CURRENTLY_READING
+    return _LT_API_URL_READ
+
+
+def _fetch_lt_shelf(shelf: str) -> list[dict[str, str]] | None:
+    """Fetch books for one shelf from the LibraryThing JSON API.
+
+    Args:
+        shelf: Internal shelf name.
+
+    Returns:
+        Book entries for the shelf, or None when the fetch or parse fails.
+    """
+    raw = _fetch_raw(_lt_api_url(shelf))
     if raw is None:
         return None
     m = _LT_JSON_RE.search(raw)
     if not m:
-        print("LT API: unexpected response format.")
+        print(f"LT API: unexpected response format for shelf {shelf}.")
         return None
     try:
         data = json.loads(m.group(1))
     except json.JSONDecodeError as exc:
-        print(f"LT API: JSON parse error: {exc}")
+        print(f"LT API: JSON parse error for shelf {shelf}: {exc}")
         return None
     lt_books: dict[str, dict] = data.get("books") or {}
     isbns = [str(book.get("ISBN_cleaned") or book.get("ISBN") or "") for book in lt_books.values()]
     work_links = _lt_work_links(isbns)
-    result = _map_lt_to_shelves(lt_books, work_links)
-    total = sum(len(v) for v in result.values())
-    print(f"LT API: fetched {len(lt_books)} books, mapped {total} to shelves.")
-    return result
+    shelves = _map_lt_to_shelves(lt_books, work_links)
+    return shelves.get(shelf) or []
+
+
+def _fetch_lt_books() -> dict[str, list[dict[str, str]]] | None:
+    """Fetch books for each shelf from the LibraryThing JSON API.
+
+    Returns:
+        Mapping of shelf name to book entries, or None when any fetch fails.
+    """
+    books_data: dict[str, list[dict[str, str]]] = {}
+    for shelf in SHELVES:
+        books = _fetch_lt_shelf(shelf)
+        if books is None:
+            return None
+        books_data[shelf] = books
+    return books_data
 
 
 def _map_lt_to_shelves(
@@ -181,86 +192,6 @@ def _map_lt_to_shelves(
         elif _LT_COLLECTION_READ in collections:
             shelves["read"].append(entry)
     return shelves
-
-
-def _search_openlibrary(title: str, author: str) -> dict | None:
-    """Search Open Library for a book by title and author.
-
-    Args:
-        title: Book title.
-        author: Book author name.
-
-    Returns:
-        First matching Open Library work, or None when nothing matches.
-    """
-    query = " ".join(part for part in (title, author) if part).strip()
-    if not query:
-        return None
-    url = f"{OPENLIBRARY_SEARCH_URL}?q={urllib.parse.quote_plus(query)}&limit=3"
-    data = _fetch_json(url)
-    if not data:
-        return None
-    docs = data.get("docs") or []
-    if not docs:
-        return None
-    return docs[0]
-
-
-def _cover_url(cover_id: int) -> str:
-    """Build an Open Library cover image URL.
-
-    Args:
-        cover_id: Open Library cover id.
-
-    Returns:
-        Open Library cover image URL.
-    """
-    return OPENLIBRARY_COVER_URL.format(cover_id=cover_id)
-
-
-def _download_image(url: str) -> str | None:
-    """Download a book cover image to the local cache. Returns the local URL path or None."""
-    ext = os.path.splitext(url.split("/")[-1].split("?")[0])[1]
-    if not ext or len(ext) > 6:
-        ext = ".jpg"
-    filename = hashlib.md5(url.encode()).hexdigest() + ext
-    filepath = os.path.join(IMAGE_DIR, filename)
-
-    if os.path.exists(filepath):
-        return f"/static/images/bookshelf/{filename}"
-
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            data = resp.read()
-        with open(filepath, "wb") as f:
-            f.write(data)
-        return f"/static/images/bookshelf/{filename}"
-    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
-        print(f"  Failed to download {url}: {e}")
-        return None
-
-
-def _enrich_book(book: dict[str, str]) -> dict[str, str]:
-    """Enrich a book entry with an Open Library cover image.
-
-    Args:
-        book: Book entry from the bookshelf data.
-
-    Returns:
-        Book entry with an Open Library cover image.
-    """
-    enriched = dict(book)
-    doc = _search_openlibrary(book.get("title", ""), book.get("author", ""))
-    if doc is None:
-        return enriched
-    cover_id = doc.get("cover_i")
-    if not cover_id:
-        return enriched
-    remote_url = _cover_url(int(cover_id))
-    enriched["imageUrlRemote"] = remote_url
-    enriched["imageUrl"] = _download_image(remote_url) or remote_url
-    return enriched
 
 
 def _load_books() -> dict[str, list[dict[str, str]]]:
@@ -311,8 +242,7 @@ def _exceeds_loss(previous_count: int, new_count: int, limit: float = 0.5) -> bo
 def fetch_books() -> None:
     """Fetch books from LibraryThing and write books.json.
 
-    Fetches live data from the LibraryThing public widget API, then
-    enriches each book with an Open Library cover image.
+    Fetches live data from the LibraryThing JSON API.
 
     Falls back to the existing books.json when the LT API is unreachable.
     Writes the new data only when content loss stays under 50 percent.
@@ -323,9 +253,6 @@ def fetch_books() -> None:
         print("LT API unavailable, falling back to books.json.")
         books_data = _load_books()
     previous_count = _total_books(books_data)
-    for shelf in SHELVES:
-        books = books_data.get(shelf) or []
-        books_data[shelf] = [_enrich_book(book) for book in books]
     new_count = _total_books(books_data)
     if _exceeds_loss(previous_count, new_count):
         print("Aborting books write: content would drop by more than 50 percent.")

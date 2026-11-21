@@ -48,18 +48,18 @@
         "pinned": true
     },
     {
-        "title": "leetcode-solutions",
-        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
-        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
-        "description": "My solutions to Leetcode problems",
-        "stars": 0,
-        "pinned": false
-    },
-    {
         "title": "prakashsellathurai.github.io",
         "href": "https://github.com/prakashsellathurai/prakashsellathurai.github.io",
         "website": "https://prakashsellathurai.com/",
         "description": "personal website",
+        "stars": 0,
+        "pinned": false
+    },
+    {
+        "title": "leetcode-solutions",
+        "href": "https://github.com/prakashsellathurai/leetcode-solutions",
+        "website": "https://prakashsellathurai.github.io/leetcode-solutions",
+        "description": "My solutions to Leetcode problems",
         "stars": 0,
         "pinned": false
     },

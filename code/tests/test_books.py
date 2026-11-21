@@ -90,3 +90,10 @@ def test_map_lt_to_shelves_falls_back_to_book_link_without_work_link(
     }
     result = books_module._map_lt_to_shelves(lt_books, {})
     assert result["currently-reading"][0]["link"] == "https://www.librarything.com/work/327134007"
+
+
+def test_lt_api_url_returns_shelf_filtered_url(books_module: ModuleType) -> None:
+    """Test that shelf API URL returns the filtered LibraryThing URL."""
+    assert "tag=curated" in books_module._lt_api_url("curated")
+    assert "collection=7" in books_module._lt_api_url("currently-reading")
+    assert "collection=1096112" in books_module._lt_api_url("read")

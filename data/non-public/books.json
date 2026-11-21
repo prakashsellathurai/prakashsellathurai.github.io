@@ -1,6 +1,15 @@
 {
   "currently-reading": [
     {
+      "title": "Relevant Search: With applications for Solr and Elasticsearch",
+      "link": "https://www.librarything.com/work/16016529",
+      "imageUrl": "/static/images/bookshelf/2073b83bc03335eb2e7e00ca7fd17bc1.jpg",
+      "author": "Doug Turnbull",
+      "rating": "0",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/8512582-L.jpg"
+    },
+    {
       "title": "The Idea Factory: Bell Labs and the Great Age of American Innovation",
       "link": "https://www.librarything.com/work/12294745",
       "imageUrl": "/static/images/bookshelf/596de78f7d866f99f322df2eb6ade923.jpg",
@@ -8,25 +17,59 @@
       "rating": "0",
       "description": "",
       "imageUrlRemote": "https://covers.openlibrary.org/b/id/7272459-L.jpg"
+    },
+    {
+      "title": "What If?: Serious Scientific Answers to Absurd Hypothetical Questions \u2015 From the Creator of xkcd",
+      "link": "https://www.librarything.com/work/14832433",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/0544272994.01._SX100_SY200_SCRM_.jpg",
+      "author": "Randall Munroe",
+      "rating": "0",
+      "description": ""
     }
   ],
   "read": [
     {
-      "title": "Never Split the Difference: Negotiating as if Your Life Depended on It",
-      "link": "https://www.librarything.com/work/17519394",
-      "imageUrl": "/static/images/bookshelf/f9eef29fa59051d2d6f79a90812a3e02.jpg",
-      "author": "Chris Voss",
-      "rating": "5",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/8365942-L.jpg"
-    },
-    {
-      "title": "Get Tough! How to Win in Hand-to-Hand Fighting, as Taught to the British Commandos, and the U.S. Armed Forces",
-      "link": "https://www.librarything.com/work/759944",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/0873640020.01._SX100_SY200_SCRM_.jpg",
-      "author": "W. E. Fairbairn",
+      "title": "The Bed of Procrustes: Philosophical and Practical Aphorisms (Incerto)",
+      "link": "https://www.librarything.com/work/10657272",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/1400069971.01._SX100_SY200_SCRM_.jpg",
+      "author": "Nassim Nicholas Taleb",
       "rating": "5",
       "description": ""
+    },
+    {
+      "title": "Zero to One: Notes on Startups, or How to Build the Future",
+      "link": "https://www.librarything.com/work/13943938",
+      "imageUrl": "/static/images/bookshelf/8228efafacd5bf156895fbe0cea73297.jpg",
+      "author": "Peter Thiel",
+      "rating": "5",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/9002334-L.jpg"
+    },
+    {
+      "title": "Warnings: Finding Cassandras to Stop Catastrophes",
+      "link": "https://www.librarything.com/work/19315469",
+      "imageUrl": "/static/images/bookshelf/7259d30883c46c10877db288fd52e7ae.jpg",
+      "author": "Richard A. Clarke",
+      "rating": "0",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/10589035-L.jpg"
+    },
+    {
+      "title": "\u0b85\u0ba4\u0bcd\u0ba4\u0ba9\u0bc8\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0b86\u0b9a\u0bc8\u0baa\u0bcd\u0baa\u0b9f\u0bc1",
+      "link": "https://www.librarything.com/work/327134129",
+      "imageUrl": "https://pics.cdn.librarything.com/picsizes/18/32/18321580-b-h200-w100-pv25_597179514677466b414d6741_v5.jpg",
+      "author": "Sadhguru Sadhguru",
+      "rating": "0",
+      "description": ""
+    },
+    {
+      "title": "How to Live: 27 conflicting answers and one weird conclusion",
+      "link": "https://www.librarything.com/work/327134118",
+      "imageUrl": "/static/images/bookshelf/b4bb12118c6fff97bc24827e59370025.jpg",
+      "author": "Derek Sivers",
+      "rating": "0",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/13861623-L.jpg"
     },
     {
       "title": "One flew over the cuckoos nest",
@@ -38,12 +81,13 @@
       "imageUrlRemote": "https://covers.openlibrary.org/b/id/9272688-L.jpg"
     },
     {
-      "title": "Arthamulla Hindu Matham, Vols. 1-10",
-      "link": "https://www.librarything.com/work/13972476",
-      "imageUrl": "https://pics.cdn.librarything.com/picsizes/10/25/10251903-b-h200-w100-pv25_596e39756e41426b414d6741_v5.jpg",
-      "author": "Kannadhasan",
+      "title": "The Lord of the Rings",
+      "link": "https://www.librarything.com/work/1386651",
+      "imageUrl": "/static/images/bookshelf/bf736021317c49d27a7e1f5378bcdf18.jpg",
+      "author": "Cathy Kelly J. R. R. Tolkien",
       "rating": "0",
-      "description": ""
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/12366237-L.jpg"
     },
     {
       "title": "Nudge: Improving Decisions About Health, Wealth, and Happiness",
@@ -55,11 +99,61 @@
       "imageUrlRemote": "https://covers.openlibrary.org/b/id/6402116-L.jpg"
     },
     {
-      "title": "The Hitchhiker\u2019s Guide to the Galaxy (The Hitchhiker's Guide to the Galaxy, #1)",
-      "link": "https://www.librarything.com/work/327134341",
-      "imageUrl": "https://pics.cdn.librarything.com/picsizes/00/01/1-c-h200-w100-pv25_597745414141426b414d6741_v5.png",
-      "author": "Douglas Adams",
-      "rating": "5",
+      "title": "Mahabharatham",
+      "link": "https://www.librarything.com/work/327134143",
+      "imageUrl": "https://pics.cdn.librarything.com/picsizes/18/32/18321581-b-h200-w100-pv25_597132514677466b414d6741_v5.jpg",
+      "author": "Anonymous Anonymous",
+      "rating": "0",
+      "description": ""
+    },
+    {
+      "title": "Automate the Boring Stuff with Python: Practical Programming for Total Beginners",
+      "link": "https://www.librarything.com/work/15950905",
+      "imageUrl": "/static/images/bookshelf/c403abcceef64f3dd16f8afb813517e6.jpg",
+      "author": "Al Sweigart",
+      "rating": "0",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/7363640-L.jpg"
+    },
+    {
+      "title": "Complete Krav Maga: The Ultimate Guide to Over 230 Self-Defense and Combative Techniques",
+      "link": "https://www.librarything.com/work/3539184",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/1569755736.01._SX100_SY200_SCRM_.jpg",
+      "author": "Darren Levine",
+      "rating": "0",
+      "description": ""
+    },
+    {
+      "title": "Arthamulla Hindu Matham, Vols. 1-10",
+      "link": "https://www.librarything.com/work/13972476",
+      "imageUrl": "https://pics.cdn.librarything.com/picsizes/12/08/12083711-b-h200-w100-pv25_597639687541426b414d6741_v5.png",
+      "author": "Kannadhasan",
+      "rating": "0",
+      "description": ""
+    },
+    {
+      "title": "What Every Body Is Saying: An Ex-FBI Agent's Guide to Speed-Reading People",
+      "link": "https://www.librarything.com/work/5277689",
+      "imageUrl": "/static/images/bookshelf/fc36290a439150696f108a2332c99052.jpg",
+      "author": "Joe Navarro",
+      "rating": "0",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/13128419-L.jpg"
+    },
+    {
+      "title": "Antifragile: Things That Gain from Disorder (Incerto)",
+      "link": "https://www.librarything.com/work/12741704",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/1400067820.01._SX100_SY200_SCRM_.jpg",
+      "author": "Nassim Nicholas Taleb",
+      "rating": "0",
+      "description": ""
+    },
+    {
+      "title": "The Science of Cooking: Every Question Answered to Perfect your Cooking (The Science of Food)",
+      "link": "https://www.librarything.com/work/2291455",
+      "imageUrl": "https://pics.cdn.librarything.com/picsizes/14/76/14760550-b-h200-w100-pv25_596d59363451426b414d6741_v5.jpg",
+      "author": "Dr. Stuart Farrimond",
+      "rating": "0",
       "description": ""
     },
     {
@@ -80,132 +174,6 @@
       "description": ""
     },
     {
-      "title": "The Return of the King: Being the Third Part of the Lord of the Rings",
-      "link": "https://www.librarything.com/work/3203356",
-      "imageUrl": "/static/images/bookshelf/eaa45cd6efd636b79789233f8b5dade8.jpg",
-      "author": "J.R.R. Tolkien",
-      "rating": "0",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/14627062-L.jpg"
-    },
-    {
-      "title": "\u0b85\u0ba4\u0bcd\u0ba4\u0ba9\u0bc8\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0b86\u0b9a\u0bc8\u0baa\u0bcd\u0baa\u0b9f\u0bc1",
-      "link": "https://www.librarything.com/work/327134129",
-      "imageUrl": "https://pics.cdn.librarything.com/picsizes/00/01/1-c-h200-w100-pv25_597745414141426b414d6741_v5.png",
-      "author": "Sadhguru Sadhguru",
-      "rating": "0",
-      "description": ""
-    },
-    {
-      "title": "Complete Krav Maga: The Ultimate Guide to Over 230 Self-Defense and Combative Techniques",
-      "link": "https://www.librarything.com/work/3539184",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/1569755736.01._SX100_SY200_SCRM_.jpg",
-      "author": "Darren Levine",
-      "rating": "0",
-      "description": ""
-    },
-    {
-      "title": "Freakonomics [Revised and Expanded]: A Rogue Economist Explores the Hidden Side of Everything",
-      "link": "https://www.librarything.com/work/675",
-      "imageUrl": "/static/images/bookshelf/d6e454e18d8281bc1efc24320ad18530.jpg",
-      "author": "Steven D. Levitt",
-      "rating": "5",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/11172914-L.jpg"
-    },
-    {
-      "title": "Antifragile: Things That Gain from Disorder (Incerto)",
-      "link": "https://www.librarything.com/work/12741704",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/1400067820.01._SX100_SY200_SCRM_.jpg",
-      "author": "Nassim Nicholas Taleb",
-      "rating": "0",
-      "description": ""
-    },
-    {
-      "title": "The Algorithm Design Manual",
-      "link": "https://www.librarything.com/work/84177",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/0387948600.01._SX100_SY200_SCRM_.jpg",
-      "author": "Steve S. Skiena",
-      "rating": "5",
-      "description": ""
-    },
-    {
-      "title": "White Nights",
-      "link": "https://www.librarything.com/work/6175122",
-      "imageUrl": "/static/images/bookshelf/104bbe6dc7439369c4178cba4cc5a9ac.jpg",
-      "author": "Fyodor Dostoevsky",
-      "rating": "0",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/3293338-L.jpg"
-    },
-    {
-      "title": "The Tech Resume Inside Out",
-      "link": "https://www.librarything.com/work/31113644",
-      "imageUrl": "/static/images/bookshelf/78175a1a9e7e5746392cb354c28a41d7.jpg",
-      "author": "Gergely Orosz",
-      "rating": "0",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/11110597-L.jpg"
-    },
-    {
-      "title": "The Lord of the Rings",
-      "link": "https://www.librarything.com/work/1386651",
-      "imageUrl": "/static/images/bookshelf/bf736021317c49d27a7e1f5378bcdf18.jpg",
-      "author": "Cathy Kelly J. R. R. Tolkien",
-      "rating": "0",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/12366237-L.jpg"
-    },
-    {
-      "title": "The Subtle Art of Not Giving a F*ck: A Counterintuitive Approach to Living a Good Life",
-      "link": "https://www.librarything.com/work/17764427",
-      "imageUrl": "https://pics.cdn.librarything.com/picsizes/00/01/1-c-h200-w100-pv25_597745414141426b414d6741_v5.png",
-      "author": "Mark Manson",
-      "rating": "5",
-      "description": ""
-    },
-    {
-      "title": "Memoirs of European Travel",
-      "link": "https://www.librarything.com/work/30228120",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/8175050888.01._SX100_SY200_SCRM_.jpg",
-      "author": "Swami Vivekananda",
-      "rating": "0",
-      "description": ""
-    },
-    {
-      "title": "The Science of Cooking: Every Question Answered to Perfect your Cooking (The Science of Food)",
-      "link": "https://www.librarything.com/work/2291455",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/0140196234.01._SX100_SY200_SCRM_.jpg",
-      "author": "Dr. Stuart Farrimond",
-      "rating": "0",
-      "description": ""
-    },
-    {
-      "title": "The Art of the Start: The Time-Tested, Battle-Hardened Guide for Anyone Starting Anything",
-      "link": "https://www.librarything.com/work/2084220",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/1591840562.01._SX100_SY200_SCRM_.jpg",
-      "author": "Guy Kawasaki",
-      "rating": "5",
-      "description": ""
-    },
-    {
-      "title": "Do androids dream of electric sheep? : the inspiration for the films Blade Runner and Blade Runner 2049 / Philip K. Dick",
-      "link": "https://www.librarything.com/work/881",
-      "imageUrl": "https://ecx.images-amazon.com/images/P/0345508556.01._SX100_SY200_SCRM_.jpg",
-      "author": "Philip K. Dick",
-      "rating": "0",
-      "description": ""
-    },
-    {
-      "title": "Automate the Boring Stuff with Python: Practical Programming for Total Beginners",
-      "link": "https://www.librarything.com/work/15950905",
-      "imageUrl": "/static/images/bookshelf/c403abcceef64f3dd16f8afb813517e6.jpg",
-      "author": "Al Sweigart",
-      "rating": "0",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/7363640-L.jpg"
-    },
-    {
       "title": "The fellowship of the ring The Lord of the Rings Series, Book 1",
       "link": "https://www.librarything.com/work/3203347",
       "imageUrl": "https://ecx.images-amazon.com/images/P/0547952015.01._SX100_SY200_SCRM_.jpg",
@@ -214,10 +182,10 @@
       "description": ""
     },
     {
-      "title": "Mahabharatham",
-      "link": "https://www.librarything.com/work/327134143",
-      "imageUrl": "https://pics.cdn.librarything.com/picsizes/00/01/1-c-h200-w100-pv25_597745414141426b414d6741_v5.png",
-      "author": "Anonymous Anonymous",
+      "title": "Do androids dream of electric sheep? : the inspiration for the films Blade Runner and Blade Runner 2049 / Philip K. Dick",
+      "link": "https://www.librarything.com/work/881",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/0345508556.01._SX100_SY200_SCRM_.jpg",
+      "author": "Philip K. Dick",
       "rating": "0",
       "description": ""
     },
@@ -231,13 +199,63 @@
       "imageUrlRemote": "https://covers.openlibrary.org/b/id/7418786-L.jpg"
     },
     {
-      "title": "Half Girlfriend",
-      "link": "https://www.librarything.com/work/15272434",
-      "imageUrl": "/static/images/bookshelf/599b36ec7c3b3d7f8719ea4f6288421e.jpg",
-      "author": "Chetan Bhagat",
+      "title": "The Subtle Art of Not Giving a F*ck: A Counterintuitive Approach to Living a Good Life",
+      "link": "https://www.librarything.com/work/17764427",
+      "imageUrl": "https://pics.cdn.librarything.com/picsizes/10/53/10530095-b-h200-w100-pv25_59692b746f41426b414d6741_v5.jpg",
+      "author": "Mark Manson",
+      "rating": "5",
+      "description": ""
+    },
+    {
+      "title": "The Return of the King: Being the Third Part of the Lord of the Rings",
+      "link": "https://www.librarything.com/work/3203356",
+      "imageUrl": "/static/images/bookshelf/eaa45cd6efd636b79789233f8b5dade8.jpg",
+      "author": "J.R.R. Tolkien",
       "rating": "0",
       "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/15271868-L.jpg"
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/14627062-L.jpg"
+    },
+    {
+      "title": "Get Tough! How to Win in Hand-to-Hand Fighting, as Taught to the British Commandos, and the U.S. Armed Forces",
+      "link": "https://www.librarything.com/work/759944",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/0873640020.01._SX100_SY200_SCRM_.jpg",
+      "author": "W. E. Fairbairn",
+      "rating": "5",
+      "description": ""
+    },
+    {
+      "title": "White Nights",
+      "link": "https://www.librarything.com/work/6175122",
+      "imageUrl": "/static/images/bookshelf/104bbe6dc7439369c4178cba4cc5a9ac.jpg",
+      "author": "Fyodor Dostoevsky",
+      "rating": "0",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/3293338-L.jpg"
+    },
+    {
+      "title": "The Algorithm Design Manual",
+      "link": "https://www.librarything.com/work/84177",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/0387948600.01._SX100_SY200_SCRM_.jpg",
+      "author": "Steve S. Skiena",
+      "rating": "5",
+      "description": ""
+    },
+    {
+      "title": "The Tech Resume Inside Out",
+      "link": "https://www.librarything.com/work/31113644",
+      "imageUrl": "/static/images/bookshelf/78175a1a9e7e5746392cb354c28a41d7.jpg",
+      "author": "Gergely Orosz",
+      "rating": "0",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/11110597-L.jpg"
+    },
+    {
+      "title": "The Hitchhiker\u2019s Guide to the Galaxy (The Hitchhiker's Guide to the Galaxy, #1)",
+      "link": "https://www.librarything.com/work/2492277",
+      "imageUrl": "https://ecx.images-amazon.com/images/P/0307417131.01._SX100_SY200_SCRM_.jpg",
+      "author": "Douglas Adams",
+      "rating": "5",
+      "description": ""
     },
     {
       "title": "Sorry, You're Not My Type",
@@ -250,13 +268,22 @@
   ],
   "curated": [
     {
-      "title": "The Lord of the Rings. 2 The two towers",
-      "link": "https://www.librarything.com/work/3203350",
-      "imageUrl": "/static/images/bookshelf/1df236af958cbab695daf9e8f0958b29.jpg",
-      "author": "J.R.R. Tolkien",
+      "title": "You and Your Research",
+      "link": "https://www.librarything.com/work/327134090",
+      "imageUrl": "/static/images/bookshelf/fbf8d45f79dbd2330a9ba5dbc5f71a89.jpg",
+      "author": "Richard Hamming",
       "rating": "0",
       "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/14627564-L.jpg"
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/14153910-L.jpg"
+    },
+    {
+      "title": "Thinking, Fast and Slow",
+      "link": "https://www.librarything.com/work/11559588",
+      "imageUrl": "/static/images/bookshelf/75ecd39306f2110733a9fc096176128e.jpg",
+      "author": "Daniel Kahneman",
+      "rating": "5",
+      "description": "",
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/13290711-L.jpg"
     },
     {
       "title": "The Art of War",
@@ -268,15 +295,6 @@
       "imageUrlRemote": "https://covers.openlibrary.org/b/id/4849549-L.jpg"
     },
     {
-      "title": "You and Your Research",
-      "link": "https://www.librarything.com/work/327134090",
-      "imageUrl": "/static/images/bookshelf/fbf8d45f79dbd2330a9ba5dbc5f71a89.jpg",
-      "author": "Richard Hamming",
-      "rating": "0",
-      "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/14153910-L.jpg"
-    },
-    {
       "title": "Hackers & Painters: Big Ideas from the Computer Age",
       "link": "https://www.librarything.com/work/327134093",
       "imageUrl": "https://ecx.images-amazon.com/images/P/B0026OR2NQ.01._SX100_SY200_SCRM_.jpg",
@@ -285,21 +303,13 @@
       "description": ""
     },
     {
-      "title": "Ulagai Ulukkiya Vaasagangal",
-      "link": "https://www.librarything.com/work/327134089",
-      "imageUrl": "https://pics.cdn.librarything.com/picsizes/00/01/1-c-h200-w100-pv25_597745414141426b414d6741_v5.png",
-      "author": "V. Irai Anbu",
-      "rating": "5",
-      "description": ""
-    },
-    {
-      "title": "Thinking, Fast and Slow",
-      "link": "https://www.librarything.com/work/11559588",
-      "imageUrl": "/static/images/bookshelf/75ecd39306f2110733a9fc096176128e.jpg",
-      "author": "Daniel Kahneman",
-      "rating": "5",
+      "title": "The Lord of the Rings. 2 The two towers",
+      "link": "https://www.librarything.com/work/3203350",
+      "imageUrl": "/static/images/bookshelf/1df236af958cbab695daf9e8f0958b29.jpg",
+      "author": "J.R.R. Tolkien",
+      "rating": "0",
       "description": "",
-      "imageUrlRemote": "https://covers.openlibrary.org/b/id/13290711-L.jpg"
+      "imageUrlRemote": "https://covers.openlibrary.org/b/id/14627564-L.jpg"
     }
   ]
 }
